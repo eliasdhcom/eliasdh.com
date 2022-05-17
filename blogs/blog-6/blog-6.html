@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!-- Van Elias De Hondt -->
+<html lang="en" dir="ltr">
+    <head>
+    <!-- Meta + Title -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Windows Server 2019 Home Folder Setup</title>
+    <!------------------>
+    <!-- Logo -->
+    <link rel="icon" href="/assets/img/e-favicon.ico">
+    <!---------->
+    <!-- CSS -->
+    <link rel="stylesheet" href="/assets/css/B.css"/>
+    <link rel="stylesheet" href="/assets/css/topnav.css"/>
+    <link rel="stylesheet" href="/assets/css/body.css"/>
+    <link rel="stylesheet" href="/assets/css/header.css"/>
+    <link rel="stylesheet" href="/assets/css/square.css"/>
+    <link rel="stylesheet" href="/assets/css/reset.css">
+    <link rel="stylesheet" href="/assets/css/simplegrid.css">
+    <link rel="stylesheet" href="/assets/css/icomoon.css">
+    <link rel="stylesheet" href="/style.css">
+    <!--------->
+    <!-- JS -->
+    <script src="/assets/js/script-1.js"></script>
+    <!-------->
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <div id="top-navigation"></div>
+    <!-------------------->
+    <div class="header">
+      <img src="/assets/img/e-logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
+      <img src="/assets/img/e-logo.png" alt="Smiley face" style="float:right;width:124px;height:124px;">
+     <h3>Windows Server 2019 Home Folder Setup</h3>
+    </div>
+    <div class="B3">
+    <h1>1. Home-Folder</h1>
+    <h2>1.1 Create home-folder</h2>
+    <h3>In the C:\ partition we create a folder called home-folder.</h3> 
+    <h3>This folder must be visible to the users over the network, so share this folder (the name of the share is the same as the name of the folder).</h3>
+    <h3>Go to &#34;Properties&#34; and go to &#34;Sharing&#34; tab, click on &#34;Advanced Sharing&#34; button.</h3>
+    <div class="square-0">
+      <img src="/blogs/blog-6/img/blog-6-img-1.png" alt="Smiley face">
+      <h3>We make sure that we only have Share Permissions for the &#34;Domain Users&#34; and the &#34;administrators&#34;. We give these &#34;Full control&#34;. We remove &#34;Everyone&#34; from the share.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-6/img/blog-6-img-2.png" alt="Smiley face">
+      <h3>In the &#34;Security&#34; tab were the &#34;Administrators&#34; and the &#34;System&#34; with &#34;Full Control&#34;. Let"s leave this alone.</h3>
+    </div>
+    </div>
+    <div class="B3">
+      <h2>1.2 Assigning a home-folder to users</h2>
+      <h2>We had created 5 students. We will give the students a home-folder.</h2> 
+      <div class="square-0">
+        <img src="/blogs/blog-6/img/blog-6-img-3.png" alt="Smiley face">
+        <h3>Go to ADUC and double click on &#34;Adrie Beke&#34;. Select the &#34;Profile&#34; tab.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-6/img/blog-6-img-4.png" alt="Smiley face">
+        <h3>In the field &#34;Home folder&#34; select the radio button &#34;Connect&#34; and select Z. In the field &#34;To&#34; type in \\serverpaul\homefolder\&#37;username&#37; and click on &#34;Apply&#34;. You will now see that &#37;username&#37; is changed to beke. &#37;username&#37; is called a variable. Click &#34;OK&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-6/img/blog-6-img-5.png" alt="Smiley face">
+        <h3>We now see in explorer that a &#34;beke&#34; folder has been created in the homefolder.</h3>
+      </div>
+      </div>
+  </div>
+      <!-- copyright & legal Guidelines & Privacy Policy -->
+      <div id="copyright-lg-pp"></div>
+      <!--------------------------------------------------->
+      <script>
+        loadHTML( "top-navigation", "/assets/html/top-navigation.html" );
+        loadHTML( "copyright-lg-pp", "/assets/html/copyright-lg-pp.html" );
+      </script>
+  </body>
+</html>

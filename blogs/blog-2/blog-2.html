@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<!-- Van Elias De Hondt -->
+<html lang="en" dir="ltr">
+    <head>
+    <!-- Meta + Title -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Windows Server 2019 ADDS Setup</title>
+    <!------------------>
+    <!-- Logo -->
+    <link rel="icon" href="/assets/img/e-favicon.ico">
+    <!---------->
+    <!-- CSS -->
+    <link rel="stylesheet" href="/assets/css/B.css"/>
+    <link rel="stylesheet" href="/assets/css/topnav.css"/>
+    <link rel="stylesheet" href="/assets/css/body.css"/>
+    <link rel="stylesheet" href="/assets/css/header.css"/>
+    <link rel="stylesheet" href="/assets/css/square.css"/>
+    <link rel="stylesheet" href="/assets/css/reset.css">
+    <link rel="stylesheet" href="/assets/css/simplegrid.css">
+    <link rel="stylesheet" href="/assets/css/icomoon.css">
+    <link rel="stylesheet" href="/style.css">
+    <!--------->
+    <!-- JS -->
+    <script src="/assets/js/script-1.js"></script>
+    <!-------->
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <div id="top-navigation"></div>
+    <!-------------------->
+    <div class="header">
+      <img src="/assets/img/e-logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
+      <img src="/assets/img/e-logo.png" alt="Smiley face" style="float:right;width:124px;height:124px;">
+     <h3>Windows Server 2019 ADDS Setup</h3>
+    </div>
+    <div class="B3">
+    <h1>1. Active Domain Directory Services (ADDS)</h1>
+      <h2>1.1 Installing Active Domain Directory Services</h2>
+      <h3><p>We have a DNS server. We now want to install a Domain Controller (DC).</h3></p> 
+      <h3><p>Before we can do this, we first need to install Active Domain Directory Services.</h3></p> 
+      <h3><p>To do this, proceed as follows:</h3></p> 
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-1.png" alt="Smiley face">
+        <h3>Go to &#34;Server Manager Control&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-2.png" alt="Smiley face">
+        <h3>Click on &#34;Add roles and features&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-3.png" alt="Smiley face">
+        <h3>Click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-4.png" alt="Smiley face">
+        <h3>Click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-5.png" alt="Smiley face">
+        <h3>Click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-6.png" alt="Smiley face">
+        <h3>Left click on the square next to &#34;Active Domain Directory Services&#34; Then click on &#34;Next >&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-7.png" alt="Smiley face">
+        <h3>Click on &#34;Add Features&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-8.png" alt="Smiley face">
+        <h3>Click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-9.png" alt="Smiley face">
+        <h3>You will receive a message that you still need to install features, click on the button.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-10.png" alt="Smiley face">
+        <h3>Click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-11.png" alt="Smiley face">
+        <h3>Click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-12.png" alt="Smiley face">
+        <h3>Left click on the square next to &#34;Restart the destination server automatically if required&#34; Click on &#34;Yes&#34; for an automatic restart of the server Finally click on &#34;Install&#34; (The server will be occupied for a few moments to process the installation.)</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-13.png" alt="Smiley face">
+        <h3>Click &#34;Close&#34; if the installation is successful.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-14.png" alt="Smiley face">
+        <h3>Go to &#34;Server Manager Control&#34;. We see that AD DS is there.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-15.png" alt="Smiley face">
+        <h3>In &#34;Server Manager Control&#34;, Click with the left mouse button on the yellow triangle next to the flag. Then click on &#34;Promote the server to a domain controller&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-16.png" alt="Smiley face">
+        <h3>Click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-17.png" alt="Smiley face">
+        <h3>Enter your password and click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-18.png" alt="Smiley face">
+        <h3>Uncheck and click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-19.png" alt="Smiley face">
+        <h3>Click on “Next”.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-20.png" alt="Smiley face">
+        <h3>Click on “Next”.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-21.png" alt="Smiley face">
+        <h3>Click on “Next”.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-2/img/blog-2-img-22.png" alt="Smiley face">
+        <h3>Click on “Next”.</h3>
+      </div>
+      <h2><p style="color:red;">The server has rebooted!!!</p></h2>
+      <h2><p style="color:red;">Username = administrator</p></h2>
+      <h2><p style="color:red;">Password = Your password</p></h2>
+    </div>
+    <div class="B3">
+      <h2>1.2 Creating a user account in Active Directory on the domain controller</h2>
+        <div class="square-0">
+          <img src="/blogs/blog-2/img/blog-2-img-23.png" alt="Smiley face">
+          <h3>Double click on &#34;Active Directory Users and Computers&#34;.</h3>
+        </div>
+        <div class="square-0">
+          <img src="/blogs/blog-2/img/blog-2-img-24.png" alt="Smiley face">
+          <h3>Right click on the &#34;Users&#34; folder and select &#34;New&#34; -> &#34;User&#34;.</h3>
+        </div>
+        <div class="square-0">
+          <img src="/blogs/blog-2/img/blog-2-img-25.png" alt="Smiley face">
+          <h3>Enter your &#34;First name&#34;</h3>
+          <h3>Enter your &#34;Last name&#34;</h3>
+          <h3>Enter your &#34;Use Logon name&#34;</h3>
+          <h3>Click on &#34;Next&#34;</h3>
+        </div>
+        <div class="square-0">
+          <img src="/blogs/blog-2/img/blog-2-img-26.png" alt="Smiley face">
+          <h3>Enter your Password.</h3>
+          <h3>Uncheck &#34;User must change password at next logon&#34;.</h3> 
+          <h3>And click on &#34;Next&#34;.</h3>
+        </div>
+      </div>
+        <div class="B3">
+          <h2>1.4 Properties of a domain account</h2>
+            <div class="square-0">
+              <img src="/blogs/blog-2/img/blog-2-img-27.png" alt="Smiley face">
+              <h3>Select the &#34;Account&#34; tab and click on &#34;Logon Hours...&#34;</h3>
+            </div>
+            <div class="square-0">
+              <img src="/blogs/blog-2/img/blog-2-img-28.png" alt="Smiley face">
+              <h3>Blue are the times at which Janssens can log in. Make sure to get the same logon times as shown above. Click &#34;OK&#34; when ready, then click the &#34;Logon To...&#34; button.</h3>
+            </div>
+            <div class="square-0">
+              <img src="/blogs/blog-2/img/blog-2-img-29.png" alt="Smiley face">
+              <h3>Here you can set which computers Jansens can log in to, by default he can log in to all computers, set that he can only log in to &#34;PC1&#34;. Click &#34;OK&#34;. Close Jansens dialog boxes and test whether he can log in to your PC.</h3>
+            </div>
+            <div class="square-0">
+              <img src="/blogs/blog-2/img/blog-2-img-30.png" alt="Smiley face">
+              <h3>Janssens is on sick leave for 3 months, you must ensure that no one logs in under his name during his absence. Click on the &#34;Account&#34; tab in the properties of Janssens and activate the checkbox &#34;Account is disabled&#34;. Close Jansens dialog boxes and test whether he can log in to your PC.</h3>
+            </div>
+          </div>
+    <!-- copyright & legal Guidelines & Privacy Policy -->
+    <div id="copyright-lg-pp"></div>
+    <!--------------------------------------------------->
+    <script>
+      loadHTML( "top-navigation", "/assets/html/top-navigation.html" );
+      loadHTML( "copyright-lg-pp", "/assets/html/copyright-lg-pp.html" );
+    </script>
+  </body>
+</html>

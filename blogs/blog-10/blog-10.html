@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<!-- Van Elias De Hondt -->
+<html lang="en" dir="ltr">
+    <head>
+    <!-- Meta + Title -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Cisco Terminal Commands</title>
+    <!------------------>
+    <!-- Logo -->
+    <link rel="icon" href="/assets/img/e-favicon.ico">
+    <!---------->
+    <!-- CSS -->
+    <link rel="stylesheet" href="/assets/css/B.css"/>
+    <link rel="stylesheet" href="/assets/css/topnav.css"/>
+    <link rel="stylesheet" href="/assets/css/body.css"/>
+    <link rel="stylesheet" href="/assets/css/header.css"/>
+    <link rel="stylesheet" href="/assets/css/square.css"/>
+    <link rel="stylesheet" href="/assets/css/reset.css">
+    <link rel="stylesheet" href="/assets/css/simplegrid.css">
+    <link rel="stylesheet" href="/assets/css/icomoon.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/assets/css/rows-and-columns.css" type="text/css" media="all"/>
+    <!--------->
+    <!-- JS -->
+    <script src="/assets/js/script-1.js"></script>
+    <!-------->
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <div id="top-navigation"></div>
+    <!-------------------->
+    <div class="header">
+      <img src="/assets/img/e-logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
+      <img src="/assets/img/e-logo.png" alt="Smiley face" style="float:right;width:124px;height:124px;">
+     <h3>Cisco Terminal Commands</h3>
+    </div>
+    <div class="B3">
+        <h1>Commands</h1>
+        <table id="rows-and-columns" style="width:100%">
+          <tr>
+            <th>Type</th>
+            <th>Commando</th>
+            <th>Explanation</th>
+          </tr>
+           <tr>
+            <td>Switch></td>
+            <td>enable</td>
+            <td>enable = switch#</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>configure terminal</td>
+            <td>Go to switch  (config)#</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>interfaces fastethernet 0/5</td>
+            <td>Display settings interface port 0/5</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>show mac- TAB ENTER</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>show mac-address-table</td>
+            <td>Request Mac address table</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>clear mac-address-table</td>
+            <td>Clear table</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>show vlan brief</td>
+            <td>Request Vlan table switch</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>show running-config</td>
+            <td>See encrypted password from enable secret View setting</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>show vlan</td>
+            <td>List of all vlans</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>copy run start</td>
+            <td>Save config to device</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>show flash</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>show ip route</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>show ip protocols</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>debug ip rip</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>show ip dhcp binding</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>erase startup-config</td>
+            <td>Delete all configuration files</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>show vlan</td>
+            <td>Show all settings of the VLAN</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>show vtp status</td>
+            <td>Show all information about the VTP protocol</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>show access-lists (nr)</td>
+            <td>Show the access lists</td>
+          </tr>
+          <tr>
+            <td>Switch#</td>
+            <td>clear ip dhcp binding *</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>interface fastethernet 0/2</td>
+            <td>Go to the interface of a port - now goes to Switch(config-if)#</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>interface vlan (1 to 4094)</td>
+            <td>Go to the interface of vlan 1 - now goes to switch(config-if)#</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>ntp server (ip van NTP server)</td>
+            <td>Sets the time of switch or router</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>ip dhcp snooping</td>
+            <td>This turns on snooping</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>ip dhcp snooping vlan (1 tot 4094)</td>
+            <td>This ensures that vlan (1 to 4094) is protected</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>Ip nat outside</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>ip nat inside</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>ip nat inside source static tcp (ip lan) (I port) (ip wan) (E port) extendable</td>
+            <td>Opens the port</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>ip nat inside source list 100 (interface) overload</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>ip dhcp relay information trust-all </td>
+            <td>trust-all Received DHCP packets may contain relay info option with zero giaddr</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>enable secret (password)</td>
+            <td>Set password to enable command here now pw (password)</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>no enable secret</td>
+            <td>Remove password on enable</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>line with 0</td>
+            <td>Select console port</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>line vty 0 15</td>
+            <td>Select network function</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>banner motd #Hallo#</td>
+            <td>Configure message of the day</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>no spanning-tree vlan 1</td>
+            <td>Disabling the spanning-tree protocol</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>spanning-tree vlan 1</td>
+            <td>Activating the spanning-tree protocol</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>spanning-tree vlan 1 priority 4096</td>
+            <td>By doing this, this switch automatically becomes a root bridge, because the priorities of the other switches are set by default. This default value is: 32768</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>show spanning-tree vlan 1</td>
+            <td>Show info of spanning-tree protocol</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>hostname (Name)</td>
+            <td>New hostname</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>ip route (Ip net) (Mask) (Ip nic)</td>
+            <td>Sets hop point</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>no ip route (Ip net) (Mask) (Ip nic)</td>
+            <td>Delete a hop point</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>router rip</td>
+            <td>Config of the RIP protocol</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>no ip domain-lookup</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>vlan (1 to 4094)</td>
+            <td>Creates a VLAN and also Switch(config-vlan)#</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>no vlan (1 to 4094)</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>interface fastEthernet 0/0.1</td>
+            <td>Goes to a SUB IF</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>vtp domain (name van domain)</td>
+            <td>You use this to create a new VTP domain</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>vtp mode (client & server) </td>
+            <td>Sets the VTP mode</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>ip dhcp pool (Pool name)</td>
+            <td>Turn on that DHCP server in the router</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>ip dhcp excluded (ip tot ip)</td>
+            <td>Excluded IPs van de DHCP server</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>ip dhcp class (Class name)</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>interface range fastethernet 0/(x-x)</td>
+            <td>Selects interphases from to</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>telephony-service</td>
+            <td>Activates the telephony service</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>ephone (1-50)</td>
+            <td>Turn on a phone</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>ephone-dn 1</td>
+            <td>You are going to give a number to a phone</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>no access-list (nr)</td>
+            <td>Removes the access list</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>access-list (nr)</td>
+            <td>Creates an access list</td>
+          </tr>
+          <tr>
+            <td>Router(config-dn)#</td>
+            <td>number (you enter the desired number)</td>
+            <td>You give a number to your phone</td>
+          </tr>
+          <tr>
+            <td>Router(config-ephone)#</td>
+            <td>type 7960 </td>
+            <td>You set the type of phone</td>
+          </tr>
+          <tr>
+            <td>Router(config-ephone)#</td>
+            <td>mac-address (mac van de phone)</td>
+            <td>You link the mac address of the phone to the digital label</td>
+          </tr>
+          <tr>
+            <td>Router(config-telephony)#</td>
+            <td>max ephones 2/td>
+            <td>You say max 2 phones</td>
+          </tr>
+          <tr>
+            <td>Router(config-telephony)#</td>
+            <td>max-dn 2</td>
+            <td>You say max 2 DN</td>
+          </tr>
+          <tr>
+            <td>Router(config-telephony)#</td>
+            <td>ip source-address (ip van TFTP server) port 2000</td>
+            <td>Sets the port and ip of the TFTP server</td>
+          </tr>
+          <tr>
+            <td>Router(config-telephony)#</td>
+            <td>create cnf-files</td>
+            <td>Avoid a traffic jam</td>
+          </tr>
+          <tr>
+            <td>Router(config-telephony)#</td>
+            <td>switchport access vlan (1 to 4094)</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Router(config-telephony)#</td>
+            <td>switchport voice vlan (1 to 4094)</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch(config-dhcp-class)#</td>
+            <td>address range (start) (end)</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Switch(dhcp-config)#</td>
+            <td>network (net-id) (SM)</td>
+            <td>Sets up the network</td>
+          </tr>
+          <tr>
+            <td>Switch(dhcp-config)#</td>
+            <td>derault-router (ip)</td>
+            <td>Sets the D.G</td>
+          </tr>
+          <tr>
+            <td>Switch(dhcp-config)#</td>
+            <td>dns-server (dns server ip)</td>
+            <td>Sets up the DNS</td>
+          </tr>
+          <tr>
+            <td>Switch(dhcp-config)#</td>
+            <td>option 150 ip (ip adres van de TFTP server)</td>
+            <td>You set the ip for the TFTP server</td>
+          </tr>
+          <tr>
+            <td>Switch(dhcp-config)#</td>
+            <td>lease (days) (hours)</td>
+            <td>Sets the dhcp lease time</td>
+          </tr>
+          <tr>
+            <td>Switch(config-subif)#</td>
+            <td>encapsulation dot1q (1 tot 4094)</td>
+            <td>Links the IF with the VLAN</td>
+          </tr>
+          <tr>
+            <td>Switch(config-subif)#</td>
+            <td>ip address (IP) (SM)</td>
+            <td>Give IP to sub NIC</td>
+          </tr>
+          <tr>
+            <td>Switch(config-vlan)#</td>
+            <td>name (name of the vlan)</td>
+            <td>Makes a name for the vlan</td>
+          </tr>
+          <tr>
+            <td>Switch (config-router)#</td>
+            <td>no auto-summary</td>
+            <td>Makes the data package of rip more complex</td>
+          </tr>
+          <tr>
+            <td>Switch (config-router)#</td>
+            <td>passive-interface fastethernet 9/0</td>
+            <td>Do not send rip data on interface fastethernet 9/0</td>
+          </tr>
+          <tr>
+            <td>Switch(config-line)#</td>
+            <td>password C123</td>
+            <td>Set password to line con 0 (console port)</td>
+          </tr>
+          <tr>
+            <td>Switch(config-line)#</td>
+            <td>login</td>
+            <td>Activate to request a password forget this command and you won't be prompted to enter a password.</td>
+          </tr>
+          <tr>
+            <td>Switch(config-line)#</td>
+            <td>password T123</td>
+            <td>Set password on network connection</td>
+          </tr>
+          <tr>
+            <td>Switch(config-line)#</td>
+            <td>history size 15</td>
+            <td>Adjust history size to 15</td>
+          </tr>
+          <tr>
+            <td>Switch(config-line)#</td>
+            <td>exec-timeout 6 45</td>
+            <td>Time out at 6 minutes 45 seconds</td>
+          </tr>
+          <tr>
+            <td>Switch(config-if)#</td>
+            <td>speed ?</td>
+            <td>List speeds</td>
+          </tr>
+          <tr>
+            <td>Switch(config-if)#</td>
+            <td>speed 10</td>
+            <td>Select 10 Mbps</td>
+          </tr>
+          <tr>
+            <td>Switch(config-if)#</td>
+            <td>duplex full</td>
+            <td>Activate full duplex</td>
+          </tr>
+          <tr>
+            <td>Switch(config-if)#</td>
+            <td>duplex half</td>
+            <td>Activate half duplex</td>
+          </tr>
+          <tr>
+            <td>Switch(config-if)#</td>
+            <td>shutdown</td>
+            <td>Uitschakelen poort of …</td>
+          </tr>
+          <tr>
+            <td>Switch(config-if)#</td>
+            <td>no shutdown</td>
+            <td>Inschakelen poort of …</td>
+          </tr>
+          <tr>
+            <td>Switch(config-if)#</td>
+            <td>ip address (Ip) (Mask)</td>
+            <td>Give IP to NIC</td>
+          </tr>
+          <tr>
+            <td>Switch(config-if)#</td>
+            <td>ip dhcp snooping trust</td>
+            <td>This ensures that the port "trust" word</td>
+          </tr>
+          <tr>
+            <td>Switch(config-if)#</td>
+            <td>ip helper-address (ip DHCP server)</td>
+            <td>DHCP Van a naar b DHCP relay agent</td>
+          </tr>
+          <tr>
+            <td>Switch(config-if)#</td>
+            <td>switchport access VLAN (1 to 4094)</td>
+            <td>This ensures that the IF is placed on a different VLAN</td>
+          </tr>
+          <tr>
+            <td>Switch(config-if)#</td>
+            <td>switchport mode trunk</td>
+            <td>That Ensures that the IF wort a trunk </td>
+          </tr>
+          <tr>
+            <td>Switch(config-if)#</td>
+            <td>no ip address</td>
+            <td>Made sure there is no ip on the IF</td>
+          </tr>
+          <tr>
+            <td>Switch(config-if)#</td>
+            <td>ip access-group (nr) (IN & OUT)</td>
+            <td>Associate ACL with an interface </td>
+          </tr>
+          <tr>
+            <td>Switch(config-if)#</td>
+            <td>ip  access-class (nr) (IN & OUT)</td>
+            <td>Connect ACL to a Console Line & Telnet</td>
+          </tr>
+        </table>
+    </div>
+        <!-- copyright & legal Guidelines & Privacy Policy -->
+        <div id="copyright-lg-pp"></div>
+        <!--------------------------------------------------->
+        <script>
+          loadHTML( "top-navigation", "/assets/html/top-navigation.html" );
+          loadHTML( "copyright-lg-pp", "/assets/html/copyright-lg-pp.html" );
+        </script>
+ </body>
+</html>
