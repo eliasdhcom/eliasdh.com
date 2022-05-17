@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Van Elias De Hondt -->
+<title>Web Server</title>
+<link rel="icon" href="/img/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Space+Mono|Muli">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial;
+  padding: 20px;
+  background: #f1f1f1;
+}
+
+.header {
+  padding: 30px;
+  font-size: 40px;
+  text-align: center;
+  background: white;
+}
+
+.fakeimg {
+  background-color: #aaa;
+  width: 100%;
+  padding: 20px;
+}
+
+.card {
+   background-color: white;
+   padding: 20px;
+   margin-top: 20px;
+}
+
+body {
+  font-family: Muli, sans-serif;
+font-size: 16px;
+}
+
+h1 {
+font-family: "Space Mono", monospace;
+font-size: 46px;
+}
+
+</style>
+</head>
+<body>
+<div class="header">
+    <img src="/img/tux.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
+    <img src="/img/tux.png" alt="Smiley face" style="float:right;width:124px;height:124px;">
+    <h2>Verwachtingen</h2>
+</div>
+<div class="card">
+    <h2>Web Server</h2>
+    <h5>Wat betekent dit concreet.</h5>
+        <div class="fakeimg" style="height:200px;"><img src="/img/web-server-logo.png" width="128" height="128"></div>
+            <p>Een html bestand maken over mijn project. En publiek maken voor het Wereldwijd web (en natuurlijk ook encrypt eren met ssl).</div>
+        <div class="card">
+            <h2>Cloud Server</h2>
+            <h5>Wat betekent dit concreet.</h5>
+        <div class="fakeimg" style="height:200px;"><img src="/img/cloud-server-logo.png" width="160" height="104"></div>
+            <p>Een Cloud server opstellen met databank. En publiek maken voor het Wereldwijd web (en natuurlijk ook encrypt eren met ssl).</p>
+        </div>
+        <div class="card">
+            <h2>Mail Server</h2>
+            <h5>Wat betekent dit concreet.</h5>
+        <div class="fakeimg" style="height:200px;"><img src="/img/mail-server-logo.png" width="128" height="128"></div>
+            <p>En ook nog een mail server opstellen.</p>
+</div>
+<div class="card">
+</div>
+<div class="header">
+    <img src="/img/tux.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
+    <img src="/img/tux.png" alt="Smiley face" style="float:right;width:124px;height:124px;">
+    <h2>Configuratie</h2>
+</div>
+<div class="card">
+    <h2>Web Server Configuratie</h2>
+    <h5>Wat betekent dit concreet.</h5>
+    <div class="fakeimg" style="height:200px;"><img src="/img/web-server-logo.png" width="128" height="128"></div>
+    <p>De server (Raspberry Pi) is geconfigureerd met Apache2.</p>
+    <p>Apache is --Apache HTTP Server is een opensourcewebserver voor Windows, macOS, Linux en andere Unix-achtige besturingssystemen.
+    <p>Apache HTTP Server wordt ook wel Apache of httpd genoemd. Oorspronkelijk was Apache het enige opensource alternatief voor de Netscape-webserver.--</p>
+    <p><a href="https://en.wikipedia.org/wiki/Apache_HTTP_Server">Wikipedia</a></p>
+    <p>Wat heb ik gedaan met Apache, ik heb Apache gedownload op de server (Raspberry Pi) met sudo apt-get install apache2.</p>
+    <p>En dan heb ik een .HTML file gemaakt en geplaatst in /var/www/root/web-server</p>
+    <p>En ook nog twee Aparte configuratie file aangepast voor de nieuwe .HTML pagina te activeren, in /etc/apache2/sites-enabled en /etc/apache2/sites-available</p>
+    <p>En alles laatsten de web server is beveiligt met een ssl (Transport Layer Security) certificaat (met een Script genaamd letsencrypt). </p>
+    <p>De URL van de webpagina is <a href="https://eliasdehondt.xyz:31772/web-server/">https://eliasdehondt.xyz:31772/web-server</a></p>
+</div>
+    <div class="card">
+        <h2>Cloud Server Configuratie</h2>
+        <h5>Wat betekent dit concreet.</h5>
+<div class="fakeimg" style="height:200px;"><img src="/img/cloud-server-logo.png" width="160" height="104"></div>
+        <p>De server (Raspberry Pi) is geconfigureerd met MariaDB en Nextcloud.</p>
+        <p>MariaDB is --MariaDB is een relationeel databasemanagementsysteem. Het ontstond als opensource-fork van MySQL.</p>
+        <p>MariaDB is grotendeels compatibel met MySQL.</p>
+        <p>MariaDB wordt geschreven in C, C++ en Perl en wordt beschikbaar gesteld onder de voorwaarden van de GPL.--</p>
+        <p><a href="https://nl.wikipedia.org/wiki/MariaDB">Wikipedia</a></p>
+        <p>Nextcloud is --Nextcloud is een suite met client-serversoftware voor het maken en gebruiken van bestandshostingservices. 
+        <p>Het is bedrijfsklaar met uitgebreide ondersteuningsopties.</p>
+        <p>Gratis en open-source betekent dat iedereen het op zijn eigen privéserverapparaten mag installeren en gebruiken.--</p>
+        <p><a href="https://en.wikipedia.org/wiki/Nextcloud">Wikipedia</a></p>
+        <p>Wat heb ik gedaan met MariaDB, ik heb MariaDB gedownload op de Server (Raspberry Pi) met sudo apt-get install MariaDB.</p>
+        <p>En dan heb ik een dadabase gemaakt genaamd cloudserver.</p>
+        <p>En de dadabase staat in /var/lib/mysql/cloudserver</p>
+        <p>En de front end files staan in /var/www/root/cloud-server</p>
+        <p>En alles laatsten de Cloud server is beveiligt met een ssl (Transport Layer Security) certificaat (met een Script genaamd letsencrypt).</p>
+        <p>De URL van de webpagina is <a href="https://eliasdehondt.xyz:31772/cloud-server/">https://eliasdehondt.xyz:31772/cloud-server</a></p>
+</div>
+<div class="card">
+    <h2>Mail Server Configuratie</h2>
+    <h5>Wat betekent dit concreet.</h5>
+<div class="fakeimg" style="height:200px;"><img src="/img/mail-server-logo.png" width="128" height="128"></div>
+    <p>**********************************</p>
+</div>
+</body>
+</html>
