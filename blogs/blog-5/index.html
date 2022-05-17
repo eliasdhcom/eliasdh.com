@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <!-- Van Elias De Hondt -->
+    <meta charset="utf-8">
+    <title>Windows Server 2019 Permissions Setup</title>
+    <script src="/assets/js/script-1.js"></script>
+    <link rel="icon" href="/assets/img/e-favicon.ico">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Space+Mono|Muli">
+    <link rel="stylesheet" href="/assets/css/B.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/assets/css/privacy-policy-dropdown.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/assets/css/topnav.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/assets/css/body.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/assets/css/header.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/assets/css/square.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/assets/css/rows-and-columns.css" type="text/css" media="all"/>
+  </head>
+  <body>
+    <div id="top-navigation"></div>
+    <div class="header">
+      <img src="/assets/img/e-logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
+      <img src="/assets/img/e-logo.png" alt="Smiley face" style="float:right;width:124px;height:124px;">
+     <h2>Windows Server 2019 Permissions Setup</h2>
+    </div>
+    <div class="B3">
+    <h1>1. File and folder permissions</h1>
+    <h2>1.1 Exercise one permissions</h2>
+    <h3>In this exercise we create a folder &#34;student_data&#34; in the root of the partition C:\ in</h3> 
+    <h3>this folder all students have their own working folder in which they can create and</h3>
+    <h3>delete new files and folders. The &#34;student_data&#34; folder and their own workbook</h3>
+    <h3>cannot be deleted by the students. The subfolders and files in their own</h3>
+    <h3>workbook may be deleted by the students. The administrator does this job by</h3>
+    <h3>granting the appropriate permissions. The administrator and System have Full</h3>
+    <h3>Control on all folders.</h3>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-1.png" alt="Smiley face">
+      <h3>Create the student data folder with the 5 subfolders.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-2.png" alt="Smiley face">
+      <h3>Let"s verify the &#34;Security&#34; tab of the C:\ partition. We have 2 groups that have full control over the C:\ partition. Click &#34;OK&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-3.png" alt="Smiley face">
+      <h3>Go to the &#34;Security&#34; tab of the student data folder and click &#34;Edit&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-4.png" alt="Smiley face">
+      <h3>Click the &#34;Add&#34; button.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-5.png" alt="Smiley face">
+      <h3>Type in &#34;cursisten&#34; and click &#34;OK&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-6.png" alt="Smiley face">
+      <h3>The students have joined, but do not yet have the appropriate permissions. Click &#34;OK&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-7.png" alt="Smiley face">
+      <h3>Select students and click &#34;Advanced&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-8.png" alt="Smiley face">
+      <h3>Select students and click &#34;Edit&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-9.png" alt="Smiley face">
+      <h3>Click on &#34;Clear all&#34; and then click on &#34;Show advanced permissions&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-10.png" alt="Smiley face">
+      <h3>Applications to = This folder only</h3>
+      <h3>Put check marks next to &#34;Traverse Folder / Execute File&#34;, &#34;List Folder /Read Data&#34; and &#34;Read attributes&#34; then click &#34;OK&#34; twice.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-11.png" alt="Smiley face">
+      <h3>Now set the following default permissions for &#34;Adrie Beke&#34; for the folder &#34;Beke&#34;. He got the first three by default, Write permissions, you still have to put a check there.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-12.png" alt="Smiley face">
+      <h3>Now do the same for the other four students. In their own folder of course.</h3>
+    </div>
+    <h3>Of course we will have to share the &#34;student data&#34; folder. Go to the Properties of the student data folder.</h3>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-13.png" alt="Smiley face">
+      <h3>Go to the Sharing tab and click on &#34;Advanced sharing&#34;. Activate &#34;Share this folder&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-14.png" alt="Smiley face">
+      <h3>Click on &#34;Permissions&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-15.png" alt="Smiley face">
+      <h3>Remove &#34;Everyone&#34; and add the &#34;students&#34; and &#34;administrators&#34;. Give the 2 groups full control.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-16.png" alt="Smiley face">
+      <h3>Go to the Properties of the &#34;Adrie&#34; folder and then to the Security tab. Then go to the Advanced Permissions and check the box next to &#34;Delete Subfolders and Files&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-5/img/blog-5-img-17.png" alt="Smiley face">
+      <h3>Sign up under &#34;Adrie&#34; and check!!</h3>
+    </div>
+    </div>
+  </div>
+  <div id="copyright-lg-pp"></div>
+  </body>
+  <script>
+    loadHTML( "top-navigation", "/assets/html/top-navigation.html" );
+    loadHTML( "copyright-lg-pp", "/assets/html/copyright-lg-pp.html" );
+  </script>
+</html>
