@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<!-- Van Elias De Hondt -->
+<html lang="en" dir="ltr">
+    <head>
+    <!-- Meta + Title -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>How to create an answer file (unattend.xml)</title>
+    <!------------------>
+    <!-- Logo -->
+    <link rel="icon" href="/assets/img/e-favicon.ico">
+    <!---------->
+    <!-- CSS -->
+    <link rel="stylesheet" href="/assets/css/B.css"/>
+    <link rel="stylesheet" href="/assets/css/topnav.css"/>
+    <link rel="stylesheet" href="/assets/css/body.css"/>
+    <link rel="stylesheet" href="/assets/css/header.css"/>
+    <link rel="stylesheet" href="/assets/css/square.css"/>
+    <link rel="stylesheet" href="/assets/css/reset.css">
+    <link rel="stylesheet" href="/assets/css/simplegrid.css">
+    <link rel="stylesheet" href="/assets/css/icomoon.css">
+    <link rel="stylesheet" href="/style.css">
+    <!--------->
+    <!-- JS -->
+    <script src="/assets/js/script-1.js"></script>
+    <!-------->
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <div id="top-navigation"></div>
+    <!-------------------->
+    <div class="header">
+      <img src="/assets/img/e-logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
+      <img src="/assets/img/e-logo.png" alt="Smiley face" style="float:right;width:124px;height:124px;">
+     <h3>How to create an answer file (unattend.xml)</h3>
+    </div>
+    <div class="B3">
+        <h1>1. Information</h1>
+            <div class="square-text">
+                <p>When you start a new installation of Windows 10, you must go through the Windows Setup, which is the experience that helps you to configure various settings, including language preferences, product key, and partition layout. 
+                After the installation, you also have to go through the out-of-box experience (OOBE), which you need to complete to configure settings like keyboard layout, account, and privacy settings.</p>
+                <p>Although the process is relatively easy for most people, you still have to spend the time controlling the installation and answering questions, which can take up a lot of time, especially if you need to complete multiple installations in your workplace.</p>
+                <p>If you want to automate the installation process (and save time in the process), you can create an answer file with instructions to complete every on-screen prompt, which you can integrate onto a bootable media. 
+                Then the Windows Setup can read to install Windows 10 automatically.</p>
+                <p>In this Windows 10 guide, I walk you through the steps to create an autounattend.xml answer file containing all the necessary settings to perform a basic unattended installation of the OS.</p>
+            </div>
+    </div>
+    <div class="B3">
+        <h1>2. How to create unattended Windows 10 installation media</h1>
+            <div class="square-text">
+                <p>On Windows 10, you can use many ways to create and set up an answer file to automate the installation process. 
+                This guide outlines the instructions to configure a &#34;.xml&#34; file to perform an unattended installation of Windows 10 Pro 64-bit on a computer with a single drive using Unified Extensible Firmware Interface (UEFI) or Basic Input-Output System (BIOS).</p>
+                <p>After setting up the answer file, the process will erase everything on the drive, create and configure the necessary partitions, and install a fresh copy of Windows 10 with the most basic settings.</p>
+                <p>Warning: This is a friendly reminder that the installation process will completely erase the hard drive of your computer. 
+                If you have anything important on this device, it's recommended to make a full backup of your PC before proceeding.</p>
+            </div>
+    </div>
+    <div class="B3">
+        <h1>3. Requirements</h1>
+            <div class="square-text">
+                <p>This guide has quite a few steps, and you'll need a few things to complete the project successfully:</p>
+                <p>•	Windows Assessment and Development Kit (ADK).</p>
+                <p>•	Windows 10 installation files (windows 10 .ico).</p>
+                <p>•	Windows 10 account with administrator privileges.</p>
+                <p>•	Spare computer to test the installation (VM).</p>
+            </div>
+    </div>
+    <div class="B3">
+        <h1>4. How to install Windows System Image Manager</h1>
+            <div class="square-text">
+                <p>Anyone can write an answer file manually. Microsoft offers the Windows System Image Manager (SIM) console available through the Windows Assessment and Deployment Kit (ADK) to make it easier to create the file to install Windows 10 unattended.</p>
+            </div>
+        <div class="square-0">
+            <p>To install the Windows System Image Manager, use these steps:</p>
+            <p>-	Download the Windows ADK installer for Windows 10 version 2004.</p>
+            <p>-	Double-click the adksetup.exe file to begin the installation.</p>
+            <p>-	Select the &#34;Install the Windows Assessment and Deployment Kit - Windows 10 to this computer&#34; option.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-1.png" alt="Smiley face">
+            <p>-	Click the &#34;Next&#34; button.</p>
+            <p>-	Select your privacy setting.</p>
+            <p>-	Click the &#34;Next&#34; button.</p>
+            <p>-	Click the &#34;Accept&#34; button to agree to the license agreement.</p>
+            <p>-	Clear all preselected choices.</p>
+            <p>-	Check only the &#34;Deployment Tools&#34; package to install the Windows System Image Manager components.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-2.png" alt="Smiley face">
+            <p>-	Click the &#34;Install&#34; button.</p>
+            <p>-	Click the &#34;Close&#34; button.</p>
+        </div>
+        <div class="square-text">
+            <p>Once you complete the steps, you can use the console to create a &#34;.xml&#34; file with the answer to all the questions to automatically install Windows 10.</p>
+            <p>After the file is created, you can adjust the settings and reuse it for other installations, instead of having to use the Windows System Image Manager tool.</p>
+        </div>
+    </div>
+    <div class="B3">
+        <h2>4.1. How to create Windows 10 answer file project</h2>
+        <div class="square-text">
+            <p>After installing the Windows System Image Manager console, you need to import the OS installation files onto your device, and set up the environment to create an answer file.</p>
+        </div>
+    </div>
+    <div class="B3">
+        <h2>4.2. Import Windows 10 image files</h2>
+        <div class="square-text">
+            <p>To create an answer file, you need to open a Windows 10 image and create a catalog of all the components to automate the installation. 
+            However, to perform this task, you must first import the installation files onto your device.</p>
+        </div>
+        <div class="square-0">
+            <p>To import the Windows 10 installation files, use these steps:</p>
+            <p>-	Open File Explorer.</p>
+            <p>-	Navigate to the Windows 10 ISO file location.</p>
+            <p>Quick tip: Alternatively, you can also connect a USB flash drive with the installation files(bootable Windows 10 installer).</p>
+            <p>-	Right-click the ISO file and select the Mount option.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-3.png" alt="Smiley face">
+            <p>-	Open the drive with the Windows 10 installation files.</p>
+            <p>-	Click the Select all button from the &#34;Home&#34; tab.</p>
+            <p>-	Click the Copy button from the &#34;Home&#34; tab.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-4.png" alt="Smiley face">
+            <p>-	Navigate to the folder you want to use to store the files for the project.</p>
+            <p>-	Click the New folder button from the &#34;Home&#34; tab.</p>
+            <p>-	Specify a name for the folder - for example, Windows2004.</p>
+            <p>-	Open the newly created folder.</p>
+            <p>-	Click the Paste button from the &#34;Home&#34; tab.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-5.png" alt="Smiley face">
+            <p>Once you complete the steps, the installation files will be available on your device. 
+            However, to continue, you need to confirm the &#34;install.wim&#34; file image is present in the &#34;sources&#34; folder. 
+            If the ISO was created using the Media Creation Tool, you're likely to have an &#34;install.esd&#34;, which you won't be able to open because it's encrypted.</p>
+            <p>If you don't have an &#34;.wim&#34; image file, you can get the uncrypted image by downloading the latest Windows 10 ISO file from the <a href="https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewiso">Windows Insider Program or MSDN with a subscription.</a></p>
+        </div>
+    </div>
+    <div class="B3">
+        <h1>5. Convert install.esd to install.wim</h1>
+        <div class="square-text">
+            <p>In the case that you're stuck with an &#34;install.esd&#34; image, you can use the DISM command tool to export the image files and create a &#34;.wim&#34; image from a &#34;.esd&#34; file.</p>
+        </div>
+        <div class="square-0">
+            <p>To decrypt an install.esd image, use these steps:</p>
+            <p>-	Open Start.</p>
+            <p>-	Search for PowerShell, right-click the top result, and select the Run as administrator option.</p>
+            <p>-	Type the following command to identify the index number of the edition you want to use and press Enter:
+                dism /Get-WimInfo /WimFile:C:\path\to\folder\sources\install.esd
+                In the command, make sure to change the path to the sources folder location with the &#34;install.esd&#34; file on your computer.</p>
+            <p>-	In the command, make sure to change the path to the sources folder location with the &#34;install.esd&#34; file on your computer.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-6.png" alt="Smiley face">
+        </div>
+    </div>
+    <div class="B3">
+        <h1>6. Setting up an answer file environment</h1>
+        <div class="square-0">
+            <p>To prepare the environment to create a new answer file project, use these steps:</p>
+            <p>-	Open Start.</p>
+            <p>-	Search for Windows System Image Manager and click the top result to open the console.</p>
+            <p>-	Click the File menu.</p>
+            <p>-	Select the Select Windows Image option.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-7.png" alt="Smiley face">
+            <p>-	Navigate to the folder with the Windows 10 installation files exported.</p>
+            <p>-	Access the source folder.</p>
+            <p>-	Select the &#34;install.wim&#34; image file.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-8.png" alt="Smiley face">
+            <p>-	Click the Open button.</p>
+            <p>Important: Make sure that image is an &#34;install.wim&#34; file. Otherwise, if you have an &#34;install.esd&#34; image, this will not work.</p>
+            <p>-	Select the edition of Windows 10 you want to use. (Usually, you want to select the version that you're planning to install.)</p>
+            <img src="/blogs/blog-9/img/blog-9-img-9.png" alt="Smiley face">
+            <p>-	Click the OK button.</p>
+            <p>-	Click the Yes button to create a new catalog file (if applicable).</p>
+            <p>Quick note: This process will take some time, but it's a one-time process. 
+            The .clg file will be saved in the same location where the &#34;install.wim&#34; is stored, and you can reuse it later on other projects.</p>
+            <p>-	Under the &#34;Distribution Share&#34; section, right-click on &#34;Select a Distribution Share…&#34; and select the Create Distribution Share option.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-10.png" alt="Smiley face">
+            <p>-	Click the Create New Folder option in the dialog box.</p>
+            <p>-	Specify a name for the folder - for example, &#34;Distribution&#34; and select the folder.</p>
+            <p>-	Click the Open button.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-11.png" alt="Smiley face">
+            <p>-	Click the File menu.</p>
+            <p>-	Select the Select Distribution Share option.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-12.png" alt="smiley face">
+            <p>-	Locate the folder you recently created for the distribution files.</p>
+            <p>-	Click the Open button.</p>
+            <p>-	Click the File menu.</p>
+            <p>-	Select the New Answer File option.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-13.png" alt="smiley face">
+            <p>After you complete the steps, the environment will be created to configure an answer file.</p>
+        </div> 
+    </div>
+    <div class="B3">
+        <h1>7. How to create Windows 10 answer file</h1>
+        <div class="square-text">
+        <p>An <a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/windows-setup-configuration-passes?view=windows-11">answer file contains seven different stages (passes)</a>, and the stages you need to configure will depend upon the type of automation you want to create.</p>
+        <p>This guide will help you to get started configuring an autounattend.xml answer file with the minimum requirements to automate the installation of Windows 10 Pro using the 1 windowsPE, 4 specialize, and 7 oobeSystem stages.</p>
+        <p>Quick note: Depending on the image, you may see the components name starting with amd64_Microsoft-Windows for the 64-bit version or x86_Microsoft-Windows for the 32-bit version of Windows 10. For this guide, we'll be using the &#34;amd64_Microsoft-Windows&#34; name format.</p>
+        </div>
+    </div>
+    <div class="B3">
+        <h2>7.1. Configure language and region settings</h2>
+        <div class="square-0">
+            <p>To configure the region and language settings, while in the Windows System Image Manager, use these steps:</p>
+            <p>Under the &#34;Windows Image&#34; section, expand the Components folder.</p>
+            <p>-	Expand the &#34;amd64_Microsoft-Windows-International-Core-WinPE&#34; component.</p>
+            <p>-	Right-click the &#34;SetupUILanguage&#34; component and select the &#34;Add Setting to Pass 1 windowsPE&#34; option.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-14.png" alt="smiley face">
+            <p>-	Under the &#34;Answer File&#34; section, on the right side, select the &#34;amd64_Microsoft-Windows-International-Core-WinPE&#34; component.</p>
+            <p>-	Under the &#34;Settings&#34; section, on the right side, define the keyboard, region, primary and fall back language, and device location. 
+            For example, if you're located in Belgium, you should be using these settings:</p>
+            <p>•	InputLocale: fr-BE.</p>
+            <p>•	SystemLocale: fr-BE.</p>
+            <p>•	UILanguage: fr-BE.</p>
+            <p>•	UserLocale: fr-BE.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-15.png" alt="smiley face">
+            <p>Quick tip: Only users side Belgium should configure &#34;ULLanguageFallback&#34; using the fr-BE value as the fallback language. 
+            To identify the correct input profile name, you can check out this <a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-input-locales-for-windows-language-packs?view=windows-11">Microsoft support page</a>.</p>
+            <p>-	Select the &#34;SetupUILanguage&#34; sub-component.</p>
+            <p>-	Under the &#34;Settings&#34; section, on the right side, set &#34;UILanguage&#34; with the correct language. 
+            For example, because we're doing an install in &#34;Dutch,&#34; we're using the fr-BE option.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-16.png" alt="smiley face">
+        </div>
+    </div>
+    <div class="B3">
+        <h2>7.2. Configure installation settings</h2>
+        <div class="square-0">
+            <p>Inside the answer file, you also have to specify the settings to properly configure the drive.</p>
+            <p>To configure the drive settings in the answer file, use these steps:</p>
+            <p>-	Under the &#34;Windows Image&#34; section, expand the Components folders.</p>
+            <p>-	Expand the &#34;amd64_Microsoft-Windows-Setup&#34; component.</p>
+            <p>-	Expand the &#34;DiskConfiguration&#34; component.</p>
+            <p>-	Right-click the &#34;Disk&#34; component, and select the &#34;Add Setting to Pass 1 windowsPE&#34; option.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-17.png" alt="smiley face">
+            <p>-	Under the &#34;Answer File&#34; section, on the right side, select the &#34;DiskConfiguration&#34; component.</p>
+            <p>-	Under the &#34;Settings&#34; section, on the right side, set the &#34;WillShowUI&#34; value to &#34;OnError&#34;. 
+            (If you leave this setting empty, the installation will stop during the hard drive setup process.)</p>
+            <img src="/blogs/blog-9/img/blog-9-img-18.png" alt="smiley face">
+            <p>-	Select the &#34;Disk&#34; component.</p>
+            <p>-	Under the &#34;Settings&#34; section, on the right side, use these values:</p>
+            <p>•	DiskID: 0</p>
+            <p>•	WillWipeDisk: true</p>
+            <img src="/blogs/blog-9/img/blog-9-img-19.png" alt="smiley face">
+            <p>Quick note: Setting the &#34;WillWipeDik&#34; setting to true will make sure to erase everything on the first hard drive before setting up the partitions. 
+            If you have anything important on this drive, you should backup the data before proceeding.</p>
+            <p>Once you complete the steps to configure the &#34;DiskConfiguration&#34; settings, you'll need to set up the partition layout, depending on whether your device uses a legacy BIOS or UEFI.</p>
+            <p>The reason is that BIOS-based computers only require two partitions (System Reserved and Windows), and UEFI-based devices require four partitions (WinRE, EFI, MSR, and Windows).</p>
+            <p>You can check if you're using BIOS or UEFI by opening System Information from the Start menu, and checking the &#34;System Summary.&#34; If &#34;BIOS Mode&#34; reads Legacy, then you're using BIOS; if it reads UEFI, you're using UEFI.</p>
+        </div>
+    </div>
+    <div class="B3">
+        <h2>7.3. BIOS only: Creating and modifying partitions</h2>
+        <div class="square-0">
+            <p>To configure the partition layout for a device using BIOS, use these steps:</p>
+            <p>-	Under the &#34;Answer File&#34; section, expand the &#34;amd64_Microsoft-Windows-Setup&#34; component.</p>
+            <p>-	Expand the &#34;DiskConfiguration&#34; component.</p>
+            <p>-	Expand the &#34;Disk&#34; component.</p>
+            <p>-	Right-click the &#34;CreatePartitions&#34; component, and select the &#34;Insert New CreatePartition&#34; option to create the first partition.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-20.png" alt="smiley face">
+            <p>-	Right-click &#34;CreatePartitions&#34; again, and select the &#34;Insert New CreatePartition&#34; option to create a second partition.</p>
+            <p>-	Select the first CreatePartition.</p>
+            <p>-	Under the &#34;Settings&#34; section, on the right side, use these values to create a partition:</p>
+            <p>•	Extend: false.</p>
+            <p>•	Order: 1.</p>
+            <p>•	Size: 100000 (100GB).</p>
+            <p>•	Type: Primary.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-21.png" alt="smiley face">
+            <p>Using the above steps, outlined the steps to carved the partitions. The next steps specify the required file format and partition properties.</p>
+            <p>To specify the format settings in the answer file, use these steps:</p>
+            <p>-	Under the &#34;Answer File&#34; section, expand the &#34;amd64_Microsoft-Windows-Setup&#34; component.</p>
+            <p>-	Expand the &#34;DiskConfiguration&#34; component.</p>
+            <p>-	Expand the &#34;Disk&#34; component.</p>
+            <p>-	Right-click the &#34;ModifyPartition&#34; component, and select the &#34;Insert ModifyPartition&#34; option to modify the first partition.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-22.png" alt="smiley face">
+            <p>-	Right-click &#34;ModifyPartition&#34; again, and select the &#34;Insert ModifyPartition&#34; option to modify the second partition.</p>
+            <p>-	Select the first &#34;ModifyPartition&#34;.</p>
+            <p>-	Under the &#34;Settings&#34; section, on the right side, use these values to configure a system reserved partition:</p>
+            <p>•	Active: true.</p>
+            <p>•	Format: NTFS.</p>
+            <p>•	Letter: C.</p>
+            <p>•	Label: OS.</p>
+            <p>•	Order: 1.</p>
+            <p>•	PartitionID: 1.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-23.png" alt="smiley face">
+            <p>You can learn more about the partition layout required for a BIOS system in this <a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/configure-biosmbr-based-hard-drive-partitions?view=windows-11">Microsoft support page</a>.</p>
+            <p>As part of this setup, the last task is to indicate the setup where to install Windows 10.</p>
+            <p>To select the drive to install Windows 10 automatically, use these steps:</p>
+            <p>-	Under the &#34;Windows Image&#34; section, expand the Components folders.</p>
+            <p>-	Expand the &#34;amd64_Microsoft-Windows-Setup&#34; component.</p>
+            <p>-	Expand the &#34;ImageInstall&#34; component.</p>
+            <p>-	Expand the &#34;OSImage&#34;.</p>
+            <p>-	Right-click the &#34;InstalTo&#34; component, and select the &#34;Add Setting to Pass 1 windowsPE&#34; option.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-24.png" alt="smiley face">
+            <p>-	Under the &#34;Answer File&#34; section, on the right side, select the &#34;InstallTo&#34; component.</p>
+            <p>-	Under the &#34;Settings&#34; section, on the right side, use these values:</p>
+            <p>•	DiskID: 0.</p>
+            <p>•	PartitionID: 1.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-25.png" alt="smiley face">
+            <p>The above settings tell the setup to install Windows 10 automatically on the first drive inside the first partition.</p>
+            <p>Once you complete the steps, continue with the Defining the product key instructions.</p>
+        </div>
+    </div>
+    <div class="B3">
+        <h2>7.4. How to join a domain</h2>
+        <div class="square-0">
+            <p>This is quite easy simply. Copy my work from down below. This will be my example domain name (test.local).</p>
+            <img src="/blogs/blog-9/img/blog-9-img-26.png" alt="smiley face">
+            <p>-	Identification</p>
+            <img src="/blogs/blog-9/img/blog-9-img-27.png" alt="smiley face">
+            <p>-	Credentials</p>
+            <img src="/blogs/blog-9/img/blog-9-img-28.png" alt="smiley face">
+        </div>
+    </div>
+    <div class="B3">
+        <h2>7.5. Pass 7 oobeSystem</h2>
+        <div class="square-0">
+            <p>Using an answer file, you can also automate the configuration of the out-of-box experience (OOBE), including additional language settings, accept the licensing agreement, create a user account, and more.</p>
+            <p>To configure the out-of-box experience, while in the Windows System Image Manager, use these steps:</p>
+            <p>-	Under &#34;Windows Image,&#34; expand the Components folders.</p>
+            <p>-	Right-click the &#34;amd64_Microsoft-Windows-International-Core&#34; component, and select the &#34;Add Setting to Pass 7 oobeSystem&#34; option.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-29.png" alt="smiley face">
+            <p>-	Under the &#34;Windows Image&#34; section, expand the &#34;amd64_Microsoft-Shell-Setup&#34; component.</p>
+            <p>-	Right-click the &#34;OOBE&#34; component, and select the &#34;Add Setting to Pass 7 oobeSystem&#34; option.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-30.png" alt="smiley face">
+            <p>-	Expand the &#34;UserAccounts&#34; component.</p>
+            <p>-	Expand the &#34;LocalAccounts&#34; component.</p>
+            <p>-	Right-click the &#34;LocalAccounts&#34; component, and select the &#34;Add Setting to Pass 7 oobeSystem&#34; option.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-31.png" alt="smiley face">
+            <p>-	Under the &#34;Answer File&#34; section, expand the &#34;amd64_Microsoft-Shell-Setup&#34; component.</p>
+            <p>-	Select the &#34;OOBE&#34; component.</p>
+            <p>-	Under the &#34;Settings&#34; section, on the right size, use the following values:</p>
+            <img src="/blogs/blog-9/img/blog-9-img-32.png" alt="smiley face">
+            <p>-	Expand the &#34;UserAccounts&#34; component.</p>
+            <p>-	Right-click the &#34;LocalAccounts&#34; component and select the Insert New &#34;LocalAccount&#34; option.</p>
+            <p>-	Under the &#34;Settings&#34; section, on the right side, use the following configuration to create a primary local account:</p>
+            <img src="/blogs/blog-9/img/blog-9-img-33.png" alt="smiley face">
+            <p>Using the above settings, you'll be creating an account called &#34;PCT_Admin&#34; for user &#34;PCT_Admin,&#34; and we're adding the account to the &#34;Administrators&#34; group that gives the user unrestricted access to the device. 
+            Of course, you can always define your custom preferences, including for &#34;Description,&#34; &#34;DisplayName,&#34; &#34;Group,&#34; and &#34;Name&#34;.</p>
+            <p>-	Expand the &#34;LocalAccount&#34; component.</p>
+            <p>-	Select the &#34;Password&#34; component.</p>
+            <p>-	Under the &#34;Settings&#34; section, on the right-side, type a password in the Value field.</p>
+            <img src="/blogs/blog-9/img/blog-9-img-34.png" alt="smiley face">
+            <p>While you'll see the password in plain text, after saving the autounattend.xml file, the value will be encrypted.</p>
+        </div>
+    </div>
+  </div>
+      <!-- copyright & legal Guidelines & Privacy Policy -->
+      <div id="copyright-lg-pp"></div>
+      <!--------------------------------------------------->
+      <script>
+        loadHTML( "top-navigation", "/assets/html/top-navigation.html" );
+        loadHTML( "copyright-lg-pp", "/assets/html/copyright-lg-pp.html" );
+      </script>
+  </body>
+</html>
