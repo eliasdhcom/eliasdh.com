@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Van Elias De Hondt -->
+    <title>Windows Server 2019 GP Setup</title>
+    <link rel="icon" href="/img/e-favicon.ico">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Space+Mono|Muli">
+    <link rel='stylesheet' href='/css/B.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/privacy-policy-dropdown.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/topnav.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/body.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/header.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/square.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/rows-and-columns.css' type='text/css' media='all'/>
+  </head>
+  <body>
+    <ul class="topnav">
+      <li><a class="active" href="/index.html">Home</a></li>
+     <li class="dropdown">
+          <a href="/web-projects.html" class="dropbtn">Web Projects</a>
+          <div class="dropdown-content">
+            <!--Web Project 3 = Level Up Contact List-->
+            <a href="/web-projects/web-project-3/index.html">Level Up Contact List</a>
+            <!----------------------------------------->
+            <!--Web Project 2 = Ter Eiken Live-->
+            <a href="/web-projects/web-project-2/index.html">Ter Eiken Live</a>
+            <!---------------------------------->
+            <!--Web Project 1 = Social Hub-->
+            <a href="/web-projects/web-project-1/index.html">Social Hub</a>
+            <!------------------------------>
+          </div>
+        </li>
+        <li class="dropdown">
+         <a href="/blogs.html" class="dropbtn">Blogs</a>
+          <div class="dropdown-content">
+            <!--Blog 7 = Windows Server 2019 Profiles Setup-->
+            <a href="/blogs/blog-7/index.html">Windows Server 2019 Profiles Setup</a>
+            <!----------------------------------------------->
+            <!--Blog 6 = Windows Server 2019 Home-Folder Setup-->
+            <a href="/blogs/blog-6/index.html">Windows Server 2019 Home-Folder Setup</a>
+            <!-------------------------------------------------->
+            <!--Blog 5 = Windows Server 2019 Permissions Setup-->
+            <a href="/blogs/blog-5/index.html">Windows Server 2019 Permissions Setup</a>
+            <!-------------------------------------------------->
+            <!--Blog 4 = Windows Server 2019 PDS Setup-->
+            <a href="/blogs/blog-4/index.html">Windows Server 2019 PDS Setup</a>
+            <!------------------------------------------>
+            <!--Blog 3 = Windows Server 2019 GP Setup-->
+            <a href="/blogs/blog-3/index.html">Windows Server 2019 GP Setup</a>
+            <!----------------------------------------->
+            <!--Blog 2 = Windows Server 2019 ADDS Setup-->
+            <a href="/blogs/blog-2/index.html">Windows Server 2019 ADDS Setup</a>
+            <!------------------------------------------->
+            <!--Blog 1 = Windows Server 2019 DNS Setup-->
+            <a href="/blogs/blog-1/index.html">Windows Server 2019 DNS Setup</a>
+            <!------------------------------------------>
+          </div>
+        </li>
+       <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+       <li><a href="/legal-guidelines.html">Legal Guidelines</a></li>
+       <li class="right"><a href="#about">About Me</a></li>
+      </ul>
+    <div class="header">
+      <img src="/img/e-logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
+      <img src="/img/e-logo.png" alt="Smiley face" style="float:right;width:124px;height:124px;">
+     <h2>Windows Server 2019 GP Setup</h2>
+    </div>
+    <div class="B3">
+    <h1>1. Groups</h1>
+    <h2>1.1 Example use of groups</h2>
+    <h2>We have 7 domain users. The first five are students.</h2>
+    <h2>The last 2 are secretaries and work in the administration.</h2>
+    <table id="rows-and-columns" style="width:20%">
+      <tr>
+        <th>Usernames</th>
+        <th>Log in as</th>
+      </tr>
+       <tr>
+        <td>Rene Corneels</a></td>
+         <td>corneels@school10.local</td>
+      </tr>
+      <tr>
+        <td>Adrie Beke</a></td>
+         <td>beke@school10.local</td>
+      </tr>
+      <tr>
+        <td>Arie Stroop</a></td>
+         <td>stroop@school10.local</td>
+      </tr>
+      <tr>
+        <td>Veerle Driessens</a></td>
+         <td>driessens@school10.local</td>
+      </tr>
+      <tr>
+        <td>Bieke Jaspers</a></td>
+         <td>jaspers@school10.local</td>
+      </tr>
+      <tr>
+        <td>Bea Tram</a></td>
+         <td>tram@school10.local</td>
+      </tr>
+      <tr>
+        <td>Anna Trapvod</a></td>
+         <td>trapvod@school10.local</td>
+      </tr>
+    </table>
+    <p></p>
+    <h2>Create these 7 users. We will create 2 global groups here with the following names: students and secretaries.</h2>
+    <div class="square-0">
+      <img src="/blogs/blog-3/img/blog-3-img-1.png" alt="Smiley face">
+      <h3>Create the 7 domain users.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-3/img/blog-3-img-2.png" alt="Smiley face">
+      <h3>Create a new group via &#34;Users&#34; -> &#34;New&#34; -> &#34;Group&#34;</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-3/img/blog-3-img-3.png" alt="Smiley face">
+      <h3>First we create a group of students. This is a global domain group of type Security.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-3/img/blog-3-img-4.png" alt="Smiley face">
+      <h3>Make the five students members of this group.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-3/img/blog-3-img-5.png" alt="Smiley face">
+      <h3>Next, create a group of secretaries. This is also a global domain group of type Security.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-3/img/blog-3-img-6.png" alt="Smiley face">
+      <h3>Make Trapvod and Tram a member of this group.</h3>
+    </div>
+  </div>
+    <div class="B2">
+      <p class="has-text-align-center" style="font-size:11px"><a href="/legal-guidelines.html">Legal Guidelines</a> | <a href="/privacy-policy.html">Privacy Policy</a></p>
+      <p class="has-text-align-center" style="font-size:11px">Design by Elias De Hondt<br>Copyright 2018 - 2022 &copy; EliasDH. All rights Reserved.</p>
+    </div>
+  </body>
+</html>

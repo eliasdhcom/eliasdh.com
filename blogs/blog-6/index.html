@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Van Elias De Hondt -->
+    <title>Windows Server 2019 Home-Folder Setup</title>
+    <link rel="icon" href="/img/e-favicon.ico">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Space+Mono|Muli">
+    <link rel='stylesheet' href='/css/B.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/privacy-policy-dropdown.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/topnav.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/body.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/header.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/square.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/rows-and-columns.css' type='text/css' media='all'/>
+  </head>
+  <body>
+    <ul class="topnav">
+      <li><a class="active" href="/index.html">Home</a></li>
+     <li class="dropdown">
+          <a href="/web-projects.html" class="dropbtn">Web Projects</a>
+          <div class="dropdown-content">
+            <!--Web Project 3 = Level Up Contact List-->
+            <a href="/web-projects/web-project-3/index.html">Level Up Contact List</a>
+            <!----------------------------------------->
+            <!--Web Project 2 = Ter Eiken Live-->
+            <a href="/web-projects/web-project-2/index.html">Ter Eiken Live</a>
+            <!---------------------------------->
+            <!--Web Project 1 = Social Hub-->
+            <a href="/web-projects/web-project-1/index.html">Social Hub</a>
+            <!------------------------------>
+          </div>
+        </li>
+        <li class="dropdown">
+         <a href="/blogs.html" class="dropbtn">Blogs</a>
+          <div class="dropdown-content">
+            <!--Blog 7 = Windows Server 2019 Profiles Setup-->
+            <a href="/blogs/blog-7/index.html">Windows Server 2019 Profiles Setup</a>
+            <!----------------------------------------------->
+            <!--Blog 6 = Windows Server 2019 Home-Folder Setup-->
+            <a href="/blogs/blog-6/index.html">Windows Server 2019 Home-Folder Setup</a>
+            <!-------------------------------------------------->
+            <!--Blog 5 = Windows Server 2019 Permissions Setup-->
+            <a href="/blogs/blog-5/index.html">Windows Server 2019 Permissions Setup</a>
+            <!-------------------------------------------------->
+            <!--Blog 4 = Windows Server 2019 PDS Setup-->
+            <a href="/blogs/blog-4/index.html">Windows Server 2019 PDS Setup</a>
+            <!------------------------------------------>
+            <!--Blog 3 = Windows Server 2019 GP Setup-->
+            <a href="/blogs/blog-3/index.html">Windows Server 2019 GP Setup</a>
+            <!----------------------------------------->
+            <!--Blog 2 = Windows Server 2019 ADDS Setup-->
+            <a href="/blogs/blog-2/index.html">Windows Server 2019 ADDS Setup</a>
+            <!------------------------------------------->
+            <!--Blog 1 = Windows Server 2019 DNS Setup-->
+            <a href="/blogs/blog-1/index.html">Windows Server 2019 DNS Setup</a>
+            <!------------------------------------------>
+          </div>
+        </li>
+       <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+       <li><a href="/legal-guidelines.html">Legal Guidelines</a></li>
+       <li class="right"><a href="#about">About Me</a></li>
+      </ul>
+    <div class="header">
+      <img src="/img/e-logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
+      <img src="/img/e-logo.png" alt="Smiley face" style="float:right;width:124px;height:124px;">
+     <h2>Windows Server 2019 Home-Folder Setup</h2>
+    </div>
+    <div class="B3">
+    <h1>1. Home-Folder</h1>
+    <h2>1.1 Create home-folder</h2>
+    <h3>In the C:\ partition we create a folder called home-folder.</h3> 
+    <h3>This folder must be visible to the users over the network, so share this folder (the name of the share is the same as the name of the folder).</h3>
+    <h3>Go to &#34;Properties&#34; and go to &#34;Sharing&#34; tab, click on &#34;Advanced Sharing&#34; button.</h3>
+    <div class="square-0">
+      <img src="/blogs/blog-6/img/blog-6-img-1.png" alt="Smiley face">
+      <h3>We make sure that we only have Share Permissions for the &#34;Domain Users&#34; and the &#34;administrators&#34;. We give these &#34;Full control&#34;. We remove &#34;Everyone&#34; from the share.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-6/img/blog-6-img-2.png" alt="Smiley face">
+      <h3>In the &#34;Security&#34; tab were the &#34;Administrators&#34; and the &#34;System&#34; with &#34;Full Control&#34;. Let's leave this alone.</h3>
+    </div>
+    </div>
+    <div class="B3">
+      <h2>1.2 Assigning a home-folder to users</h2>
+      <h2>We had created 5 students. We will give the students a home-folder.</h2> 
+      <div class="square-0">
+        <img src="/blogs/blog-6/img/blog-6-img-3.png" alt="Smiley face">
+        <h3>Go to ADUC and double click on &#34;Adrie Beke&#34;. Select the &#34;Profile&#34; tab.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-6/img/blog-6-img-4.png" alt="Smiley face">
+        <h3>In the field &#34;Home folder&#34; select the radio button &#34;Connect&#34; and select Z. In the field &#34;To&#34; type in \\serverpaul\homefolder\&#37;username&#37; and click on &#34;Apply&#34;. You will now see that &#37;username&#37; is changed to beke. &#37;username&#37; is called a variable. Click &#34;OK&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-6/img/blog-6-img-5.png" alt="Smiley face">
+        <h3>We now see in explorer that a &#34;beke&#34; folder has been created in the homefolder.</h3>
+      </div>
+      </div>
+  </div>
+    <div class="B2">
+      <p class="has-text-align-center" style="font-size:11px"><a href="/legal-guidelines.html">Legal Guidelines</a> | <a href="/privacy-policy.html">Privacy Policy</a></p>
+      <p class="has-text-align-center" style="font-size:11px">Design by Elias De Hondt<br>Copyright 2018 - 2022 &copy; EliasDH. All rights Reserved.</p>
+    </div>
+  </body>
+</html>

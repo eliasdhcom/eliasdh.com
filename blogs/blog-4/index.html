@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Van Elias De Hondt -->
+    <title>Windows Server 2019 PDS Setup</title>
+    <link rel="icon" href="/img/e-favicon.ico">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Space+Mono|Muli">
+    <link rel='stylesheet' href='/css/B.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/privacy-policy-dropdown.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/topnav.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/body.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/header.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/square.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/rows-and-columns.css' type='text/css' media='all'/>
+  </head>
+  <body>
+    <ul class="topnav">
+      <li><a class="active" href="/index.html">Home</a></li>
+     <li class="dropdown">
+          <a href="/web-projects.html" class="dropbtn">Web Projects</a>
+          <div class="dropdown-content">
+            <!--Web Project 3 = Level Up Contact List-->
+            <a href="/web-projects/web-project-3/index.html">Level Up Contact List</a>
+            <!----------------------------------------->
+            <!--Web Project 2 = Ter Eiken Live-->
+            <a href="/web-projects/web-project-2/index.html">Ter Eiken Live</a>
+            <!---------------------------------->
+            <!--Web Project 1 = Social Hub-->
+            <a href="/web-projects/web-project-1/index.html">Social Hub</a>
+            <!------------------------------>
+          </div>
+        </li>
+        <li class="dropdown">
+         <a href="/blogs.html" class="dropbtn">Blogs</a>
+          <div class="dropdown-content">
+            <!--Blog 7 = Windows Server 2019 Profiles Setup-->
+            <a href="/blogs/blog-7/index.html">Windows Server 2019 Profiles Setup</a>
+            <!----------------------------------------------->
+            <!--Blog 6 = Windows Server 2019 Home-Folder Setup-->
+            <a href="/blogs/blog-6/index.html">Windows Server 2019 Home-Folder Setup</a>
+            <!-------------------------------------------------->
+            <!--Blog 5 = Windows Server 2019 Permissions Setup-->
+            <a href="/blogs/blog-5/index.html">Windows Server 2019 Permissions Setup</a>
+            <!-------------------------------------------------->
+            <!--Blog 4 = Windows Server 2019 PDS Setup-->
+            <a href="/blogs/blog-4/index.html">Windows Server 2019 PDS Setup</a>
+            <!------------------------------------------>
+            <!--Blog 3 = Windows Server 2019 GP Setup-->
+            <a href="/blogs/blog-3/index.html">Windows Server 2019 GP Setup</a>
+            <!----------------------------------------->
+            <!--Blog 2 = Windows Server 2019 ADDS Setup-->
+            <a href="/blogs/blog-2/index.html">Windows Server 2019 ADDS Setup</a>
+            <!------------------------------------------->
+            <!--Blog 1 = Windows Server 2019 DNS Setup-->
+            <a href="/blogs/blog-1/index.html">Windows Server 2019 DNS Setup</a>
+            <!------------------------------------------>
+          </div>
+        </li>
+       <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+       <li><a href="/legal-guidelines.html">Legal Guidelines</a></li>
+       <li class="right"><a href="#about">About Me</a></li>
+      </ul>
+    <div class="header">
+      <img src="/img/e-logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
+      <img src="/img/e-logo.png" alt="Smiley face" style="float:right;width:124px;height:124px;">
+     <h2>Windows Server 2019 PDS Setup</h2>
+    </div>
+    <div class="B3">
+    <h1>1. Print</h1>
+    <h2>1.1 Install Print and Document Services (PDS)</h2>
+    <h2>Create these 7 users. We will create 2 global groups here with the following names: students and secretaries.</h2>
+    <div class="square-0">
+      <img src="/blogs/blog-4/img/blog-4-img-1.png" alt="Smiley face">
+      <h3>Go to &#34;Add Roles and Features&#34; via &#34;Server Manager Control&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-4/img/blog-4-img-2.png" alt="Smiley face">
+      <h3>Click Next.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-4/img/blog-4-img-3.png" alt="Smiley face">
+      <h3>Click Next.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-4/img/blog-4-img-4.png" alt="Smiley face">
+      <h3>Select &#34;Print and Document Services&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-4/img/blog-4-img-5.png" alt="Smiley face">
+      <h3>Click on &#34;Add Features&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-4/img/blog-4-img-6.png" alt="Smiley face">
+      <h3>Click Next.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-4/img/blog-4-img-7.png" alt="Smiley face">
+      <h3>Click Next.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-4/img/blog-4-img-8.png" alt="Smiley face">
+      <h3>Click Next.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-4/img/blog-4-img-9.png" alt="Smiley face">
+      <h3>Click Next.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-4/img/blog-4-img-10.png" alt="Smiley face">
+      <h3>Click Install.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-4/img/blog-4-img-11.png" alt="Smiley face">
+      <h3>Installing……</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-4/img/blog-4-img-12.png" alt="Smiley face">
+      <h3>Click Close.</h3>
+    </div>
+    </div>
+    <div class="B3">
+      <h1>1.2 Using Print and Document Services (PDS)</h1>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-13.png" alt="Smiley face">
+        <h3>Go to Print Management via Tools.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-14.png" alt="Smiley face">
+        <h3>We see that our &#34;OKI&#34; is listed at the printers tab.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-15.png" alt="Smiley face">
+        <h3>Right click on &#34;OKI&#34; and select &#34;List in Directory&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-16.png" alt="Smiley face">
+        <h3>Click on &#34;Managing Sharing&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-17.png" alt="Smiley face">
+        <h3>Go to the Security tab.</h3>
+        <h3>Remove “Everyone” by clicking the “Remove” button.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-18.png" alt="Smiley face">
+        <h3>Make sure that only &#34;Administrator&#34;, &#34;Administrators&#34;, &#34;Server Operators&#34; and &#34;Print Operators&#34; remain.</h3>
+        <h3>Click on &#34;Add&#34;.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-19.png" alt="Smiley face">
+        <h3>Type in &#34;cursisten&#34; and click on Check Names.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-20.png" alt="Smiley face">
+        <h3>Students appear, click OK.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-21.png" alt="Smiley face">
+        <h3>Students only get Print permissions. Click OK.</h3>
+      </div>
+    </div>
+    <div class="B3">
+      <h1>5.3 Install Printer Driver on Client Computer</h1>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-22.png" alt="Smiley face">
+        <h3>Log in to the workstation.</h3>
+        <h3>Search \\serverelias</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-23.png" alt="Smiley face">
+        <h3>Click &#34;Install Driver&#34;</h3>
+        <h3>If requested, also provide the username and password of the person who is authorized to install the printer.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-24.png" alt="Smiley face">
+        <h3>Right click on the white area.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-25.png" alt="Smiley face">
+        <h3>Select Properties.</h3>
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-26.png" alt="Smiley face">
+        <h3>Click Print Test Page.</h3>
+      </div>
+    </div>
+    <div class="B3">
+      <h1>5.4 Extra information.</h1>
+      <h3>We need to add the correct port to the printer.</h3>
+      <h3>Follow the screenshots below.</h3>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-27.png" alt="Smiley face">
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-28.png" alt="Smiley face">
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-29.png" alt="Smiley face">
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-30.png" alt="Smiley face">
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-31.png" alt="Smiley face">
+        <h3>Enter the IP address of the printer.</h3>
+      </div>
+      <div class="square-0">
+        <h3>We also must put the printer back online. Follow the screenshots below.</h3>
+        <img src="/blogs/blog-4/img/blog-4-img-32.png" alt="Smiley face">
+      </div>
+      <div class="square-0">
+        <img src="/blogs/blog-4/img/blog-4-img-33.png" alt="Smiley face">
+      </div>
+    </div>
+  </div>
+    <div class="B2">
+      <p class="has-text-align-center" style="font-size:11px"><a href="/legal-guidelines.html">Legal Guidelines</a> | <a href="/privacy-policy.html">Privacy Policy</a></p>
+      <p class="has-text-align-center" style="font-size:11px">Design by Elias De Hondt<br>Copyright 2018 - 2022 &copy; EliasDH. All rights Reserved.</p>
+    </div>
+  </body>
+</html>
