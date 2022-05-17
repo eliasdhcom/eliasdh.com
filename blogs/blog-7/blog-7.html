@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!-- Van Elias De Hondt -->
+<html lang="en" dir="ltr">
+    <head>
+    <!-- Meta + Title -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Windows Server 2019 Profiles Setup</title>
+    <!------------------>
+    <!-- Logo -->
+    <link rel="icon" href="/assets/img/e-favicon.ico">
+    <!---------->
+    <!-- CSS -->
+    <link rel="stylesheet" href="/assets/css/B.css"/>
+    <link rel="stylesheet" href="/assets/css/topnav.css"/>
+    <link rel="stylesheet" href="/assets/css/body.css"/>
+    <link rel="stylesheet" href="/assets/css/header.css"/>
+    <link rel="stylesheet" href="/assets/css/square.css"/>
+    <link rel="stylesheet" href="/assets/css/reset.css">
+    <link rel="stylesheet" href="/assets/css/simplegrid.css">
+    <link rel="stylesheet" href="/assets/css/icomoon.css">
+    <link rel="stylesheet" href="/style.css">
+    <!--------->
+    <!-- JS -->
+    <script src="/assets/js/script-1.js"></script>
+    <!-------->
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <div id="top-navigation"></div>
+    <!-------------------->
+    <div class="header">
+      <img src="/assets/img/e-logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
+      <img src="/assets/img/e-logo.png" alt="Smiley face" style="float:right;width:124px;height:124px;">
+     <h3>Windows Server 2019 Profiles Setup</h3>
+    </div>
+    <div class="B3">
+    <h1>1. Profiles</h1>
+    <h2>1.1 Create Roaming Profiles</h2>
+    <div class="square-0">
+      <img src="/blogs/blog-7/img/blog-7-img-1.png" alt="Smiley face">
+      <h3>Create and share a folder to store roaming profiles. Create a profiles folder on the C:\ partition and share this folder. &#34;Administrators&#34; and &#34;Domain users&#34; get &#34;Full control&#34;. The user &#34;Everyone&#34; must be deleted.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-7/img/blog-7-img-2.png" alt="Smiley face">
+      <h3>In the tab &#34;Security&#34; we see the &#34;Administrators&#34; and &#34;System&#34; with &#34;Full Control&#34;. This is &#34;OK&#34;. Now also add the &#34;Domain Users&#34; group to it and give it &#34;Full Control&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-7/img/blog-7-img-3.png" alt="Smiley face">
+      <h3>Modify account of beke to use roaming profile. Go to ADUC and double click on &#34;beke&#34;. Select the &#34;Profile&#34; tab. In the &#34;Profile Path&#34; field, type the following in \\serverpaul\profiles\&#37;username&#37;. Click on &#34;Apply&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-7/img/blog-7-img-4.png" alt="Smiley face">
+      <h3>&#37;username&#37; is changed to &#34;beke&#34;. Click &#34;OK&#34;.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-7/img/blog-7-img-5.png" alt="Smiley face">
+      <h3>Have a look in the profiles folder, it is still empty.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-7/img/blog-7-img-6.png" alt="Smiley face">
+      <h3>Now log in as &#34;beke&#34; on a workstation. Now look in the &#34;profiles&#34; folder on the server. The system has created a folder &#34;beke.V6&#34; to store beke"s profile. By default, the profile on the users server is not accessible to the administrator.</h3>
+    </div>
+    </div>
+  </div>
+      <!-- copyright & legal Guidelines & Privacy Policy -->
+      <div id="copyright-lg-pp"></div>
+      <!--------------------------------------------------->
+      <script>
+        loadHTML( "top-navigation", "/assets/html/top-navigation.html" );
+        loadHTML( "copyright-lg-pp", "/assets/html/copyright-lg-pp.html" );
+      </script>
+  </body>
+</html>
