@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Van Elias De Hondt -->
+    <title>Windows Server DNS Setup</title>
+    <link rel="icon" href="/img/e-favicon.ico">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Space+Mono|Muli">
+    <link rel='stylesheet' href='/css/B.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/privacy-policy-dropdown.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/topnav.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/body.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/header.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='/css/square.css' type='text/css' media='all'/>
+  </head>
+  <body>
+    <ul class="topnav">
+      <li><a class="active" href="/index.html">Home</a></li>
+     <li class="dropdown">
+          <a href="/web-projects.html" class="dropbtn">Web Projects</a>
+          <div class="dropdown-content">
+            <!--Web Project 3 = Level Up Contact List-->
+            <a href="/web-projects/web-project-3/index.html">Level Up Contact List</a>
+            <!----------------------------------------->
+            <!--Web Project 2 = Ter Eiken Live-->
+            <a href="/web-projects/web-project-2/index.html">Ter Eiken Live</a>
+            <!---------------------------------->
+            <!--Web Project 1 = Social Hub-->
+            <a href="/web-projects/web-project-1/index.html">Social Hub</a>
+            <!------------------------------>
+          </div>
+        </li>
+        <li class="dropdown">
+         <a href="/blogs.html" class="dropbtn">Blogs</a>
+          <div class="dropdown-content">
+            <!--Blog 3 = Windows Server GP Setup-->
+            <a href="/blogs/blog-3/index.html">Windows Server GP Setup</a>
+            <!------------------------------------>
+            <!--Blog 2 = Windows Server ADDS Setup-->
+            <a href="/blogs/blog-2/index.html">Windows Server ADDS Setup</a>
+            <!-------------------------------------->
+            <!--Blog 1 = Windows Server DNS Setup-->
+            <a href="/blogs/blog-1/index.html">Windows Server DNS Setup</a>
+            <!------------------------------------->
+          </div>
+        </li>
+       <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+       <li><a href="/legal-guidelines.html">Legal Guidelines</a></li>
+       <li class="right"><a href="#about">About Me</a></li>
+      </ul>
+    <div class="header">
+      <img src="/img/e-logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
+      <img src="/img/e-logo.png" alt="Smiley face" style="float:right;width:124px;height:124px;">
+     <h2>Windows Server DNS Setup</h2>
+    </div>
+    <div class="B3">
+      <h1>1. Domain Name System (DNS)</h1>
+      <h2>1.1 Configuration of the network card</h2>
+      <div class="square-0">
+        <img src="/blogs/blog-1/img/blog-1-img-0.png" alt="Smiley face">
+        <h3><p>You can turn a Windows 10 server 2019 into a DNS server by installing the DNS service.</p> 
+          This server must have a static IP address. 
+          You can do this by press the Windows key and type &#34;ncpa.cpl&#34;.
+        </h3>
+      </div>
+      <div class="square-1">
+        <img src="/blogs/blog-1/img/blog-1-img-1.png" alt="Smiley face">
+        <p><h3>Disable IPv6 protocol</h3></p>
+      </div>
+      <div class="square-2">
+        <img src="/blogs/blog-1/img/blog-1-img-2.png" alt="Smiley face">
+        <p><h3>IP-adres = 192.168.10.100</h3></p>
+        <p><h3>Subnet mask = 255.255.255.0</h3></p>
+        <p><h3>Default getway 192.168.10.254</h3></p>
+        <p><h3>Preferred DNS server = 127.0.0.1</h3></p>
+      </div>
+      <h2><p style="color:red;">Restart your server after giving a static IP address!!!</p></h2>
+    </div>
+    <div class="B3">
+      <h2>1.2 Installing the DNS service</h2>
+      <div class="square-3">
+        <img src="/blogs/blog-1/img/blog-1-img-3.png" alt="Smiley face">
+        <h3>Go to &#34;Server Manager Control&#34;.</h3>
+      </div>
+      <div class="square-4">
+        <img src="/blogs/blog-1/img/blog-1-img-4.png" alt="Smiley face">
+        <h3>Click on &#34;Add roles and features&#34;.</h3>
+      </div>
+      <div class="square-5">
+        <img src="/blogs/blog-1/img/blog-1-img-5.png" alt="Smiley face">
+        <h3>Click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-6">
+        <img src="/blogs/blog-1/img/blog-1-img-6.png" alt="Smiley face">
+        <h3>Click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-7">
+        <img src="/blogs/blog-1/img/blog-1-img-7.png" alt="Smiley face">
+        <h3>Click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-8">
+        <img src="/blogs/blog-1/img/blog-1-img-8.png" alt="Smiley face">
+        <p><h3>Left click on the square next to &#34;DNS Server&#34;.</h3></p>
+        <p><h3>Then click on &#34;Next >&#34;.</h3></p>
+      </div>
+      <div class="square-9">
+        <img src="/blogs/blog-1/img/blog-1-img-9.png" alt="Smiley face">
+        <h3>Click on &#34;Add Features&#34;.</h3>
+      </div>
+      <div class="square-10">
+        <img src="/blogs/blog-1/img/blog-1-img-10.png" alt="Smiley face">
+        <h3>Click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-11">
+        <img src="/blogs/blog-1/img/blog-1-img-11.png" alt="Smiley face">
+        <h3>Click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-12">
+        <img src="/blogs/blog-1/img/blog-1-img-12.png" alt="Smiley face">
+        <h3>Left click on the square next to &#34;Restart the destination server automatically if required&#34;.</h3>
+      </div>
+      <div class="square-13">
+        <img src="/blogs/blog-1/img/blog-1-img-13.png" alt="Smiley face">
+        <h3>Click on &#34;Yes&#34; for an automatic restart of the server.</h3>
+      </div>
+      <div class="square-14">
+        <img src="/blogs/blog-1/img/blog-1-img-14.png" alt="Smiley face">
+        <h3>Finally click on &#34;Install&#34; (The server will be occupied for a few moments to process the installation.)</h3>
+      </div>
+      <div class="square-15">
+        <img src="/blogs/blog-1/img/blog-1-img-15.png" alt="Smiley face">
+        <h3>Click &#34;Close&#34; if the installation is successful.</h3>
+      </div>
+    </div>
+    <div class="B3">
+      <h2>1.3 Set DNS suffix name for the server</h2>
+      <h3>Press the Windows Key and type &#34;sysdm.cpl&#34;.</h3>
+      <div class="square-16">
+        <img src="/blogs/blog-1/img/blog-1-img-16.png" alt="Smiley face">
+        <h3>Click on &#34;Change&#34;.</h3>
+      </div>
+      <div class="square-17">
+        <img src="/blogs/blog-1/img/blog-1-img-17.png" alt="Smiley face">
+        <h3>Type in the computer name field &#34;serverelias&#34; and then click on &#34;More&#34;.</h3>
+      </div>
+      <div class="square-18">
+        <img src="/blogs/blog-1/img/blog-1-img-18.png" alt="Smiley face">
+        <h3>Enter a DNS suffix, this is actually a domain name. This one for me is &#34;school10.local&#34; Click &#34;OK&#34; click &#34;OK&#34; again.</h3>
+      </div>
+      <div class="square-19">
+        <img src="/blogs/blog-1/img/blog-1-img-19.png" alt="Smiley face">
+        <h3>Click &#34;OK&#34; to restart the server Then press &#34;Close&#34; and &#34;Restart Now&#34;.</h3>
+      </div>
+    </div>
+    <div class="B3">
+      <h2>1.4 Creating a forward lookup zone in the DNS console</h2>
+      <div class="square-20">
+        <img src="/blogs/blog-1/img/blog-1-img-20.png" alt="Smiley face">
+        <h3>In your &#34;Server Manager Control&#34; you will see &#34;Tools&#34; at the top right. click on it and select from the list DNS.</h3>
+      </div>
+      <div class="square-21">
+        <img src="/blogs/blog-1/img/blog-1-img-21.png" alt="Smiley face">
+        <h3>Click on your server name (serverelias).</h3>
+      </div>
+      <div class="square-22">
+        <img src="/blogs/blog-1/img/blog-1-img-22.png" alt="Smiley face">
+        <h3>Double click on &#34;Forward Lookup Zones&#34;.</h3>
+      </div>
+      <div class="square-23">
+        <img src="/blogs/blog-1/img/blog-1-img-23.png" alt="Smiley face">
+        <h3>Right click on &#34;Forward Lookup Zone&#34; and select &#34;New Zone...&#34;.</h3>
+      </div>
+      <div class="square-24">
+        <img src="/blogs/blog-1/img/blog-1-img-24.png" alt="Smiley face">
+        <h3>Click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-25">
+        <img src="/blogs/blog-1/img/blog-1-img-25.png" alt="Smiley face">
+        <h3>We choose &#34;Primary zone&#34; and click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-26">
+        <img src="/blogs/blog-1/img/blog-1-img-26.png" alt="Smiley face">
+        <h3>Enter the name of your zone here, which must match your &#34;DNS suffix name&#34; of your server. Then click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-27">
+        <img src="/blogs/blog-1/img/blog-1-img-27.png" alt="Smiley face">
+        <h3>We want to create a new zone database file, so just click &#34;Next&#34;. A new zone database file is created. click on &#34;Next&#34;.</h3>
+      </div>
+      <div class="square-28">
+        <img src="/blogs/blog-1/img/blog-1-img-28.png" alt="Smiley face">
+        <h3>Click on &#34;Finish&#34;.</h3>
+      </div>
+    </div>
+    <div class="B3">
+      <h2>1.5 Setting up a forwarder</h2>
+      <h3>Open your DNS console. </h3>
+      <div class="square-29">
+        <img src="/blogs/blog-1/img/blog-1-img-29.png" alt="Smiley face">
+        <h3>Right click on your server and select &#34;Properties&#34;.</h3>
+      </div>
+      <div class="square-30">
+        <img src="/blogs/blog-1/img/blog-1-img-30.png" alt="Smiley face">
+        <h3>Go to the &#34;Forwarders&#34; tab and click &#34;Edit&#34;. Enter the following IP address here: 8.8.8.8 If you have internet, the IP address will be resolved in dns.google </h3>
+      </div>
+      <div class="square-31">
+        <img src="/blogs/blog-1/img/blog-1-img-31.png" alt="Smiley face">
+        <h3>And click on &#34;Interfaces&#34; Select &#34;Only the following IP addresses&#34;. And click on &#34;OK&#34;.</h3>
+      </div>
+    </div>
+    <div class="B3">
+      <h2>1.6 Disable Internet Explorer Enhanced Security Configuration</h2>
+      <div class="square-32">
+        <img src="/blogs/blog-1/img/blog-1-img-32.png" alt="Smiley face">
+        <h3>In &#34;Server Manager Control&#34; go to your local server. Click on &#34;On&#34;.</h3>
+      </div>
+      <div class="square-33">
+        <img src="/blogs/blog-1/img/blog-1-img-33.png" alt="Smiley face">
+        <h3>Click &#34;Off&#34; under Administrators below.</h3>
+      </div>
+    </div>
+    <div class="B2">
+      <p class="has-text-align-center" style="font-size:11px"><a href="/legal-guidelines.html">Legal Guidelines</a> | <a href="/privacy-policy.html">Privacy Policy</a></p>
+      <p class="has-text-align-center" style="font-size:11px">Design by Elias De Hondt<br>Copyright 2018 - 2022 &copy; EliasDH. All rights Reserved.</p>
+    </div>
+  </body>
+</html>
