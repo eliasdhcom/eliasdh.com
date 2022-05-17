@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!-- Van Elias De Hondt -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Windows Server 2019 GP Setup</title>
+    <link rel="icon" href="/assets/img/e-favicon.ico">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Space+Mono|Muli">
+    <link rel="stylesheet" href="/assets/css/B.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/assets/css/topnav.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/assets/css/body.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/assets/css/header.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/assets/css/square.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/assets/css/rows-and-columns.css" type="text/css" media="all"/>
+  </head>
+  <body>
+    <div class="header">
+      <img src="/assets/img/e-logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
+      <img src="/assets/img/e-logo.png" alt="Smiley face" style="float:right;width:124px;height:124px;">
+     <h2>Windows Server 2019 GP Setup</h2>
+    </div>
+    <div class="B3">
+    <h1>1. Groups</h1>
+    <h2>1.1 Example use of groups</h2>
+    <h2>We have 7 domain users. The first five are students.</h2>
+    <h2>The last 2 are secretaries and work in the administration.</h2>
+    <table id="rows-and-columns" style="width:20%">
+      <tr>
+        <th>Usernames</th>
+        <th>Log in as</th>
+      </tr>
+       <tr>
+        <td>Rene Corneels</a></td>
+         <td>corneels@school10.local</td>
+      </tr>
+      <tr>
+        <td>Adrie Beke</a></td>
+         <td>beke@school10.local</td>
+      </tr>
+      <tr>
+        <td>Arie Stroop</a></td>
+         <td>stroop@school10.local</td>
+      </tr>
+      <tr>
+        <td>Veerle Driessens</a></td>
+         <td>driessens@school10.local</td>
+      </tr>
+      <tr>
+        <td>Bieke Jaspers</a></td>
+         <td>jaspers@school10.local</td>
+      </tr>
+      <tr>
+        <td>Bea Tram</a></td>
+         <td>tram@school10.local</td>
+      </tr>
+      <tr>
+        <td>Anna Trapvod</a></td>
+         <td>trapvod@school10.local</td>
+      </tr>
+    </table>
+    <p></p>
+    <h2>Create these 7 users. We will create 2 global groups here with the following names: students and secretaries.</h2>
+    <div class="square-0">
+      <img src="/blogs/blog-3/img/blog-3-img-1.png" alt="Smiley face">
+      <h3>Create the 7 domain users.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-3/img/blog-3-img-2.png" alt="Smiley face">
+      <h3>Create a new group via &#34;Users&#34; -> &#34;New&#34; -> &#34;Group&#34;</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-3/img/blog-3-img-3.png" alt="Smiley face">
+      <h3>First we create a group of students. This is a global domain group of type Security.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-3/img/blog-3-img-4.png" alt="Smiley face">
+      <h3>Make the five students members of this group.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-3/img/blog-3-img-5.png" alt="Smiley face">
+      <h3>Next, create a group of secretaries. This is also a global domain group of type Security.</h3>
+    </div>
+    <div class="square-0">
+      <img src="/blogs/blog-3/img/blog-3-img-6.png" alt="Smiley face">
+      <h3>Make Trapvod and Tram a member of this group.</h3>
+    </div>
+  </div>
+  </body>
+</html>
