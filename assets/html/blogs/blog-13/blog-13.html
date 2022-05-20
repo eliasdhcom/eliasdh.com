@@ -5,7 +5,7 @@
 
     <!--Meta + Title-->
     <meta charset="utf-8">
-    <title>Windows Server 2019 Home Folder Setup</title>
+    <title>How To Install And Configure NTP Server In Ubuntu 20.04 Linux</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -55,42 +55,44 @@
     <!--Blog-->
     <div class="header">
       <img src="/assets/img/logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
-     <h3 class="container">Windows Server 2019 Home Folder Setup</h3>
+     <h3 class="container">How To Install And Configure NTP Server In Ubuntu 20.04 Linux</h3>
     </div>
     <div class="B3">
       <br>
       <br>
-    <h1>1. Home-Folder</h1>
-    <h2>1.1 Create home-folder</h2>
-    <h3>In the C:\ partition we create a folder called home-folder.</h3> 
-    <h3>This folder must be visible to the users over the network, so share this folder (the name of the share is the same as the name of the folder).</h3>
-    <h3>Go to &#34;Properties&#34; and go to &#34;Sharing&#34; tab, click on &#34;Advanced Sharing&#34; button.</h3>
-    <div class="square-0">
-      <img src="/assets/html/blogs/blog-6/img/blog-6-img-1.png" alt="Smiley face">
-      <h3>We make sure that we only have Share Permissions for the &#34;Domain Users&#34; and the &#34;administrators&#34;. We give these &#34;Full control&#34;. We remove &#34;Everyone&#34; from the share.</h3>
-    </div>
-    <div class="square-0">
-      <img src="/assets/html/blogs/blog-6/img/blog-6-img-2.png" alt="Smiley face">
-      <h3>In the &#34;Security&#34; tab were the &#34;Administrators&#34; and the &#34;System&#34; with &#34;Full Control&#34;. Let"s leave this alone.</h3>
-    </div>
-    </div>
-    <div class="B3">
-      <h2>1.2 Assigning a home-folder to users</h2>
-      <h2>We had created 5 students. We will give the students a home-folder.</h2> 
+      <h3>1. Step</h3>
       <div class="square-0">
-        <img src="/assets/html/blogs/blog-6/img/blog-6-img-3.png" alt="Smiley face">
-        <h3>Go to ADUC and double click on &#34;Adrie Beke&#34;. Select the &#34;Profile&#34; tab.</h3>
+        <h6>The NTP package is available by default in the default Ubuntu 20.04 LTS repository, so to install it we need to run the following command:</h6>
+        <p style="color:red;">sudo apt install ntp -y</p>
+        <img src="/assets/html/blogs/blog-13/img/blog-13-img-1.png" alt="Smiley face">
       </div>
+      <h3>2. Step</h3>
       <div class="square-0">
-        <img src="/assets/html/blogs/blog-6/img/blog-6-img-4.png" alt="Smiley face">
-        <h3>In the field &#34;Home folder&#34; select the radio button &#34;Connect&#34; and select Z. In the field &#34;To&#34; type in \\serverpaul\homefolder\&#37;username&#37; and click on &#34;Apply&#34;. You will now see that &#37;username&#37; is changed to beke. &#37;username&#37; is called a variable. Click &#34;OK&#34;.</h3>
+        <h6>Once installed, it is necessary to configure NTP to synchronize the time of the public NTP server, for this we need to edit the ntp.conf file as follows:</h6>
+        <p style="color:red;">sudo nano /etc/ntp.conf</p>
+        <h6>There we see the following:</h6>
+        <img src="/assets/html/blogs/blog-13/img/blog-13-img-2.png" alt="Smiley face">
       </div>
+      <h3>3. Step</h3>
       <div class="square-0">
-        <img src="/assets/html/blogs/blog-6/img/blog-6-img-5.png" alt="Smiley face">
-        <h3>We now see in explorer that a &#34;beke&#34; folder has been created in the homefolder.</h3>
+        <h6>It is necessary to replace the following lines:</h6>
+        <p style="color:red;">pool 0.ubuntu.pool.ntp.org iburst pool 1.ubuntu.pool.ntp.org iburst pool 2.ubuntu.pool.ntp.org iburst pool 3.ubuntu.pool.ntp.org iburst</p>
+        <h6>These should be replaced with the current geographic location, the full list is available at the following link: <a href="https://support.ntp.org/bin/view/Servers/NTPPoolServers">NTPPoolServers</a></h6>
+        <h6>Daar zien we het volgende:</h6>
+        <img src="/assets/html/blogs/blog-13/img/blog-13-img-3.png" alt="Smiley face">
+        <h6>We need to take the hostname based on the zone we want and set it like that in the file we opened in Linux. We save the changes with the following key combination:</h6>
+        <p style="color:red;">Ctrl + O</p>
+        <h6>We leave the editor with the keys:</h6>
+        <p style="color:red;">Ctrl + X</p>
       </div>
+      <h3>4. Step</h3>
+      <div class="square-0">
+        <h6>Now we are going to restart the NTP service and apply the changes by running the following line:</h6>
+        <p style="color:red;">sudo systemctl restart ntp</p>
+        <h6>We will proceed to check the status of NTP by running the following:</h6>
+        <p style="color:red;">sudo systemctl status ntp</p>
       </div>
-  </div>
+    </div>
   <!-------->
   <!-------->
 
