@@ -1,0 +1,25 @@
+{ "translations": {
+    "Personal" : "Անձնական",
+    "Name" : "Անուն",
+    "Comment" : "Մեկնաբանել",
+    "Add" : "Ավելացնել",
+    "Cancel" : "ընդհատել",
+    "Update" : "Թարմացնել",
+    "Delete" : "հեռացնել",
+    "Rename" : "Վերանվանել",
+    "Export" : "Արտահանում",
+    "Date" : "Date",
+    "Share link" : "Կիսվել հղմամբ",
+    "Copy link" : "Պատճենել հղումը",
+    "Move" : "Move",
+    "Destination" : "Destination",
+    "min" : "րոպե",
+    "Add to favorites" : "Add to favorites",
+    "File" : "File",
+    "Link" : "Հղում",
+    "Description" : "Նկարագրություն",
+    "Sort by name" : "Order by name",
+    "Sort by date" : "Order by date",
+    "Settings" : "կարգավորումներ"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

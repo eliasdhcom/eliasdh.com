@@ -1,0 +1,25 @@
+{ "translations": {
+    "Personal" : "شەخسىي",
+    "Name" : "ئاتى",
+    "Add" : "قوش",
+    "Cancel" : "ۋاز كەچ",
+    "Update" : "يېڭىلا",
+    "Delete" : "ئۆچۈر",
+    "Home" : "ئۆي",
+    "Work" : "ئىش",
+    "Rename" : "ئات ئۆزگەرت",
+    "Export" : "چىقار",
+    "Phone" : "تېلېفون",
+    "Date" : "Date",
+    "Share link" : "Share link",
+    "Move" : "Move",
+    "Destination" : "Destination",
+    "Add to favorites" : "Add to favorites",
+    "File" : "File",
+    "Link" : "Link",
+    "Description" : "چۈشەندۈرۈش",
+    "Sort by name" : "Order by name",
+    "Sort by date" : "Order by date",
+    "Settings" : "تەڭشەكلەر"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

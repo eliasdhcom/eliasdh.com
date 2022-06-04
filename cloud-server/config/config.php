@@ -1,0 +1,30 @@
+<?php
+$CONFIG = array (
+  'instanceid' => 'ocm79hbalnde',
+  'passwordsalt' => 'oNlTZPyuLPVm/nzpRIIhZKg99jgawm',
+  'secret' => 'ixBYx8Ok/DvHwJ1dnQIvysmltxymIWSsPTTHTrn9Sx4G33ih',
+  'trusted_domains' => 
+  array (
+    0 => 'eliasdehondt.xyz',
+  ),
+  'theme' => 'tux',
+  'default_phone_region' => 'BE',
+  'datadirectory' => '/var/www/root/cloud-server/data',
+  'dbtype' => 'mysql',
+  'version' => '21.0.1.1',
+  'overwrite.cli.url' => 'https://eliasdehondt.xyz/cloud-server',
+  'dbname' => 'cloudserver',
+  'dbhost' => 'localhost',
+  'dbport' => '',
+  'dbtableprefix' => 'oc_',
+  'dbuser' => 'pi',
+  'dbpassword' => 'Root123456789',
+  'installed' => true,
+  'memcache.local' => '\\OC\\Memcache\\APCu',
+  'mail_smtpmode' => 'smtp',
+  'mail_sendmailmode' => 'smtp',
+  'mail_smtpsecure' => 'ssl',
+  'mail_from_address' => 'root',
+  'mail_domain' => 'eliasdehondt.xyz',
+  'mail_smtpauthtype' => 'LOGIN',
+);
