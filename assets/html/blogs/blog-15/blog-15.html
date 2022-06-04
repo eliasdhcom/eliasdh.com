@@ -78,7 +78,6 @@
       <h3>3. Step - Configure Apache2</h3>
       <div class="square-0">
         <h6>Type in the following command to delete the basic configuration files. You don't need this old configuration. We will create a new configuration file.</h6>
-        <p style="color:red;">sudo nano /etc/vsftpd.conf</p>
         <a style="color:red;">
           <p>sudo rm -r /etc/apache2/sites-available/000-default.conf</p>
           <p>sudo rm -r /etc/apache2/sites-available/default-ssl.conf</p>
@@ -89,19 +88,21 @@
         <h6>Now we will create a new configuration file for Apache. Type the following command in.</h6>
         <p style="color:red;">sudo nano /etc/apache2/sites-available/configurationfile.conf</p>
         <img src="/assets/html/blogs/blog-15/img/blog-15-img-5.png" alt="Smiley face">
-        <h6>In the new file you just created, type in the following lines. And then save it with CTRL + K.</h6>
+        <h6>In the new file you just created, type in the following lines. And then save it with CTRL + X.</h6>
         <img src="/assets/html/blogs/blog-15/img/blog-15-img-6.png" alt="Smiley face">
         <h6>Now we will create our location to put your website in. Use the following commands.</h6>
         <p style="color:red;">sudo mkdir /var/www/root</p>
         <img src="/assets/html/blogs/blog-15/img/blog-15-img-7.png" alt="Smiley face">
         <h6>In this folder you will need to put your website information into. This is probably an index.html file. If you don't have a website and you want to learn how to make it, use the <a href="https://www.w3schools.com/">link</a>.</h6>
       </div>
-      <h3>4. Step - Restart vsftpd and enabled configurationfile.conf</h3>
+      <h3>4. Step - Restart Apache2 and enabled configurationfile.conf</h3>
       <div class="square-text">
         <h6>Our initial configuration is done. Now, make sure you are restarting your Apache2 service to accept the changes that we had made so far. To do so, please type the following in your terminal.</h6>
+        <p style="color:red;">sudo a2ensite (Name of configuration File)</p>
         <p style="color:red;">sudo systemctl reload apache2</p>
         <img src="/assets/html/blogs/blog-15/img/blog-15-img-8.png" alt="Smiley face">
         <p style="color:red;">sudo service apache2 restart</p>
+        <img src="/assets/html/blogs/blog-15/img/blog-15-img-9.png" alt="Smiley face">
         <h6>This will restart the apache2 service with the new configuration that we made so far.</h6>
       </div>
       <h3>5. Step - Configure UFW (Ubuntu Firewall)</h3>
@@ -113,27 +114,29 @@
         <h6>We'll need to open ports 80 and 443 for HTTP and HTTPS for later when we enable ssl. If you're working remotely, make sure the port for .</h6>
         <p style="color:red;">sudo ufw allow 80/tcp</p>
         <p style="color:red;">sudo ufw allow 443/tcp</p>
-        <img src="/assets/html/blogs/blog-15/img/blog-15-img-9.png" alt="Smiley face">
+        <img src="/assets/html/blogs/blog-15/img/blog-15-img-10.png" alt="Smiley face">
       </div>
-      <h3>5. Step - Configure SSL & let's encrypt</h3>
+      <h3>6. Step - Configure SSL & let's encrypt</h3>
       <div class="square-text">
         <h6>Of course, it's also prudent to encrypt your connections. We will do this with let's encrypt. What is let's encrypt let's encrypt is a script that will allow us to automate our ssl configuration. Type the following command to install the script.</h6>
         <p style="color:red;">sudo apt-get install certbot python3-certbot-apache</p>
-        <img src="/assets/html/blogs/blog-15/img/blog-15-img-10.png" alt="Smiley face">
+        <img src="/assets/html/blogs/blog-15/img/blog-15-img-11.png" alt="Smiley face">
         <h6>Now we will run the script with following command.</h6>
         <p style="color:red;">sudo certbot --apache</p>
-        <img src="/assets/html/blogs/blog-15/img/blog-15-img-11.png" alt="Smiley face">
+        <img src="/assets/html/blogs/blog-15/img/blog-15-img-12.png" alt="Smiley face">
         <h6>The script will ask for some information.</h6>
         <br>
         <br>
         <h6>The first question will ask for your email address. Please type your email address.</h6>
-        <img src="/assets/html/blogs/blog-15/img/blog-15-img-12.png" alt="Smiley face">
-        <h6>The second question. Will ask you to agree to the terms of service. Please type &#34;Agree&#34;.</h6>
         <img src="/assets/html/blogs/blog-15/img/blog-15-img-13.png" alt="Smiley face">
-        <h6>The third question will ask you if they can send you emails. Please type &#34;NO&#34;.</h6>
+        <h6>The second question. Will ask you to agree to the terms of service. Please type &#34;Agree&#34;.</h6>
         <img src="/assets/html/blogs/blog-15/img/blog-15-img-14.png" alt="Smiley face">
-        <h6>The fourth question will ask you which website you want to encrypt. You will need to type in your domain name.</h6>
+        <h6>The third question will ask you if they can send you emails. Please type &#34;NO&#34;.</h6>
         <img src="/assets/html/blogs/blog-15/img/blog-15-img-15.png" alt="Smiley face">
+        <h6>The fourth question will ask you which website you want to encrypt. You will need to type in your domain name.</h6>
+        <img src="/assets/html/blogs/blog-15/img/blog-15-img-16.png" alt="Smiley face">
+        <h6>The last question will ask you to divert all HTTP traffic to the HTTPS sides you will need to answer yes by typing two.</h6>
+        <img src="/assets/html/blogs/blog-15/img/blog-15-img-17.png" alt="Smiley face">
       </div>
     </div>
   <!-------->
