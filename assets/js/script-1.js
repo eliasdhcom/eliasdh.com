@@ -1,5 +1,9 @@
+/*
+ * Van Elias De Hondt
+ * https://eliasdh.com
+ */
 function loadHTML(myDivId, url) {
-    var xmlhttp;
+    let xmlhttp;
     if (window.XMLHttpRequest)
     {
         xmlhttp = new XMLHttpRequest();
@@ -15,7 +19,7 @@ function loadHTML(myDivId, url) {
         {
            if(xmlhttp.status == 200){
                document.getElementById(myDivId).innerHTML = xmlhttp.responseText;
-               var allScripts = document.getElementById(myDivId).getElementsByTagName('script-1');
+               let allScripts = document.getElementById(myDivId).getElementsByTagName('script-1');
                for (const element of allScripts)
                {
                    eval(element.innerHTML)

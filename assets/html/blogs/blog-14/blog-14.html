@@ -2,79 +2,56 @@
 <!--Van Elias De Hondt-->
 <html lang="en">
     <head>
-
     <!--Meta + Title-->
     <meta charset="utf-8">
     <title>How To Install And Configure FTP Server In Ubuntu 20.04 Linux</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta property="og:title" content="EliasDH" />
+    <meta property="og:title" content="How To Install And Configure FTP Server In Ubuntu 20.04 Linux" />
     <meta property="og:image" content="https://eliasdh.com/assets/img/inverted-logo.png" />
-    <meta content="Elias De Hondt, that has been my name for 21 years. My interest in computers and technology started from a very young age and has only grown over the years. I made this website to show what I want to do, will do and have done." name="description">
+    <meta content="This is a quick how to guide to create a FTP server." name="description">
     <!---------------->
-
     <!--Favicon-->
     <link href="/assets/img/favicon.ico" rel="icon">
     <!----------->
-
     <!--Google Web Fonts-->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <!-------------------->
-
     <!--Font Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <!---------------->
-    
     <!--Libraries Stylesheet-->
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
     <!------------------------>
-
-    <!--CSS-->
-    <link rel="stylesheet" href="/assets/css/B.css"/>
-    <link rel="stylesheet" href="/assets/css/body.css"/>
-    <link rel="stylesheet" href="/assets/css/header.css"/>
-    <link rel="stylesheet" href="/assets/css/square.css"/>
-    <link rel="stylesheet" href="/assets/css/reset.css">
-    <link rel="stylesheet" href="/assets/css/simplegrid.css">
-    <link rel="stylesheet" href="/assets/css/icomoon.css">
-    <!------->
-
-    <!--Customized Bootstrap Stylesheet-->
-    <link href="/assets/css/style.css" rel="stylesheet">
-    <!----------------------------------->
-
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <!-------------->
   </head>
-  <body data-spy="scroll" data-target=".navbar" data-offset="51">
-
-    <!--Top Navigation-->
-    <div id="top-navbar"></div>
-    <!------------------>
-
-
-    <!-------->
+  <body class="selectioncoler" data-spy="scroll" data-target=".navbar" data-offset="51">
+    <!--Top Navbar Blog-->
+    <div id="top-navbar-blog"></div>
+    <!------------------->
     <!--Blog-->
-    <div class="header">
-      <img src="/assets/img/logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
-     <h3 class="container">How To Install And Configure FTP Server In Ubuntu 20.04 Linux</h3>
-    </div>
-    <div class="B3">
+    <div class="container">
       <br>
       <br>
-      <h3>1. Step - Update Server</h3>
-      <div class="square-0">
+      <br>
+      <br>
+      <h5>1. Step - Update Server</h5>
+      <div class="square-text">
         <h6>Update your package lists from the repositories. To do this, open a terminal. Now type the following commands in the terminals.</h6>
         <p style="color:red;">sudo apt-get update</p>
         <p style="color:red;">sudo apt-get upgrade</p>
       </div>
-      <h3>2. Step - Install nano and vsftpd</h3>
-      <div class="square-0">
+      <h5>2. Step - Install nano and vsftpd</h5>
+      <div class="square-text">
         <h6>Now install nano and vsftpd (ftp server).</h6>
         <p style="color:red;">sudo apt-get install nano</p>
         <p style="color:red;">sudo apt-get install vsftpd</p>
       </div>
-      <h3>3. Step - Configure FTP Server</h3>
-      <div class="square-0">
+      <h5>3. Step - Configure FTP Server</h5>
+      <div class="square-text">
         <h6>To configure your FTP server more, please open the following file on nano by typing the following command in your terminal.</h6>
         <p style="color:red;">sudo nano /etc/vsftpd.conf</p>
         <h6>Let's change some parameters to configure it more to act like a real FTP server. Delete every line with CTRL + K. And replace it with the following lines:</h6>
@@ -105,13 +82,13 @@
           <p>userlist_deny=NO</p>
         </a>
       </div>
-      <h3>4. Step - Restart vsftpd</h3>
+      <h5>4. Step - Restart vsftpd</h5>
       <div class="square-text">
         <h6>Our initial configuration is done. Now, make sure you are restarting your vsftpd service to accept the changes that we had made so far. To do so, please type the following in your terminal.</h6>
         <p style="color:red;">sudo service vsftpd restart</p>
         <h6>This will restart the vsftpd service with the new configuration that we made so far.</h6>
       </div>
-      <h3>5. Step - Configure UFW (Ubuntu Firewall)</h3>
+      <h5>5. Step - Configure UFW (Ubuntu Firewall)</h5>
       <div class="square-text">
         <h6>We'll check the firewall status to see if it's enabled. If so, we'll ensure that FTP traffic is permitted so you won't run into firewall rules blocking you when it comes time to test.</h6>
         <p style="color:red;">sudo ufw status</p>
@@ -124,7 +101,7 @@
         <p style="color:red;">sudo ufw allow 990/tcp</p>
         <p style="color:red;">sudo ufw allow 60000:60100/tcp</p>
       </div>
-      <h3>6. Step - Configure FTP users</h3>
+      <h5>6. Step - Configure FTP users</h5>
       <div class="square-text">
         <h6>For this tutorial, we're going to create a user. Assign a password when prompted and feel free to press &#34;ENTER&#34; through the other prompts.</h6>
         <p style="color:red;">sudo adduser ftpuser</p>
@@ -134,26 +111,24 @@
         <p style="color: red;">sudo chmod a-w /home/ftpuser/ftp</p>
         <p style="color: red;">echo "vsftpd test file" | sudo tee /home/ftpuser/ftp/files/test.txt</p>
       </div>
-      <h3>7. Step - Configuring FTP Access</h3>
+      <h5>7. Step - Configuring FTP Access</h5>
       <div class="square-text">
         <h6>Finally, we'll create and add our user to the file. We'll use the -a flag to append to file:</h6>
         <p style="color:red;">echo "ftpuser" | sudo tee -a /etc/vsftpd.userlist</p>
         <h6>You will need to do this for every single user.</h6>
       </div>
     </div>
-  <!-------->
-  <!-------->
-
-
+    <!-------->
     <!--Bottom-->
     <div id="bottom"></div>
     <!---------->
-
     <!--Back to Top-->
     <a href="#" class="btn btn-outline-dark px-0 back-to-top"><i class="fa fa-angle-double-up"></i></a>
     <!--------------->
-
-    <!--JavaScript Libraries-->
+    <!--Right Click Menu-->
+    <div id="right-click-menu"></div>
+    <!-------------------->
+    <!--JavaScript-->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="/lib/typed/typed.min.js"></script>
@@ -164,11 +139,12 @@
     <script src="/lib/lightbox/js/lightbox.min.js"></script>
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/script-1.js"></script>
+    <script src="/assets/js/right-click-menu.js"></script>
     <script>
-      loadHTML( "top-navbar", "/assets/html/top-navbar.html" );
-      loadHTML( "bottom", "/assets/html/bottom.html" );
+        loadHTML("top-navbar-blog", "/assets/html/top-navbar-blog.html" );
+        loadHTML("bottom", "/assets/html/bottom.html");
+        loadHTML("right-click-menu", "/assets/html/right-click-menu.html");
     </script>
-    <!------------------------>
-
+    <!-------------->
   </body>
 </html>

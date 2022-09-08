@@ -1,420 +1,457 @@
 <!DOCTYPE html>
 <!--Van Elias De Hondt-->
 <html lang="en">
-<head>
-
+    <head>
     <!--Meta + Title-->
     <meta charset="utf-8">
     <title>EliasDH</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta property="og:title" content="EliasDH" />
-    <meta property="og:image" content="https://eliasdh.com/assets/img/inverted-logo.png" />
+    <meta property="og:title" content="EliasDH"/>
+    <meta property="og:image" content="https://eliasdh.com/assets/img/inverted-logo.png"/>
     <meta content="Elias De Hondt, that has been my name for 21 years. My interest in computers and technology started from a very young age and has only grown over the years. I made this website to show what I want to do, will do and have done." name="description">
     <!---------------->
-
     <!--Favicon-->
     <link href="/assets/img/favicon.ico" rel="icon">
     <!----------->
-
     <!--Google Web Fonts-->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <!-------------------->
-
     <!--Font Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <!---------------->
-
     <!--Libraries Stylesheet-->
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
     <!------------------------>
-
-    <!--Customized Bootstrap Stylesheet-->
-    <link href="/assets/css/style.css" rel="stylesheet">
-    <!----------------------------------->
-
-</head>
-<body data-spy="scroll" data-target=".navbar" data-offset="51">
-
-    <!--Top Navbar-->
-    <div id="top-navbar"></div>
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="/assets/css/style.css">
     <!-------------->
-
-    <!--Video Modal-->
-    <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="" id="video"  allowscriptaccess="always" allow="autoplay"></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--------------->
-
-    <!--Header-->
-    <div class="container-fluid bg-primary d-flex align-items-center mb-5 py-5" id="home" style="min-height: 100vh;">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-5 px-5 pl-lg-0 pb-5 pb-lg-0">
-                    <img class="img-fluid w-100 rounded-circle" src="/assets/img/inverted-logo.png" alt="">
-                </div>
-                <div class="col-lg-7 text-center text-lg-left">
-                    <h3 class="text-white font-weight-normal mb-3">Hi there my name is</h3>
-                    <h1 class="display-3 text-uppercase text-primary mb-2" style="-webkit-text-stroke: 2px #ffffff;">Elias De Hondt</h1>
-                    <h1 class="typed-text-output d-inline font-weight-lighter text-white"></h1>
-                    <div class="typed-text d-none">And welcome to my website, I am a web designer, web developer, and I run a web hosting company.</div>
-                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start pt-5">
-                        <a href="#" class="btn btn-outline-light mr-5">Download CV</a>
-                        <button type="button" class="btn-play" data-toggle="modal"
-                            data-src="https://www.youtube.com/embed/mY3JSAE0ZOE" data-target="#videoModal">
-                            <span></span>
+    </head>
+    <body class="selectioncoler" data-spy="scroll" data-target=".navbar" data-offset="51">
+        <!--Top Navbar-->
+        <div id="top-navbar"></div>
+        <!-------------->
+        <!--Video Modal-->
+        <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                         </button>
-                        <h5 class="font-weight-normal text-white m-0 ml-4 d-none d-sm-block">Play Video</h5>
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="" id="video" allowscriptaccess="always" allow="autoplay"></iframe>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!---------->
-
-    <!--About-->
-    <div class="container-fluid py-5" id="about">
-        <div class="container">
-            <div class="position-relative d-flex align-items-center justify-content-center">
-                <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">About</h1>
-                <h1 class="position-absolute text-uppercase text-primary">About Me</h1>
+        <!--------------->
+        <!--Header-->
+        <div class="container-fluid bg-primary d-flex align-items-center mb-5 py-5" id="home" style="min-height: 100vh;">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-5 px-5 pl-lg-0 pb-5 pb-lg-0">
+                        <img class="img-fluid w-100 rounded-circle" src="/assets/img/inverted-logo.png" alt="">
+                    </div>
+                    <div class="col-lg-7 text-center text-lg-left">
+                        <h3 class="text-white font-weight-normal mb-3">Hi there my name is</h3>
+                        <h1 class="display-3 text-uppercase text-primary mb-2" style="-webkit-text-stroke: 2px #ffffff;">Elias De Hondt</h1>
+                        <h1 class="typed-text-output d-inline font-weight-lighter text-white"></h1>
+                        <div class="typed-text d-none">And welcome to my website, I am a web designer, web developer, and I run a web hosting company.</div>
+                        <div class="d-flex align-items-center justify-content-center justify-content-lg-start pt-5">
+                            <button type="button" class="btn-play" data-toggle="modal"
+                                    data-src="https://www.youtube.com/embed/jmpugl8dvzw" data-target="#videoModal">
+                                <span></span>
+                            </button>
+                            <h5 class="font-weight-normal text-white m-0 ml-4 d-none d-sm-block">Play Video</h5>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="row align-items-center">
-                <div class="col-lg-5 pb-4 pb-lg-0" style="display:flex;">
-
+        </div>
+        <!---------->
+        <!--About-->
+        <div class="container-fluid py-5" id="about">
+            <div class="container">
+                <div class="position-relative d-flex align-items-center justify-content-center">
+                    <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">About</h1>
+                    <h1 class="position-absolute text-uppercase text-primary">About Me</h1>
+                </div>
+                <div class="row align-items-center">
                     <!-----Video----->
-                    <video id="video" preload="metadata" width="640" height="480" autoplay loop muted>
-                        <source class="img-fluid w-100 rounded-circle"src="/assets/img/profile.mp4" type="video/mp4" />
-                    </video>
+                    <div class="col-lg-5 pb-4 pb-lg-0" style="display:flex;">
+                        <video id="video" preload="metadata" width="640" height="480" autoplay loop muted>
+                            <source class="img-fluid w-100 rounded-circle" src="/assets/img/profile.mp4" type="video/mp4" />
+                        </video>
+                    </div>
                     <!--------------->
-
-                </div>
-                <div class="col-lg-7">
-                    <p>Elias De Hondt, that has been my name for 21 years. My interest in computers and technology started from a very young age and has only grown over the years. I made this website to show what I want to do, will do and have done.</p>
-                    <div class="row mb-3">
-                        <div class="col-sm-6 py-2"><h6>Name: <span class="text-secondary">Elias De Hondt</span></h6></div>
-                        <div class="col-sm-6 py-2"><h6>Birthday: <span class="text-secondary">10 April 2001</span></h6></div>
-                        <div class="col-sm-6 py-2"><h6>Degree: <span class="text-secondary">Applied Informatics</span></h6></div>
-                        <div class="col-sm-6 py-2"><h6>Experience: <span class="text-secondary">4 Years</span></h6></div>
-                        <div class="col-sm-6 py-2"><h6>Phone: <span class="text-secondary"><a href="tel:+32495161542">+32 495 16 15 42</a></span></h6></div>
-                        <div class="col-sm-6 py-2"><h6>Email: <span class="text-secondary"><a href="mailto:elias.dehondt@outlook.com">elias.dehondt@outlook.com</a></span></h6></div>
-                    </div>
-                    <a href="" class="btn btn-outline-primary">Learn More</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--------->
-
-    <!--Services Start-->
-    <div class="container-fluid pt-5" id="service">
-        <div class="container">
-            <div class="position-relative d-flex align-items-center justify-content-center">
-                <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Service</h1>
-                <h1 class="position-absolute text-uppercase text-primary">My Services</h1>
-            </div>
-            <div class="row pb-3">
-
-                <!--Service Economy-->
-                <div class="col-lg-4 col-md-6 text-center mb-5">
-                    <div class="d-flex align-items-center justify-content-center mb-4">
-                        <i class="fa fa-2x fa-server service-icon bg-primary text-white mr-3"></i>
-                        <h4 class="font-weight-bold m-0">Economy €10/m</h4>
-                    </div>
-                    <p><h5>10GB Storage</h5></p>
-                    <p><h5>2GB RAM</h5></p>
-                    <p><h5>Unlimited Data *</h5></p>
-                    <p><h5>€2/y Domain Name *</h5></p>
-                    <a class="border-bottom border-primary text-decoration-none" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web Purchase Economy&BODY=Beste">Send me an email</a>
-                </div>
-                <!------------------->
-
-                <!--Service Personal-->
-                <div class="col-lg-4 col-md-6 text-center mb-5">
-                    <div class="d-flex align-items-center justify-content-center mb-4">
-                        <i class="fa fa-2x fa-server service-icon bg-primary text-white mr-3"></i>
-                        <h4 class="font-weight-bold m-0">Personal €20/m</h4>
-                    </div>
-                    <p><h5>100GB Storage</h5></p>
-                    <p><h5>4GB RAM</h5></p>
-                    <p><h5>Unlimited Data *</h5></p>
-                    <p><h5>€2/y Domain Name *</h5></p>
-                    <a class="border-bottom border-primary text-decoration-none" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web Purchase Personal&BODY=Beste">Send me an email</a>
-                </div>
-                <!-------------------->
-
-                <!--Service Business-->
-                <div class="col-lg-4 col-md-6 text-center mb-5">
-                    <div class="d-flex align-items-center justify-content-center mb-4">
-                        <i class="fa fa-2x fa-server service-icon bg-primary text-white mr-3"></i>
-                        <h4 class="font-weight-bold m-0">Business €40/m</h4>
-                    </div>
-                    <p><h5>1TB Storage</h5></p>
-                    <p><h5>16GB RAM</h5></p>
-                    <p><h5>Unlimited Data *</h5></p>
-                    <p><h5>Free Domain Name *</h5></p>
-                    <a class="border-bottom border-primary text-decoration-none" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web Purchase Business&BODY=Beste">Send me an email</a>
-                </div>
-                <!-------------------->
-
-                <!--Service Profesional-->
-                <div class="col-lg-4 col-md-6 text-center mb-5">
-                    <div class="d-flex align-items-center justify-content-center mb-4">
-                        <i class="fa fa-2x fa-server service-icon bg-primary text-white mr-3"></i>
-                        <h4 class="font-weight-bold m-0">Profesional €80/m</h4>
-                    </div>
-                    <p><h5>2TB Storage</h5></p>
-                    <p><h5>32GB RAM</h5></p>
-                    <p><h5>Unlimited Data *</h5></p>
-                    <p><h5>Free Domain Name *</h5></p>
-                    <a class="border-bottom border-primary text-decoration-none" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web Purchase Profesional&BODY=Beste">Send me an email</a>
-                </div>
-                <!----------------------->
-
-                <!--Service Web Development-->
-                <div class="col-lg-4 col-md-6 text-center mb-5">
-                    <div class="d-flex align-items-center justify-content-center mb-4">
-                        <i class="fa fa-2x fa-laptop-code service-icon bg-primary text-white mr-3"></i>
-                        <h4 class="font-weight-bold m-0">Web Development</h4>
-                    </div>
-                    <p><h5>I design websites, apps etc from the ground up. You can send me an email via the button below. To make your request.</h5></p>
-                    <a class="border-bottom border-primary text-decoration-none" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web Purchase Web Development&BODY=Beste">Send me an email</a>
-                </div>
-                <!----------------------->
-
-                <!--Service SEO-->
-                <div class="col-lg-4 col-md-6 text-center mb-5">
-                    <div class="d-flex align-items-center justify-content-center mb-4">
-                        <i class="fa fa-2x fa-cloud service-icon bg-primary text-white mr-3"></i>
-                        <h4 class="font-weight-bold m-0">EliasDHCloud</h4>
-                    </div>
-                    <p><h5>I also offer cloud storage solutions. Click on this <a href="https://cloud.eliasdh.com">link</a> to view the web page. You can also send me an e-mail to make your account.</h5></p>
-                    <a class="border-bottom border-primary text-decoration-none" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web Purchase SEO&BODY=Beste">Send me an email</a>
-                </div>
-                <!----------------------->
-
-            </div>
-        </div>
-    </div>
-    <!------------------>
-
-    <!--Skill-->
-    <div class="container-fluid py-5" id="skill">
-        <div class="container">
-            <div class="position-relative d-flex align-items-center justify-content-center">
-                <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Skills</h1>
-                <h1 class="position-absolute text-uppercase text-primary">My Skills</h1>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-md-6">
-
-                    <div class="skill mb-4">
-                        <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-bold">HTML</h6>
-                            <h6 class="font-weight-bold">95%</h6>
+                    <div class="col-lg-7">
+                        <hr>
+                        <p>Elias De Hondt, that has been my name for 21 years. My interest in computers and technology started from a very young age and has only grown over the years. I made this website to show what I want to do, will do and have done.</p>
+                        <div class="row mb-3">
+                            <div class="col-sm-6 py-2"><p>Name: <span>Elias De Hondt</span></p></div>
+                            <div class="col-sm-6 py-2"><p>Birthday: <span>10 April 2001</span></p></div>
+                            <div class="col-sm-6 py-2"><p>Degree: <span>Applied Informatics</span></p></div>
+                            <div class="col-sm-6 py-2"><p>Experience: <span>4 Years</span></p></div>
+                            <div class="col-sm-6 py-2"><p>Phone: <span><a href="tel:+32495161542">+32 495 16 15 42</a></span></p></div>
+                            <div class="col-sm-6 py-2"><p>Email: <span><a href="mailto:elias.dehondt@outlook.com">elias.dehondt@outlook.com</a></span></p></div>
                         </div>
-                        <div class="progress">
-                            <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
+                        <hr>
                     </div>
-
-                    <div class="skill mb-4">
-                        <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-bold">CSS</h6>
-                            <h6 class="font-weight-bold">85%</h6>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-
-                    <div class="skill mb-4">
-                        <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-bold">Javascript</h6>
-                            <h6 class="font-weight-bold">90%</h6>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-md-6">
-
-                    <div class="skill mb-4">
-                        <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-bold">PHP</h6>
-                            <h6 class="font-weight-bold">90%</h6>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-
-                    <div class="skill mb-4">
-                        <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-bold">Java</h6>
-                            <h6 class="font-weight-bold">95%</h6>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-
-                    <div class="skill mb-4">
-                        <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-bold">SQL</h6>
-                            <h6 class="font-weight-bold">45%</h6>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
-    </div>
-    <!--------->
-
-    <!--Recent Work-->
-    <div class="container-fluid pt-5 pb-3" id="recent-work">
-        <div class="container">
-            <div class="position-relative d-flex align-items-center justify-content-center">
-                <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Work</h1>
-                <h1 class="position-absolute text-uppercase text-primary">Recent Work</h1>
-            </div>
-            <div class="row">
-                <div class="col-12 text-center mb-2">
-                    <ul class="list-inline mb-4" id="portfolio-flters">
-                        <li class="btn btn-sm btn-outline-primary m-1 active"  data-filter="*">All</li>
-                        <li class="btn btn-sm btn-outline-primary m-1" data-filter=".web-projects">Web Projects</li>
-                        <li class="btn btn-sm btn-outline-primary m-1" data-filter=".app-projects">App Projects</li>
-                    </ul>
+        <!--------->
+        <!--Services-->
+        <div class="container-fluid pt-5" id="service">
+            <div class="container">
+                <div class="position-relative d-flex align-items-center justify-content-center">
+                    <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Service</h1>
+                    <h1 class="position-absolute text-uppercase text-primary">My Services</h1>
                 </div>
-            </div>
-            <div class="row portfolio-container">
-
-                <!--App Project 5 = Heads Or Tails-->
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item app-projects">
-                    <div class="recent-work">
-                        <img src="/assets/img/heads-or-tails-logo.png" alt="">
-                        <div class="overlay">
-                            <span>App Projects:</span>
-                            <span>Coin flipping, coin tossing, or heads or tails is the practice of throwing a coin in the air and checking which side is showing when it lands, in order to choose between two alternatives, heads or tails, sometimes used to resolve a dispute between two parties. It is a form of sortition which inherently has two possible outcomes. The party who calls the side that is facing up when the coin lands wins.</span>
-                            <span>This was created on 22 July, 2022</span>
-                            <h2><a title="Heads Or Tails" href="https://github.com/EliasDeHondt/heads-or-tails">Heads Or Tails</a></h2>
+                <div class="row pb-3">
+                    <!--Service Economy-->
+                    <div class="col-lg-4 col-md-6 text-center mb-5">
+                        <div class="d-flex align-items-center justify-content-center mb-4">
+                            <i class="fa fa-2x fa-server service-icon bg-primary text-white mr-3"></i>
+                            <h4 class="font-weight-bold m-0">Economy €10/m</h4>
                         </div>
+                        <p><h5>10GB Storage</h5></p>
+                        <p><h5>2GB RAM</h5></p>
+                        <p><h5>Unlimited Data *</h5></p>
+                        <p><h5>€2/y Domain Name *</h5></p>
+                        <a target="_blank" class="btn btn-sm btn-outline-primary m-1" href="https://buy.stripe.com/14k01v4zM0FJaRO000">Buy now</a>
+                        <a class="btn btn-sm btn-outline-primary m-1" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web Purchase Economy&BODY=Beste">Send me an email</a>
                     </div>
-                </div>
-                <!---------------------------->
-
-                <!--Web Project 4 = About Me-->
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item web-projects">
-                    <div class="recent-work">
-                        <img src="/assets/img/about-me-logo.png" alt="">
-                        <div class="overlay">
-                            <span>Web Projects:</span>
-                            <span>The purpose of this website is to show the qualities of the person in question.</span>
-                            <span>This was created on 10 May, 2022</span>
-                            <h2><a title="About Me" href="https://github.com/EliasDeHondt/about.me">About Me</a></h2>
+                    <!------------------->
+                    <!--Service Personal-->
+                    <div class="col-lg-4 col-md-6 text-center mb-5">
+                        <div class="d-flex align-items-center justify-content-center mb-4">
+                            <i class="fa fa-2x fa-server service-icon bg-primary text-white mr-3"></i>
+                            <h4 class="font-weight-bold m-0">Personal €20/m</h4>
                         </div>
+                        <p><h5>100GB Storage</h5></p>
+                        <p><h5>4GB RAM</h5></p>
+                        <p><h5>Unlimited Data *</h5></p>
+                        <p><h5>€2/y Domain Name *</h5></p>
+                        <a target="_blank" class="btn btn-sm btn-outline-primary m-1" href="https://buy.stripe.com/14k5lP6HU747bVScMN">Buy now</a>
+                        <a class="btn btn-sm btn-outline-primary m-1" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web Purchase Personal&BODY=Beste">Send me an email</a>
                     </div>
-                </div>
-                <!---------------------------->
-
-                <!--Web Project 3 = Level Up Contact List-->
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item web-projects">
-                    <div class="recent-work">
-                        <img src="/assets/img/levelup-logo-contact-list.png" alt="">
-                        <div class="overlay">
-                            <span>Web Projects:</span>
-                            <span>This webpage is made for easy contact exchange.</span>
-                            <span>This was created on 12 January, 2022</span>
-                            <h2><a title="Level Up Contact List" href="https://github.com/EliasDeHondt/levelupcontactlist.be">Level Up Contact List</a></h2>
+                    <!-------------------->
+                    <!--Service Business-->
+                    <div class="col-lg-4 col-md-6 text-center mb-5">
+                        <div class="d-flex align-items-center justify-content-center mb-4">
+                            <i class="fa fa-2x fa-server service-icon bg-primary text-white mr-3"></i>
+                            <h4 class="font-weight-bold m-0">Business €40/m</h4>
                         </div>
+                        <p><h5>1TB Storage</h5></p>
+                        <p><h5>16GB RAM</h5></p>
+                        <p><h5>Unlimited Data *</h5></p>
+                        <p><h5>Free Domain Name *</h5></p>
+                        <a target="_blank" class="btn btn-sm btn-outline-primary m-1" href="https://buy.stripe.com/bIYaG95DQewz0da4gi">Buy now</a>
+                        <a class="btn btn-sm btn-outline-primary m-1" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web Purchase Business&BODY=Beste">Send me an email</a>
                     </div>
-                </div>
-                <!----------------------------------------->
-
-                <!--Web Project 2 = Ter Eiken Live-->
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item web-projects">
-                    <div class="recent-work">
-                        <img src="/assets/img/tereiken-live-logo.png" alt="">
-                        <div class="overlay">
-                            <span>Web Projects:</span>
-                            <span>This webpage is made for watching multiple live streams simultaneously from a tournament.</span>
-                            <span>This was created on 22 August, 2021</span>
-                            <h2><a title="Ter Eiken Live" href="https://github.com/EliasDeHondt/tereikenlive.be">Ter Eiken Live</a></h2>
+                    <!-------------------->
+                    <!--Service Profesional-->
+                    <div class="col-lg-4 col-md-6 text-center mb-5">
+                        <div class="d-flex align-items-center justify-content-center mb-4">
+                            <i class="fa fa-2x fa-server service-icon bg-primary text-white mr-3"></i>
+                            <h4 class="font-weight-bold m-0">Profesional €80/m</h4>
                         </div>
+                        <p><h5>2TB Storage</h5></p>
+                        <p><h5>32GB RAM</h5></p>
+                        <p><h5>Unlimited Data *</h5></p>
+                        <p><h5>Free Domain Name *</h5></p>
+                        <a target="_blank" class="btn btn-sm btn-outline-primary m-1" href="https://buy.stripe.com/aEU29DaYadsvf848wz">Buy now</a>
+                        <a class="btn btn-sm btn-outline-primary m-1" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web Purchase Profesional&BODY=Beste">Send me an email</a>
                     </div>
-                </div>
-                <!---------------------------------->
-
-                <!--Web Project 1 = Social Hub-->
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item web-projects">
-                    <div class="recent-work">
-                        <img src="/assets/img/socialhub-logo.png" alt="">
-                        <div class="overlay">
-                            <span>Web Projects:</span>
-                            <span>A webpage that contains all my social media links.</span>
-                            <span>This was created on 15 March, 2019</span>
-                            <h2><a title="Social Hub" href="https://github.com/EliasDeHondt/socialhub.com">Social Hub</a></h2>
+                    <!----------------------->
+                    <!--Service Web Development-->
+                    <div class="col-lg-4 col-md-6 text-center mb-5">
+                        <div class="d-flex align-items-center justify-content-center mb-4">
+                            <i class="fa fa-2x fa-laptop-code service-icon bg-primary text-white mr-3"></i>
+                            <h4 class="font-weight-bold m-0">Web Development</h4>
                         </div>
+                        <p><h5>I design websites, apps etc from the ground up. You can send me an email via the button below. To make your request.</h5></p>
+                        <a class="btn btn-sm btn-outline-primary m-1" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web Purchase Web Development&BODY=Beste">Send me an email</a>
                     </div>
+                    <!--------------------------->
+                    <!--Service EliasDHCloud-->
+                    <div class="col-lg-4 col-md-6 text-center mb-5">
+                        <div class="d-flex align-items-center justify-content-center mb-4">
+                            <i class="fa fa-2x fa-cloud service-icon bg-primary text-white mr-3"></i>
+                            <h4 class="font-weight-bold m-0">EliasDHCloud</h4>
+                        </div>
+                        <p><h5>I also offer cloud storage solutions. Click on this <a href="https://cloud.eliasdh.com">link</a> to view the web page. You can also send me an e-mail to make your account.</h5></p>
+                        <a class="btn btn-sm btn-outline-primary m-1" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web Purchase EliasDHCloud SEO&BODY=Beste">Send me an email</a>
+                    </div>
+                    <!------------------------>
                 </div>
-                <!------------------------------>
             </div>
         </div>
-    </div>
-    <!--------------->
-    
-
-    <!--Blogs-->
-    <div id="blogs"></div>
-    <!--------->
-
-    <!--Bottom-->
-    <div id="bottom"></div>
-    <!---------->
-
-    <!--Scroll to Bottom-->
-    <i class="fa fa-2x fa-angle-down text-white scroll-to-bottom"></i>
-    <!-------------------->
-
-    <!--Back to Top-->
-    <a href="#" class="btn btn-outline-dark px-0 back-to-top"><i class="fa fa-angle-double-up"></i></a>
-    <!--------------->
-
-    <!--JavaScript Libraries-->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="/lib/typed/typed.min.js"></script>
-    <script src="/lib/easing/easing.min.js"></script>
-    <script src="/lib/waypoints/waypoints.min.js"></script>
-    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="/lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="/lib/lightbox/js/lightbox.min.js"></script>
-    <script src="/assets/js/main.js"></script>
-    <script src="/assets/js/script-1.js"></script>
-    <script>
-        loadHTML( "top-navbar", "/assets/html/top-navbar.html" );
-        loadHTML( "bottom", "/assets/html/bottom.html" );
-        loadHTML( "blogs", "/assets/html/blogs/blogs.html" );
-    </script>
-    <!------------------------>
-
-</body>
+        <!------------>
+        <!--Skill-->
+        <div class="container-fluid py-5" id="skill">
+            <div class="container">
+                <div class="position-relative d-flex align-items-center justify-content-center">
+                    <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Skills</h1>
+                    <h1 class="position-absolute text-uppercase text-primary">My Skills</h1>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="skill mb-4">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-bold">HTML</h6>
+                                <h6 class="font-weight-bold">95%</h6>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="skill mb-4">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-bold">CSS</h6>
+                                <h6 class="font-weight-bold">85%</h6>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="skill mb-4">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-bold">Javascript</h6>
+                                <h6 class="font-weight-bold">90%</h6>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="skill mb-4">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-bold">PHP</h6>
+                                <h6 class="font-weight-bold">90%</h6>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="skill mb-4">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-bold">Java</h6>
+                                <h6 class="font-weight-bold">95%</h6>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="skill mb-4">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-bold">SQL</h6>
+                                <h6 class="font-weight-bold">45%</h6>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--------->
+        <!--Recent Work-->
+        <div class="container-fluid pt-5 pb-3" id="recent-work">
+            <div class="container">
+                <div class="position-relative d-flex align-items-center justify-content-center">
+                    <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Work</h1>
+                    <h1 class="position-absolute text-uppercase text-primary">Recent Work</h1>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center mb-2">
+                        <ul class="list-inline mb-4" id="portfolio-flters">
+                            <li class="btn btn-sm btn-outline-primary m-1 active" data-filter="*">All</li>
+                            <li class="btn btn-sm btn-outline-primary m-1" data-filter=".web-projects">Web Projects</li>
+                            <li class="btn btn-sm btn-outline-primary m-1" data-filter=".app-projects">App Projects</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row portfolio-container">
+                    <!--App Project 9 = Who Am I-->
+                    <div class="col-lg-4 col-md-6 mb-4 portfolio-item web-projects">
+                        <div class="recent-work">
+                            <img src="/assets/img/who-am-i.png" alt="">
+                            <div class="overlay">
+                                <span>Web Projects:</span>
+                                <span>Is a website that contains all information about a person. [CV]</span>
+                                <br>
+                                <span>This was created on 2 September, 2022</span>
+                                <h2><a title="Heads Or Tails" href="https://github.com/EliasDeHondt/who-am-i" target="_blank">Who Am I</a></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-------------------------------->
+                    <!--App Project 8 = Zizis-->
+                    <div class="col-lg-4 col-md-6 mb-4 portfolio-item web-projects">
+                        <div class="recent-work">
+                            <img src="/assets/img/zizis-logo.png" alt="">
+                            <div class="overlay">
+                                <span>Web Projects:</span>
+                                <span>Static website for hair salon.</span>
+                                <br>
+                                <span>This was created on 10 August, 2022</span>
+                                <h2><a title="Heads Or Tails" href="https://github.com/EliasDeHondt/zizis.be" target="_blank">Zizis</a></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!------------------------->
+                    <!--App Project 8 = EliasDH Shop-->
+                    <div class="col-lg-4 col-md-6 mb-4 portfolio-item web-projects">
+                        <div class="recent-work">
+                            <img src="/assets/img/eliasdh-shop-logo.png" alt="">
+                            <div class="overlay">
+                                <span>Web Projects:</span>
+                                <span>EliasDH Shop is a webshop.</span>
+                                <br>
+                                <span>This was created on 06 August, 2022</span>
+                                <h2><a title="Heads Or Tails" href="https://github.com/EliasDeHondt/shop.eliasdh.com" target="_blank">EliasDH Shop</a></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-------------------------------->
+                    <!--App Project 7 = Login Screen-->
+                    <div class="col-lg-4 col-md-6 mb-4 portfolio-item app-projects">
+                        <div class="recent-work">
+                            <img src="/assets/img/login-screen-logo.png" alt="">
+                            <div class="overlay">
+                                <span>App Projects:</span>
+                                <span>Login screen is an app for windows.</span>
+                                <br>
+                                <span>This was created on 03 August, 2022</span>
+                                <h2><a title="Heads Or Tails" href="https://github.com/EliasDeHondt/login-screen" target="_blank">Login screen</a></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-------------------------------->
+                    <!--App Project 6 = Screenlock-->
+                    <div class="col-lg-4 col-md-6 mb-4 portfolio-item app-projects">
+                        <div class="recent-work">
+                            <img src="/assets/img/screenlock-logo.png" alt="">
+                            <div class="overlay">
+                                <span>App Projects:</span>
+                                <span>Screenlock is an app for windows.</span>
+                                <br>
+                                <span>This was created on 01 August, 2022</span>
+                                <h2><a title="Heads Or Tails" href="https://github.com/EliasDeHondt/screenlock" target="_blank">Screenlock</a></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-------------------------------->
+                    <!--App Project 5 = Heads Or Tails-->
+                    <div class="col-lg-4 col-md-6 mb-4 portfolio-item app-projects">
+                        <div class="recent-work">
+                            <img src="/assets/img/heads-or-tails-logo.png" alt="">
+                            <div class="overlay">
+                                <span>App Projects:</span>
+                                <span>Coin flipping, coin tossing, or heads or tails is the practice of throwing a coin in the air and checking which side is showing when it lands, in order to choose between two alternatives, heads or tails, sometimes used to resolve a dispute between two parties. It is a form of sortition which inherently has two possible outcomes. The party who calls the side that is facing up when the coin lands wins.</span>
+                                <br>
+                                <span>This was created on 22 July, 2022</span>
+                                <h2><a title="Heads Or Tails" href="https://github.com/EliasDeHondt/heads-or-tails" target="_blank">Heads Or Tails</a></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------------------------->
+                    <!--Web Project 4 = About Me-->
+                    <div class="col-lg-4 col-md-6 mb-4 portfolio-item web-projects">
+                        <div class="recent-work">
+                            <img src="/assets/img/about-me-logo.png" alt="">
+                            <div class="overlay">
+                                <span>Web Projects:</span>
+                                <span>The purpose of this website is to show the qualities of the person in question.</span>
+                                <br>
+                                <span>This was created on 10 May, 2022</span>
+                                <h2><a title="About Me" href="https://github.com/EliasDeHondt/about.me" target="_blank">About Me</a></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------------------------->
+                    <!--Web Project 3 = Level Up Contact List-->
+                    <div class="col-lg-4 col-md-6 mb-4 portfolio-item web-projects">
+                        <div class="recent-work">
+                            <img src="/assets/img/levelup-contact-list-logo.png" alt="">
+                            <div class="overlay">
+                                <span>Web Projects:</span>
+                                <span>This webpage is made for easy contact exchange.</span>
+                                <br>
+                                <span>This was created on 12 January, 2022</span>
+                                <h2><a title="Level Up Contact List" href="https://github.com/EliasDeHondt/levelupcontactlist.be" target="_blank">Level Up Contact List</a></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!----------------------------------------->
+                    <!--Web Project 2 = Ter Eiken Live-->
+                    <div class="col-lg-4 col-md-6 mb-4 portfolio-item web-projects">
+                        <div class="recent-work">
+                            <img src="/assets/img/tereiken-live-logo.png" alt="">
+                            <div class="overlay">
+                                <span>Web Projects:</span>
+                                <span>This webpage is made for watching multiple live streams simultaneously from a tournament.</span>
+                                <br>
+                                <span>This was created on 22 August, 2021</span>
+                                <h2><a title="Ter Eiken Live" href="https://github.com/EliasDeHondt/tereikenlive.be" target="_blank">Ter Eiken Live</a></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------------------------------->
+                    <!--Web Project 1 = Social Hub-->
+                    <div class="col-lg-4 col-md-6 mb-4 portfolio-item web-projects">
+                        <div class="recent-work">
+                            <img src="/assets/img/socialhub-logo.png" alt="">
+                            <div class="overlay">
+                                <span>Web Projects:</span>
+                                <span>A webpage that contains all my social media links.</span>
+                                <br>
+                                <span>This was created on 15 March, 2019</span>
+                                <h2><a title="Social Hub" href="https://github.com/EliasDeHondt/socialhub.com" target="_blank">Social Hub</a></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!------------------------------>
+                </div>
+            </div>
+        </div>
+        <!--------------->
+        <!--Bottom-->
+        <div id="bottom"></div>
+        <!---------->
+        <!--Scroll to Bottom-->
+        <i class="fa fa-2x fa-angle-down text-white scroll-to-bottom"></i>
+        <!-------------------->
+        <!--Back to Top-->
+        <a href="#" class="btn btn-outline-dark px-0 back-to-top"><i class="fa fa-angle-double-up"></i></a>
+        <!--------------->
+        <!--Right Click Menu-->
+        <div id="right-click-menu"></div>
+        <!-------------------->
+        <!--JavaScript-->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="/lib/typed/typed.min.js"></script>
+        <script src="/lib/easing/easing.min.js"></script>
+        <script src="/lib/waypoints/waypoints.min.js"></script>
+        <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="/lib/isotope/isotope.pkgd.min.js"></script>
+        <script src="/lib/lightbox/js/lightbox.min.js"></script>
+        <script src="/assets/js/main.js"></script>
+        <script src="/assets/js/script-1.js"></script>
+        <script src="/assets/js/right-click-menu.js"></script>
+        <script>
+            loadHTML("top-navbar", "/assets/html/top-navbar.html");
+            loadHTML("bottom", "/assets/html/bottom.html");
+            loadHTML("right-click-menu", "/assets/html/right-click-menu.html");
+        </script>
+        <!-------------->
+    </body>
 </html>
