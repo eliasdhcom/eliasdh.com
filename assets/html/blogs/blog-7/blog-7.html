@@ -2,106 +2,81 @@
 <!--Van Elias De Hondt-->
 <html lang="en">
     <head>
-
     <!--Meta + Title-->
     <meta charset="utf-8">
     <title>Windows Server 2019 Profiles Setup</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta property="og:title" content="EliasDH" />
+    <meta property="og:title" content="Windows Server 2019 Profiles Setup" />
     <meta property="og:image" content="https://eliasdh.com/assets/img/inverted-logo.png" />
-    <meta content="Elias De Hondt, that has been my name for 21 years. My interest in computers and technology started from a very young age and has only grown over the years. I made this website to show what I want to do, will do and have done." name="description">
+    <meta content="This is a quick guide to configure profiles on a Windows server 2019." name="description">
     <!---------------->
-
     <!--Favicon-->
     <link href="/assets/img/favicon.ico" rel="icon">
     <!----------->
-
     <!--Google Web Fonts-->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <!-------------------->
-
     <!--Font Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <!---------------->
-    
     <!--Libraries Stylesheet-->
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
     <!------------------------>
-
-    <!--CSS-->
-    <link rel="stylesheet" href="/assets/css/B.css"/>
-    <link rel="stylesheet" href="/assets/css/body.css"/>
-    <link rel="stylesheet" href="/assets/css/header.css"/>
-    <link rel="stylesheet" href="/assets/css/square.css"/>
-    <link rel="stylesheet" href="/assets/css/reset.css">
-    <link rel="stylesheet" href="/assets/css/simplegrid.css">
-    <link rel="stylesheet" href="/assets/css/icomoon.css">
-    <!------->
-
-    <!--Customized Bootstrap Stylesheet-->
-    <link href="/assets/css/style.css" rel="stylesheet">
-    <!----------------------------------->
-
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <!-------------->
   </head>
-  <body data-spy="scroll" data-target=".navbar" data-offset="51">
-
-    <!--Top Navigation-->
-    <div id="top-navbar"></div>
-    <!------------------>
-
-
-    <!-------->
+  <body class="selectioncoler" data-spy="scroll" data-target=".navbar" data-offset="51">
+    <!--Top Navbar Blog-->
+    <div id="top-navbar-blog"></div>
+    <!------------------->
     <!--Blog-->
-    <div class="header">
-      <img src="/assets/img/logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
-     <h3 class="container">Windows Server 2019 Profiles Setup</h3>
-    </div>
-    <div class="B3">
+    <div class="container">
       <br>
       <br>
-    <h1>1. Profiles</h1>
-    <h2>1.1 Create Roaming Profiles</h2>
-    <div class="square-0">
-      <img src="/assets/html/blogs/blog-7/img/blog-7-img-1.png" alt="Smiley face">
-      <h3>Create and share a folder to store roaming profiles. Create a profiles folder on the C:\ partition and share this folder. &#34;Administrators&#34; and &#34;Domain users&#34; get &#34;Full control&#34;. The user &#34;Everyone&#34; must be deleted.</h3>
+      <br>
+      <br>
+      <h5>1. Profiles</h5>
+      <h5>1.1. Create Roaming Profiles</h5>
+      <div class="square-text">
+        <img src="/assets/html/blogs/blog-7/img/blog-7-img-1.png" alt="Smiley face">
+        <p>Create and share a folder to store roaming profiles. Create a profiles folder on the C:\ partition and share this folder. &#34;Administrators&#34; and &#34;Domain users&#34; get &#34;Full control&#34;. The user &#34;Everyone&#34; must be deleted.</p>
+      </div>
+      <div class="square-text">
+        <img src="/assets/html/blogs/blog-7/img/blog-7-img-2.png" alt="Smiley face">
+        <p>In the tab &#34;Security&#34; we see the &#34;Administrators&#34; and &#34;System&#34; with &#34;Full Control&#34;. This is &#34;OK&#34;. Now also add the &#34;Domain Users&#34; group to it and give it &#34;Full Control&#34;.</p>
+      </div>
+      <div class="square-text">
+        <img src="/assets/html/blogs/blog-7/img/blog-7-img-3.png" alt="Smiley face">
+        <p>Modify account of beke to use roaming profile. Go to ADUC and double click on &#34;beke&#34;. Select the &#34;Profile&#34; tab. In the &#34;Profile Path&#34; field, type the following in \\serverpaul\profiles\&#37;username&#37;. Click on &#34;Apply&#34;.</p>
+      </div>
+      <div class="square-text">
+        <img src="/assets/html/blogs/blog-7/img/blog-7-img-4.png" alt="Smiley face">
+        <p>&#37;username&#37; is changed to &#34;beke&#34;. Click &#34;OK&#34;.</p>
+      </div>
+      <div class="square-text">
+        <img src="/assets/html/blogs/blog-7/img/blog-7-img-5.png" alt="Smiley face">
+        <p>Have a look in the profiles folder, it is still empty.</p>
+      </div>
+      <div class="square-text">
+        <img src="/assets/html/blogs/blog-7/img/blog-7-img-6.png" alt="Smiley face">
+        <p>Now log in as &#34;beke&#34; on a workstation. Now look in the &#34;profiles&#34; folder on the server. The system has created a folder &#34;beke.V6&#34; to store beke"s profile. By default, the profile on the users server is not accessible to the administrator.</p>
+      </div>
+      </div>
     </div>
-    <div class="square-0">
-      <img src="/assets/html/blogs/blog-7/img/blog-7-img-2.png" alt="Smiley face">
-      <h3>In the tab &#34;Security&#34; we see the &#34;Administrators&#34; and &#34;System&#34; with &#34;Full Control&#34;. This is &#34;OK&#34;. Now also add the &#34;Domain Users&#34; group to it and give it &#34;Full Control&#34;.</h3>
-    </div>
-    <div class="square-0">
-      <img src="/assets/html/blogs/blog-7/img/blog-7-img-3.png" alt="Smiley face">
-      <h3>Modify account of beke to use roaming profile. Go to ADUC and double click on &#34;beke&#34;. Select the &#34;Profile&#34; tab. In the &#34;Profile Path&#34; field, type the following in \\serverpaul\profiles\&#37;username&#37;. Click on &#34;Apply&#34;.</h3>
-    </div>
-    <div class="square-0">
-      <img src="/assets/html/blogs/blog-7/img/blog-7-img-4.png" alt="Smiley face">
-      <h3>&#37;username&#37; is changed to &#34;beke&#34;. Click &#34;OK&#34;.</h3>
-    </div>
-    <div class="square-0">
-      <img src="/assets/html/blogs/blog-7/img/blog-7-img-5.png" alt="Smiley face">
-      <h3>Have a look in the profiles folder, it is still empty.</h3>
-    </div>
-    <div class="square-0">
-      <img src="/assets/html/blogs/blog-7/img/blog-7-img-6.png" alt="Smiley face">
-      <h3>Now log in as &#34;beke&#34; on a workstation. Now look in the &#34;profiles&#34; folder on the server. The system has created a folder &#34;beke.V6&#34; to store beke"s profile. By default, the profile on the users server is not accessible to the administrator.</h3>
-    </div>
-    </div>
-  </div>
-  <!-------->
-  <!-------->
-
-
+    <!-------->
     <!--Bottom-->
     <div id="bottom"></div>
     <!---------->
-
     <!--Back to Top-->
     <a href="#" class="btn btn-outline-dark px-0 back-to-top"><i class="fa fa-angle-double-up"></i></a>
     <!--------------->
-
-    <!--JavaScript Libraries-->
+    <!--Right Click Menu-->
+    <div id="right-click-menu"></div>
+    <!-------------------->
+    <!--JavaScript-->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="/lib/typed/typed.min.js"></script>
@@ -112,11 +87,12 @@
     <script src="/lib/lightbox/js/lightbox.min.js"></script>
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/script-1.js"></script>
+    <script src="/assets/js/right-click-menu.js"></script>
     <script>
-      loadHTML( "top-navbar", "/assets/html/top-navbar.html" );
-      loadHTML( "bottom", "/assets/html/bottom.html" );
+        loadHTML("top-navbar-blog", "/assets/html/top-navbar-blog.html" );
+        loadHTML("bottom", "/assets/html/bottom.html");
+        loadHTML("right-click-menu", "/assets/html/right-click-menu.html");
     </script>
-    <!------------------------>
-
+    <!-------------->
   </body>
 </html>

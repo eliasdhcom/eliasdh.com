@@ -2,96 +2,71 @@
 <!--Van Elias De Hondt-->
 <html lang="en">
     <head>
-
     <!--Meta + Title-->
     <meta charset="utf-8">
     <title>Windows Server 2019 Organizational Unit OU Setup</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta property="og:title" content="EliasDH" />
+    <meta property="og:title" content="Windows Server 2019 Organizational Unit OU Setup" />
     <meta property="og:image" content="https://eliasdh.com/assets/img/inverted-logo.png" />
-    <meta content="Elias De Hondt, that has been my name for 21 years. My interest in computers and technology started from a very young age and has only grown over the years. I made this website to show what I want to do, will do and have done." name="description">
+    <meta content="This is a quick guide to create an OU (Organizational Unit)." name="description">
     <!---------------->
-
     <!--Favicon-->
     <link href="/assets/img/favicon.ico" rel="icon">
     <!----------->
-
     <!--Google Web Fonts-->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <!-------------------->
-
     <!--Font Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <!---------------->
-    
     <!--Libraries Stylesheet-->
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
     <!------------------------>
-
-    <!--CSS-->
-    <link rel="stylesheet" href="/assets/css/B.css"/>
-    <link rel="stylesheet" href="/assets/css/body.css"/>
-    <link rel="stylesheet" href="/assets/css/header.css"/>
-    <link rel="stylesheet" href="/assets/css/square.css"/>
-    <link rel="stylesheet" href="/assets/css/reset.css">
-    <link rel="stylesheet" href="/assets/css/simplegrid.css">
-    <link rel="stylesheet" href="/assets/css/icomoon.css">
-    <!------->
-
-    <!--Customized Bootstrap Stylesheet-->
-    <link href="/assets/css/style.css" rel="stylesheet">
-    <!----------------------------------->
-
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <!-------------->
   </head>
-  <body data-spy="scroll" data-target=".navbar" data-offset="51">
-
-    <!--Top Navigation-->
-    <div id="top-navbar"></div>
-    <!------------------>
-
-
-    <!-------->
+  <body class="selectioncoler" data-spy="scroll" data-target=".navbar" data-offset="51">
+    <!--Top Navbar Blog-->
+    <div id="top-navbar-blog"></div>
+    <!------------------->
     <!--Blog-->
-    <div class="header">
-      <img src="/assets/img/logo.png" alt="Smiley face" style="float:left;width:126px;height:124px;">
-     <h3 class="container">Windows Server 2019 Organizational Unit OU Setup</h3>
-    </div>
-    <div class="B3">
+    <div class="container">
       <br>
       <br>
-      <h3>1. Organizational Unit Introduction</h3>
+      <br>
+      <br>
+      <h5>1. Organizational Unit Introduction</h5>
       <div class="square-text">
         <p>An Organizational Unit (OU) is a subdivision within Active Directory into which you can place users, groups, computers, and other Organizational Units. You can create Organizational Unit to reflect the functional or corporate structure of your organization.</p>
       </div>
-      <h3>2. Organizational Unit Introduction</h3>
-      <div class="square-0">
+      <h5>2. Organizational Unit Introduction</h5>
+      <div class="square-text">
         <img src="/assets/html/blogs/blog-11/img/blog-11-img-1.png" alt="Smiley face">
-        <h3>Right click on your domain and select &#34;New&#34; --> &#34;Organizational unit&#34;</h3>
+        <p>Right click on your domain and select &#34;New&#34; --> &#34;Organizational unit&#34;</p>
       </div>
-      <div class="square-0">
+      <div class="square-text">
         <img src="/assets/html/blogs/blog-11/img/blog-11-img-2.png" alt="Smiley face">
-        <h3>Click &#34;OK&#34; to create the OU &#34;TEST&#34;.</h3>
+        <p>Click &#34;OK&#34; to create the OU &#34;TEST&#34;.</p>
       </div>
-      <div class="square-0">
+      <div class="square-text">
         <img src="/assets/html/blogs/blog-11/img/blog-11-img-3.png" alt="Smiley face">
-        <h3>Below we see the created OU.</h3>
+        <p>Below we see the created OU.</p>
       </div>
     </div>
-  <!-------->
-  <!-------->
-
-
+    <!-------->
     <!--Bottom-->
     <div id="bottom"></div>
     <!---------->
-
     <!--Back to Top-->
     <a href="#" class="btn btn-outline-dark px-0 back-to-top"><i class="fa fa-angle-double-up"></i></a>
     <!--------------->
-
-    <!--JavaScript Libraries-->
+    <!--Right Click Menu-->
+    <div id="right-click-menu"></div>
+    <!-------------------->
+    <!--JavaScript-->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="/lib/typed/typed.min.js"></script>
@@ -102,11 +77,12 @@
     <script src="/lib/lightbox/js/lightbox.min.js"></script>
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/script-1.js"></script>
+    <script src="/assets/js/right-click-menu.js"></script>
     <script>
-      loadHTML( "top-navbar", "/assets/html/top-navbar.html" );
-      loadHTML( "bottom", "/assets/html/bottom.html" );
+        loadHTML("top-navbar-blog", "/assets/html/top-navbar-blog.html" );
+        loadHTML("bottom", "/assets/html/bottom.html");
+        loadHTML("right-click-menu", "/assets/html/right-click-menu.html");
     </script>
-    <!------------------------>
-
+    <!-------------->
   </body>
 </html>

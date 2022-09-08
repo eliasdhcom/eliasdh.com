@@ -1,7 +1,11 @@
+/*
+ * Van Elias De Hondt
+ * https://eliasdh.com
+ */
 (function ($) {
     "use strict";
 
-    // Navbar on scrolling
+    /* Navbar on scrolling */
     $(window).scroll(function () {
         if ($(this).scrollTop() > 200) {
             $('.navbar').fadeIn('slow').css('display', 'flex');
@@ -9,7 +13,7 @@
             $('.navbar').fadeOut('slow').css('display', 'none');
         }
     });
-
+    /* Navbar on scrolling */
 
     // Smooth scrolling on the navbar links
     $(".navbar-nav a").on('click', function (event) {
@@ -27,11 +31,10 @@
         }
     });
 
-
     // Typed Initiate
     if ($('.typed-text-output').length == 1) {
-        var typed_strings = $('.typed-text').text();
-        var typed = new Typed('.typed-text-output', {
+        let typed_strings = $('.typed-text').text();
+        let typed = new Typed('.typed-text-output', {
             strings: typed_strings.split(', '),
             typeSpeed: 100,
             backSpeed: 20,
@@ -40,10 +43,9 @@
         });
     }
 
-
     // Modal Video
     $(document).ready(function () {
-        var $videoSrc;
+        let $videoSrc;
         $('.btn-play').click(function () {
             $videoSrc = $(this).data("src");
         });
@@ -58,8 +60,7 @@
         })
     });
 
-
-    // Scroll to Bottom
+    /* Scroll to Bottom */
     $(window).scroll(function () {
         if ($(this).scrollTop() > 100) {
             $('.scroll-to-bottom').fadeOut('slow');
@@ -67,6 +68,7 @@
             $('.scroll-to-bottom').fadeIn('slow');
         }
     });
+    /* Scroll to Bottom */
 
 
     // Skills
@@ -78,7 +80,7 @@
 
 
     // Portfolio isotope and filter
-    var portfolioIsotope = $('.portfolio-container').isotope({
+    let portfolioIsotope = $('.portfolio-container').isotope({
         itemSelector: '.portfolio-item',
         layoutMode: 'fitRows'
     });
