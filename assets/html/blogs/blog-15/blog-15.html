@@ -39,23 +39,30 @@
       <br>
       <br>
       <br>
-      <h5>1. Step - Update Server</h5>
-      <div class="square-text">
+      <h1>How To Install And Configure Apache2 In Ubuntu 20.04 Linux.</h1>
+      <div>
+        <br>
+        <h5>1. Step - Update Server</h5>
+        <br>
         <h6>Update your package lists from the repositories. To do this, open a terminal. Now type the following commands in the terminals.</h6>
         <p style="color:red;">sudo apt-get update</p>
         <img src="/assets/html/blogs/blog-15/img/blog-15-img-1.png" alt="Smiley face">
         <p style="color:red;">sudo apt-get upgrade</p>
         <img src="/assets/html/blogs/blog-15/img/blog-15-img-2.png" alt="Smiley face">
       </div>
-      <h5>2. Step - Install nano and Apache2</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>2. Step - Install nano and Apache2</h5>
+        <br>
         <h6>Now install nano and Apache2 (web server).</h6>
         <p style="color:red;">sudo apt-get install nano</p>
         <p style="color:red;">sudo apt-get install apache2</p>
         <img src="/assets/html/blogs/blog-15/img/blog-15-img-3.png" alt="Smiley face">
       </div>
-      <h5>3. Step - Configure Apache2</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>3. Step - Configure Apache2</h5>
+        <br>
         <h6>Type in the following command to delete the basic configuration files. You don't need this old configuration. We will create a new configuration file.</h6>
         <a style="color:red;">
           <p>sudo rm -r /etc/apache2/sites-available/000-default.conf</p>
@@ -74,8 +81,10 @@
         <img src="/assets/html/blogs/blog-15/img/blog-15-img-7.png" alt="Smiley face">
         <h6>In this folder you will need to put your website information into. This is probably an index.html file. If you don't have a website and you want to learn how to make it, use the <a href="https://www.w3schools.com/">link</a>.</h6>
       </div>
-      <h5>4. Step - Restart Apache2 and enabled configurationfile.conf</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>4. Step - Restart Apache2 and enabled configurationfile.conf</h5>
+        <br>
         <h6>Our initial configuration is done. Now, make sure you are restarting your Apache2 service to accept the changes that we had made so far. To do so, please type the following in your terminal.</h6>
         <p style="color:red;">sudo a2ensite (Name of configuration File)</p>
         <p style="color:red;">sudo systemctl reload apache2</p>
@@ -84,8 +93,10 @@
         <img src="/assets/html/blogs/blog-15/img/blog-15-img-9.png" alt="Smiley face">
         <h6>This will restart the apache2 service with the new configuration that we made so far.</h6>
       </div>
-      <h5>5. Step - Configure UFW (Ubuntu Firewall)</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>5. Step - Configure UFW (Ubuntu Firewall)</h5>
+        <br>
         <h6>We'll check the firewall status to see if it's enabled. If so, we'll ensure that HTTP and HTTPS traffic is permitted so you won't run into firewall rules blocking you when it comes time to test.</h6>
         <p style="color:red;">sudo ufw status</p>
         <h6>If the firewall is not enabled then type.</h6>
@@ -95,8 +106,10 @@
         <p style="color:red;">sudo ufw allow 443/tcp</p>
         <img src="/assets/html/blogs/blog-15/img/blog-15-img-10.png" alt="Smiley face">
       </div>
-      <h5>6. Step - Configure SSL & let's encrypt</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>6. Step - Configure SSL & let's encrypt</h5>
+        <br>
         <h6>Of course, it's also prudent to encrypt your connections. We will do this with let's encrypt. What is let's encrypt let's encrypt is a script that will allow us to automate our ssl configuration. Type the following command to install the script.</h6>
         <p style="color:red;">sudo apt-get install certbot python3-certbot-apache</p>
         <img src="/assets/html/blogs/blog-15/img/blog-15-img-11.png" alt="Smiley face">

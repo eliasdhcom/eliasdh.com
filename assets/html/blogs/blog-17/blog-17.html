@@ -38,21 +38,28 @@
       <br>
       <br>
       <br>
-      <h5>1. Step - Update Server</h5>
-      <div class="square-text">
+      <h1>How To Install And Configure Mailcow With Docker In Ubuntu 20.04 Linux.</h1>
+      <div>
+        <br>
+        <h5>1. Step - Update Server</h5>
+        <br>
         <h6>Update your package lists from the repositories. To do this, open a terminal. Now type the following commands in the terminals.</h6>
         <p style="color:red;">sudo apt-get update</p>
         <img src="/assets/html/blogs/blog-17/img/blog-17-img-1.png" alt="Smiley face">
         <p style="color:red;">sudo apt-get upgrade</p>
         <img src="/assets/html/blogs/blog-17/img/blog-17-img-2.png" alt="Smiley face">
       </div>
-      <h5>2. Step - Install nano</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>2. Step - Install nano</h5>
+        <br>
         <h6>Now install nano with the following command:</h6>
         <p style="color:red;">sudo apt-get install nano</p>
       </div>
-      <h5>3. Step - Preparations</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>3. Step - Preparations</h5>
+        <br>
         <h6>Before you can start installing Mailcow, you need to do some preparations, which mainly affect the DNS settings of the domain that you want to use to receive and send e-mails. To do this, follow the steps below:</h6>
         <br>
         <ol>
@@ -70,8 +77,10 @@
           <img src="/assets/html/blogs/blog-17/img/blog-17-img-3.png" alt="Smiley face">
         </ol>
       </div>
-      <h5>4. Step - Mailcow Installation</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>4. Step - Mailcow Installation</h5>
+        <br>
         <h6>SSH in your server use the following command. Obviously you need to change your user.And your domain:</h6>
         <p style="color:red;">ssh elias@mail.eliasdh.com</p>
         <h6>Update your package lists with the command:</h6>
@@ -81,7 +90,7 @@
         <h6>Next, install the packages needed for future installations in this tutorial by executing the following command:</h6>
         <p style="color:red;">sudo apt install curl nano git apt-transport-https ca-certificates gnupg2 software-properties-common -y</p>
       </div>
-      <div class="square-text">
+      <div>
         <h6>Install Docker by completing the following steps.</h6>
         <h6>Use the following command to add the key needed for the Docker repository:</h6>
         <p style="color:red;">sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg</p>
@@ -92,7 +101,7 @@
         <h6>Install Docker with the following command: </h6>
         <p style="color:red;">sudo apt install docker-ce docker-ce-cli -y</p>
       </div>
-      <div class="square-text">
+      <div>
         <h6>Now download Docker Compose with the command:</h6>
         <p style="color:red;">sudo curl -L https://github.com/docker/compose/releases/download/$(curl -Ls https://www.servercow.de/docker-compose/latest.php)/docker-compose-$(uname -s)-$(uname -m) > /usr/local/bin/docker-compose</p>
         <h6>Now give Docker compose the necessary permissions to read and execute commands with the following command:</h6>
@@ -107,7 +116,7 @@
         <h6>Now start the Mailcow container by executing the command</h6>
         <p style="color:red;">sudo docker-compose up -d</p>
       </div>
-      <div class="square-text">
+      <div>
         <h6>Mailcow automatically requests a Let's Encrypt SSL certificate for the domain you specified as the hostname ("acme-mailcow" container), unless this feature has been explicitly disabled within the configuration file. Thus, you can visit the Mailcow web interface via HTTPS. To automatically redirect HTTP requests to HTTPS, perform the following steps:</h6>
         <h6>Create an Nginx configuration file using the command: </h6>
         <p style="color:red;">sudo nano /opt/mailcow-dockerized/data/conf/nginx/redirect.conf</p>
@@ -118,8 +127,10 @@
         <h6>Save the changes to this configuration file by pressing CTRL + X, then hit the "Y" key followed by enter.</h6>
         <h6>Now restart Nginx. To do this, use the command: <a style="color:red;">sudo docker-compose restart nginx-mailcow</a> All HTTP requests will now be automatically redirected to HTTPS.</h6>
       </div>
-      <h5>5. Step - Mailcow Configuration</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>5. Step - Mailcow Configuration</h5>
+        <br>
         <h6>Open the Mailcow web interface under the domain of your server in your web browser via HTTPS. (e.g. &#34;https://mail.eliasdh.com&#34;).</h6>
         <h6>Log in with the username &#34;admin&#34; and the default password &#34;moohoo&#34;.</h6>
         <h6>Click on &#34;Edit&#34; right next to the &#34;admin&#34; user under &#34;Edit administrator details&#34;.</h6>
@@ -141,20 +152,26 @@
         <h6>Then click on the &#34;Add&#34; button to create the mailbox.</h6>
         <h6>Mailcow is now basically set up. However, it's recommended to perform further configurations such as the DKIM configuration. The DKIM configuration is explained in the next step of this tutorial. For further information, the Mailcow documentation is very helpful.</h6>
       </div>
-      <h5>6. Step - DKIM Configuration</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>6. Step - DKIM Configuration</h5>
+        <br>
         <h6>Log in to the Mailcow web interface and click on &#34;Configuration&#34; at the top menu. Then click on &#34;Configuration & Details&#34;.</h6>
         <h6>Click on the &#34;Configuration&#34; tab and then on &#34;ARC/DKIM keys&#34;</h6>
         <h6>For each configured domain, a DKIM key with the selector &#34;dkim&#34; and a key length of 2048 bits is already generated automatically. Copy the contents of the text box above (public key matching the domain, starting with &#34;v=DKIM1;k=rsa;t=s;s=email;p=&#34;) under &#34;ARC/DKIM keys&#34;.</h6>
         <h6>Finally, add a TXT record for &#34;dkim._domainkey.eliasdh.com&#34; (matching the DKIM selector) in your domain's DNS settings and set the previously copied content from the text box as the value of this TXT record.</h6>
       </div>
-      <h5>7. Step - Using the Webmail Client SOGo</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>7. Step - Using the Webmail Client SOGo</h5>
+        <br>
         <h6>Of course, you can use mail clients like Thunderbird or Outlook, but Mailcow also offers it's own webmail client. Using this webmail client, you can also read your e-mails directly in the browser:</h6>
         <br>
         <h6>In the top menu of the Mailcow web interface, click on &#34;Apps&#34; and then click on &#34;Webmail&#34; or open the webmail client directly by appending &#34;/SOGo&#34; to the domain of your server.</h6>
         <h6>Now log in to the webmail client. Enter the complete e-mail address of the mailbox as user name and enter the corresponding password.</h6>
         <h6>You should already see an e-mail in the inbox, because a personal calendar was automatically created for you. Now you can use the SOGo webmail client.</h6>
+        <br>
+        <br>
       </div>
     </div>
     <!-------->

@@ -429,7 +429,7 @@ a.more-link {
 .wrapper .instagram:hover,
 .wrapper .instagram:hover .tooltip,
 .wrapper .instagram:hover .tooltip::before {
-  background: #E4405F;
+  background: #C13584;
   color: #ffffff;
 }
 
@@ -440,10 +440,24 @@ a.more-link {
   color: #ffffff;
 }
 
+.wrapper .gitlab:hover,
+.wrapper .gitlab:hover .tooltip,
+.wrapper .gitlab:hover .tooltip::before {
+  background: #fc6d26;
+  color: #ffffff;
+}
+
 .wrapper .linkedin:hover,
 .wrapper .linkedin:hover .tooltip,
 .wrapper .linkedin:hover .tooltip::before {
   background: #0072b1;
+  color: #ffffff;
+}
+
+.wrapper .youtube:hover,
+.wrapper .youtube:hover .tooltip,
+.wrapper .youtube:hover .tooltip::before {
+  background: #FF0000;
   color: #ffffff;
 }
 /* Bottom */
@@ -10248,25 +10262,6 @@ h6,
     align-items: center;
     justify-content: center;
     border-radius: 60px;
-}
-
-.portfolio-item .portfolio-btn {
-    position: absolute;
-    width: 0;
-    height: 0;
-    top: 50%;
-    left: 50%;
-    border-radius: 4px;
-    opacity: 0;
-    transition: .5s;
-}
-
-.portfolio-item:hover .portfolio-btn {
-    opacity: 1;
-    width: calc(100% - 60px);
-    height: calc(100% - 60px);
-    top: 30px;
-    left: 30px;
 }
 
 .testimonial-carousel .owl-dots {

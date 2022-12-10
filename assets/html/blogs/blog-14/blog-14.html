@@ -38,20 +38,27 @@
       <br>
       <br>
       <br>
-      <h5>1. Step - Update Server</h5>
-      <div class="square-text">
+      <h1>How To Install And Configure FTP Server In Ubuntu 20.04 Linux.</h1>
+      <div>
+        <br>
+        <h5>1. Step - Update Server</h5>
+        <br>
         <h6>Update your package lists from the repositories. To do this, open a terminal. Now type the following commands in the terminals.</h6>
         <p style="color:red;">sudo apt-get update</p>
         <p style="color:red;">sudo apt-get upgrade</p>
       </div>
-      <h5>2. Step - Install nano and vsftpd</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>2. Step - Install nano and vsftpd</h5>
+        <br>
         <h6>Now install nano and vsftpd (ftp server).</h6>
         <p style="color:red;">sudo apt-get install nano</p>
         <p style="color:red;">sudo apt-get install vsftpd</p>
       </div>
-      <h5>3. Step - Configure FTP Server</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>3. Step - Configure FTP Server</h5>
+        <br>
         <h6>To configure your FTP server more, please open the following file on nano by typing the following command in your terminal.</h6>
         <p style="color:red;">sudo nano /etc/vsftpd.conf</p>
         <h6>Let's change some parameters to configure it more to act like a real FTP server. Delete every line with CTRL + K. And replace it with the following lines:</h6>
@@ -82,14 +89,18 @@
           <p>userlist_deny=NO</p>
         </a>
       </div>
-      <h5>4. Step - Restart vsftpd</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>4. Step - Restart vsftpd</h5>
+        <br>
         <h6>Our initial configuration is done. Now, make sure you are restarting your vsftpd service to accept the changes that we had made so far. To do so, please type the following in your terminal.</h6>
         <p style="color:red;">sudo service vsftpd restart</p>
         <h6>This will restart the vsftpd service with the new configuration that we made so far.</h6>
       </div>
-      <h5>5. Step - Configure UFW (Ubuntu Firewall)</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>5. Step - Configure UFW (Ubuntu Firewall)</h5>
+        <br>
         <h6>We'll check the firewall status to see if it's enabled. If so, we'll ensure that FTP traffic is permitted so you won't run into firewall rules blocking you when it comes time to test.</h6>
         <p style="color:red;">sudo ufw status</p>
         <h6>If the firewall is not enabled then type.</h6>
@@ -101,8 +112,10 @@
         <p style="color:red;">sudo ufw allow 990/tcp</p>
         <p style="color:red;">sudo ufw allow 60000:60100/tcp</p>
       </div>
-      <h5>6. Step - Configure FTP users</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>6. Step - Configure FTP users</h5>
+        <br>
         <h6>For this tutorial, we're going to create a user. Assign a password when prompted and feel free to press &#34;ENTER&#34; through the other prompts.</h6>
         <p style="color:red;">sudo adduser ftpuser</p>
         <h6>Create the ftp folder, set its ownership, and be sure to remove write permissions with the following commands:</h6>
@@ -111,8 +124,10 @@
         <p style="color: red;">sudo chmod a-w /home/ftpuser/ftp</p>
         <p style="color: red;">echo "vsftpd test file" | sudo tee /home/ftpuser/ftp/files/test.txt</p>
       </div>
-      <h5>7. Step - Configuring FTP Access</h5>
-      <div class="square-text">
+      <div>
+        <br>
+        <h5>7. Step - Configuring FTP Access</h5>
+        <br>
         <h6>Finally, we'll create and add our user to the file. We'll use the -a flag to append to file:</h6>
         <p style="color:red;">echo "ftpuser" | sudo tee -a /etc/vsftpd.userlist</p>
         <h6>You will need to do this for every single user.</h6>
