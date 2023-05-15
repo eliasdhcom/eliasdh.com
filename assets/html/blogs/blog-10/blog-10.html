@@ -167,6 +167,21 @@
           </tr>
           <tr>
             <td>Switch(config)#</td>
+            <td>service password-encryption</td>
+            <td>Encrypt all plaintext passwords</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>security passwords min-length 8</td>
+            <td>Set a minimum acceptable password length</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
+            <td>login block-for 120 attempts 3 within 60</td>
+            <td>Deter brute-force password guessing attacks</td>
+          </tr>
+          <tr>
+            <td>Switch(config)#</td>
             <td>interface fastethernet 0/2</td>
             <td>Go to the interface of a port - now goes to Switch(config-if)#</td>
           </tr>
@@ -479,6 +494,11 @@
             <td>Switch(config-line)#</td>
             <td>password C123</td>
             <td>Set password to line con 0 (console port)</td>
+          </tr>
+          <tr>
+            <td>Switch(config-line)#</td>
+            <td>exec-timeout 5 30</td>
+            <td>Disable an inactive privileged EXEC mode access after a specified amount.</td>
           </tr>
           <tr>
             <td>Switch(config-line)#</td>
