@@ -1,7 +1,9 @@
-/*
- * Van Elias De Hondt
- * https://eliasdh.com
+/**
+ * @author Elias De Hondt
+ * @see https://eliasdh.com
+ * @since 08/08/2021
  */
+
 (function ($) {
     "use strict";
 
