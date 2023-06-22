@@ -45,8 +45,7 @@ function copytoclip() {
   let onpageLoad = localStorage.getItem("theme") || "";
   let element = document.body;
   element.classList.add(onpageLoad);
-  document.getElementById("theme").textContent =
-    localStorage.getItem("theme") || "light";
+  document.getElementById("theme").textContent = localStorage.getItem("theme") || "light";
 })();
 
 function darkmode() {
@@ -54,11 +53,9 @@ function darkmode() {
   element.classList.toggle("dark-mode");
 
   let theme = localStorage.getItem("theme");
-  if (theme && theme === "dark-mode") {
-    localStorage.setItem("theme", "");
-  } else {
-    localStorage.setItem("theme", "dark-mode");
-  }
+  if (theme && theme === "dark-mode") localStorage.setItem("theme", "");
+  else localStorage.setItem("theme", "dark-mode");
+  
 
   document.getElementById("theme").textContent = localStorage.getItem("theme");
 }
