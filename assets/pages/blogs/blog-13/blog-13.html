@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!--Van Elias De Hondt-->
+<html lang="en">
+    <head>
+    <!--Meta + Title-->
+    <meta charset="utf-8">
+    <title>How To Install And Configure NTP Server In Ubuntu 20.04 Linux</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta property="og:title" content="How To Install And Configure NTP Server In Ubuntu 20.04 Linux" />
+    <meta property="og:image" content="https://eliasdh.com/assets/media/images/logo-hd.png"/>
+    <meta content="This is a quick how to guide to create a NTP server." name="description">
+    <!---------------->
+    <!--Favicon-->
+    <link href="/assets/media/images/favicon.ico" rel="icon">
+    <!----------->
+    <!--Google Web Fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-------------------->
+    <!--Font Awesome-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <!---------------->
+    <!--Libraries Stylesheet-->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <!------------------------>
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <!-------------->
+  </head>
+  <body class="selectioncoler" data-spy="scroll" data-target=".navbar" data-offset="51">
+    <!--Top Navbar Blog-->
+    <div id="top-navbar-blog"></div>
+    <!------------------->
+    <!--Blog-->
+    <div class="container">
+      <br>
+      <br>
+      <br>
+      <br>
+      <h1>How To Install And Configure NTP Server In Ubuntu 20.04 Linux.</h1>
+      <div>
+        <br>
+        <h5>1. Step</h5>
+        <br>
+        <h6>The NTP package is available by default in the default Ubuntu 20.04 LTS repository, so to install it we need to run the following command:</h6>
+        <p style="color:red;">sudo apt install ntp -y</p>
+        <img src="/assets/pages/blogs/blog-13/img/blog-13-img-1.png" alt="Smiley face">
+      </div>
+      <div>
+        <br>
+        <h5>2. Step</h5>
+        <br>
+        <h6>Once installed, it is necessary to configure NTP to synchronize the time of the public NTP server, for this we need to edit the ntp.conf file as follows:</h6>
+        <p style="color:red;">sudo nano /etc/ntp.conf</p>
+        <h6>There we see the following:</h6>
+        <img src="/assets/pages/blogs/blog-13/img/blog-13-img-2.png" alt="Smiley face">
+      </div>
+      <div>
+        <br>
+        <h5>3. Step</h5>
+        <br>
+        <h6>It is necessary to replace the following lines:</h6>
+        <p style="color:red;">pool 0.ubuntu.pool.ntp.org iburst pool 1.ubuntu.pool.ntp.org iburst pool 2.ubuntu.pool.ntp.org iburst pool 3.ubuntu.pool.ntp.org iburst</p>
+        <h6>These should be replaced with the current geographic location, the full list is available at the following link: <a href="https://support.ntp.org/bin/view/Servers/NTPPoolServers">NTPPoolServers</a></h6>
+        <h6>Daar zien we het volgende:</h6>
+        <img src="/assets/pages/blogs/blog-13/img/blog-13-img-3.png" alt="Smiley face">
+        <h6>We need to take the hostname based on the zone we want and set it like that in the file we opened in Linux. We save the changes with the following key combination:</h6>
+        <p style="color:red;">Ctrl + O</p>
+        <h6>We leave the editor with the keys:</h6>
+        <p style="color:red;">Ctrl + X</p>
+      </div>
+      <div>
+        <br>
+        <h5>4. Step</h5>
+        <br>
+        <h6>Now we are going to restart the NTP service and apply the changes by running the following line:</h6>
+        <p style="color:red;">sudo systemctl restart ntp</p>
+        <h6>We will proceed to check the status of NTP by running the following:</h6>
+        <p style="color:red;">sudo systemctl status ntp</p>
+      </div>
+    </div>
+    <!-------->
+    <!--Bottom-->
+    <div id="bottom"></div>
+    <!---------->
+    <!--Back to Top-->
+    <a href="#" class="btn btn-outline-dark px-0 back-to-top"><i class="fa fa-angle-double-up"></i></a>
+    <!--------------->
+    <!--Right Click Menu-->
+    <div id="right-click-menu"></div>
+    <!-------------------->
+    <!--JavaScript-->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/typed/typed.min.js"></script>
+    <script src="/lib/easing/easing.min.js"></script>
+    <script src="/lib/waypoints/waypoints.min.js"></script>
+    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/script-1.js"></script>
+    <script src="/assets/js/right-click-menu.js"></script>
+    <script>
+        loadHTML("top-navbar-blog", "/assets/includes/top-navbar-blog.html" );
+        loadHTML("bottom", "/assets/includes/bottom.html");
+        loadHTML("right-click-menu", "/assets/includes/right-click-menu.html");
+    </script>
+    <!-------------->
+  </body>
+</html>

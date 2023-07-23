@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<!--Van Elias De Hondt-->
+<html lang="en">
+    <head>
+    <!--Meta + Title-->
+    <meta charset="utf-8">
+    <title>Windows Server 2019 GPO Setup</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta property="og:title" content="Windows Server 2019 GPO Setup" />
+    <meta property="og:image" content="https://eliasdh.com/assets/media/images/logo-hd.png"/>
+    <meta content="This is a quick guide to configure GPO on a Windows server 2022." name="description">
+    <!---------------->
+    <!--Favicon-->
+    <link href="/assets/media/images/favicon.ico" rel="icon">
+    <!----------->
+    <!--Google Web Fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-------------------->
+    <!--Font Awesome-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <!---------------->
+    <!--Libraries Stylesheet-->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <!------------------------>
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <!-------------->
+  </head>
+  <body class="selectioncoler" data-spy="scroll" data-target=".navbar" data-offset="51">
+    <!--Top Navbar Blog-->
+    <div id="top-navbar-blog"></div>
+    <!------------------->
+    <!--Blog-->
+    <div class="container">
+      <br>
+      <br>
+      <br>
+      <br>
+      <h5>1. Examples of using group policy editor</h5>
+      <h5>1.1. Customize password policy in group policy editor</h5>
+      <div class="square-text">
+        <h6>Go to Group &#34;Policy Management&#34;.</h6>
+        <h6>Expand the tree until you see the domain (school10.local).</h6>
+        <h6>Right click on &#34;Default Domain Policy&#34; and click Edit.</h6>
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-1.png" alt="Smiley face">
+      </div>
+      <div class="square-text">
+        <h6>Navigate to Password Policy, we see in the right half of the window that the password policy is set strict. We will now make this policy less strict for the blog.</h6>
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-2.png" alt="Smiley face">
+      </div>
+      <div class="square-text">
+        <h6>Double click on &#34;Enforce Password history&#34;. Adjust as shown below. We always leave the check mark on the following policies.</h6>
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-3.png" alt="Smiley face">
+      </div>
+      <div class="square-text">
+        <h6>Then also adjust the other policies as indicated below.</h6>
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-4.png" alt="Smiley face">
+      </div>
+      <h3><p style="color:red;">Restart the server after the policy change!!!</p></h3>
+      <br>
+      <br>
+      <h5>1.2. Making the last registered user invisible</h5>
+      <div class="square-text">A security option that considered quite a few managers is a registration window in which the last notified user is no longer visible. Configure this policy via editing the Default Domain Policy.</div>
+      <div class="square-text">
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-5.png" alt="Smiley face">
+        <h6>Policy not activated.</h6>
+      </div>
+      <div class="square-text">
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-6.png" alt="Smiley face">
+        <h6>Policy activated.</h6>
+      </div>
+      <div class="square-text">
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-7.png" alt="Smiley face">
+        <h6>Right click on &#34;Group Policy Management&#34;.</h6>
+      </div>
+      <div class="square-text">
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-8.png" alt="Smiley face">
+        <h6>Right click on &#34;Default Domain Policy&#34; and Select &#34;Edit&#34;.</h6>
+      </div>
+      <div class="square-text">
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-9.png" alt="Smiley face">
+        <h6>Navigate to Security Options. Double-click Interactive Logon: Don't Display Last Signed-in.</h6>
+      </div>
+      <div class="square-text">
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-10.png" alt="Smiley face">
+        <h6>&#34;Define this policy setting&#34; and activate &#34;Enabled&#34;. The Explain tab says what the policy does exactly. Click &#34;OK&#34;.</h6>
+      </div>
+      <h5>1.3. Centrally distribute a desktop wallpaper</h5>
+      <div class="square-text">
+        <p>We will set a Desktop wallpaper for the OU &#34;herstellingen&#34;. This wallpaper will be placed on the Windows Server 2019.</p>
+        <p>Create a folder &#34;wallpaper&#34; on the server on the data partition and place a file (.png .jpg …) in this folder. Share this folder and give the appropriate sharing permissions and folder permissions.</p>
+      </div>
+      <div class="square-text">
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-11.png" alt="Smiley face">
+        <h6>&#34;Domain Users&#34; full control on the share permissions.</h6>
+      </div>
+      <div class="square-text">
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-12.png" alt="Smiley face">
+        <h6>&#34;System&#34; and &#34;Administrators&#34; were already in security permissions. We'll leave that one. &#34;Add&#34; &#34;Domain Users&#34; to it (use the suggested permissions).</h6>
+      </div>
+      <div class="square-text"><p>Go to the group policy manager (see images):</p>
+        <p><img src="/assets/pages/blogs/blog-12/img/blog-12-img-13.png" alt="Smiley face"></p>
+        <p><img src="/assets/pages/blogs/blog-12/img/blog-12-img-14.png" alt="Smiley face"></p>
+        <p><img src="/assets/pages/blogs/blog-12/img/blog-12-img-15.png" alt="Smiley face"></p>
+        <p><img src="/assets/pages/blogs/blog-12/img/blog-12-img-16.png" alt="Smiley face"></p>
+        <p><img src="/assets/pages/blogs/blog-12/img/blog-12-img-17.png" alt="Smiley face"></p>
+        <p>-	Specify the UNC path where the wallpaper is located.</p>
+        <p>-	Server1is my server name, use the name of your server. Click &#34;OK&#34; when done.</p>
+        <p>-	Right click in the group policy management on the OU fixes. Select Link an Existing GPO.</p>
+        <p>-	Select the OU in question, and click &#34;OK&#34;.</p>
+        <p>-	Because it is a policy that is in the user configuration, we have to log out the user first, after logging back in, we see the wallpaper appear on the client computer.</p>
+        <p>-	Log in to a workstation as a user that belongs to the OU.</p>
+      </div>
+      <h5>1.4. Shortcut on desktop</h5>
+      <div class="square-text">
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-18.png" alt="Smiley face">
+        <h6>Under &#34;Group Policy Objects&#34; create a new GPO called &#34;desktop shortcuts&#34;</h6>
+      </div>
+      <div class="square-text">
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-19.png" alt="Smiley face">
+        <h6>Right click on the GPO &#34;desktop shortcut&#34; and select &#34;Edit&#34;.</h6>
+      </div>
+      <div class="square-text">
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-20.png" alt="Smiley face">
+        <h6>Navigate to Shortcuts (see image above).</h6>
+      </div>
+      <div class="square-text">
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-21.png" alt="Smiley face">
+        <h6>Right click on the blank white sheets select &#34;New&#34; &#34;Shortcut&#34;.</h6>
+      </div>
+      <div class="square-text">
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-22.png" alt="Smiley face">
+        <h6>Fill in the above information.</h6>
+      </div>
+      <div class="square-text">
+        <img src="/assets/pages/blogs/blog-12/img/blog-12-img-23.png" alt="Smiley face">
+        <h6>Now associate the policy with an OU.</h6>
+      </div>
+    </div>
+    <!-------->
+    <!--Bottom-->
+    <div id="bottom"></div>
+    <!---------->
+    <!--Back to Top-->
+    <a href="#" class="btn btn-outline-dark px-0 back-to-top"><i class="fa fa-angle-double-up"></i></a>
+    <!--------------->
+    <!--Right Click Menu-->
+    <div id="right-click-menu"></div>
+    <!-------------------->
+    <!--JavaScript-->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/typed/typed.min.js"></script>
+    <script src="/lib/easing/easing.min.js"></script>
+    <script src="/lib/waypoints/waypoints.min.js"></script>
+    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/script-1.js"></script>
+    <script src="/assets/js/right-click-menu.js"></script>
+    <script>
+        loadHTML("top-navbar-blog", "/assets/includes/top-navbar-blog.html" );
+        loadHTML("bottom", "/assets/includes/bottom.html");
+        loadHTML("right-click-menu", "/assets/includes/right-click-menu.html");
+    </script>
+    <!-------------->
+  </body>
+</html>

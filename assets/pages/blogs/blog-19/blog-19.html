@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<!--Van Elias De Hondt-->
+<html lang="en">
+    <head>
+    <!--Meta + Title-->
+    <meta charset="utf-8">
+    <title>TCP And UDP Ports</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta property="og:title" content="TCP And UDP Ports" />
+    <meta property="og:image" content="https://eliasdh.com/assets/media/images/logo-hd.png"/>
+    <meta content="TCP And UDP Ports" name="description">
+    <!---------------->
+    <!--Favicon-->
+    <link href="/assets/media/images/favicon.ico" rel="icon">
+    <!----------->
+    <!--Google Web Fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-------------------->
+    <!--Font Awesome-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <!---------------->
+    <!--Libraries Stylesheet-->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <!------------------------>
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <!-------------->
+  </head>
+  <body class="selectioncoler" data-spy="scroll" data-target=".navbar" data-offset="51">
+    <!--Top Navbar Blog-->
+    <div id="top-navbar-blog"></div>
+    <!------------------->
+    <!--Blog-->
+    <div class="container">
+      <br>
+      <br>
+      <br>
+      <br>
+      <h1>TCP And UDP Ports.</h1>
+      <br>
+      <h5>1. Additional information</h5>
+      <div class="container">
+        <p>Port numbers can run from <a style="color:#4f94ef;">0 to 65353</a>.</p>
+        <p><a style="color:#4f94ef;">Well-known ports</a>—Ports in the range <a style="color:#4f94ef;">0 to 1023</a> are assigned and controlled.</p>
+        <p><a style="color:#4f94ef;">Registered ports</a>—Ports in the range <a style="color:#4f94ef;">1024 to 49151</a> are assigned and controlled.</p>
+        <p><a style="color:#4f94ef;">Dynamic ports</a>—Ports in the range <a style="color:#4f94ef;">49152 to 65535 </a> are not assigned, controlled, or registered. They are used for temporary or private ports. They are also known as private or non-reserved ports. Clients should choose ephemeral port numbers from this range, but many systems do not.</p>
+      </div>
+      <br>
+      <h5>2. Well-known ports</h5>
+      <table id="rows-and-columns" style="width:100%">
+        <tr>
+            <th>Port</th>
+            <th>Protocol</th>
+            <th>TCP</th>
+            <th>UDP</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>20</td>
+            <td>FTP</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>File Transfer Protocol (Data Transfer)</td>
+        </tr>
+        <tr>
+            <td>21</td>
+            <td>FTP</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>File Transfer Protocol (Control Command)</td>
+        </tr>
+        <tr>
+            <td>22</td>
+            <td>SSH</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Secure Shell</td>
+        </tr>
+        <tr>
+            <td>23</td>
+            <td>Telnet</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Unencrypted text communications</td>
+        </tr>
+        <tr>
+            <td>25</td>
+            <td>SMTP</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Simple Mail Transfer Protocol (used for email routing between mail servers)</td>
+        </tr>
+        <tr>
+            <td>53</td>
+            <td>DNS</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Domain Name System</td>
+        </tr>
+        <tr>
+            <td>67</td>
+            <td>DHCP</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Dynamic Host Configuration Protocol Server (ipv4)</td>
+        </tr>
+        <tr>
+            <td>68</td>
+            <td>DHCP</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Dynamic Host Configuration Protocol Client (ipv4)</td>
+        </tr>
+        <tr>
+            <td>89</td>
+            <td>TFTP</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Trivial File Transfer Protocol</td>
+        </tr>
+        <tr>
+            <td>80</td>
+            <td>HTTP</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Hypertext Transfer Protocol</td>
+        </tr>
+        <tr>
+            <td>109</td>
+            <td>POP2</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Post Office Protocol 2</td>
+        </tr>
+        <tr>
+            <td>110</td>
+            <td>POP3</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Post Office Protocol 3</td>
+        </tr>
+        <tr>
+            <td>123</td>
+            <td>NTP</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Network Time Protocol</td>
+        </tr>
+        <tr>
+            <td>127</td>
+            <td>NetBIOS</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>NetBIOS Name Service</td>
+        </tr>
+        <tr>
+            <td>128</td>
+            <td>NetBIOS</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>NetBIOS Datagram Service</td>
+        </tr>
+        <tr>
+            <td>129</td>
+            <td>NetBIOS</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>NetBIOS Session Service</td>
+        </tr>
+        <tr>
+            <td>143</td>
+            <td>IMAP</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Internet Message Access Protocol</td>
+        </tr>
+        <tr>
+            <td>161</td>
+            <td>SNMP</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Simple Network Management Protocol</td>
+        </tr>
+        <tr>
+            <td>162</td>
+            <td>SNMP-trap</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Simple Network Management Protocol Trap</td>
+        </tr>
+        <tr>
+            <td>389</td>
+            <td>LDAP</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Lightweight Directory Access Protocol</td>
+        </tr>
+        <tr>
+            <td>443</td>
+            <td>HTTPS</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Hypertext Transfer Protocol Secure</td>
+        </tr>
+        <tr>
+            <td>445</td>
+            <td>SMB</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Server Message Block</td>
+        </tr>
+        <tr>
+            <td>465</td>
+            <td>SMTP</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Simple Mail Transfer Protocol over TLS/SSL</td>
+        </tr>
+        <tr>
+            <td>546</td>
+            <td>DHCP</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Dynamic Host Configuration Protocol Server (ipv6)</td>
+        </tr>
+        <tr>
+            <td>547</td>
+            <td>DHCP</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Dynamic Host Configuration Protocol Client (ipv6)</td>
+        </tr>
+        <tr>
+            <td>587</td>
+            <td>SMTP</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Simple Mail Transfer Protocol (Send Email)</td>
+        </tr>
+        <tr>
+            <td>990</td>
+            <td>FTPS</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>File Transfer Protocol Secure (Data Transfer)</td>
+        </tr>
+        <tr>
+            <td>991</td>
+            <td>FTPS</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>File Transfer Protocol Secure (Control Command)</td>
+        </tr>
+        <tr>
+            <td>992</td>
+            <td>Telnet</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Telnet protocol over TLS/SSL</td>
+        </tr>
+        <tr>
+            <td>993</td>
+            <td>IMAPS</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Internet Message Access Protocol Secure</td>
+        </tr>
+        <tr>
+            <td>995</td>
+            <td>POP3</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Post Office Protocol 3 over TLS/SSL</td>
+        </tr>
+      </table>
+    </div>
+    <br>
+    <div class="container">
+      <h5>3. Registered ports</h5>
+      <table id="rows-and-columns" style="width:100%">
+        <tr>
+            <th>Port</th>
+            <th>Protocol</th>
+            <th>TCP</th>
+            <th>UDP</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>3389</td>
+            <td>RDP</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Remote Desktop Protocol</td>
+        </tr>
+      </table>
+      <br>
+      <br>
+    </div>
+    <br>
+    <div class="container">
+        <h5>4. Source Material</h5>
+        <a href="https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers" style="color:#4f94ef;">wikipedia.org</a>
+    </div>
+    <br>
+    <!-------->
+    <!--Bottom-->
+    <div id="bottom"></div>
+    <!---------->
+    <!--Back to Top-->
+    <a href="#" class="btn btn-outline-dark px-0 back-to-top"><i class="fa fa-angle-double-up"></i></a>
+    <!--------------->
+    <!--Right Click Menu-->
+    <div id="right-click-menu"></div>
+    <!-------------------->
+    <!--JavaScript-->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/typed/typed.min.js"></script>
+    <script src="/lib/easing/easing.min.js"></script>
+    <script src="/lib/waypoints/waypoints.min.js"></script>
+    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/script-1.js"></script>
+    <script src="/assets/js/right-click-menu.js"></script>
+    <script>
+        loadHTML("top-navbar-blog", "/assets/includes/top-navbar-blog.html" );
+        loadHTML("bottom", "/assets/includes/bottom.html");
+        loadHTML("right-click-menu", "/assets/includes/right-click-menu.html");
+    </script>
+    <!-------------->
+  </body>
+</html>
