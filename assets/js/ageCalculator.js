@@ -11,5 +11,6 @@ var birthYear = 2001;
 var age = currentYear - birthYear;
 var experience = currentYear - 2020;
 
-document.getElementById("age").textContent = age;
+document.getElementById("age1").textContent = age;
+document.getElementById("age2").textContent = age;
 document.getElementById("experience").textContent = experience;
