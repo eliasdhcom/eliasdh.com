@@ -499,58 +499,17 @@ body::-webkit-scrollbar-button:vertical:start:increment,
     display: var(--show-double-buttons, none);
 }
 /* Scrollbars */
-/* Rows And Columns */
-#rows-and-columns {
-    font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-    #rows-and-columns td, #rows-and-columns th {
-        border: 1px solid #ddd;
-        padding: 8px;
-    }
-
-    #rows-and-columns tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-
-    #rows-and-columns tr:hover {
-        background-color: #ddd;
-    }
-
-    #rows-and-columns th {
-        padding-top: 12px;
-        padding-bottom: 12px;
-        text-align: left;
-        background-color: #4F94F0;
-        color: white;
-    }
-/* Rows And Columns */
-/* Square */
-.square-0 {
-    border: 2px solid black;
-    margin: 20px;
-    width: 504px
-}
-
-.square-text {
-    border: 2px solid black;
-    margin: 20px;
-    width: 800px
-}
-/* Square */
 /* Dark Mode */
 body {
     background-color: white;
     color: #141d29;
     font-size: 25px;
-  }
+}
   
-  .dark-mode {
+.dark-mode {
     background-color: #141d29;
     color: white;
-  }
+}
 /* Dark Mode */
 :root {
     --blue: #007bff;
