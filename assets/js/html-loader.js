@@ -12,11 +12,15 @@ function loadHTML(myDivId, url) {
         if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
            if(xmlhttp.status == 200) {
                document.getElementById(myDivId).innerHTML = xmlhttp.responseText;
-               let allScripts = document.getElementById(myDivId).getElementsByTagName('script-1');
-               for (const element of allScripts) eval(element.innerHTML)
-               
+               let scripts = document.getElementById(myDivId).getElementsByTagName('script');
+               for (let i = 0; i < scripts.length; i++) {
+                   let script = document.createElement('script');
+                   script.text = scripts[i].text;
+                   document.body.appendChild(script);
+               }
+           } else {
+               alert('Error');
            }
-           else alert('Error');
         }
     }
     xmlhttp.open("GET", url, true);

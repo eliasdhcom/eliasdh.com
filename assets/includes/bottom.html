@@ -1,7 +1,6 @@
 <!--Van Elias De Hondt-->
 <!--Bottom-->
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
   .white {
       color: #fff;
       transition: all .3s ease-in-out; 
@@ -137,7 +136,8 @@
       <span class="px-3">|</span>
       <a class="text-white" target="_blank" href="/assets/pages/legal-guidelines.html">Legal Guidelines</a>
     </p>
-    <p>Design by Elias De Hondt.<br>Copyright 2018 - 2045 &copy; EliasDH. All rights Reserved.</p>
+    <p>Design by Elias De Hondt.<br>Copyright <span id="currentYear"></span> &copy; EliasDH. All rights Reserved.</p>
   </div>
 </div>
-<!---------->
+<script> document.getElementById("currentYear").textContent = new Date().getFullYear(); </script>
+<!--Bottom-->
