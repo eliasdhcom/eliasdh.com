@@ -19,10 +19,9 @@ function calculateAge(birthDate, currentDate) {
     var yearsDiff = currentDate.getFullYear() - birthDate.getFullYear();
     var birthMonth = birthDate.getMonth();
     var currentMonth = currentDate.getMonth();
-    
+
     if (currentMonth < birthMonth || (currentMonth === birthMonth && currentDate.getDate() < birthDate.getDate())) {
       yearsDiff--;
     }
-  
     return yearsDiff;
 }
