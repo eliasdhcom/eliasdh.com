@@ -3,6 +3,7 @@
  * @see https://eliasdh.com
  * @since 01/01/2020
  */
+/* 403 Page Access Denied */
 @import url('https://fonts.googleapis.com/css?family=Vollkorn:700');
 
 html {
@@ -10,7 +11,7 @@ html {
   margin:0;
   padding:0;
   overflow:hidden;
-  background: linear-gradient(45deg, #4F94F0 0%, #ffffff 100%);
+  background: linear-gradient(45deg, #4f94f0 0%, #ffffff 100%);
 }
 
 h1 {
@@ -35,3 +36,4 @@ h2 {
     max-height:50%;
   }
 }
+/* 403 Page Access Denied */
