@@ -5196,8 +5196,7 @@ a.bg-secondary:hover, a.bg-secondary:focus, button.bg-secondary:hover, button.bg
     margin-right: -1rem !important;
 }
 
-.mb-n3,
-.my-n3 {
+.mb-n3, .my-n3 {
     margin-bottom: -1rem !important;
 }
 
@@ -5627,8 +5626,6 @@ a.bg-secondary:hover, a.bg-secondary:focus, button.bg-secondary:hover, button.bg
     }
 }
 
-
-
 .text-monospace {
     font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
 }
@@ -5767,92 +5764,6 @@ a.bg-secondary:hover, a.bg-secondary:focus, button.bg-secondary:hover, button.bg
     visibility: visible !important;
 }
 
-@media print {
-    *, *::before, *::after {
-        text-shadow: none !important;
-        box-shadow: none !important;
-    }
-
-    a:not(.btn) {
-        text-decoration: underline;
-    }
-
-    abbr[title]::after {
-        content: " (" attr(title) ")";
-    }
-
-    pre {
-        white-space: pre-wrap !important;
-    }
-
-    pre, blockquote {
-        border: 1px solid #adb5bd;
-        page-break-inside: avoid;
-    }
-
-    thead {
-        display: table-header-group;
-    }
-
-    tr, img {
-        page-break-inside: avoid;
-    }
-
-    p, h2, h3 {
-        orphans: 3;
-        widows: 3;
-    }
-
-    h2, h3 {
-        page-break-after: avoid;
-    }
-
-    @page {
-        size: a3;
-    }
-
-    body {
-        min-width: 992px !important;
-    }
-
-    .container {
-        min-width: 992px !important;
-    }
-
-    .navbar {
-        display: none;
-    }
-
-    .badge {
-        border: 1px solid #000;
-    }
-
-    .table {
-        border-collapse: collapse !important;
-    }
-
-    .table td, .table th {
-        background-color: #fff !important;
-    }
-
-    .table-bordered th, .table-bordered td {
-        border: 1px solid #dee2e6 !important;
-    }
-
-    .table-dark {
-        color: inherit;
-    }
-
-    .table-dark th, .table-dark td, .table-dark thead th, .table-dark tbody + tbody {
-        border-color: #dee2e6;
-    }
-
-    .table .thead-dark th {
-        color: inherit;
-        border-color: #dee2e6;
-    }
-}
-
 h1, .font-weight-bolder {
     font-weight: 900 !important;
 }
@@ -5952,6 +5863,7 @@ h6, .font-weight-normal {
     color: #ffffff;
 }
 
+/* Video Modal */
 .btn-play {
     position: relative;
     display: block;
@@ -6042,17 +5954,21 @@ h6, .font-weight-normal {
     background: #000000;
     opacity: 1;
 }
+/* Video Modal */
 
+/* Skill */
 .progress {
     border-radius: 10px;
 }
 
-    .progress .progress-bar {
-        width: 0px;
-        border-radius: 10px;
-        transition: 2s;
-    }
+.progress .progress-bar {
+    width: 0px;
+    border-radius: 10px;
+    transition: 2s;
+}
+/* Skill */
 
+/* Services */
 .service-icon {
     width: 60px;
     height: 60px;
@@ -6061,27 +5977,4 @@ h6, .font-weight-normal {
     justify-content: center;
     border-radius: 60px;
 }
-
-.testimonial-carousel .owl-dots {
-    margin-top: 25px;
-    text-align: center;
-}
-
-.testimonial-carousel .owl-dot {
-    display: inline-block;
-    margin: 0 5px;
-    width: 12px;
-    height: 12px;
-    border-radius: 10px;
-    background: #dddddd;
-}
-
-    .testimonial-carousel .owl-dot.active {
-        background: var(--primary-color);
-    }
-
-.contact-form .help-block ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
+/* Services */
