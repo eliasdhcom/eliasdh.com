@@ -1,3 +1,4 @@
+![logo](https://eliasdh.com/assets/media/images/logo-github.png)
 # 💙🤍README🤍💙
 
 This website was created to showcase my company (EliasDH).
