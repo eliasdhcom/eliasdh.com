@@ -116,6 +116,39 @@ body::-webkit-scrollbar-button:vertical:start:increment,
     display: var(--show-double-buttons, none);
 }
 /* Scrollbars */
+/* Lock */
+.lock-body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+
+.lock-body img {
+    height: 300px;
+    opacity: 0.5;
+    transition: opacity 1s ease;
+}
+
+.lock-body:hover img {
+    opacity: 1;
+}
+
+.lock-body h1 {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    margin-top: 20px;
+}
+
+.lock-body p {
+    font-size: 1rem;
+    color: var(--secondary-color);
+    margin-top: 10px;
+}
+/* Lock */
 *, *::before, *::after {
     box-sizing: border-box;
 }
