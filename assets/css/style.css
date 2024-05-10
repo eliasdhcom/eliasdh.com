@@ -79,6 +79,7 @@ body, html {
 }
 
 .home-header-container .home-header-logo {
+    fill: var(--white-color);
     margin-left: 100%;
     width: 456px;
     height: 456px;
@@ -94,7 +95,7 @@ body, html {
     font-weight: 300;
     line-height: 1.2;
     text-transform: uppercase;
-    -webkit-text-stroke: 2px #ffffff;
+    -webkit-text-stroke: 2px var(--white-color);
     margin-top: 0px;
 }
 
@@ -113,6 +114,27 @@ body, html {
 .home-header-arrow svg {
     display: block;
     margin: auto;
+}
+
+.home-header-subtitle {
+    font-size: 24px;
+    font-weight: 300;
+    margin-top: 20px;
+    min-height: 1.2em;
+    display: inline-block;
+}
+
+.home-header-cursor {
+    display: inline-block;
+    width: 4px;
+    height: 26px;
+    background-color: var(--white-color);
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% {opacity: 1}
+    50% {opacity: 0}
 }
 /* Header */
 

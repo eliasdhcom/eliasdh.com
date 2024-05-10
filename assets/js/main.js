@@ -4,6 +4,58 @@
  * @since 01/01/2020
  */
 
+/* Subtitle */
+document.addEventListener('DOMContentLoaded', function() {
+    function displayText(textArray, elementId, interval) {
+        var currentIndex = 0;
+        var currentText = textArray[currentIndex];
+        var textElement = document.getElementById(elementId);
+        var cursorPosition = 0;
+
+        function displayNextText() {
+            var i = 0;
+            var intervalId = setInterval(function() {
+                if (i < currentText.length) {
+                    var word = currentText[i];
+                    textElement.textContent += word;
+                    textElement.innerHTML += '<span class="home-header-cursor"></span>';
+                    cursorPosition++;
+                    i++;
+                } else {
+                    clearInterval(intervalId);
+                    setTimeout(function() {
+                        removeCursor();
+                        textElement.textContent = ''; // Wist de tekst
+                        currentIndex = (currentIndex + 1) % textArray.length;
+                        currentText = textArray[currentIndex];
+                        cursorPosition = 0;
+                        setTimeout(displayNextText, interval * 2);
+                    }, interval * 3);
+                }
+            }, interval);
+        }
+
+        function removeCursor() {
+            var cursor = textElement.querySelector('.home-header-cursor');
+            if (cursor) {
+                cursor.parentNode.removeChild(cursor);
+            }
+        }
+
+        displayNextText();
+    }
+
+    var texts = [
+        "We are a company that", "provides hosting services.",
+        "And other services related", "to web development.",
+        "We are here to help", "you with your online presence.",
+        "Tell us what you need", "and we will make it happen."
+    ];
+
+    displayText(texts, 'home-header-subtitle', 150);
+});
+/* Subtitle */
+
 /* Carousel */
 document.addEventListener("DOMContentLoaded", function () {
     const carouselItems = document.querySelectorAll(".carousel-item");
