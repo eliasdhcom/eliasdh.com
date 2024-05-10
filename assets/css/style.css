@@ -79,7 +79,7 @@ body, html {
 }
 
 .home-header-container .home-header-logo {
-    margin-left: 50%;
+    margin-left: 100%;
     width: 456px;
     height: 456px;
 }
@@ -95,6 +95,7 @@ body, html {
     line-height: 1.2;
     text-transform: uppercase;
     -webkit-text-stroke: 2px #ffffff;
+    margin-top: 0px;
 }
 
 .home-header-arrow {
@@ -114,6 +115,7 @@ body, html {
     margin: auto;
 }
 /* Header */
+
 
 /* Services */
 .home-services-container {
