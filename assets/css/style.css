@@ -23,11 +23,21 @@ body, html {
 }
 /* Global */
 
-/* Scrollbars Disabling */
+/* Scrollbar */
 ::-webkit-scrollbar {
-    display: none;
+    width: 8px;
+    height: 10px;
 }
-/* Scrollbars Disabling */
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--secondary-color);
+}
+/* Scrollbar */
 
 /* Selectioncoler */
 ::selection {
@@ -111,6 +121,11 @@ body, html {
     animation: bounce 1.5s infinite;
 }
 
+@keyframes bounce {
+    0%, 100% {transform: translateY(0)}
+    50% {transform: translateY(-10px)}
+}
+
 .home-header-arrow svg {
     display: block;
     margin: auto;
@@ -138,6 +153,37 @@ body, html {
 }
 /* Header */
 
+/* About */
+.home-about-company {
+    display: flex;
+    justify-content: space-between;
+}
+
+.home-company-introduction, .home-company-values {
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 48%;
+}
+
+.home-about-company h3 {
+    color: var(--primary-color);
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.home-company-introduction p, .home-company-values li {
+    color: var(--secondary-color);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.home-company-values strong {
+    color: var(--primary-color);
+    font-weight: 900;
+}
+/* About */
 
 /* Services */
 .home-services-container {
@@ -150,13 +196,66 @@ body, html {
     align-items: center;
     flex-direction: column;
 }
+
+.home-services-box {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    border-radius: 24px;
+    padding: 16px;
+    margin: 16px;
+}
+
+.home-services-box:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    transition: 1s;
+}
+
+.home-services-box-title {
+    color: var(--primary-color);
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
+
+.home-services-svg {
+    fill: var(--white-color);
+    background-color: var(--primary-color);
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+    margin-right: 24px;
+}
+
+.home-services-button {
+    background-color: var(--primary-color);
+    color: var(--third-color);
+    border: none;
+    border-radius: 24px;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 900;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.home-services-button:hover {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    transition: 1s;
+}
+
+
+
+
+
 /* Services */
 
 /* Carousel */
 .carousel-container {
     background-color: var(--third-color);
     color: var(--secondary-color);
-
     display: flex;
     overflow: hidden;
     width: 100%;
@@ -183,13 +282,21 @@ body, html {
 /******************** Desktop ********************/
 
 /******************** Mobile *********************/
-/* Header */
-@keyframes bounce {
-    0%, 100% {transform: translateY(0)}
-    50% {transform: translateY(-10px)}
-}
+@media (max-width: 768px) {
+    /* Title */
+    .home-title-back {
+        font-size: 72px;
+        font-weight: 900;
+        line-height: 1.2;
+    }
 
-@media (max-width: 768px) { /* Set logo to top left and title centered */
+    .home-title-front {
+        font-size: 24px;
+        font-weight: 900;
+    }
+    /* Title */
+
+    /* Header */
     .home-header-container {
         flex-direction: column;
         justify-content: center;
@@ -204,6 +311,18 @@ body, html {
     .home-header-container .home-header-title {
         margin: 10px;
     }
+    /* Header */
+
+    /* About */
+    .home-about-company {
+        flex-direction: column;
+    }
+
+    .home-company-introduction, .home-company-values {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 90%;
+    }
+    /* About */
 }
-/* Header */
 /******************** Mobile *********************/
