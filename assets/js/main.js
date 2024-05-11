@@ -81,16 +81,26 @@ document.addEventListener('DOMContentLoaded', function() {
 /* Team */
 document.addEventListener("DOMContentLoaded", function () {
     const carouselItems = document.querySelectorAll(".home-team-container-carousel-item");
-    const totalItems = carouselItems.length-2;
+    if (window.innerWidth < 768) totalItems = carouselItems.length;
+    else totalItems = carouselItems.length-2;
+    
     const itemsToShow = 3; // Aantal items dat tegelijkertijd wordt getoond
     let currentIndex = 0;
 
     function showItems(startIndex) {
         carouselItems.forEach((item, i) => {
-            if (i >= startIndex && i < startIndex + itemsToShow) {
-                item.classList.add("home-team-container-carousel-item-active");
-            } else {
-                item.classList.remove("home-team-container-carousel-item-active");
+            if (window.innerWidth < 768) { // Mobile (1 item per keer)
+                if (i === startIndex) {
+                    item.classList.add("home-team-container-carousel-item-active");
+                } else {
+                    item.classList.remove("home-team-container-carousel-item-active");
+                }
+            } else { // Desktop (3 items per keer)
+                if (i >= startIndex && i < startIndex + itemsToShow) {
+                    item.classList.add("home-team-container-carousel-item-active");
+                } else {
+                    item.classList.remove("home-team-container-carousel-item-active");
+                }
             }
         });
     }
@@ -107,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("home-team-emailIcon").addEventListener("click", function () {
-        window.location.href = "mailto:info@eliasdh.com?SUBJECT=Join our team&BODY=Dear EliasDH Team";
+        window.location.href = "mailto:info@eliasdh.com?SUBJECT=Join%20our%20team&BODY=Dear%20EliasDH%20Team";
     });
 });
 /* Team */
