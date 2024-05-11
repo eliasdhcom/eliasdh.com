@@ -351,6 +351,7 @@ hr {
 
 .home-team-container-carousel-item {
     background-color: var(--third-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     border-radius: 24px;
     margin: 20px;
     padding: 20px;
@@ -363,6 +364,11 @@ hr {
     top: 50%;
     transform-origin: center center;
     pointer-events: none;
+}
+
+.home-team-container-carousel-item:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    transition: 1s;
 }
 
 .home-team-container-carousel-item-active {
