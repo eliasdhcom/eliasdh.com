@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     clearInterval(intervalId);
                     setTimeout(function() {
                         removeCursor();
-                        textElement.textContent = ''; // Wist de tekst
+                        textElement.textContent = '';
                         currentIndex = (currentIndex + 1) % textArray.length;
                         currentText = textArray[currentIndex];
                         cursorPosition = 0;
@@ -61,9 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function removeCursor() {
             var cursor = textElement.querySelector('.home-header-cursor');
-            if (cursor) {
-                cursor.parentNode.removeChild(cursor);
-            }
+            if (cursor) cursor.parentNode.removeChild(cursor);
         }
 
         displayNextText();
@@ -80,21 +78,22 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 /* Subtitle */
 
-/* Carousel */
+/* Team */
 document.addEventListener("DOMContentLoaded", function () {
-    const carouselItems = document.querySelectorAll(".carousel-item");
+    const carouselItems = document.querySelectorAll(".home-team-container-carousel-item");
     const totalItems = carouselItems.length;
     let currentIndex = 0;
 
     function showItems(index) {
         const nextIndex = (index + 1) % totalItems;
+        const nextNextIndex = (index + 2) % totalItems;
         carouselItems.forEach((item, i) => {
-            if (i === index || i === nextIndex) {
-                item.classList.remove("inactive");
-                item.classList.add("active");
+            if (i === index || i === nextIndex || i === nextNextIndex) {
+                item.classList.remove("home-team-container-carousel-item-inactive");
+                item.classList.add("home-team-container-carousel-item-active");
             } else {
-                item.classList.remove("active");
-                item.classList.add("inactive")
+                item.classList.remove("home-team-container-carousel-item-active");
+                item.classList.add("home-team-container-carousel-item-inactive")
             }
         });
     }
@@ -104,12 +103,14 @@ document.addEventListener("DOMContentLoaded", function () {
         showItems(currentIndex);
     }
 
-    function autoNextItem() {
-        nextItem();
-    }
-
     showItems(currentIndex);
 
-    setInterval(autoNextItem, 5000);
+    setInterval(nextItem, 5000);
 });
-/* Carousel */
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("home-team-emailIcon").addEventListener("click", function () {
+        window.location.href = "mailto:info@eliasdh.com?SUBJECT=Join our team&BODY=Dear EliasDH Team";
+    });
+});
+/* Team */
