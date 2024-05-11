@@ -81,19 +81,16 @@ document.addEventListener('DOMContentLoaded', function() {
 /* Team */
 document.addEventListener("DOMContentLoaded", function () {
     const carouselItems = document.querySelectorAll(".home-team-container-carousel-item");
-    const totalItems = carouselItems.length;
+    const totalItems = carouselItems.length-2;
+    const itemsToShow = 3; // Aantal items dat tegelijkertijd wordt getoond
     let currentIndex = 0;
 
-    function showItems(index) {
-        const nextIndex = (index + 1) % totalItems;
-        const nextNextIndex = (index + 2) % totalItems;
+    function showItems(startIndex) {
         carouselItems.forEach((item, i) => {
-            if (i === index || i === nextIndex || i === nextNextIndex) {
-                item.classList.remove("home-team-container-carousel-item-inactive");
+            if (i >= startIndex && i < startIndex + itemsToShow) {
                 item.classList.add("home-team-container-carousel-item-active");
             } else {
                 item.classList.remove("home-team-container-carousel-item-active");
-                item.classList.add("home-team-container-carousel-item-inactive")
             }
         });
     }
@@ -105,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     showItems(currentIndex);
 
-    setInterval(nextItem, 5000);
+    setInterval(nextItem, 5000); // 5 seconden interval
 });
 
 document.addEventListener("DOMContentLoaded", function () {

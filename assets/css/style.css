@@ -270,7 +270,7 @@ hr {
     border-radius: 24px;
     padding: 20px;
     margin: 30px;
-    width: 400px;
+    width: 500px;
 }
 
 .home-services-box .hosting-services {
@@ -299,7 +299,7 @@ hr {
     color: var(--white-color);
     width: 64px;
     height: 64px;
-    border-radius: 60px;
+    border-radius: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -337,9 +337,9 @@ hr {
 
 /* Team */
 .home-team-container {
-    margin-top: 20px;
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-top: 0px;
+    margin-left: 15%;
+    margin-right: 15%;
     padding: 20px;
     display: flex;
     justify-content: center;
@@ -349,11 +349,10 @@ hr {
 
 .home-team-container-carousel {
     background-color: var(--white-color);
+    justify-content: space-between;
     display: flex;
     overflow: hidden;
-    width: 100%;
-    justify-content: space-between;
-    margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 .home-team-container-carousel-item {
@@ -361,7 +360,28 @@ hr {
     border-radius: 24px;
     margin: 20px;
     padding: 20px;
+    visibility: hidden;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: visibility 0s, opacity 0.5s linear, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: center center;
+    pointer-events: none;
+}
+
+.home-team-container-carousel-item-active {
+    visibility: visible;
+    opacity: 1;
+    height: auto;
     width: 300px;
+    position: static;
+    left: auto;
+    transform: scale(1);
+    left: 0;
+    top: 0;
+    pointer-events: auto;
 }
 
 .home-team-container-carousel-item img {
@@ -394,14 +414,6 @@ hr {
 
 .home-team-container-carousel-item svg:hover {
     transform: scale(1.2);
-}
-
-.home-team-container-carousel-item-active {
-    display: block;
-}
-
-.home-team-container-carousel-item-inactive {
-    display: none;
 }
 /* Team */
 /******************** Desktop ********************/
