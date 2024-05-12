@@ -11,6 +11,7 @@
     --secondary-color: #6c757d;
     --third-color: #f8f9fa;
     --white-color: #ffffff;
+    --darkmode-color: #1C2128;
 }
 /* Root */
 
@@ -66,7 +67,7 @@
     transform: skew(-21deg);
 }
 
-.home-button span {
+.home-button > span {
     display: inline-block;
     transform: skew(21deg);
 }
@@ -95,6 +96,127 @@
     opacity: 1;
 }
 /* Button */
+
+/* Context Menu */
+.context-menu { 
+    position: absolute;
+    cursor: pointer;
+    display: none;
+}
+
+.context-menu-svg {
+    fill: var(--primary-color);
+    padding-right: 10px;
+    width: 16px;
+    height: 16px;
+}
+
+.context-menu-item {
+    background-color: var(--white-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 0px;
+    list-style: none;
+}
+
+.context-menu-item li {
+    font: inherit;
+    border: 0;
+    padding: 0px 15px 0px 15px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    text-decoration: unset;
+    color: var(--secondary-color);
+    font-weight: 500;
+    transition: 0.5s linear;
+    -webkit-transition: 0.5s linear;
+    -moz-transition: 0.5s linear;
+    -ms-transition: 0.5s linear;
+    -o-transition: 0.5s linear;
+}
+
+.context-menu-item li:hover {
+    background:var(--third-color);
+    color: var(--primary-color);
+    border-radius: 10px;
+}
+
+.context-menu-item li:active {
+    background: var(--primary-color);
+    color: var(--white-color);
+    border-radius: 10px;
+}
+
+.context-menu-dark-mode {
+    background-color: var(--darkmode-color);
+    color: var(--white-color);
+}
+
+.context-menu-dark-mode .home-title-back {
+    -webkit-text-stroke: 2px var(--primary-color);
+}
+
+.context-menu-dark-mode .home-subtitle {
+    color: var(--white-color);
+}
+
+.context-menu-dark-mode .home-header-container {
+    color: var(--darkmode-color);
+}
+
+.context-menu-dark-mode .home-header-container .home-header-logo {
+    fill: var(--darkmode-color);
+}
+
+.context-menu-dark-mode .home-header-container .home-header-company-name {
+    -webkit-text-stroke: 2px var(--darkmode-color);
+}
+
+.context-menu-dark-mode .home-header-container .home-header-arrow {
+    fill: var(--darkmode-color);
+}
+
+.context-menu-dark-mode .home-header-container .home-header-cursor {
+    background-color: var(--darkmode-color);
+}
+
+.context-menu-dark-mode .home-about-company p, .context-menu-dark-mode .home-company-values li {
+    color: var(--white-color);
+}
+
+.context-menu-dark-mode .home-services-box.hosting-services ul li {
+    color: var(--white-color);
+}
+
+.context-menu-dark-mode .home-services-box.web-services p {
+    color: var(--white-color);
+}
+
+.context-menu-dark-mode .home-services-box {
+    box-shadow: 0 0 20px rgba(100, 100, 100, 0.4);
+}
+
+.context-menu-dark-mode .home-services-box:hover {
+    box-shadow: 0 0 20px rgba(100, 100, 100, 0.4);
+}
+
+.context-menu-dark-mode .home-team-container-carousel-item p {
+    color: var(--white-color);
+}
+
+.context-menu-dark-mode .home-team-container-carousel-item {
+    background-color: var(--darkmode-color);
+    box-shadow: 0 0 10px rgba(100, 100, 100, 0.4);
+}
+
+.context-menu-dark-mode .home-team-container-carousel-item:hover {
+    box-shadow: 0 0 20px rgba(100, 100, 100, 0.4);
+}
+/* Context Menu */
 /***************** Desktop/Mobile ****************/
 
 /******************** Desktop ********************/
@@ -343,7 +465,6 @@
 }
 
 .home-team-container-carousel {
-    background-color: var(--white-color);
     justify-content: space-between;
     display: flex;
     overflow: hidden;

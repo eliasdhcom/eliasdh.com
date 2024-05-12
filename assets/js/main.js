@@ -5,15 +5,15 @@
  */
 
 /* Content Loader */
-function loadHTML(myDivId, url) {
+function loadExternalContent(DivId, url) {
     let xmlhttp;
     if (window.XMLHttpRequest) xmlhttp = new XMLHttpRequest();
     else xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
             if(xmlhttp.status == 200) {
-                document.getElementById(myDivId).innerHTML = xmlhttp.responseText;
-                let scripts = document.getElementById(myDivId).getElementsByTagName('script');
+                document.getElementById(DivId).innerHTML = xmlhttp.responseText;
+                let scripts = document.getElementById(DivId).getElementsByTagName('script');
                 for (let i = 0; i < scripts.length; i++) {
                     let script = document.createElement('script');
                     script.text = scripts[i].text;
@@ -27,6 +27,60 @@ function loadHTML(myDivId, url) {
 }
 /* Content Loader */
 
+/* Context Menu */
+let selectedText = '';
+document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('contextmenu', (event) => {
+        if (window.innerWidth < 768) return; // Disable context menu on mobile devices
+        event.preventDefault();
+        selectedText = window.getSelection().toString(); // Get selected text (For copySelectedText function)
+        const contextMenu = document.getElementById('context-menu');
+        let top = parseInt(contextMenu.style.top);
+        let left = parseInt(contextMenu.style.left);
+
+        if (isNaN(top)) top = 0;
+        if (isNaN(left)) left = 0;
+
+        if (window.scrollY !== 0) top = event.clientY + window.scrollY;
+        else top = event.clientY;
+
+        if (window.scrollX !== 0) left = event.clientX + window.scrollX;
+        else left = event.clientX;
+
+        contextMenu.style.top = top + 'px';
+        contextMenu.style.left = left + 'px';
+        contextMenu.style.display = 'block';
+
+        document.addEventListener('click', (clickEvent) => {
+            if (!contextMenu.contains(clickEvent.target)) contextMenu.style.display = 'none';
+        });
+    });
+});
+
+// Copy the current URL to clipboard.
+function copyLinkAddress() {
+    navigator.clipboard.writeText(window.location.href);
+}
+
+// Copy the selected text to clipboard.
+function copySelectedText() {
+    if (selectedText) navigator.clipboard.writeText(selectedText);
+}
+
+// Set dark mode.
+function darkMode() {
+    document.body.classList.add('context-menu-dark-mode');
+    document.getElementById('darkMode').style.display = 'none';
+    document.getElementById('lightMode').style.display = 'flex';
+}
+
+// Set light mode.
+function lightMode() {
+    document.body.classList.remove('context-menu-dark-mode');
+    document.getElementById('darkMode').style.display = 'flex';
+    document.getElementById('lightMode').style.display = 'none';
+}
+/* Context Menu */
 
 /* Subtitle */
 document.addEventListener('DOMContentLoaded', function() {
