@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
         "Tell us what you need", "and we will make it happen."
     ];
 
-    displayText(texts, 'home-header-subtitle', 150);
+    displayText(texts, 'home-header-subtitle', 100); // 100ms interval
 });
 /* Subtitle */
 
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (window.innerWidth < 768) totalItems = carouselItems.length;
     else totalItems = carouselItems.length-2;
     
-    const itemsToShow = 3; // Aantal items dat tegelijkertijd wordt getoond
+    const itemsToShow = 3; // Number of items to show at once
     let currentIndex = 0;
 
     function showItems(startIndex) {

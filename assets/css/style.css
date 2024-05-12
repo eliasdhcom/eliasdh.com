@@ -15,14 +15,15 @@
 /* Root */
 
 /* Global */
-body, html {
+.global-body, .global-html {
     margin: 0;
     padding: 0;
     height: 100%;
     font-family: 'Roboto', sans-serif;
+    cursor: url('/assets/media/images/cursor.png'), auto;
 }
 
-hr {
+.global-hr {
     border: 1px solid var(--secondary-color);
 }
 /* Global */
