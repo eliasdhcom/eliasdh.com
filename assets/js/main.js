@@ -175,3 +175,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 /* Team */
+
+/* Footer */
+function setCurrentYear() {
+    document.getElementById("home-footer-year").textContent = new Date().getFullYear();
+}
+/* Footer */

@@ -11,7 +11,22 @@
     --secondary-color: #6c757d;
     --third-color: #f8f9fa;
     --white-color: #ffffff;
+    --black-color: #000000;
     --darkmode-color: #1C2128;
+
+    /* Social Media */
+    --facebook-color: #1877f2;
+    --x-color: #45494d;
+    --instagram-color: #c13584;
+    --github-color: #333333;
+    --gitlab-color: #fc6d26;
+    --linkedin-color: #0077b5;
+    --youtube-color: #ff0000;
+    --whatsapp-color: #25d366;
+    --telegram-color: #0088cc;
+    --discord-color: #7289da;
+    --twitch-color: #6441a5;
+    /* Social Media */
 }
 /* Root */
 
@@ -390,12 +405,12 @@
     width: 500px;
 }
 
-.home-services-box .hosting-services {
-    height: 300px;
+.home-services-box.hosting-services {
+    height: 310px;
 }
 
-.home-services-box .web-services {
-    height: 400px;
+.home-services-box.web-services {
+    height: 220px;
 }
 
 .home-services-box:hover {
@@ -538,6 +553,141 @@
     transform: scale(1.2);
 }
 /* Team */
+
+/* Footer */
+.home-footer {
+    background-color: var(--primary-color);
+    color: var(--third-color);
+    height: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-footer a {
+    color: var(--white-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.home-footer a:hover {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+.home-footer-social-media-ul, .home-footer-links, .home-footer-credits {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-footer-social-media-ul {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-footer-links a {
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 17px;
+}
+
+
+
+.home-footer-credits {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+.home-footer-social-media-ul .home-footer-social-media-icon {
+    margin: 0 10px;
+    position: relative;
+    list-style: none;
+}
+
+.home-footer-social-media-ul .home-footer-social-media-icon a {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 20%;
+    color: var(--secondary-color);
+    background-color: var(--white-color);
+    transition: all 0.3s ease-in-out;
+}
+
+.home-footer-social-media-ul .home-footer-social-media-icon a:hover {
+    box-shadow: 3px 2px 45px 0px var(--secondary-color);
+}
+
+.home-footer-social-media-ul .home-footer-social-media-icon a svg {
+    fill: var(--primary-color);
+    position: relative;
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+}
+
+.home-footer-social-media-ul .home-footer-social-media-icon a .home-footer-social-media-icon-filled {
+    position: absolute;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.home-footer-social-media-ul .home-footer-social-media-icon a:hover .home-footer-social-media-icon-filled {
+    height: 100%;
+}
+
+.home-footer-social-media-ul .home-footer-social-media-icon a[data-social="x"] .home-footer-social-media-icon-filled {
+    background-color: var(--x-color);
+}
+
+.home-footer-social-media-ul .home-footer-social-media-icon a[data-social="instagram"] .home-footer-social-media-icon-filled {
+    background-color: var(--instagram-color);
+}
+
+.home-footer-social-media-ul .home-footer-social-media-icon a[data-social="github"] .home-footer-social-media-icon-filled {
+    background-color: var(--github-color);
+}
+
+.home-footer-social-media-ul .home-footer-social-media-icon a[data-social="linkedin"] .home-footer-social-media-icon-filled {
+    background-color: var(--linkedin-color);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Footer */
 /******************** Desktop ********************/
 
 /******************** Mobile *********************/
