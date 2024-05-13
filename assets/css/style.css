@@ -873,10 +873,6 @@
     overflow: hidden;
 }
 
-#httpcode-policeman-hand {
-    position: relative;
-}
-
 .httpcode-policeman-cls-1{
     fill:var(--primary-color);
 }

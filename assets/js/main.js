@@ -230,33 +230,28 @@ function setJavaScriptNavigation() {
 }
 /* Navigation */
 
-/* 403 Page Access Denied */
+/* Http Code */
 if (window.location.pathname === '/assets/pages/403.html') {
     var hand = document.getElementById('httpcode-policeman-hand');
 
     isHandRotated = false;
-    hand.style.transformOrigin = 'center bottom 50';
-
+    hand.style.transformOrigin = 'left bottom';
     hand.style.transition = 'transform 0.4s';
-
-    function rotateHandRight() {
-        isHandRotated = true;
-        hand.style.transform = 'rotate(10deg)';
-    }
 
     function rotateHandLeft() {
         isHandRotated = false;
         hand.style.transform = 'rotate(-10deg)';
     }
 
+    function rotateHandRight() {
+        isHandRotated = true;
+        hand.style.transform = 'rotate(5deg)';
+    }
+
     setInterval(function() {
         if (isHandRotated) rotateHandLeft();
         else rotateHandRight();
     }, 400);
-    
-
-
-
 
     var isAudioPlayed = false;
 
@@ -271,4 +266,4 @@ if (window.location.pathname === '/assets/pages/403.html') {
         playAudio();
     }
 }
-/* 403 Page Access Denied */
+/* Http Code */
