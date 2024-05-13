@@ -187,7 +187,7 @@ function setJavaScriptFooter() {
 
 /* Navigation */
 function setJavaScriptNavigation() {
-    if (window.innerWidth < 768) return; // Disable context menu on mobile devices
+    if (window.innerWidth < 768) return;
     document.getElementById('navigationIcon').addEventListener('click', function() {
         document.getElementById('navigationIcon').style.visibility = 'hidden';
         document.getElementById('overlay').style.visibility = 'visible';
