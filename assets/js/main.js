@@ -180,7 +180,47 @@ function lightMode() {
 /* Context Menu */
 
 /* Footer */
-function setCurrentYear() {
-    document.getElementById("home-footer-year").textContent = new Date().getFullYear();
+function setJavaScriptFooter() {
+    document.getElementById("footer-year").textContent = new Date().getFullYear();
 }
 /* Footer */
+
+/* Navigation */
+function setJavaScriptNavigation() {
+    if (window.innerWidth < 768) return; // Disable context menu on mobile devices
+    document.getElementById('navigationIcon').addEventListener('click', function() {
+        document.getElementById('navigationIcon').style.visibility = 'hidden';
+        document.getElementById('overlay').style.visibility = 'visible';
+        document.getElementById('navigationList').style.visibility = 'visible';
+
+        document.getElementById('navigation').style.top = '50%';
+        document.getElementById('navigation').style.right = '50%';
+
+        document.body.style.overflow = 'hidden';
+    });
+
+    document.getElementById('overlay').addEventListener('click', function() {
+        document.getElementById('navigationIcon').style.visibility = 'visible';
+        document.getElementById('navigationList').style.visibility = 'hidden';
+        document.getElementById('overlay').style.visibility = 'hidden';
+
+        document.getElementById('navigation').style.top = '0';
+        document.getElementById('navigation').style.right = '0';
+
+        document.body.style.overflow = 'auto';
+    });
+    
+    Array.from(document.getElementById('navigationList').getElementsByTagName('a')).forEach(function(item) {
+        item.addEventListener('click', function() {
+            document.getElementById('navigationIcon').style.visibility = 'visible';
+            document.getElementById('navigationList').style.visibility = 'hidden';
+            document.getElementById('overlay').style.visibility = 'hidden';
+
+            document.getElementById('navigation').style.top = '0';
+            document.getElementById('navigation').style.right = '0';
+
+            document.body.style.overflow = 'auto';
+        });
+    });
+}
+/* Navigation */

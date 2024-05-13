@@ -19,7 +19,7 @@
     </head>
     <body class="global-body">
         <!--Header-->
-        <header class="home-header-container">
+        <header class="home-header-container" id="home">
             <h1 style="display: none;">EliasDH</h1> <!--SEO-->
             <article>
                 <h2 style="display: none;">Logo</h2> <!--SEO-->
@@ -62,10 +62,13 @@
             </article>
         </header>
         <!--Header-->
+        <!--Navigation-->
+        <nav class="navigation" id="navigation"></nav>
+        <!--Navigation-->
         <!--Main-->
         <main>
             <!--About-->
-            <article>
+            <article id="about">
                 <h2 style="display: none;">About</h2> <!--SEO-->
                 <section class="home-title">
                     <h3 class="home-title-back">About</h3>
@@ -92,10 +95,10 @@
             </article>
             <!--About-->
             <!--Services-->
-            <article class="home-services-container">
+            <article class="home-services-container" id="services">
                 <h2 style="display: none;">Services</h2> <!--SEO-->
                 <section class="home-title">
-                    <h3 class="home-title-back">Service</h3>
+                    <h3 class="home-title-back">Services</h3>
                     <p class="home-title-front">Our Services</p>
                 </section>
                 <p class="home-subtitle">Hosting services</p>
@@ -243,7 +246,7 @@
                         </section>
                         <section>
                             <h5 style="display: none;">Back end development Description</h5> <!--SEO-->
-                            <p>We create secure and fast back end systems.</p>
+                            <p>We specialize in building secure and lightning-fast backend systems.</p>
                             <a class="home-button" href="mailto:info@eliasdh.com?SUBJECT=Web%20Development%20(Back%20end%20development)&BODY=Dear%20EliasDH%20Team">
                                 <span>Contact us</span>
                             </a>
@@ -272,7 +275,7 @@
             </article>
             <!--Services-->
             <!--Team-->
-            <article class="home-team-container">
+            <article class="home-team-container" id="team">
                 <h2 style="display: none;">Team</h2> <!--SEO-->
                 <section class="home-title">
                     <h3 class="home-title-back">Team</h3>
@@ -313,7 +316,7 @@
         </main>
         <!--Main-->
         <!--Footer-->
-        <footer class="home-footer" id="footer"></footer>
+        <footer class="footer" id="footer"></footer>
         <!--Footer-->
         <!--Context Menu-->
         <div class="context-menu" id="context-menu"></div>
@@ -321,6 +324,7 @@
         <!--JS-->
         <script src="/assets/js/main.js"></script>
         <script>
+            loadExternalContent("navigation", "/assets/includes/navigation.html");
             loadExternalContent("context-menu", "/assets/includes/context-menu.html");
             loadExternalContent("footer", "/assets/includes/footer.html");
         </script>
