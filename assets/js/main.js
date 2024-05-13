@@ -126,12 +126,13 @@ function loadExternalContent(DivId, url) {
 
 /* Context Menu */
 let selectedText = '';
+let contextMenu = '';
 document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('contextmenu', (event) => {
         if (window.innerWidth < 768) return; // Disable context menu on mobile devices
         event.preventDefault();
         selectedText = window.getSelection().toString(); // Get selected text (For copySelectedText function)
-        const contextMenu = document.getElementById('context-menu');
+        contextMenu = document.getElementById('context-menu');
         let top = parseInt(contextMenu.style.top);
         let left = parseInt(contextMenu.style.left);
 
@@ -157,11 +158,13 @@ document.addEventListener('DOMContentLoaded', function() {
 // Copy the current URL to clipboard.
 function copyLinkAddress() {
     navigator.clipboard.writeText(window.location.href);
+    contextMenu.style.display = 'none';
 }
 
 // Copy the selected text to clipboard.
 function copySelectedText() {
     if (selectedText) navigator.clipboard.writeText(selectedText);
+    contextMenu.style.display = 'none';
 }
 
 // Set dark mode.
@@ -169,6 +172,7 @@ function darkMode() {
     document.body.classList.add('context-menu-dark-mode');
     document.getElementById('darkMode').style.display = 'none';
     document.getElementById('lightMode').style.display = 'flex';
+    contextMenu.style.display = 'none';
 }
 
 // Set light mode.
@@ -176,6 +180,7 @@ function lightMode() {
     document.body.classList.remove('context-menu-dark-mode');
     document.getElementById('darkMode').style.display = 'flex';
     document.getElementById('lightMode').style.display = 'none';
+    contextMenu.style.display = 'none';
 }
 /* Context Menu */
 
@@ -224,3 +229,46 @@ function setJavaScriptNavigation() {
     });
 }
 /* Navigation */
+
+/* 403 Page Access Denied */
+if (window.location.pathname === '/assets/pages/403.html') {
+    var hand = document.getElementById('httpcode-policeman-hand');
+
+    isHandRotated = false;
+    hand.style.transformOrigin = 'center bottom 50';
+
+    hand.style.transition = 'transform 0.4s';
+
+    function rotateHandRight() {
+        isHandRotated = true;
+        hand.style.transform = 'rotate(10deg)';
+    }
+
+    function rotateHandLeft() {
+        isHandRotated = false;
+        hand.style.transform = 'rotate(-10deg)';
+    }
+
+    setInterval(function() {
+        if (isHandRotated) rotateHandLeft();
+        else rotateHandRight();
+    }, 400);
+    
+
+
+
+
+    var isAudioPlayed = false;
+
+    function playAudio() {
+        isAudioPlayed = true;
+        const myAudio = document.getElementById("myAudio");
+        myAudio.play();
+    }
+
+    document.body.onclick = ()=>{
+        if(isAudioPlayed) return ;
+        playAudio();
+    }
+}
+/* 403 Page Access Denied */

@@ -863,6 +863,53 @@
     margin-bottom: 10px;
 }
 /* Privacy Policy */
+
+/* Http Code */
+.httpcode-html {
+    background: linear-gradient(45deg, var(--primary-color) 0%, var(--third-color) 100%);
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+#httpcode-policeman-hand {
+    position: relative;
+}
+
+.httpcode-policeman-cls-1{
+    fill:var(--primary-color);
+}
+
+.httpcode-policeman-cls-2{
+    fill:#e6a964;
+}
+
+.httpcode-policeman-cls-3{
+    fill:#fcc082;
+}
+
+.httpcode-policeman-cls-4{
+    fill:var(--white-color);
+}
+
+#httpcode-policeman{
+    width: 350px;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+    overflow: visible;
+    position: absolute;
+}
+
+@media only screen and (max-width : 720px){
+    #httpcode-policeman{
+        max-height: 50%;
+    }
+}
+/* Http Code */
+/* 403 Page Access Denied */
 /******************** Desktop ********************/
 
 /******************** Mobile *********************/
