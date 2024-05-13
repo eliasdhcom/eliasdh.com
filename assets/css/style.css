@@ -873,19 +873,19 @@
     overflow: hidden;
 }
 
-.httpcode-policeman-cls-1{
+.httpcode-policeman-cls-1 {
     fill:var(--primary-color);
 }
 
-.httpcode-policeman-cls-2{
+.httpcode-policeman-cls-2 {
     fill:#e6a964;
 }
 
-.httpcode-policeman-cls-3{
+.httpcode-policeman-cls-3 {
     fill:#fcc082;
 }
 
-.httpcode-policeman-cls-4{
+.httpcode-policeman-cls-4 {
     fill:var(--white-color);
 }
 
@@ -899,13 +899,27 @@
     position: absolute;
 }
 
-@media only screen and (max-width : 720px){
-    #httpcode-policeman{
-        max-height: 50%;
-    }
+.httpcode-textbox {
+    fill:var(--white-color);
+    width: 200px;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    text-align: center;
+}
+
+.httpcode-text {
+    font-size: 16px;
+    font-weight: 900;
+    width: 200px;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    text-align: center;
 }
 /* Http Code */
-/* 403 Page Access Denied */
 /******************** Desktop ********************/
 
 /******************** Mobile *********************/
@@ -982,5 +996,11 @@
         font-size: 22px;
     }
     /* Services */
+
+    /* Http Code */
+    #httpcode-policeman{
+        max-height: 50%;
+    }
+    /* Http Code */
 }
 /******************** Mobile *********************/
