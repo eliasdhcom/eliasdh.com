@@ -693,8 +693,7 @@
     transform: scale(0.9);
     transition: visibility 0s, opacity 0.5s linear, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: absolute;
-    left: 50%;
-    top: 50%;
+
     transform-origin: center center;
     pointer-events: none;
 }
@@ -710,7 +709,6 @@
     height: auto;
     width: 300px;
     position: static;
-    left: auto;
     transform: scale(1);
     left: 0;
     top: 0;
@@ -937,6 +935,13 @@
 }
 
 @media screen and (max-width: 1300px) { /* Tablet */
+
+    /* Footer */
+    .footer {
+        height: 35%;
+    }
+    /* Footer */
+
     /* Navigation */
     .navigation {
         display: none;
@@ -969,7 +974,6 @@
     }
     /* Team */
 }
-
 
 @media (max-width: 768px) { /* Phone */
     /* Navigation */
