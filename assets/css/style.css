@@ -485,7 +485,7 @@
 
 .home-header-container .home-header-logo {
     fill: var(--white-color);
-    margin-left: 100%;
+    transform: translateX(50%);
     width: 456px;
     height: 456px;
 }
@@ -666,8 +666,8 @@
 /* Team */
 .home-team-container {
     margin-top: 0px;
-    margin-left: 15%;
-    margin-right: 15%;
+    margin-left: 10%;
+    margin-right: 10%;
     padding: 20px;
     display: flex;
     justify-content: center;
@@ -923,12 +923,61 @@
 /******************** Desktop ********************/
 
 /******************** Mobile *********************/
-@media (max-width: 768px) {
+@media screen and (max-width: 1500px) { /* Tablet */
+    /* Team */
+    .home-team-container {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .home-team-container-carousel-item {
+        margin: 10px;
+    }
+    /* Team */
+}
+
+@media screen and (max-width: 1300px) { /* Tablet */
     /* Navigation */
     .navigation {
         display: none;
     }
     /* Navigation */
+
+    /* Header */
+    .home-header-container .home-header-logo {
+        transform: translateX(0%);
+        width: 300px;
+        height: 300px;
+    }
+    /* Header */
+
+    /* Services */
+    .home-services-container {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    /* Services */
+
+    /* Team */
+    .home-team-container {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .home-team-container-carousel-item {
+        margin: 10px;
+    }
+    /* Team */
+}
+
+
+@media (max-width: 768px) { /* Phone */
+    /* Navigation */
+    .navigation {
+        display: none;
+    }
+    /* Navigation */
+
     /* Title */
     .home-title-back {
         font-size: 84px;
@@ -961,12 +1010,16 @@
 
     .home-header-container .home-header-logo {
         margin: 0;
-        width: 300px;
-        height: 300px;
     }
 
     .home-header-container .home-header-title {
         margin: 10px;
+    }
+
+    .home-header-container .home-header-company-name {
+        color: var(--primary-color);
+        font-size: 84px;
+        font-weight: 250;
     }
     /* Header */
 

@@ -59,37 +59,37 @@ if (window.location.pathname === '/' || window.location.pathname === '/index.htm
     /* Team */
     document.addEventListener("DOMContentLoaded", function () {
         const carouselItems = document.querySelectorAll(".home-team-container-carousel-item");
-        if (window.innerWidth < 768) totalItems = carouselItems.length;
-        else totalItems = carouselItems.length-2;
-        
-        const itemsToShow = 3; // Number of items to show at once
+        let totalItems;
+
+        if (window.innerWidth >= 1300) totalItems = carouselItems.length - 2; // Desktop (3 items)
+        else if (window.innerWidth >= 768) totalItems = carouselItems.length - 1; // iPad (2 items)
+        else totalItems = carouselItems.length; // Telefoon (1 item)
+
+        const itemsToShow = window.innerWidth >= 1300 ? 3 : (window.innerWidth >= 768 ? 2 : 1); // Number of items to show at once
         let currentIndex = 0;
 
         function showItems(startIndex) {
             carouselItems.forEach((item, i) => {
-                if (window.innerWidth < 768) { // Mobile (1 item per keer)
-                    if (i === startIndex) {
-                        item.classList.add("home-team-container-carousel-item-active");
-                    } else {
-                        item.classList.remove("home-team-container-carousel-item-active");
-                    }
-                } else { // Desktop (3 items per keer)
-                    if (i >= startIndex && i < startIndex + itemsToShow) {
-                        item.classList.add("home-team-container-carousel-item-active");
-                    } else {
-                        item.classList.remove("home-team-container-carousel-item-active");
-                    }
+                if (window.innerWidth >= 1300) { // Desktop (3 items)
+                    if (i >= startIndex && i < startIndex + itemsToShow) item.classList.add("home-team-container-carousel-item-active");
+                    else item.classList.remove("home-team-container-carousel-item-active");
+                } else if (window.innerWidth >= 768) { // iPad (2 items)
+                    if (i >= startIndex && i < startIndex + itemsToShow) item.classList.add("home-team-container-carousel-item-active");
+                    else item.classList.remove("home-team-container-carousel-item-active");
+                } else { // Telefoon (1 item)
+                    if (i === startIndex) item.classList.add("home-team-container-carousel-item-active");
+                    else item.classList.remove("home-team-container-carousel-item-active");
                 }
             });
         }
-
+    
         function nextItem() {
             currentIndex = (currentIndex + 1) % totalItems;
             showItems(currentIndex);
         }
-
+    
         showItems(currentIndex);
-
+    
         setInterval(nextItem, 5000); // 5 seconden interval
     });
 
