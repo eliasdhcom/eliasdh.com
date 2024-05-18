@@ -251,7 +251,7 @@
 .footer {
     background-color: var(--primary-color);
     color: var(--third-color);
-    height: 25%;
+    height: 250px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -361,15 +361,18 @@
 /* Footer */
 
 /* Navigation */
-.navigation {
-    background-color: var(--primary-color);
+.navigation-container {
+    position: fixed;
     top: 0;
     right: 0;
+    z-index: 1000;
+}
+
+.navigation {
+    background-color: var(--primary-color);
     width: 110px;
     height: 110px;
     border-radius: 0 0 0 100px;
-    z-index: 1000;
-    position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -385,19 +388,32 @@
     cursor: pointer;
 }
 
-.navigation svg:hover {
+.navigation-container:hover .navigation svg {
     transform: rotate(-90deg);
     transition: 0.5s;
 }
 
+.navigation-container:hover .navigation-list {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+}
+
 .navigation .navigation-list {
     color: var(--white-color);
-    width: 300%;
+    width: auto;
     position: absolute;
     visibility: hidden;
-    top: 50%;
-    left: 100%;
-    transform: translate(-50%, -50%);
+    opacity: 0;
+    top: 110px; /* Position the menu below the navigation icon */
+    right: 0;
+    transition: visibility 0s, opacity 0.5s, transform 0.5s;
+}
+
+.navigation .navigation-list ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 .navigation .navigation-list ul li {
@@ -406,28 +422,13 @@
 }
 
 .navigation .navigation-list ul li a {
-    color: var(--white-color);
     font-size: 24px;
     font-weight: 1000;
     text-decoration: none;
 }
-
-.navigation .navigation-list ul li a:hover {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-.overlay {
-    background-color: var(--third-color);
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    visibility: hidden;
-    position: fixed;
-    transition: 0.5s;
-}
 /* Navigation */
+
+
 /***************** Desktop/Mobile ****************/
 
 /******************** Desktop ********************/
@@ -935,13 +936,6 @@
 }
 
 @media screen and (max-width: 1300px) { /* Tablet */
-
-    /* Footer */
-    .footer {
-        height: 35%;
-    }
-    /* Footer */
-
     /* Navigation */
     .navigation {
         display: none;

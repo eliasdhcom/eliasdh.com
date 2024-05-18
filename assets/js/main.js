@@ -194,38 +194,12 @@ function setJavaScriptFooter() {
 function setJavaScriptNavigation() {
     if (window.innerWidth < 768) return;
     document.getElementById('navigationIcon').addEventListener('click', function() {
-        document.getElementById('navigationIcon').style.visibility = 'hidden';
-        document.getElementById('overlay').style.visibility = 'visible';
-        document.getElementById('navigationList').style.visibility = 'visible';
-
-        document.getElementById('navigation').style.top = '50%';
-        document.getElementById('navigation').style.right = '50%';
-
-        document.body.style.overflow = 'hidden';
-    });
-
-    document.getElementById('overlay').addEventListener('click', function() {
-        document.getElementById('navigationIcon').style.visibility = 'visible';
-        document.getElementById('navigationList').style.visibility = 'hidden';
-        document.getElementById('overlay').style.visibility = 'hidden';
-
-        document.getElementById('navigation').style.top = '0';
-        document.getElementById('navigation').style.right = '0';
-
-        document.body.style.overflow = 'auto';
-    });
-    
-    Array.from(document.getElementById('navigationList').getElementsByTagName('a')).forEach(function(item) {
-        item.addEventListener('click', function() {
-            document.getElementById('navigationIcon').style.visibility = 'visible';
-            document.getElementById('navigationList').style.visibility = 'hidden';
-            document.getElementById('overlay').style.visibility = 'hidden';
-
-            document.getElementById('navigation').style.top = '0';
-            document.getElementById('navigation').style.right = '0';
-
-            document.body.style.overflow = 'auto';
-        });
+        const navigationList = document.getElementById('navigationList');
+        if (navigationList.style.visibility === 'visible') {
+            navigationList.style.visibility = 'hidden';
+        } else {
+            navigationList.style.visibility = 'visible';
+        }
     });
 }
 /* Navigation */
