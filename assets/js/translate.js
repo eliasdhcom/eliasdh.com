@@ -549,9 +549,10 @@ const translations = {
 
 function changeLanguage() {
     const selectedLanguage = document.getElementById("language-select").value;
+    localStorage.setItem("selectedLanguage", selectedLanguage); // Change the selected language in local storage
     if (window.location.pathname === '/' || window.location.pathname === '/index.html' || window.location.pathname === '/index.php') {
         texts = setTextForHomeHeaderSubtitle(selectedLanguage);
-        displayText(texts, 'home-header-subtitle', 100); // This function is defined in main.js
+        displayText(texts, 'home-header-subtitle', 100); // This function is defined in /assets/js/main.js
     }
     translatePage(selectedLanguage);
 }
@@ -592,4 +593,8 @@ if (window.location.pathname === '/' || window.location.pathname === '/index.htm
     }
 }
 
-translatePage("en");
+document.addEventListener('DOMContentLoaded', function() {
+    const selectedLanguage = localStorage.getItem("selectedLanguage");
+    if (selectedLanguage)  translatePage(selectedLanguage);
+    else translatePage("en");
+});

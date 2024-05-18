@@ -196,6 +196,8 @@ function setJavaScriptFooter() {
 /* Navigation */
 function setJavaScriptNavigation() {
     if (window.innerWidth < 768) return;
+    document.getElementById("language-select").value = localStorage.getItem("selectedLanguage"); // Set selected language from local storage
+
     document.getElementById('navigationIcon').addEventListener('click', function() {
         const navigationList = document.getElementById('navigationList');
         if (navigationList.style.visibility === 'visible') {
