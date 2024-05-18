@@ -10,14 +10,21 @@
             <svg viewBox="0 0 16 16" id="navigationIcon" class="navigation-icon">
                 <path d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
             </svg>
-            <section class="navigation-list" id="navigationList"> <!--SEO-->
-                <h5 style="display: none;">Navigation List</h5> <!--SEO-->
+            <section class="navigation-list" id="navigationList">
+                <h6 style="display: none;">Navigation List</h6> <!--SEO-->
                 <ul>
                     <li><a class="home-button" href="/index.html#home">Home</a></li>
                     <li><a class="home-button" href="/index.html#about">About</a></li>
                     <li><a class="home-button" href="/index.html#services">Services</a></li>
                     <li><a class="home-button" href="/index.html#team">Team</a></li>
                     <li><a class="home-button" href="https://cloud.eliasdh.com">Login</a></li>
+                    <li>
+                        <select class="home-dropdown" id="language-select" onchange="changeLanguage()">
+                            <option value="en">English</option>
+                            <option value="nl">Nederlands</option>
+                            <option value="fr">Français</option>
+                        </select>
+                    </li>
                 </ul>
             </section>
         </section>

@@ -8,6 +8,8 @@
 if (window.location.pathname === '/' || window.location.pathname === '/index.html' || window.location.pathname === '/index.php') {
     /* Subtitle */
     document.addEventListener('DOMContentLoaded', function() {
+        var currentDisplayInterval;
+
         function displayText(textArray, elementId, interval) {
             var currentIndex = 0;
             var currentText = textArray[currentIndex];
@@ -16,7 +18,7 @@ if (window.location.pathname === '/' || window.location.pathname === '/index.htm
 
             function displayNextText() {
                 var i = 0;
-                var intervalId = setInterval(function() {
+                currentDisplayInterval = setInterval(function() {
                     if (i < currentText.length) {
                         var word = currentText[i];
                         textElement.textContent += word;
@@ -24,7 +26,7 @@ if (window.location.pathname === '/' || window.location.pathname === '/index.htm
                         cursorPosition++;
                         i++;
                     } else {
-                        clearInterval(intervalId);
+                        clearInterval(currentDisplayInterval);
                         setTimeout(function() {
                             removeCursor();
                             textElement.textContent = '';
@@ -42,17 +44,18 @@ if (window.location.pathname === '/' || window.location.pathname === '/index.htm
                 if (cursor) cursor.parentNode.removeChild(cursor);
             }
 
+            function stopCurrentAnimation() {
+                clearInterval(currentDisplayInterval);
+                textElement.textContent = '';
+                removeCursor();
+            }
+
+            stopCurrentAnimation();
             displayNextText();
         }
 
-        var texts = [
-            "We are a company that", "provides hosting services.",
-            "And other services related", "to web development.",
-            "We are here to help", "you with your online presence.",
-            "Tell us what you need", "and we will make it happen."
-        ];
-
-        displayText(texts, 'home-header-subtitle', 100); // 100ms interval
+        displayText(texts, 'home-header-subtitle', 100);
+        window.displayText = displayText;
     });
     /* Subtitle */
 
