@@ -85,14 +85,14 @@ if (window.location.pathname === '/' || window.location.pathname === '/index.htm
                 }
             });
         }
-    
+
         function nextItem() {
             currentIndex = (currentIndex + 1) % totalItems;
             showItems(currentIndex);
         }
-    
+
         showItems(currentIndex);
-    
+
         setInterval(nextItem, 5000); // 5 seconden interval
     });
 
@@ -196,7 +196,7 @@ function setJavaScriptFooter() {
 /* Navigation */
 function setJavaScriptNavigation() {
     if (window.innerWidth < 768) return;
-    if (localStorage.getItem("selectedLanguage") === null) localStorage.setItem("selectedLanguage", "en"); // Set default language to English
+    document.getElementById("language-select").value = localStorage.getItem("selectedLanguage");
 
     document.getElementById('navigationIcon').addEventListener('click', function() {
         const navigationList = document.getElementById('navigationList');
