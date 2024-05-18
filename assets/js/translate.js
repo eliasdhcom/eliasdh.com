@@ -595,6 +595,6 @@ if (window.location.pathname === '/' || window.location.pathname === '/index.htm
 
 document.addEventListener('DOMContentLoaded', function() {
     const selectedLanguage = localStorage.getItem("selectedLanguage");
-    if (selectedLanguage)  translatePage(selectedLanguage);
+    if (selectedLanguage) translatePage(selectedLanguage);
     else translatePage("en");
 });
