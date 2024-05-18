@@ -110,7 +110,7 @@ const translations = {
         "home-translate-48": "Aarzel niet om contact met ons op te nemen met vragen of verzoeken. We kijken ernaar uit om met je in contact te komen!",
     },
     fr: {
-        "home-translate-BN": "Acheter Maintenant",
+        "home-translate-BN": "Acheter",
         "home-translate-CU": "Contactez Nous",
         "home-translate-1": "Salut bienvenue dans notre entreprise",
         "home-translate-2": "",
