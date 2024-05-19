@@ -593,8 +593,11 @@ if (window.location.pathname === '/' || window.location.pathname === '/index.htm
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const selectedLanguage = localStorage.getItem("selectedLanguage");
-    if (selectedLanguage === null) localStorage.setItem("selectedLanguage", "en");
+function setDefaultLanguage() {
+    if (localStorage.getItem("selectedLanguage") === null) localStorage.setItem("selectedLanguage", "en");
+
+    selectedLanguage = localStorage.getItem("selectedLanguage");
+
+    document.getElementById("language-select").value = selectedLanguage
     translatePage(selectedLanguage);
-});
+}
