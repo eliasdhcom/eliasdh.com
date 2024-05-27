@@ -193,20 +193,20 @@ function setJavaScriptFooter() {
 }
 /* Footer */
 
-/* Navigation */
-function setJavaScriptNavigation() {
+/* Navigation Bar */
+function setJavaScriptNavigationBar() {
     if (window.innerWidth < 768) return;
 
-    document.getElementById('navigationIcon').addEventListener('click', function() {
-        const navigationList = document.getElementById('navigationList');
-        if (navigationList.style.visibility === 'visible') {
-            navigationList.style.visibility = 'hidden';
+    document.getElementById('navigationbarIcon').addEventListener('click', function() {
+        const navigationbarList = document.getElementById('navigationbarList');
+        if (navigationbarList.style.visibility === 'visible') {
+            navigationbarList.style.visibility = 'hidden';
         } else {
-            navigationList.style.visibility = 'visible';
+            navigationbarList.style.visibility = 'visible';
         }
     });
 }
-/* Navigation */
+/* Navigation Bar */
 
 /* Http Code */
 if (window.location.pathname === '/assets/pages/403.html') {

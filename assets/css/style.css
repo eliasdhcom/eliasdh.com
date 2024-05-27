@@ -402,15 +402,15 @@
 }
 /* Footer */
 
-/* Navigation */
-.navigation-container {
+/* Navigation Bar */
+.navigationbar-container {
     position: fixed;
     top: 0;
     right: 0;
     z-index: 1000;
 }
 
-.navigation {
+.navigationbar {
     background-color: var(--primary-color);
     width: 110px;
     height: 110px;
@@ -421,7 +421,7 @@
     transition: 0.5s;
 }
 
-.navigation svg {
+.navigationbar svg {
     fill: var(--white-color);
     margin: 0px;
     padding: 0px;
@@ -430,18 +430,18 @@
     cursor: pointer;
 }
 
-.navigation-container:hover .navigation svg {
+.navigationbar-container:hover .navigationbar svg {
     transform: rotate(-90deg);
     transition: 0.5s;
 }
 
-.navigation-container:hover .navigation-list {
+.navigationbar-container:hover .navigationbar-list {
     visibility: visible;
     opacity: 1;
     transform: translateX(0);
 }
 
-.navigation .navigation-list {
+.navigationbar .navigationbar-list {
     color: var(--white-color);
     width: auto;
     position: absolute;
@@ -452,23 +452,23 @@
     transition: visibility 0s, opacity 0.5s, transform 0.5s;
 }
 
-.navigation .navigation-list ul {
+.navigationbar .navigationbar-list ul {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
 }
 
-.navigation .navigation-list ul li {
+.navigationbar .navigationbar-list ul li {
     margin: 10px;
     list-style: none;
 }
 
-.navigation .navigation-list ul li a {
+.navigationbar .navigationbar-list ul li a {
     font-size: 24px;
     font-weight: 1000;
     text-decoration: none;
 }
-/* Navigation */
+/* Navigation Bar */
 
 /***************** Desktop/Mobile ****************/
 
@@ -977,11 +977,11 @@
 }
 
 @media screen and (max-width: 1300px) { /* Tablet */
-    /* Navigation */
-    .navigation {
+    /* Navigation Bar */
+    .navigationbar {
         display: none;
     }
-    /* Navigation */
+    /* Navigation Bar */
 
     /* Header */
     .home-header-container .home-header-logo {
@@ -1011,11 +1011,11 @@
 }
 
 @media (max-width: 768px) { /* Phone */
-    /* Navigation */
-    .navigation {
+    /* Navigation Bar */
+    .navigationbar {
         display: none;
     }
-    /* Navigation */
+    /* Navigation Bar */
 
     /* Title */
     .home-title-back {
