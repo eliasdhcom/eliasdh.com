@@ -5,7 +5,7 @@
  */
 
 /* Home Page */
-if (window.location.pathname === '/' || window.location.pathname === '/index.html' || window.location.pathname === '/index.php') {
+if (document.getElementById('home')) {
     /* Subtitle */
     document.addEventListener('DOMContentLoaded', function() {
         var currentDisplayInterval;
@@ -209,7 +209,7 @@ function setJavaScriptNavigationBar() {
 /* Navigation Bar */
 
 /* Http Code */
-if (window.location.pathname === '/assets/pages/403.html') {
+if (window.location.pathname === '/403') {
     var hand = document.getElementById('httpcode-policeman-hand');
 
     isHandRotated = false;
@@ -245,3 +245,54 @@ if (window.location.pathname === '/assets/pages/403.html') {
     }
 }
 /* Http Code */
+
+/* Change to relative paths */
+const routes = {
+    '/': '/index.html',
+    '/home': 'home',
+    '/about': 'about',
+    '/services': 'services',
+    '/team': 'team',
+    '/privacy-policy': '/assets/pages/privacy-policy.html',
+    '/legal-guidelines': '/assets/pages/legal-guidelines.html',
+    '/403': '/assets/pages/403.html',
+    '/404': '/assets/pages/404.html',
+};
+
+function navigateToId(elementId, path) {
+    const urlWithParams = new URL(path, window.location.href);
+    urlWithParams.searchParams.append('scrollTo', elementId);
+    window.location.href = urlWithParams.href;
+}
+
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const elementId = urlParams.get('scrollTo');
+    if (elementId) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+    rewriteCurrentURL(elementId);
+    
+};
+
+function loadContent(prettyURL) {
+    const actualURL = routes[prettyURL] || null;
+    if (actualURL) {
+        fetch(actualURL).then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.text();
+        })
+    }
+}
+
+function rewriteCurrentURL(path) {
+    const prettyURL = Object.keys(routes).find(key => routes[key] === path);
+    if (prettyURL) history.replaceState({}, '', prettyURL);
+    loadContent(prettyURL || path);
+}
+
+rewriteCurrentURL(window.location.pathname);
+/* Change to relative paths */

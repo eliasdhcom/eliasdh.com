@@ -565,7 +565,7 @@ function translatePage(language) {
     });
 }
 
-if (window.location.pathname === '/' || window.location.pathname === '/index.html' || window.location.pathname === '/index.php') { 
+if (document.getElementById('home')) {
     var texts = setTextForHomeHeaderSubtitle("en");
     function setTextForHomeHeaderSubtitle(language) {
         switch (language) {
