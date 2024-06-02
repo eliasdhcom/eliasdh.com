@@ -209,7 +209,7 @@ function setJavaScriptNavigationBar() {
 /* Navigation Bar */
 
 /* Http Code */
-if (document.getElementById('40x')) {
+if (document.getElementById('403')) {
     var hand = document.getElementById('httpcode-policeman-hand');
 
     isHandRotated = false;
