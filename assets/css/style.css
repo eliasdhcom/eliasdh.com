@@ -468,6 +468,42 @@
     font-weight: 1000;
     text-decoration: none;
 }
+
+.navigationbar::before, .navigationbar::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(circle, var(--secondary-color) 1%, transparent 70%);
+    opacity: 0;
+    z-index: -1;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes radiation {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.3);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.6);
+    }
+}
+
+.navigationbar::before {
+    animation: radiation 2s infinite;
+}
+
+.navigationbar::after {
+    animation: radiation 2s infinite 0.75s;
+}
 /* Navigation Bar */
 
 /***************** Desktop/Mobile ****************/
