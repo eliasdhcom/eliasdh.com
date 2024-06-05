@@ -202,12 +202,6 @@
     border-radius: 10px;
 }
 
-.context-menu-item li:active {
-    background: var(--primary-color);
-    color: var(--white-color);
-    border-radius: 10px;
-}
-
 .context-menu-dark-mode {
     background-color: var(--darkmode-color);
     color: var(--white-color);
