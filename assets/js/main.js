@@ -98,7 +98,7 @@ if (document.getElementById('home')) {
 
     document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("home-team-emailIcon").addEventListener("click", function () {
-            window.location.href = "mailto:info@eliasdh.com?SUBJECT=Join%20our%20team&BODY=Dear%20EliasDH%20Team";
+            window.location.href = "mailto:elias.dehondt@outlook.com?SUBJECT=Join%20our%20team&BODY=Dear%20EliasDH%20Team";
         });
     });
     /* Team */
