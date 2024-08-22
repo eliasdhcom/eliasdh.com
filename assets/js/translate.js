@@ -32,7 +32,7 @@ const translations = {
         "home-translate-22": "100GB Storage",
         "home-translate-23": "4GB RAM",
         "home-translate-24": "Unlimited Data *",
-        "home-translate-25": "€4s/y Domain Name *",
+        "home-translate-25": "€4/y Domain Name *",
         "home-translate-26": "Business €160/m",
         "home-translate-27": "1TB Storage",
         "home-translate-28": "16GB RAM",
