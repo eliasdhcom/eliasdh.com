@@ -138,7 +138,10 @@ const translations = {
         "privacy_policy-translate-43": "Advertising cookies &minus; These cookies are used to deliver advertisements that are relevant to you and your interests. In addition, they are used to limit the number of times you see an advertisement. They are usually placed on the website by advertising networks with the website operator&apos;s permission. These cookies remember that you have visited a website and this information is shared with other organizations such as advertisers. Often targeting or advertising cookies will be linked to site functionality provided by the other organization.",
         "privacy_policy-translate-44": "You can remove cookies stored on your computer via your browser settings. Alternatively, you can control some 3rd party cookies by using a privacy enhancement platform such as <a href='http://optout.aboutads.info' target='_blank'>optout.aboutads.info</a> or <a href='http://www.youronlinechoices.com' target='_blank'>youronlinechoices.com</a>. For more information about cookies, visit <a href='http://www.allaboutcookies.org' target='_blank' rel='noopener noreferrer'>allaboutcookies.org</a>.",
         "privacy_policy-translate-45": "Changes to this Privacy Policy",
-        "privacy_policy-translate-46": "We reserve the right to make changes to this Privacy Policy."
+        "privacy_policy-translate-46": "We reserve the right to make changes to this Privacy Policy.",
+        "domain_rented-translate-1": "Domain Rented",
+        "domain_rented-translate-2": "This domain is owned and managed by the EliasDH Team.",
+        "domain_rented-translate-3": "For more information, please contact us at <a href='mailto:elias.dehondt@outlook.com'>info@eliasdh.com</a>."
     },
     nl: {
         "home-translate-BN": "Koop Nu",
@@ -273,7 +276,10 @@ const translations = {
         "privacy_policy-translate-43": "Reclamecookies &minus; Deze cookies worden gebruikt om advertenties te leveren die relevant zijn voor u en uw interesses. Daarnaast worden ze gebruikt om het aantal keren dat u een advertentie ziet te beperken. Ze worden meestal geplaatst op de website door advertentienetwerken met toestemming van de website-exploitant. Deze cookies onthouden dat u een website heeft bezocht en deze informatie wordt gedeeld met andere organisaties zoals adverteerders. Vaak worden targeting- of advertentiecookies gekoppeld aan de functionaliteit van de site die wordt geleverd door de andere organisatie.",
         "privacy_policy-translate-44": "U kunt cookies die op uw computer zijn opgeslagen verwijderen via uw browserinstellingen. U kunt ook sommige cookies van derden beheren door een privacyverbeteringsplatform te gebruiken zoals <a href='http://optout.aboutads.info' target='_blank'>optout.aboutads.info</a> of <a href='http://www.youronlinechoices.com' target='_blank'>youronlinechoices.com</a>. Voor meer informatie over cookies, bezoek <a href='http://www.allaboutcookies.org' target='_blank' rel='noopener noreferrer'>allaboutcookies.org</a>.",
         "privacy_policy-translate-45": "Wijzigingen in dit Privacybeleid",
-        "privacy_policy-translate-46": "We behouden ons het recht voor om wijzigingen aan te brengen in dit Privacybeleid."
+        "privacy_policy-translate-46": "We behouden ons het recht voor om wijzigingen aan te brengen in dit Privacybeleid.",
+        "domain_rented-translate-1": "Domein Gehuurd",
+        "domain_rented-translate-2": "Dit domein is eigendom van en wordt beheerd door het EliasDH Team.",
+        "domain_rented-translate-3": "Voor meer informatie kunt u contact met ons opnemen via <a href='mailto:elias.dehondt@outlook.com'>info@eliasdh.com</a>."
     },
     fr: {
         "home-translate-BN": "Acheter",
@@ -408,7 +414,10 @@ const translations = {
         "privacy_policy-translate-43": "Cookies publicitaires &minus; Ces cookies sont utilisés pour diffuser des publicités qui sont pertinentes pour vous et vos intérêts. De plus, ils sont utilisés pour limiter le nombre de fois où vous voyez une publicité. Ils sont généralement placés sur le site web par des réseaux publicitaires avec l'autorisation de l'exploitant du site. Ces cookies se souviennent que vous avez visité un site web et ces informations sont partagées avec d'autres organisations telles que des annonceurs. Souvent, les cookies de ciblage ou de publicité seront liés à la fonctionnalité du site fournie par l'autre organisation.",
         "privacy_policy-translate-44": "Vous pouvez supprimer les cookies stockés sur votre ordinateur via les paramètres de votre navigateur. Vous pouvez également gérer certains cookies tiers en utilisant une plateforme de confidentialité améliorée telle que <a href='http://optout.aboutads.info' target='_blank'>optout.aboutads.info</a> ou <a href='http://www.youronlinechoices.com' target='_blank'>youronlinechoices.com</a>. Pour plus d'informations sur les cookies, visitez <a href='http://www.allaboutcookies.org' target='_blank' rel='noopener noreferrer'>allaboutcookies.org</a>.",
         "privacy_policy-translate-45": "Modifications de cette Politique de Confidentialité",
-        "privacy_policy-translate-46": "Nous nous réservons le droit d'apporter des modifications à cette Politique de Confidentialité."
+        "privacy_policy-translate-46": "Nous nous réservons le droit d'apporter des modifications à cette Politique de Confidentialité.",
+        "domain_rented-translate-1": "Domaine Loué",
+        "domain_rented-translate-2": "Ce domaine est la propriété et est géré par l'équipe EliasDH.",
+        "domain_rented-translate-3": "Pour plus d'informations, veuillez nous contacter à <a href='mailto:elias.dehondt@outlook.com'>info@eliasdh.com</a>."
     },
     de: {
         "home-translate-BN": "Kaufen",
@@ -543,7 +552,10 @@ const translations = {
         "privacy_policy-translate-43": "Werbe-Cookies &minus; Diese Cookies werden verwendet, um Anzeigen zu schalten, die für Sie und Ihre Interessen relevant sind. Darüber hinaus werden sie verwendet, um die Häufigkeit zu begrenzen, mit der Sie eine Anzeige sehen. Sie werden in der Regel von Werbenetzwerken mit Genehmigung des Website-Betreibers auf der Website platziert. Diese Cookies merken sich, dass Sie eine Website besucht haben, und diese Informationen werden mit anderen Organisationen wie Werbetreibenden geteilt. Häufig werden Targeting- oder Werbe-Cookies mit der Funktionalität der Website verknüpft, die von der anderen Organisation bereitgestellt wird.",
         "privacy_policy-translate-44": "Sie können die auf Ihrem Computer gespeicherten Cookies über die Browsereinstellungen löschen. Sie können auch bestimmte Cookies von Drittanbietern verwalten, indem Sie eine verbesserte Datenschutzplattform wie <a href='http://optout.aboutads.info' target='_blank'>optout.aboutads.info</a> oder <a href='http://www.youronlinechoices.com' target='_blank'>youronlinechoices.com</a> verwenden. Weitere Informationen zu Cookies finden Sie unter <a href='http://www.allaboutcookies.org' target='_blank' rel='noopener noreferrer'>allaboutcookies.org</a>.",
         "privacy_policy-translate-45": "Änderungen dieser Datenschutzrichtlinie",
-        "privacy_policy-translate-46": "Wir behalten uns das Recht vor, Änderungen an dieser Datenschutzrichtlinie vorzunehmen."
+        "privacy_policy-translate-46": "Wir behalten uns das Recht vor, Änderungen an dieser Datenschutzrichtlinie vorzunehmen.",
+        "domain_rented-translate-1": "Gemietete Domain",
+        "domain_rented-translate-2": "Diese Domain ist Eigentum und wird von dem EliasDH-Team verwaltet.",
+        "domain_rented-translate-3": "Für weitere Informationen kontaktieren Sie uns bitte unter <a href='mailto:elias.dehondt@outlook.com'>info@eliasdh.com</a>."
     }
 };
 
