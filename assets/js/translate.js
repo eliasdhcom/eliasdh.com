@@ -6,7 +6,6 @@
 
 const translations = {
     en: {
-        "home-translate-BN": "Buy Now",
         "home-translate-CU": "Contact Us",
         "home-translate-1": "Hi there welcome to our company",
         "home-translate-2": "",
