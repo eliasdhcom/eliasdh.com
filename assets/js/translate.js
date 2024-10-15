@@ -6,6 +6,7 @@
 
 const translations = {
     en: {
+        "home-translate-apply": "Apply Now",
         "home-translate-CU": "Contact Us",
         "home-translate-1": "Hi there welcome to our company",
         "home-translate-2": "",
@@ -143,6 +144,7 @@ const translations = {
         "domain_rented-translate-3": "For more information, please contact us at <a href='mailto:elias.dehondt@outlook.com'>info@eliasdh.com</a>."
     },
     nl: {
+        "home-translate-apply": "Nu Solliciteren",
         "home-translate-BN": "Koop Nu",
         "home-translate-CU": "Contacteer Ons",
         "home-translate-1": "Hallo daar welkom bij ons bedrijf",
@@ -281,6 +283,7 @@ const translations = {
         "domain_rented-translate-3": "Voor meer informatie kunt u contact met ons opnemen via <a href='mailto:elias.dehondt@outlook.com'>info@eliasdh.com</a>."
     },
     fr: {
+        "home-translate-apply": "Postuler Maintenant",
         "home-translate-BN": "Acheter",
         "home-translate-CU": "Contactez Nous",
         "home-translate-1": "Salut bienvenue dans notre entreprise",
@@ -419,6 +422,7 @@ const translations = {
         "domain_rented-translate-3": "Pour plus d'informations, veuillez nous contacter à <a href='mailto:elias.dehondt@outlook.com'>info@eliasdh.com</a>."
     },
     de: {
+        "home-translate-apply": "Jetzt Bewerben",
         "home-translate-BN": "Kaufen",
         "home-translate-CU": "Kontaktiere Uns",
         "home-translate-1": "Hallo, willkommen in unserem Unternehmen",
