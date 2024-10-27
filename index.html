@@ -3,20 +3,32 @@
 <html class="global-html" lang="en">
     <head>
     <!--Meta + Title-->
-    <meta charset="utf-8">
     <title>EliasDH</title>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:title" content="EliasDH">
     <meta property="og:description" content="Welcome to EliasDH, a company that offers hosting services and web development.">
+    <meta name="description" content="Welcome to EliasDH, a company that offers hosting services and web development.">
     <meta name="author" content="Elias De Hondt">
-    <meta name="theme-color" content="#4F94F0">
     <meta name="keywords" content="EliasDH, Hosting, Web Development">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://eliasdh.com">
     <meta property="og:site_name" content="EliasDH">
     <meta property="og:image" content="/assets/media/images/logo.png">
-    <meta name="google-site-verification" content="WQgx6OJAd02y4JBFqUxocL74G-gpnlD5I5JqlzbAsak" />
+    <meta name="google-site-verification" content="WQgx6OJAd02y4JBFqUxocL74G-gpnlD5I5JqlzbAsak">
     <!--Meta + Title-->
+    <!--Twitter Card Metadata-->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="EliasDH">
+    <meta name="twitter:description" content="Welcome to EliasDH, a company that offers hosting services and web development.">
+    <meta name="twitter:image" content="/assets/media/images/logo.png">
+    <!--Twitter Card Metadata-->
+    <!--Progressive Web App (PWA) Metadata-->
+    <meta name="theme-color" content="#4F94F0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/assets/media/images/icon-192x192.png">
+    <!--Progressive Web App (PWA) Metadata-->
     <!--Favicon-->
     <link rel="icon" href="/assets/media/images/favicon.ico">
     <!--Favicon-->
@@ -32,7 +44,8 @@
                 <h2 style="display: none;">Logo</h2> <!--SEO-->
                 <section>
                     <h3 style="display: none;">Logo/SVG</h3> <!--SEO-->
-                    <svg class="home-header-logo" viewBox="0 -1 17 32">
+                    <svg class="home-header-logo" viewBox="0 -1 17 32" aria-labelledby="logo-title">
+                        <title id="logo-title">EliasDH Logo</title>
                         <defs>
                             <filter id="glow">
                                 <feGaussianBlur in="SourceGraphic" stdDeviation="0.3" result="blur"/>
@@ -62,7 +75,8 @@
                 <h2 style="display: none;">Arrow</h2> <!--SEO-->
                 <section>
                     <h3 style="display: none;">Arrow Icon</h3> <!--SEO-->
-                    <svg class="home-header-arrow" viewBox="0 0 16 16">
+                    <svg class="home-header-arrow" viewBox="0 0 16 16" aria-labelledby="arrow-title">
+                        <title id="arrow-title">Arrow</title>
                         <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
                     </svg>
                 </section>
@@ -116,7 +130,8 @@
                         <section class="home-services-box-title">
                             <h5 style="display: none;">Economy Icon</h5> <!--SEO-->
                             <aside class="home-services-circle">
-                                <svg class="home-services-svg" viewBox="0 0 16 16">
+                                <svg class="home-services-svg" viewBox="0 0 16 16" aria-labelledby="economy-title">
+                                    <title id="economy-title">Economy</title>
                                     <path d="M2 9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1M2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1"/>
                                 </svg>
                             </aside>
@@ -140,7 +155,8 @@
                         <section class="home-services-box-title">
                             <h5 style="display: none;">Personal Icon</h5> <!--SEO-->
                             <aside class="home-services-circle">
-                                <svg class="home-services-svg" viewBox="0 0 16 16">
+                                <svg class="home-services-svg" viewBox="0 0 16 16" aria-labelledby="personal-title">
+                                    <title id="personal-title">Personal</title>
                                     <path d="M2 9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1M2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1"/>
                                 </svg>
                             </aside>
@@ -164,7 +180,8 @@
                         <section class="home-services-box-title">
                             <h5 style="display: none;">Business Icon</h5> <!--SEO-->
                             <aside class="home-services-circle">
-                                <svg class="home-services-svg" viewBox="0 0 16 16">
+                                <svg class="home-services-svg" viewBox="0 0 16 16" aria-labelledby="business-title">
+                                    <title id="business-title">Business</title>
                                     <path d="M2 9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1M2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1"/>
                                 </svg>
                             </aside>
@@ -188,7 +205,8 @@
                         <section class="home-services-box-title">
                             <h5 style="display: none;">Professional Icon</h5> <!--SEO-->
                             <aside class="home-services-circle">
-                                <svg class="home-services-svg" viewBox="0 0 16 16">
+                                <svg class="home-services-svg" viewBox="0 0 16 16" aria-labelledby="professional-title">
+                                    <title id="professional-title">Professional</title>
                                     <path d="M2 9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1M2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1"/>
                                 </svg>
                             </aside>
@@ -215,7 +233,8 @@
                         <h4 style="display: none;">Front end development</h4> <!--SEO-->
                         <section class="home-services-box-title">
                             <aside class="home-services-circle">
-                                <svg class="home-services-svg" viewBox="0 0 16 16">
+                                <svg class="home-services-svg" viewBox="0 0 16 16" aria-labelledby="front-end-title">
+                                    <title id="front-end-title">Front end development</title>
                                     <path d="M0 1a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm9 0a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1zm0 9a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1z"/>
                                 </svg>
                             </aside>
@@ -233,7 +252,8 @@
                         <h4 style="display: none;">Back end development</h4> <!--SEO-->
                         <section class="home-services-box-title">
                             <aside class="home-services-circle">
-                                <svg class="home-services-svg" viewBox="0 0 16 16">
+                                <svg class="home-services-svg" viewBox="0 0 16 16" aria-labelledby="back-end-title">
+                                    <title id="back-end-title">Back end development</title>
                                     <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434zM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567zM7.5 9.933l-2.75 1.571v3.134l2.75-1.571zm1 3.134 2.75 1.571v-3.134L8.5 9.933zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567zm2.242-2.433V3.504L8.5 5.076V8.21zM7.5 8.21V5.076L4.75 3.504v3.134zM5.258 2.643 8 4.21l2.742-1.567L8 1.076zM15 9.933l-2.75 1.571v3.134L15 13.067zM3.75 14.638v-3.134L1 9.933v3.134z"/>
                                 </svg>
                             </aside>
@@ -251,7 +271,8 @@
                         <h4 style="display: none;">Full stack development</h4> <!--SEO-->
                         <section class="home-services-box-title">
                             <aside class="home-services-circle">
-                                <svg class="home-services-svg" viewBox="0 0 16 16">
+                                <svg class="home-services-svg" viewBox="0 0 16 16" aria-labelledby="full-stack-title">
+                                    <title id="full-stack-title">Full stack development</title>
                                     <path d="M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882z"/>
                                     <path d="m2.125 8.567-1.86.992a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882l-1.86-.992-5.17 2.756a1.5 1.5 0 0 1-1.41 0z"/>
                                 </svg>
@@ -279,7 +300,8 @@
                 <section class="home-team-container-carousel">
                     <h3 style="display: none;">Team Carousel</h3> <!--SEO-->
                     <section class="home-team-container-carousel-item">
-                        <svg id="home-team-emailIcon" viewBox="0 0 16 16">
+                        <svg id="home-team-emailIcon" viewBox="0 0 16 16" aria-labelledby="email-title">
+                            <title id="email-title">Email</title>
                             <path d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
                         </svg>
                         <h4 data-translate="home-translate-45"></h4>
