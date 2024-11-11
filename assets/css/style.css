@@ -37,7 +37,7 @@
     padding: 0;
     height: 100%;
     font-family: 'Roboto', sans-serif;
-    cursor: url('/assets/media/images/cursor.png'), auto;
+    cursor: url('https://eliasdh.com/assets/media/images/cursor.png'), auto;
 }
 
 .global-hr {

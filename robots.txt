@@ -1,5 +1,8 @@
 User-agent: *
 Allow: index.html
+Allow: /assets/pages/
+Disallow: /assets/includes/
+Disallow: /assets/js/
 
 Sitemap: https://eliasdh.com/sitemap.xml
 
