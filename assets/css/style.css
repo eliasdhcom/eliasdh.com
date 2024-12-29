@@ -338,17 +338,20 @@
 }
 
 .home-title-back, .legal-guidelines-title-back, .privacy-policy-title-back {
-    color: var(--background);
+    color: var(--secondary);
     font-size: 144px;
     font-weight: 900;
     line-height: 1.2;
     margin: 5%;
     text-transform: uppercase;
-    -webkit-text-stroke: 1px var(--secondary);
+    -webkit-text-stroke: 1px var(--primary);
 }
 
 .home-title-front, .legal-guidelines-title-front, .privacy-policy-title-front {
-    color: var(--primary);
+    color: var(--background);
+    background-color: var(--secondary);
+    border-radius: 16px;
+    padding: 5px;
     font-size: 48px;
     font-weight: 900;
     position: absolute;
