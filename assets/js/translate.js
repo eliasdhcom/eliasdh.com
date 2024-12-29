@@ -609,10 +609,8 @@ if (document.getElementById('home')) {
 }
 
 function setDefaultLanguage() {
-    if (localStorage.getItem("selectedLanguage") === null) localStorage.setItem("selectedLanguage", "en");
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
 
-    selectedLanguage = localStorage.getItem("selectedLanguage");
-
-    document.getElementById("language-select").value = selectedLanguage
-    translatePage(selectedLanguage);
+    document.getElementById("language-select").value = savedLanguage;
+    translatePage(savedLanguage);
 }

@@ -4,9 +4,9 @@
  * @since 01/01/2020
  */
 
-/* Home Page */
+// Home Page
 if (document.getElementById('home')) {
-    /* Subtitle */
+    // Subtitle
     document.addEventListener('DOMContentLoaded', function() {
         var currentDisplayInterval;
 
@@ -57,9 +57,8 @@ if (document.getElementById('home')) {
         displayText(texts, 'home-header-subtitle', 100);
         window.displayText = displayText;
     });
-    /* Subtitle */
 
-    /* Team */
+    // Team
     document.addEventListener("DOMContentLoaded", function () {
         const carouselItems = document.querySelectorAll(".home-team-container-carousel-item");
         let totalItems;
@@ -101,10 +100,9 @@ if (document.getElementById('home')) {
             window.location.href = "https://www.linkedin.com/company/eliasdh/jobs/";
         });
     });
-    /* Team */
 }
 
-/* Content Loader */
+// Content Loader
 function loadExternalContent(DivId, url) {
     let xmlhttp;
     if (window.XMLHttpRequest) xmlhttp = new XMLHttpRequest();
@@ -125,75 +123,13 @@ function loadExternalContent(DivId, url) {
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
 }
-/* Content Loader */
 
-/* Context Menu */
-let selectedText = '';
-let contextMenu = '';
-document.addEventListener('DOMContentLoaded', function() {
-    document.addEventListener('contextmenu', (event) => {
-        if (window.innerWidth < 768) return; // Disable context menu on mobile devices
-        event.preventDefault();
-        selectedText = window.getSelection().toString(); // Get selected text (For copySelectedText function)
-        contextMenu = document.getElementById('context-menu');
-        let top = parseInt(contextMenu.style.top);
-        let left = parseInt(contextMenu.style.left);
-
-        if (isNaN(top)) top = 0;
-        if (isNaN(left)) left = 0;
-
-        if (window.scrollY !== 0) top = event.clientY + window.scrollY;
-        else top = event.clientY;
-
-        if (window.scrollX !== 0) left = event.clientX + window.scrollX;
-        else left = event.clientX;
-
-        contextMenu.style.top = top + 'px';
-        contextMenu.style.left = left + 'px';
-        contextMenu.style.display = 'block';
-
-        document.addEventListener('click', (clickEvent) => {
-            if (!contextMenu.contains(clickEvent.target)) contextMenu.style.display = 'none';
-        });
-    });
-});
-
-// Copy the current URL to clipboard.
-function copyLinkAddress() {
-    navigator.clipboard.writeText(window.location.href);
-    contextMenu.style.display = 'none';
-}
-
-// Copy the selected text to clipboard.
-function copySelectedText() {
-    if (selectedText) navigator.clipboard.writeText(selectedText);
-    contextMenu.style.display = 'none';
-}
-
-// Set dark mode.
-function darkMode() {
-    document.body.classList.add('context-menu-dark-mode');
-    document.getElementById('darkMode').style.display = 'none';
-    document.getElementById('lightMode').style.display = 'flex';
-    contextMenu.style.display = 'none';
-}
-
-// Set light mode.
-function lightMode() {
-    document.body.classList.remove('context-menu-dark-mode');
-    document.getElementById('darkMode').style.display = 'flex';
-    document.getElementById('lightMode').style.display = 'none';
-    contextMenu.style.display = 'none';
-}
-/* Context Menu */
-
-/* Footer */
+// Footer
 function setJavaScriptFooter() {
     document.getElementById("footer-year").textContent = new Date().getFullYear();
 }
-/* Footer */
 
-/* Navigation Bar */
+// Navigation Bar
 function setJavaScriptNavigationBar() {
     if (window.innerWidth < 768) return;
 
@@ -206,9 +142,8 @@ function setJavaScriptNavigationBar() {
         }
     });
 }
-/* Navigation Bar */
 
-/* Http Code */
+// Http Code
 if (document.getElementById('403')) {
     var hand = document.getElementById('httpcode-policeman-hand');
 
@@ -244,9 +179,8 @@ if (document.getElementById('403')) {
         playAudio();
     }
 }
-/* Http Code */
 
-/* Change to relative paths */
+// Change to relative paths
 const routes = {
     '/': '/index.html',
     '/home': 'home',
@@ -275,7 +209,6 @@ window.onload = function() {
         }
     }
     rewriteCurrentURL(elementId);
-    
 };
 
 function loadContent(prettyURL) {
@@ -295,4 +228,3 @@ function rewriteCurrentURL(path) {
 }
 
 rewriteCurrentURL(window.location.pathname);
-/* Change to relative paths */
