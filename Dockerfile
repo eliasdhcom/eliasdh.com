@@ -20,6 +20,6 @@ COPY ./manifest.json /usr/share/nginx/html/manifest.json
 COPY ./robots.txt /usr/share/nginx/html/robots.txt
 COPY ./sitemap.xml /usr/share/nginx/html/sitemap.xml
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
