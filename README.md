@@ -5,7 +5,8 @@
 
 1. [📘Table of Contents](#📘table-of-contents)
 2. [🖖Introduction](#🖖introduction)
-3. [🔗Links](#🔗links)
+3. [🚀Docker](#🚀docker)
+4. [🔗Links](#🔗links)
 
 ---
 
@@ -17,6 +18,22 @@ Please also see following documents:
 - [LICENSE](LICENSE.md)
 - [SECURITY](SECURITY.md)
 - [CONTRIBUTING](CONTRIBUTING.md)
+
+
+## 🚀Docker
+
+- Pull the latest image and run the container
+```bash
+sudo docker pull ghcr.io/eliasdh-com/eliasdhcom-frontend:latest
+sudo docker run --name eliasdhcom-frontend-container -p 80:80 -d ghcr.io/eliasdh-com/eliasdhcom-frontend:latest
+```
+
+- Stop and remove the existing container and image
+```bash
+sudo docker stop eliasdhcom-frontend-container
+sudo docker rm eliasdhcom-frontend-container
+sudo docker rmi ghcr.io/eliasdh-com/eliasdhcom-frontend:latest
+```
 
 ## 🔗Links
 - 👯 Web hosting company [EliasDH.com](https://eliasdh.com).
