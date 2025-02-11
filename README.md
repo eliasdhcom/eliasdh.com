@@ -29,7 +29,7 @@ sudo docker run --name eliasdhcom-frontend-container -p 8080:8080 -d ghcr.io/eli
 
 - Check the logs
 ```bash
-sudo docker logs displaylevelupbe-frontend-container
+sudo docker logs eliasdhcom-frontend-container
 ```
 
 - Stop and remove the existing container and image
