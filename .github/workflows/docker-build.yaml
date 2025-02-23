@@ -1,7 +1,7 @@
 ############################
-# @author Elias De Hondt   #
+# @author EliasDH Team     #
 # @see https://eliasdh.com #
-# @since 01/01/2020        #
+# @since 01/01/2025        #
 ############################
 name: Build and Push Docker Image to GHCR
 
@@ -24,4 +24,4 @@ jobs:
           echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u eliasdh-com --password-stdin
       - name: Build/Push Frontend Docker Image
         run: |
-          docker build --push -t ghcr.io/eliasdh-com/eliasdhcom-frontend:latest ./
+          docker build --push -t ghcr.io/eliasdh-com/eliasdhcom-frontend:latest ./App/Frontend
