@@ -1,0 +1,118 @@
+/**
+    * @author EliasDH Team
+    * @see https://eliasdh.com
+    * @since 01/01/2025
+**/
+
+/* Footer */
+.footer {
+    background-color: var(--primary);
+    color: var(--background);
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer a {
+    color: var(--background);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.footer a:hover {
+    color: var(--secondary);
+    text-decoration: none;
+}
+
+.footer-social-media-ul, .footer-links, .footer-credits {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-social-media-ul {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-links a {
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 17px;
+}
+
+.footer-credits {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.footer-social-media-ul .footer-social-media-icon {
+    margin: 0 10px;
+    position: relative;
+    list-style: none;
+}
+
+.footer-social-media-ul .footer-social-media-icon a {
+    background-color: var(--background);
+    color: var(--secondary);
+    width: 50px;
+    height: 50px;
+    border-radius: 20%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.footer-social-media-ul .footer-social-media-icon a:hover {
+    box-shadow: 3px 2px 45px 0px var(--secondary);
+}
+
+.footer-social-media-ul .footer-social-media-icon a svg {
+    fill: var(--primary);
+    position: relative;
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+}
+
+.footer-social-media-ul .footer-social-media-icon a .footer-social-media-icon-filled {
+    position: absolute;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.footer-social-media-ul .footer-social-media-icon a:hover .footer-social-media-icon-filled {
+    height: 100%;
+}
+
+.footer-social-media-ul .footer-social-media-icon a[data-social="x"] .footer-social-media-icon-filled {
+    background-color: var(--x-color);
+}
+
+.footer-social-media-ul .footer-social-media-icon a[data-social="instagram"] .footer-social-media-icon-filled {
+    background-color: var(--instagram-color);
+}
+
+.footer-social-media-ul .footer-social-media-icon a[data-social="github"] .footer-social-media-icon-filled {
+    background-color: var(--github-color);
+}
+
+.footer-social-media-ul .footer-social-media-icon a[data-social="linkedin"] .footer-social-media-icon-filled {
+    background-color: var(--linkedin-color);
+}
+/* Footer */
