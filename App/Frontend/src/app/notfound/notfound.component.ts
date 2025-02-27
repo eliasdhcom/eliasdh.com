@@ -4,20 +4,23 @@
     * @since 01/01/2025
 **/
 
-import { Component } from '@angular/core';
-import { TranslatePipe, TranslateService } from "@ngx-translate/core";
+import { Component, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ContextMenuComponent } from '../contextmenu/contextmenu.component';
+import { LanguageService } from '../services/language.service';
 
 @Component({
     selector: 'app-notfound',
     templateUrl: './notfound.component.html',
     styleUrls: ['./notfound.component.css'],
-    imports: [TranslatePipe],
+    imports: [TranslatePipe, ContextMenuComponent],
     standalone: true
 })
 
-export class NotFoundComponent {
-    constructor(private translate: TranslateService) {
-        this.translate.setDefaultLang('en');
-        this.translate.use('en');
+export class NotFoundComponent implements OnInit {
+    constructor(private languageService: LanguageService) { }
+
+    ngOnInit(): void {
+        this.languageService.checkAndSetLanguage();
     }
 }

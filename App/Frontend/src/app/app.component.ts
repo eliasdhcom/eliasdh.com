@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterModule,CommonModule],
+    imports: [RouterModule, CommonModule],
     template: `<router-outlet></router-outlet>`,
     providers: [Title]
 })
@@ -31,7 +31,7 @@ export class AppComponent {
                     while (route.firstChild) {
                         route = route.firstChild;
                     }
-                    return route.snapshot.data['title'] || 'Standaard Titel';
+                    return route.snapshot.data['title'] || 'EliasDH';
                 })
             ).subscribe(title => {
                 this.titleService.setTitle(title);

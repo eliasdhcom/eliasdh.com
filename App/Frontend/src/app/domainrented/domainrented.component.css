@@ -3,3 +3,85 @@
     * @see https://eliasdh.com
     * @since 01/01/2025
 **/
+
+/* SetUp Grid */
+.domainrented-main { grid-area: main; }
+.footer { grid-area: footer; }
+
+.domainrented-body {
+    display: grid;
+    grid-template-areas:
+        'main'
+        'footer';
+    grid-template-columns: 1fr;
+    grid-template-rows: 11fr 0.5fr;
+}
+/* SetUp Grid */
+
+/* Domain Rented */
+.domainrented-article {
+    padding: 20px;
+    margin-bottom: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.domainrented-article h2 {
+    color: var(--primary);
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.domainrented-article h3 {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.domainrented-article ul {
+    list-style: none;
+    padding: 0;
+}
+
+.domainrented-article ol {
+    list-style: decimal;
+    padding: 0;
+}
+
+.domainrented-article ul li, .domainrented-article ol li {
+    color: var(--secondary);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.domainrented-article ul li {
+    margin-left: 20px;
+}
+
+.domainrented-article ol li {
+    margin-left: 40px;
+}
+
+.domainrented-article a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.domainrented-article a:hover {
+    color: var(--secondary);
+    text-decoration: none;
+}
+
+.domainrented-article p {
+    color: var(--secondary);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+/* Domain Rented */

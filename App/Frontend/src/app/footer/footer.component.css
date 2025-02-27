@@ -26,7 +26,9 @@
     text-decoration: none;
 }
 
-.footer-social-media-ul, .footer-links, .footer-credits {
+.footer-social-media-ul,
+.footer-links,
+.footer-credits {
     margin: 0;
     padding: 0;
     display: flex;

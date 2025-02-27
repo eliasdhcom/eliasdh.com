@@ -3,3 +3,75 @@
     * @see https://eliasdh.com
     * @since 01/01/2025
 **/
+
+/* Title */
+.accessdenied-title {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.accessdenied-title-back {
+    color: var(--secondary);
+    font-size: 144px;
+    font-weight: 900;
+    line-height: 1.2;
+    margin: 5%;
+    text-transform: uppercase;
+    -webkit-text-stroke: 1px var(--primary);
+}
+
+.accessdenied-title-front {
+    color: var(--background);
+    background-color: var(--secondary);
+    border-radius: 16px;
+    padding: 5px;
+    font-size: 48px;
+    font-weight: 900;
+    position: absolute;
+    text-transform: uppercase;
+}
+/* Title */
+
+/* Access Denied */
+.accessdenied-body {
+    background: linear-gradient(45deg, var(--primary) 0%, var(--background) 100%);
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+.accessdenied-policeman-cls-1 {
+    fill:var(--primary);
+}
+
+.accessdenied-policeman-cls-2 {
+    fill:#e6a964;
+}
+
+.accessdenied-policeman-cls-3 {
+    fill:#fcc082;
+}
+
+.accessdenied-policeman-cls-4 {
+    fill:var(--background);
+}
+
+.accessdenied-policeman {
+    width: 350px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+    overflow: visible;
+    position: absolute;
+}
+
+.accessdenied-audio-section {
+    display: none;
+}
+/* Access Denied */

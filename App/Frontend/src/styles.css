@@ -120,12 +120,16 @@
 }
 /* Global Fonts */
 
-/* Global Body */
-.global-body {
+/* Global Body And HTML */
+.global-body,
+.global-html {
     font-family: 'Roboto', Arial;
-    background-color: var(--secondary);
+    background-color: var(--background);
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
-/* Global Body */
+/* Global Body And HTML */
 
 /* Global Selection */
 ::selection {
@@ -149,3 +153,90 @@
     background: var(--secondary);
 }
 /* Global Scrollbar */
+
+/* Global Button */
+.global-button {
+    color: var(--background);
+    background: var(--primary);
+    border-radius: 24px;
+    border: none;
+    padding: 10px 20px;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    transform: skew(0deg);
+}
+
+.global-button > span {
+    display: inline-block;
+    transform: skew(0deg);
+}
+
+.global-button::before {
+    border-radius: 24px;
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 100%;
+    left: 0;
+    background: var(--secondary);
+    opacity: 0;
+    z-index: -1;
+    transition: all 0.5s;
+}
+
+.global-button:hover {
+    color: var(--text);
+}
+
+.global-button:hover::before {
+    left: 0;
+    right: 0;
+    opacity: 1;
+}
+/* Global Button */
+
+/* Global Dropdown */
+.global-dropdown {
+    visibility: visible;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    z-index: 2;
+}
+
+.global-dropdown-svg {
+    width: 30px;
+    height: 30px;
+    fill: var(--background);
+    transition: transform 0.3s ease;
+}
+
+.global-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 5px);
+    background-color: var(--background);
+    border: 1px solid var(--primary);
+    border-radius: 16px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    z-index: 2;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.global-dropdown-menu li {
+    color: var(--text);
+    padding: 10px 15px;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.global-dropdown-menu li:hover,li.active  {
+    background-color: var(--accent);
+    color: var(--background);
+    border-radius: 16px;
+}
+/* Global Dropdown */

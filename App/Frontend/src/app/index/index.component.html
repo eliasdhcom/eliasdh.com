@@ -1,1 +1,330 @@
 <!--Author EliasDH Team-->
+<body class="global-body">
+    <header class="index-header-container">
+        <article>
+            <section class="index-header-language">
+                <article class="global-dropdown">
+                    <a (click)="toggleDropdown()">
+                        <svg viewBox="0 0 16 16" class="global-dropdown-svg cursor-pointer">
+                            <path d="M4 0H6V2H10V4H8.86807C8.57073 5.66996 7.78574 7.17117 6.6656 8.35112C7.46567 8.73941 8.35737 8.96842 9.29948 8.99697L10.2735 6H12.7265L15.9765 16H13.8735L13.2235 14H9.77647L9.12647 16H7.0235L8.66176 10.9592C7.32639 10.8285 6.08165 10.3888 4.99999 9.71246C3.69496 10.5284 2.15255 11 0.5 11H0V9H0.5C1.5161 9 2.47775 8.76685 3.33437 8.35112C2.68381 7.66582 2.14629 6.87215 1.75171 6H4.02179C4.30023 6.43491 4.62904 6.83446 4.99999 7.19044C5.88743 6.33881 6.53369 5.23777 6.82607 4H0V2H4V0ZM12.5735 12L11.5 8.69688L10.4265 12H12.5735Z"></path>
+                        </svg>
+                    </a>
+                    <ul class="global-dropdown-menu cursor-pointer" *ngIf="dropdownOpen">
+                        <li *ngFor="let lang of settingsConfig.languages" [class.active]="lang.code === currentLanguage"  (click)="changeLanguage(lang.code)">
+                            {{ lang.name }}
+                        </li>
+                    </ul>
+                </article>
+            </section>
+            <section>
+                <svg class="index-header-logo" viewBox="0 -1 17 32" aria-labelledby="logo-title">
+                    <title id="logo-title">EliasDH Logo</title>
+                    <defs>
+                        <filter id="glow">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="0.3" result="blur"/>
+                            <feMerge>
+                                <feMergeNode in="blur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <path d="M 4 16 L 4 16 L 13 11 A 5 5 90 0 0 4 16 M 5 19 L 17 12 A 1 1 0 0 0 0 18 L -5 21 C -13 4 16 -13 24 13 L 10 20 Z Z M -3 24 L 2 21 C 11 28 16 19 23 17 C 24 17 18 41 -3 24" filter="url(#glow)"/>
+                </svg>
+            </section>
+        </article>
+        <article>
+            <section>
+                <p class="index-header-title">{{'INDEX.TRANSLATE1' | translate}}</p>
+                <p class="index-header-company-name">{{'INDEX.TRANSLATE2' | translate}}</p>
+            </section>
+        </article>
+        <article>
+            <section>
+                <svg class="index-header-arrow" viewBox="0 0 16 16" aria-labelledby="arrow-title">
+                    <title id="arrow-title">Arrow</title>
+                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+            </section>
+        </article>
+    </header>
+    <main>
+        <article>
+            <section class="index-title">
+                <h3 class="index-title-back">{{'INDEX.TRANSLATE3' | translate}}</h3>
+                <p class="index-title-front">{{'INDEX.TRANSLATE4' | translate}}</p>
+            </section>
+            <section class="index-about-company">
+                <section class="index-company-introduction">
+                    <h4>{{'INDEX.TRANSLATE5' | translate}}</h4>
+                    <p>{{'INDEX.TRANSLATE6' | translate}}</p>
+                    <p>{{'INDEX.TRANSLATE7' | translate}}</p>
+                </section>
+                <hr class="global-hr">
+                <section class="index-company-values">
+                    <h4>{{'INDEX.TRANSLATE8' | translate}}</h4>
+                    <ul>
+                        <li>{{'INDEX.TRANSLATE9' | translate}}</li>
+                        <li>{{'INDEX.TRANSLATE10' | translate}}</li>
+                        <li>{{'INDEX.TRANSLATE11' | translate}}</li>
+                        <li>{{'INDEX.TRANSLATE12' | translate}}</li>
+                    </ul>
+                </section>
+            </section>
+        </article>
+        <article class="index-services-container">
+            <section class="index-title">
+                <h3 class="index-title-back">{{'INDEX.TRANSLATE13' | translate}}</h3>
+                <p class="index-title-front">{{'INDEX.TRANSLATE14' | translate}}</p>
+            </section>
+            <p class="index-subtitle">{{'INDEX.TRANSLATE15' | translate}}</p>
+            <section class="index-services-container-item">
+                <section class="index-services-box hosting-services">
+                    <section class="index-services-box-title">
+                        <aside class="index-services-circle">
+                            <svg class="index-services-svg" viewBox="0 0 16 16" aria-labelledby="economy-title">
+                                <title id="economy-title">Economy</title>
+                                <path d="M2 9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1M2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1"/>
+                            </svg>
+                        </aside>
+                        <h4>
+                            {{'INDEX.TRANSLATE16-1' | translate}}
+                            <br>
+                            {{'INDEX.TRANSLATE16-2' | translate}}
+                        </h4>
+                    </section>
+                    <section>
+                        <ul>
+                            <li>{{'INDEX.TRANSLATE17' | translate}}</li>
+                            <li>{{'INDEX.TRANSLATE18' | translate}}</li>
+                            <li>{{'INDEX.TRANSLATE19' | translate}}</li>
+                            <li>{{'INDEX.TRANSLATE20' | translate}}</li>
+                        </ul>
+                        <a class="global-button cursor-pointer" href="mailto:elias.dehondt@outlook.com?SUBJECT=Hosting%20services%20(Economy)&BODY=Dear%20EliasDH%20Team">
+                            <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
+                        </a>
+                    </section>
+                </section>
+                <section class="index-services-box hosting-services">
+                    <section class="index-services-box-title">
+                        <aside class="index-services-circle">
+                            <svg class="index-services-svg" viewBox="0 0 16 16" aria-labelledby="personal-title">
+                                <title id="personal-title">Personal</title>
+                                <path d="M2 9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1M2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1"/>
+                            </svg>
+                        </aside>
+                        <h4>
+                            {{'INDEX.TRANSLATE21-1' | translate}}
+                            <br>
+                            {{'INDEX.TRANSLATE21-2' | translate}}
+                        </h4>
+                    </section>
+                    <section>
+                        <ul>
+                            <li>{{'INDEX.TRANSLATE22' | translate}}</li>
+                            <li>{{'INDEX.TRANSLATE23' | translate}}</li>
+                            <li>{{'INDEX.TRANSLATE24' | translate}}</li>
+                            <li>{{'INDEX.TRANSLATE25' | translate}}</li>
+                        </ul>
+                        <a class="global-button cursor-pointer" href="mailto:elias.dehondt@outlook.com?SUBJECT=Hosting%20services%20(Personal)&BODY=Dear%20EliasDH%20Team">
+                            <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
+                        </a>
+                    </section>
+                </section>
+                <section class="index-services-box hosting-services">
+                    <section class="index-services-box-title">
+                        <aside class="index-services-circle">
+                            <svg class="index-services-svg" viewBox="0 0 16 16" aria-labelledby="business-title">
+                                <title id="business-title">Business</title>
+                                <path d="M2 9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1M2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1"/>
+                            </svg>
+                        </aside>
+                        <h4>
+                            {{'INDEX.TRANSLATE26-1' | translate}}
+                            <br>
+                            {{'INDEX.TRANSLATE26-2' | translate}}
+                        </h4>
+                    </section>
+                    <section>
+                        <ul>
+                            <li>{{'INDEX.TRANSLATE27' | translate}}</li>
+                            <li>{{'INDEX.TRANSLATE28' | translate}}</li>
+                            <li>{{'INDEX.TRANSLATE29' | translate}}</li>
+                            <li>{{'INDEX.TRANSLATE30' | translate}}</li>
+                        </ul>
+                        <a class="global-button cursor-pointer" href="mailto:elias.dehondt@outlook.com?SUBJECT=Hosting%20services%20(Business)&BODY=Dear%20EliasDH%20Team">
+                            <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
+                        </a>
+                    </section>
+                </section>
+                <section class="index-services-box hosting-services">
+                    <section class="index-services-box-title">
+                        <aside class="index-services-circle">
+                            <svg class="index-services-svg" viewBox="0 0 16 16" aria-labelledby="professional-title">
+                                <title id="professional-title">Professional</title>
+                                <path d="M2 9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1M2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1"/>
+                            </svg>
+                        </aside>
+                        <h4>
+                            {{'INDEX.TRANSLATE31-1' | translate}}
+                            <br>
+                            {{'INDEX.TRANSLATE31-2' | translate}}
+                        </h4>
+                    </section>
+                    <section>
+                        <ul>
+                            <li>{{'INDEX.TRANSLATE32' | translate}}</li>
+                            <li>{{'INDEX.TRANSLATE33' | translate}}</li>
+                            <li>{{'INDEX.TRANSLATE34' | translate}}</li>
+                            <li>{{'INDEX.TRANSLATE35' | translate}}</li>
+                        </ul>
+                        <a class="global-button cursor-pointer" href="mailto:elias.dehondt@outlook.com?SUBJECT=Hosting%20services%20(Professional)&BODY=Dear%20EliasDH%20Team">
+                            <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
+                        </a>
+                    </section>
+                </section>
+            </section>
+            <p class="index-subtitle">{{'INDEX.TRANSLATE36' | translate}}</p>
+            <section class="index-services-container-item">
+                <section class="index-services-box web-services">
+                    <section class="index-services-box-title">
+                        <aside class="index-services-circle">
+                            <svg class="index-services-svg" viewBox="0 0 16 16" aria-labelledby="front-end-title">
+                                <title id="front-end-title">Front end development</title>
+                                <path d="M0 1a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm9 0a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1zm0 9a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1z"/>
+                            </svg>
+                        </aside>
+                        <h5>{{'INDEX.TRANSLATE37' | translate}}</h5>
+                    </section>
+                    <section>
+                        <p>{{'INDEX.TRANSLATE38' | translate}}</p>
+                        <a class="global-button cursor-pointer" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web%20Development%20(Front%20end%20development)&BODY=Dear%20EliasDH%20Team">
+                            <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
+                        </a>
+                    </section>
+                </section>
+                <section class="index-services-box web-services">
+                    <section class="index-services-box-title">
+                        <aside class="index-services-circle">
+                            <svg class="index-services-svg" viewBox="0 0 16 16" aria-labelledby="back-end-title">
+                                <title id="back-end-title">Back end development</title>
+                                <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434zM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567zM7.5 9.933l-2.75 1.571v3.134l2.75-1.571zm1 3.134 2.75 1.571v-3.134L8.5 9.933zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567zm2.242-2.433V3.504L8.5 5.076V8.21zM7.5 8.21V5.076L4.75 3.504v3.134zM5.258 2.643 8 4.21l2.742-1.567L8 1.076zM15 9.933l-2.75 1.571v3.134L15 13.067zM3.75 14.638v-3.134L1 9.933v3.134z"/>
+                            </svg>
+                        </aside>
+                        <h5>{{'INDEX.TRANSLATE39' | translate}}</h5>
+                    </section>
+                    <section>
+                        <p>{{'INDEX.TRANSLATE40' | translate}}</p>
+                        <a class="global-button cursor-pointer" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web%20Development%20(Back%20end%20development)&BODY=Dear%20EliasDH%20Team">
+                            <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
+                        </a>
+                    </section>
+                </section>
+                <section class="index-services-box web-services">
+                    <section class="index-services-box-title">
+                        <aside class="index-services-circle">
+                            <svg class="index-services-svg" viewBox="0 0 16 16" aria-labelledby="full-stack-title">
+                                <title id="full-stack-title">Full stack development</title>
+                                <path d="M7.765 1.559a.5.5 0 0 1 .47 0l7.5 4a.5.5 0 0 1 0 .882l-7.5 4a.5.5 0 0 1-.47 0l-7.5-4a.5.5 0 0 1 0-.882z"/>
+                                <path d="m2.125 8.567-1.86.992a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882l-1.86-.992-5.17 2.756a1.5 1.5 0 0 1-1.41 0z"/>
+                            </svg>
+                        </aside>
+                        <h5>{{'INDEX.TRANSLATE41' | translate}}</h5>
+                    </section>
+                    <section>
+                        <p>{{'INDEX.TRANSLATE42' | translate}}</p>
+                        <a class="global-button cursor-pointer" href="mailto:elias.dehondt@outlook.com?SUBJECT=Web%20Development%20(Full%20stack%20development)&BODY=Dear%20EliasDH%20Team">
+                            <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
+                        </a>
+                    </section>
+                </section>
+            </section>
+        </article>
+        <!-- <article class="index-trusted-clients">
+            <section class="container">
+                <section class="index-trusted-clients-logo-slider">
+                    <section class="index-trusted-clients-logos">
+                        <a href="https://www.tereiken.be" target="_blank" rel="noopener noreferrer">
+                            <img class="cursor-pointer" src="assets/media/images/trusted-clients/ter-eiken-logo.png" alt="Ter Eiken">
+                        </a>
+                        <a href="https://www.levelup.be" target="_blank" rel="noopener noreferrer">
+                            <img class="cursor-pointer" src="assets/media/images/trusted-clients/level-up-logo.png" alt="Level Up">
+                        </a>
+                        <a href="https://www.microsoft.com" target="_blank" rel="noopener noreferrer">
+                            <img class="cursor-pointer" src="assets/media/images/trusted-clients/microsoft-logo.png" alt="Microsoft">
+                        </a>
+                        <a href="https://www.antwerpen.be" target="_blank" rel="noopener noreferrer">
+                            <img class="cursor-pointer" src="assets/media/images/trusted-clients/antwerpen-logo.png" alt="Antwerpen">
+                        </a>
+
+                        <a href="https://www.tereiken.be" target="_blank" rel="noopener noreferrer">
+                            <img class="cursor-pointer" src="assets/media/images/trusted-clients/ter-eiken-logo.png" alt="Ter Eiken">
+                        </a>
+                        <a href="https://www.levelup.be" target="_blank" rel="noopener noreferrer">
+                            <img class="cursor-pointer" src="assets/media/images/trusted-clients/level-up-logo.png" alt="Level Up">
+                        </a>
+                        <a href="https://www.microsoft.com" target="_blank" rel="noopener noreferrer">
+                            <img class="cursor-pointer" src="assets/media/images/trusted-clients/microsoft-logo.png" alt="Microsoft">
+                        </a>
+                        <a href="https://www.antwerpen.be" target="_blank" rel="noopener noreferrer">
+                            <img class="cursor-pointer" src="assets/media/images/trusted-clients/antwerpen-logo.png" alt="Antwerpen">
+                        </a>
+
+                        <a href="https://www.tereiken.be" target="_blank" rel="noopener noreferrer">
+                            <img class="cursor-pointer" src="assets/media/images/trusted-clients/ter-eiken-logo.png" alt="Ter Eiken">
+                        </a>
+                        <a href="https://www.levelup.be" target="_blank" rel="noopener noreferrer">
+                            <img class="cursor-pointer" src="assets/media/images/trusted-clients/level-up-logo.png" alt="Level Up">
+                        </a>
+                        <a href="https://www.microsoft.com" target="_blank" rel="noopener noreferrer">
+                            <img class="cursor-pointer" src="assets/media/images/trusted-clients/microsoft-logo.png" alt="Microsoft">
+                        </a>
+                        <a href="https://www.antwerpen.be" target="_blank" rel="noopener noreferrer">
+                            <img class="cursor-pointer" src="assets/media/images/trusted-clients/antwerpen-logo.png" alt="Antwerpen">
+                        </a>
+                    </section>
+                </section>
+            </section>
+        </article> -->
+        <article class="index-team-container">
+            <section class="index-title">
+                <h3 class="index-title-back">{{'INDEX.TRANSLATE43' | translate}}</h3>
+                <p class="index-title-front">{{'INDEX.TRANSLATE44' | translate}}</p>
+            </section>
+            <section class="index-team-container-carousel">
+                <section class="index-team-container-carousel-item">
+                    <svg class="cursor-pointer" id="index-team-emailIcon" viewBox="0 0 16 16" aria-labelledby="email-title">
+                        <title id="email-title">Email</title>
+                        <path d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                    </svg>
+                    <h4>{{'INDEX.TRANSLATE45' | translate}}</h4>
+                    <p>{{'INDEX.TRANSLATE46' | translate}}</p>
+                    <p>{{'INDEX.TRANSLATE47' | translate}}</p>
+                    <p>{{'INDEX.TRANSLATE48' | translate}}</p>
+                    <a class="global-button cursor-pointer" href="https://www.linkedin.com/company/eliasdh/jobs/">
+                        <span class="cursor-pointer">{{'INDEX.TRANSLATE-APPLY' | translate}}</span>
+                    </a>
+                </section>
+                <section class="index-team-container-carousel-item">
+                    <img src="assets/media/images/team/team1.png" alt="Elias De Hondt">
+                    <h4>Elias De Hondt</h4>
+                    <p>Chief Executive Officer</p>
+                    <p>CEO</p>
+                </section>
+                <section class="index-team-container-carousel-item">
+                    <img src="assets/media/images/team/team2.png" alt="Alexander Smith">
+                    <h4>Arthur Boucher</h4>
+                    <p>Customer Acquisition Manager</p>
+                    <p>CAM</p>
+                </section>
+                <section class="index-team-container-carousel-item">
+                    <img src="assets/media/images/team/team3.png" alt="Noah Vermeulen">
+                    <h4>Noah Vermeulen</h4>
+                    <p>Full Stack Developer</p>
+                    <p>FSD</p>
+                </section>
+            </section>
+        </article>
+    </main>
+    <app-footer></app-footer>
+    <app-contextmenu></app-contextmenu>
+</body>

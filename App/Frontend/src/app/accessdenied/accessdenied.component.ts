@@ -4,20 +4,51 @@
     * @since 01/01/2025
 **/
 
-import { Component } from '@angular/core';
-import { TranslatePipe, TranslateService } from "@ngx-translate/core";
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ContextMenuComponent } from '../contextmenu/contextmenu.component';
+import { LanguageService } from '../services/language.service';
 
 @Component({
     selector: 'app-accessdenied',
     templateUrl: './accessdenied.component.html',
     styleUrls: ['./accessdenied.component.css'],
-    imports: [TranslatePipe],
+    imports: [TranslatePipe, ContextMenuComponent],
     standalone: true
 })
+export class AccessDeniedComponent implements OnInit, AfterViewInit {
+    private isHandRotated = false;
+    private isAudioPlayed = false;
+    private hand: HTMLElement | null = null;
+    private audio: HTMLAudioElement | null = null;
 
-export class AccessDeniedComponent {
-    constructor(private translate: TranslateService) {
-        this.translate.setDefaultLang('en');
-        this.translate.use('en');
+    constructor(private languageService: LanguageService) {}
+
+    ngOnInit(): void {
+        this.languageService.checkAndSetLanguage();
+    }
+
+    ngAfterViewInit(): void {
+        this.hand = document.getElementById('accessdenied-policeman-hand');
+        this.audio = document.getElementById('accessdenied-audio') as HTMLAudioElement;
+
+        if (this.hand) {
+            this.hand.style.transformOrigin = 'left bottom';
+            this.hand.style.transition = 'transform 0.4s';
+
+            setInterval(() => {
+                this.isHandRotated = !this.isHandRotated;
+                this.hand!.style.transform = this.isHandRotated ? 'rotate(5deg)' : 'rotate(-10deg)';
+            }, 400);
+        }
+
+        document.body.addEventListener('click', () => this.playAudio());
+    }
+
+    private playAudio(): void {
+        if (!this.isAudioPlayed && this.audio) {
+            this.isAudioPlayed = true;
+            this.audio.play();
+        }
     }
 }

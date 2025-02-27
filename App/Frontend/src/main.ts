@@ -14,39 +14,12 @@ import { TranslateLoader } from "@ngx-translate/core";
 bootstrapApplication(AppComponent, appConfig).catch(err => console.error(err));
 document.documentElement.setAttribute('data-theme', 'light');
 
-// Translate Loader
+// Set Default Translation
 export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
 
-// Content Loader
-export function loadExternalContent(DivId: string, url: string): void {
-    let xmlhttp: XMLHttpRequest | ActiveXObject;
-    if (window.XMLHttpRequest) xmlhttp = new XMLHttpRequest();
-    else xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-
-    (xmlhttp as XMLHttpRequest).onreadystatechange = function(): void {
-        if ((xmlhttp as XMLHttpRequest).readyState === XMLHttpRequest.DONE) {
-            if ((xmlhttp as XMLHttpRequest).status === 200) {
-                const div = document.getElementById(DivId);
-                if (div) {
-                    div.innerHTML = (xmlhttp as XMLHttpRequest).responseText;
-                    let scripts = div.getElementsByTagName('script');
-                    for (let i = 0; i < scripts.length; i++) {
-                        let script = document.createElement('script');
-                        script.text = scripts[i].text;
-                        document.body.appendChild(script);
-                    }
-                }
-            }
-        }
-    };
-
-    (xmlhttp as XMLHttpRequest).open("GET", url, true);
-    (xmlhttp as XMLHttpRequest).send();
-}
-
-// Set on page load
+// Set Default Theme
 document.addEventListener('DOMContentLoaded', () => {
     const savedTheme: string | null = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);

@@ -3,3 +3,97 @@
     * @see https://eliasdh.com
     * @since 01/01/2025
 **/
+
+/* Title */
+.legalguidelines-title {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.legalguidelines-title-back {
+    color: var(--secondary);
+    font-size: 144px;
+    font-weight: 900;
+    line-height: 1.2;
+    margin: 5%;
+    text-transform: uppercase;
+    -webkit-text-stroke: 1px var(--primary);
+}
+
+.legalguidelines-title-front {
+    color: var(--background);
+    background-color: var(--secondary);
+    border-radius: 16px;
+    padding: 5px;
+    font-size: 48px;
+    font-weight: 900;
+    position: absolute;
+    text-transform: uppercase;
+}
+/* Title */
+
+/* Legal Guidelines */
+.legalguidelines-article {
+    margin-bottom: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.legalguidelines-article h2 {
+    color: var(--primary);
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.legalguidelines-article h3 {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.legalguidelines-article ul {
+    list-style: none;
+    padding: 0;
+}
+
+.legalguidelines-article ul li {
+    color: var(--secondary);
+    margin-left: 20px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.legalguidelines-article a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.legalguidelines-article a:hover {
+    color: var(--secondary);
+    text-decoration: none;
+}
+/* Legal Guidelines */
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .legalguidelines-title-back {
+        font-size: 42px;
+        font-weight: 900;
+        line-height: 1.2;
+    }
+
+    .legalguidelines-title-front {
+        font-size: 18px;
+        font-weight: 900;
+    }
+}
+/* Media Queries */

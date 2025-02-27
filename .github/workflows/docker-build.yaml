@@ -14,14 +14,26 @@ on:
       - main
 
 jobs:
-  build-push-frontend:
+   build-push-frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Set up Node.js (voor Angular)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: |
+            cd ./App/Frontend
+            npm install
+      - name: Build Angular Application
+        run: |
+          cd ./App/Frontend
+          npm run prod
       - name: Login to GHCR
         run: |
-          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u eliasdh-com --password-stdin
+          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u eliasdehondt --password-stdin
       - name: Build/Push Frontend Docker Image
         run: |
           docker build --push -t ghcr.io/eliasdh-com/eliasdhcom-frontend:latest ./App/Frontend

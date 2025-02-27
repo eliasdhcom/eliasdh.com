@@ -4,29 +4,22 @@
     * @since 01/01/2025
 **/
 
-import { Component } from '@angular/core';
-import { TranslatePipe, TranslateService } from "@ngx-translate/core";
+import { Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
     selector: 'app-footer',
     templateUrl: './footer.component.html',
     styleUrls: ['./footer.component.css'],
-    imports: [TranslatePipe],
+    imports: [TranslatePipe, RouterLink],
     standalone: true
 })
 
-export class FooterComponent {
-    constructor(private translate: TranslateService) {
-        this.translate.setDefaultLang('en');
-        this.translate.use('en');
-    }
+export class FooterComponent implements OnInit {
+    currentYear: number = new Date().getFullYear();
 
     ngOnInit(): void {
-        this.setJavaScriptFooter();
-    }
-
-    setJavaScriptFooter(): void {
-        const footerYearElement = document.getElementById("footer-year");
-        if (footerYearElement) footerYearElement.textContent = new Date().getFullYear().toString();
+        this.currentYear = new Date().getFullYear();
     }
 }

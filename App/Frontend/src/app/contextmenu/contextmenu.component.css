@@ -1,0 +1,62 @@
+/**
+    * @author EliasDH Team
+    * @see https://eliasdh.com
+    * @since 01/01/2025
+**/
+
+/* Context Menu */
+.contextmenu {
+    position: absolute;
+    display: none;
+    z-index: 3;
+}
+
+.contextmenu-svg {
+    fill: var(--primary);
+    padding-right: 10px;
+    width: 16px;
+    height: 16px;
+}
+
+.contextmenu-item {
+    background-color: var(--accent);
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    position: absolute;
+    padding-left: 0;
+}
+
+.contextmenu-item p {
+    color: var(--text);
+}
+
+.contextmenu-item i {
+    color: var(--secondary);
+    margin-right: 10px;
+}
+
+.contextmenu-item i:hover {
+    color: var(--accent);
+}
+
+.contextmenu-item li {
+    font: inherit;
+    border: 0;
+    padding: 0px 15px 0px 15px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    text-decoration: unset;
+    font-weight: 500;
+    transition: 0.5s linear;
+    -webkit-transition: 0.5s linear;
+    -moz-transition: 0.5s linear;
+    -ms-transition: 0.5s linear;
+    -o-transition: 0.5s linear;
+}
+
+.contextmenu-item li:hover {
+    background-color: var(--background);
+    border-radius: 10px;
+}
+/* Context Menu */

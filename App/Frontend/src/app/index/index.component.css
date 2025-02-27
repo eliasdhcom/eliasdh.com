@@ -3,3 +3,471 @@
     * @see https://eliasdh.com
     * @since 01/01/2025
 **/
+
+/* Title */
+.index-title {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.index-title-back {
+    color: var(--secondary);
+    font-size: 144px;
+    font-weight: 900;
+    line-height: 1.2;
+    margin: 5%;
+    text-transform: uppercase;
+    -webkit-text-stroke: 1px var(--primary);
+}
+
+.index-title-front {
+    color: var(--background);
+    background-color: var(--secondary);
+    border-radius: 16px;
+    padding: 5px;
+    font-size: 48px;
+    font-weight: 900;
+    position: absolute;
+    text-transform: uppercase;
+}
+
+.index-subtitle {
+    color: var(--secondary);
+    font-size: 24px;
+    font-weight: 400;
+    margin-top: 20px;
+    min-height: 1.2em;
+    display: inline-block;
+}
+/* Title */
+
+/* Header */
+.index-header-container {
+    background-color: var(--primary);
+    color: var(--background);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.index-header-container .index-header-logo {
+    fill: var(--background);
+    transform: translateX(50%);
+    width: 456px;
+    height: 456px;
+}
+
+.index-header-container .index-header-title {
+    font-size: 24px;
+    font-weight: 1000;
+}
+
+.index-header-container .index-header-company-name {
+    color: var(--primary);
+    font-size: 96px;
+    font-weight: 300;
+    line-height: 1.2;
+    text-transform: uppercase;
+    -webkit-text-stroke: 2px var(--background);
+    margin-top: 0px;
+}
+
+.index-header-arrow {
+    position: absolute;
+    bottom: 20px;
+    left: 49%;
+    width: 40px;
+    height: 40px;
+    fill: var(--background);
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {transform: translateY(0)}
+    50% {transform: translateY(-10px)}
+}
+
+@keyframes blink {
+    0%, 100% {opacity: 1}
+    50% {opacity: 0}
+}
+
+.index-header-language {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* Header */
+
+/* About */
+.index-about-company {
+    display: flex;
+    justify-content: space-between;
+}
+
+.index-company-introduction, .index-company-values {
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 48%;
+}
+
+.index-about-company h4 {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.index-company-introduction p, .index-company-values li {
+    color: var(--secondary);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.index-company-values strong {
+    color: var(--primary);
+    font-weight: 900;
+}
+/* About */
+
+/* Services */
+.index-services-container {
+    margin-top: 0px;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.index-services-container-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.index-services-box {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    border-radius: 24px;
+    padding: 20px;
+    margin: 30px;
+    width: 500px;
+}
+
+.index-services-box.hosting-services {
+    height: 360px;
+}
+
+.index-services-box.web-services {
+    min-height: 220px;
+}
+
+.index-services-box:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    transition: 1s;
+}
+
+.index-services-box-title {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 1000;
+    display: flex;
+    align-items: center;
+}
+
+.index-services-circle {
+    background-color: var(--primary);
+    color: var(--text);
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.index-services-svg {
+    fill: var(--background);
+    width: 64px;
+    height: 64px;
+    margin: 10px;
+}
+
+.index-services-box.hosting-services ul {
+    list-style: none;
+    padding: 0;
+}
+
+.index-services-box.hosting-services ul li {
+    color: var(--secondary);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.index-services-box.web-services p {
+    color: var(--secondary);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+/* Services */
+
+/* Trusted Clients */
+.index-trusted-clients {
+    background-color: var(--primary);
+    margin-top: 100px;
+    margin-bottom: 100px;
+    padding: 60px 0;
+    text-align: center;
+    position: relative;
+}
+
+.index-trusted-clients::before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--primary));
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    height: 20px;
+}
+
+.index-trusted-clients::after {
+    background: linear-gradient(to top, rgba(255, 255, 255, 0), var(--primary));
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    height: 20px;
+}
+
+.index-trusted-clients p {
+    color: var(--secondary);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.index-trusted-clients-logo-slider {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
+.index-trusted-clients-logos {
+    display: flex;
+    animation: scroll 20s linear infinite;
+}
+
+.index-trusted-clients-logos img {
+    height: 80px;
+    width: auto;
+    margin: 0 60px;
+    transition: transform 0.3s ease;
+}
+
+.index-trusted-clients-logos img:hover {
+    transform: scale(1.1);
+}
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+/* Trusted Clients */
+
+/* Team */
+.index-team-container {
+    margin-top: 0px;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.index-team-container-carousel {
+    justify-content: space-between;
+    display: flex;
+    overflow: hidden;
+    flex-wrap: wrap;
+}
+
+.index-team-container-carousel-item {
+    background-color: var(--background);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    border-radius: 24px;
+    margin: 20px;
+    padding: 20px;
+    visibility: hidden;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: visibility 0s, opacity 0.5s linear, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: absolute;
+
+    transform-origin: center center;
+    pointer-events: none;
+}
+
+.index-team-container-carousel-item:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    transition: 1s;
+}
+
+.index-team-container-carousel-item-active {
+    visibility: visible;
+    opacity: 1;
+    height: auto;
+    width: 300px;
+    position: static;
+    transform: scale(1);
+    left: 0;
+    top: 0;
+    pointer-events: auto;
+}
+
+.index-team-container-carousel-item img {
+    border-radius: 10%;
+    margin-bottom: 20px;
+    width: 300px;
+}
+
+.index-team-container-carousel-item h4 {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+
+.index-team-container-carousel-item p {
+    color: var(--secondary);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.index-team-container-carousel-item svg {
+    fill: var(--primary);
+    width: 48px;
+    height: 48px;
+    transition: transform 0.3s ease;
+}
+
+.index-team-container-carousel-item svg:hover {
+    transform: scale(1.2);
+}
+/* Team */
+
+/* Media Queries */
+@media screen and (max-width: 1500px) {
+    .index-team-container {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .index-team-container-carousel-item {
+        margin: 10px;
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .index-header-container .index-header-logo {
+        transform: translateX(0%);
+        width: 300px;
+        height: 300px;
+    }
+
+    .index-services-container {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .index-team-container {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .index-team-container-carousel-item {
+        margin: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .index-title-back {
+        font-size: 80px;
+        font-weight: 900;
+        line-height: 1.2;
+    }
+
+    .index-title-front {
+        font-size: 36px;
+        font-weight: 900;
+    }
+
+    .index-header-container {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .index-header-title {
+        margin: 5px;
+    }
+
+    .index-header-container .index-header-company-name {
+        color: var(--primary);
+        font-size: 84px;
+        font-weight: 250;
+        margin: 5px;
+    }
+
+    .index-about-company {
+        flex-direction: column;
+    }
+
+    .index-company-introduction, .index-company-values {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 90%;
+    }
+
+    .index-services-container {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    .index-services-box {
+        width: 270px;
+    }
+
+    .index-services-box-title {
+        font-size: 22px;
+    }
+}
+/* Media Queries */

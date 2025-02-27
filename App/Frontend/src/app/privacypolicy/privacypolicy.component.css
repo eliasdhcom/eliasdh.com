@@ -3,3 +3,117 @@
     * @see https://eliasdh.com
     * @since 01/01/2025
 **/
+
+/* Title */
+.privacypolicy-title {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.privacypolicy-title-back {
+    color: var(--secondary);
+    font-size: 144px;
+    font-weight: 900;
+    line-height: 1.2;
+    margin: 5%;
+    text-transform: uppercase;
+    -webkit-text-stroke: 1px var(--primary);
+}
+
+.privacypolicy-title-front {
+    color: var(--background);
+    background-color: var(--secondary);
+    border-radius: 16px;
+    padding: 5px;
+    font-size: 48px;
+    font-weight: 900;
+    position: absolute;
+    text-transform: uppercase;
+}
+/* Title */
+
+/* Privacy Policy */
+.privacypolicy-article {
+    margin-bottom: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.privacypolicy-article h2 {
+    color: var(--primary);
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.privacypolicy-article h3 {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.privacypolicy-article ul {
+    list-style: none;
+    padding: 0;
+}
+
+.privacypolicy-article ol {
+    list-style: decimal;
+    padding: 0;
+}
+
+.privacypolicy-article ul li, .privacypolicy-article ol li {
+    color: var(--secondary);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.privacypolicy-article ul li {
+    margin-left: 20px;
+}
+
+.privacypolicy-article ol li {
+    margin-left: 40px;
+}
+
+.privacypolicy-article a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.privacypolicy-article a:hover {
+    color: var(--secondary);
+    text-decoration: none;
+}
+
+.privacypolicy-article p {
+    color: var(--secondary);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+/* Privacy Policy */
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .privacypolicy-title-back {
+        font-size: 42px;
+        font-weight: 900;
+        line-height: 1.2;
+    }
+
+    .privacypolicy-title-front {
+        font-size: 18px;
+        font-weight: 900;
+    }
+}
+/* Media Queries */

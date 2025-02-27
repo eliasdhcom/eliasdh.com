@@ -3,3 +3,104 @@
     * @see https://eliasdh.com
     * @since 01/01/2025
 **/
+
+/* Title */
+.notfound-title {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.notfound-title-back {
+    color: var(--secondary);
+    font-size: 144px;
+    font-weight: 900;
+    line-height: 1.2;
+    margin: 5%;
+    text-transform: uppercase;
+    -webkit-text-stroke: 1px var(--primary);
+}
+
+.notfound-title-front {
+    color: var(--background);
+    background-color: var(--secondary);
+    border-radius: 16px;
+    padding: 5px;
+    font-size: 48px;
+    font-weight: 900;
+    position: absolute;
+    text-transform: uppercase;
+}
+/* Title */
+
+/* Not Found */
+.notfound-body {
+    background: linear-gradient(45deg, var(--primary) 0%, var(--background) 100%);
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+.notfound-policeman-cls-1 {
+    fill:var(--primary);
+}
+
+.notfound-policeman-cls-2 {
+    fill:#e6a964;
+}
+
+.notfound-policeman-cls-3 {
+    fill:#fcc082;
+}
+
+.notfound-policeman-cls-4 {
+    fill:var(--background);
+}
+
+.notfound-policeman {
+    width: 350px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+    overflow: visible;
+    position: absolute;
+}
+
+.notfound-textbox {
+    fill:var(--accent);
+    width: 200px;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    text-align: center;
+}
+
+.notfound-text {
+    font-size: 16px;
+    font-weight: 900;
+    width: 200px;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    text-align: center;
+}
+/* Not Found */
+
+/* Media Queries */
+@media (max-width: 375px) {
+    .notfound-textbox {
+        top: 25%;
+    }
+
+    .notfound-text {
+        top: 20%;
+    }
+}
+/* Media Queries */
