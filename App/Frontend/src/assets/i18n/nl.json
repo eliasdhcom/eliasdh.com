@@ -150,8 +150,8 @@
     "TRANSLATE3": "Voor meer informatie, neem contact met ons op via "
   },
   "ACCESSDENIED": {
-    "TRANSLATE1": "404 Pagina",
-    "TRANSLATE2": "404 Pagina Niet Gevonden"
+    "TRANSLATE1": "403 Pagina",
+    "TRANSLATE2": "403 Toegang Geweigerd"
   },
   "NOTFOUND": {
     "TRANSLATE1": "De pagina die je zoekt, is mogelijk verwijderd, van naam veranderd of tijdelijk niet beschikbaar."

@@ -150,8 +150,8 @@
     "TRANSLATE3": "Pour plus d'informations, veuillez nous contacter à "
   },
   "ACCESSDENIED": {
-    "TRANSLATE1": "Page 404",
-    "TRANSLATE2": "Page 404 Non Trouvée"
+    "TRANSLATE1": "Page 403",
+    "TRANSLATE2": "Page 403 Accès refusé"
   },
   "NOTFOUND": {
     "TRANSLATE1": "La page que vous recherchez a peut-être été supprimée, son nom a été modifié ou elle est temporairement indisponible."
