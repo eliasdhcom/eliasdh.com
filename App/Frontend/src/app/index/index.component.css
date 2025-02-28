@@ -84,9 +84,9 @@
 .index-header-arrow {
     position: absolute;
     bottom: 20px;
-    left: 49%;
-    width: 40px;
-    height: 40px;
+    left: 48%;
+    width: 4%;
+    height: auto;
     fill: var(--background);
     animation: bounce 1.5s infinite;
 }
@@ -420,6 +420,11 @@
 }
 
 @media (max-width: 768px) {
+    .index-header-arrow {
+        left: 45%;
+        width: 10%;
+    }
+
     .index-title-back {
         font-size: 80px;
         font-weight: 900;
