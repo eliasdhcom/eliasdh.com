@@ -5,7 +5,6 @@
     "TRANSLATE1": "Bonjour, bienvenue dans notre entreprise",
     "TRANSLATE2": "ELIASDH",
     "TRANSLATE3": "À propos",
-    "TRANSLATE4": "À propos de nous",
     "TRANSLATE5": "Notre entreprise",
     "TRANSLATE6": "EliasDH a été fondée en 2020 avec une mission claire : autonomiser les entreprises et les individus en fournissant des services d'hébergement de premier ordre et des solutions de développement web de pointe. Nous croyons que la technologie doit être accessible à tous, et notre objectif est de rendre le monde en ligne plus sûr, plus efficace et plus convivial.",
     "TRANSLATE7": "Chez EliasDH, nous nous engageons à l'excellence dans tout ce que nous faisons. De la création de sites web personnalisés à l'optimisation des performances des serveurs, nous allons au-delà des attentes de nos clients. Notre équipe de professionnels dévoués travaille sans relâche pour rester à la pointe et fournir des solutions innovantes qui produisent des résultats concrets.",
@@ -15,7 +14,6 @@
     "TRANSLATE11": "Collaboration en équipe : Nous croyons au pouvoir de la collaboration. En favorisant une culture de travail d'équipe et de communication ouverte, nous réalisons de grandes choses ensemble.",
     "TRANSLATE12": "Amélioration continue : Nous nous engageons à une amélioration continue. Nous accueillons les retours, apprenons de nos expériences et nous adaptons aux tendances de l'industrie en évolution.",
     "TRANSLATE13": "Services",
-    "TRANSLATE14": "Nos services",
     "TRANSLATE15": "Services d'hébergement",
     "TRANSLATE16-1": "Économie",
     "TRANSLATE16-2": "20€/mois",
@@ -49,7 +47,6 @@
     "TRANSLATE41": "Développement full stack",
     "TRANSLATE42": "Nous créons des applications full stack rapides, sécurisées et réactives",
     "TRANSLATE43": "Équipe",
-    "TRANSLATE44": "L'équipe",
     "TRANSLATE45": "Rejoignez notre équipe",
     "TRANSLATE46": "Êtes-vous passionné par le fait de faire une différence ? Vous épanouissez-vous dans un environnement dynamique et collaboratif ? Nous sommes toujours à la recherche de personnes talentueuses pour rejoindre notre équipe !",
     "TRANSLATE47": "Si vous êtes intéressé à faire partie de notre équipe, nous serions ravis de vous entendre. Veuillez nous envoyer votre CV et une lettre de motivation expliquant pourquoi vous seriez un excellent ajout à notre organisation.",
@@ -57,7 +54,6 @@
   },
   "PRIVACYPOLICY": {
     "TRANSLATE1": "Politique de confidentialité",
-    "TRANSLATE2": "Notre politique de confidentialité",
     "TRANSLATE3": "Politique de confidentialité",
     "TRANSLATE4": "Introduction",
     "TRANSLATE5-1": "EliasDH s'engage à protéger votre vie privée. Contactez-nous à ",
@@ -108,7 +104,6 @@
   },
   "LEGALGUIDELINES": {
     "TRANSLATE1": "Directives légales",
-    "TRANSLATE2": "Nos directives légales",
     "TRANSLATE3": "Directives légales",
     "TRANSLATE4": "Propriété et contenu",
     "TRANSLATE5": "EliasDH, une entreprise légalement reconnue, est le seul propriétaire et opérateur de ce site web.",
@@ -150,8 +145,7 @@
     "TRANSLATE3": "Pour plus d'informations, veuillez nous contacter à "
   },
   "ACCESSDENIED": {
-    "TRANSLATE1": "Page 403",
-    "TRANSLATE2": "Page 403 Accès refusé"
+    "TRANSLATE1": "Page 403"
   },
   "NOTFOUND": {
     "TRANSLATE1": "La page que vous recherchez a peut-être été supprimée, son nom a été modifié ou elle est temporairement indisponible."

@@ -14,25 +14,14 @@
     margin-right: 0px;
 }
 
-.notfound-title-back {
-    color: var(--secondary);
+.notfound-title-text {
+    color: var(--background);
     font-size: 144px;
     font-weight: 900;
     line-height: 1.2;
     margin: 5%;
     text-transform: uppercase;
     -webkit-text-stroke: 1px var(--primary);
-}
-
-.notfound-title-front {
-    color: var(--background);
-    background-color: var(--secondary);
-    border-radius: 16px;
-    padding: 5px;
-    font-size: 48px;
-    font-weight: 900;
-    position: absolute;
-    text-transform: uppercase;
 }
 /* Title */
 

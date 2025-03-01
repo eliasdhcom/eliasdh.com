@@ -5,7 +5,6 @@
     "TRANSLATE1": "Hi there, welcome to our company",
     "TRANSLATE2": "ELIASDH",
     "TRANSLATE3": "About",
-    "TRANSLATE4": "About Us",
     "TRANSLATE5": "Our Company",
     "TRANSLATE6": "EliasDH was founded in 2020 with a clear mission: to empower businesses and individuals by providing top-notch hosting services and cutting-edge web development solutions. We believe that technology should be accessible to everyone, and our goal is to make the online world more secure, efficient, and user-friendly.",
     "TRANSLATE7": "At EliasDH, we are committed to excellence in everything we do. From crafting custom websites to optimizing server performance, we go above and beyond to exceed our clients' expectations. Our team of dedicated professionals works tirelessly to stay ahead of the curve and deliver innovative solutions that drive real results.",
@@ -15,7 +14,6 @@
     "TRANSLATE11": "Team Collaboration: We believe in the power of collaboration. By fostering a culture of teamwork and open communication, we achieve great things together.",
     "TRANSLATE12": "Continuous Improvement: We are committed to continuous improvement. We embrace feedback, learn from our experiences, and adapt to evolving industry trends.",
     "TRANSLATE13": "Services",
-    "TRANSLATE14": "Our Services",
     "TRANSLATE15": "Hosting Services",
     "TRANSLATE16-1": "Economy",
     "TRANSLATE16-2": "€20/m",
@@ -49,7 +47,6 @@
     "TRANSLATE41": "Full stack development",
     "TRANSLATE42": "We create full stack applications that are fast, secure, and responsive",
     "TRANSLATE43": "Team",
-    "TRANSLATE44": "The Team",
     "TRANSLATE45": "Join our team",
     "TRANSLATE46": "Are you passionate about making a difference? Do you thrive in a dynamic and collaborative environment? We're always on the lookout for talented individuals to join our team!",
     "TRANSLATE47": "If you're interested in becoming a part of our team, we'd love to hear from you. Please send us your resume and a motivation letter outlining why you'd be a great fit for our organization.",
@@ -57,7 +54,6 @@
   },
   "PRIVACYPOLICY": {
     "TRANSLATE1": "Privacy Policy",
-    "TRANSLATE2": "Our Privacy Policy",
     "TRANSLATE3": "Privacy Policy",
     "TRANSLATE4": "Introduction",
     "TRANSLATE5-1": "EliasDH is committed to safeguarding your privacy. Contact us at ",
@@ -108,7 +104,6 @@
   },
   "LEGALGUIDELINES": {
     "TRANSLATE1": "Legal Guidelines",
-    "TRANSLATE2": "Our Legal Guidelines",
     "TRANSLATE3": "Legal Guidelines",
     "TRANSLATE4": "Ownership and Content",
     "TRANSLATE5": "EliasDH, a legally recognized company, is the sole owner and operator of this website.",
@@ -150,8 +145,7 @@
     "TRANSLATE3": "For more information, please contact us at "
   },
   "ACCESSDENIED": {
-    "TRANSLATE1": "403 Page",
-    "TRANSLATE2": "403 Access Denied"
+    "TRANSLATE1": "403 Page"
   },
   "NOTFOUND": {
     "TRANSLATE1": "The page you are looking for might have been removed, had its name changed or is temporarily unavailable."

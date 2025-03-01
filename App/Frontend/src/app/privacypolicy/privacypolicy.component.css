@@ -14,25 +14,14 @@
     margin-right: 0px;
 }
 
-.privacypolicy-title-back {
-    color: var(--secondary);
+.privacypolicy-title-text {
+    color: var(--background);
     font-size: 144px;
     font-weight: 900;
     line-height: 1.2;
     margin: 5%;
     text-transform: uppercase;
     -webkit-text-stroke: 1px var(--primary);
-}
-
-.privacypolicy-title-front {
-    color: var(--background);
-    background-color: var(--secondary);
-    border-radius: 16px;
-    padding: 5px;
-    font-size: 48px;
-    font-weight: 900;
-    position: absolute;
-    text-transform: uppercase;
 }
 /* Title */
 
@@ -105,15 +94,10 @@
 
 /* Media Queries */
 @media (max-width: 768px) {
-    .privacypolicy-title-back {
+    .privacypolicy-title-text {
         font-size: 42px;
         font-weight: 900;
         line-height: 1.2;
-    }
-
-    .privacypolicy-title-front {
-        font-size: 18px;
-        font-weight: 900;
     }
 }
 /* Media Queries */

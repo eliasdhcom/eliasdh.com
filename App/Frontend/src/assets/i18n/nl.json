@@ -5,7 +5,6 @@
     "TRANSLATE1": "Hallo, welkom bij ons bedrijf",
     "TRANSLATE2": "ELIASDH",
     "TRANSLATE3": "Over",
-    "TRANSLATE4": "Over Ons",
     "TRANSLATE5": "Ons Bedrijf",
     "TRANSLATE6": "EliasDH werd opgericht in 2020 met een duidelijke missie: bedrijven en individuen versterken door het aanbieden van eersteklas hostingdiensten en geavanceerde webontwikkelingsoplossingen. Wij geloven dat technologie voor iedereen toegankelijk moet zijn, en ons doel is om de online wereld veiliger, efficiënter en gebruiksvriendelijker te maken.",
     "TRANSLATE7": "Bij EliasDH streven we naar uitmuntendheid in alles wat we doen. Van het maken van op maat gemaakte websites tot het optimaliseren van serverprestaties, we gaan verder dan de verwachtingen van onze klanten. Ons team van toegewijde professionals werkt onvermoeibaar om voorop te blijven lopen en innovatieve oplossingen te leveren die echte resultaten opleveren.",
@@ -15,7 +14,6 @@
     "TRANSLATE11": "Team Samenwerking: Wij geloven in de kracht van samenwerking. Door een cultuur van teamwork en open communicatie te bevorderen, bereiken we samen geweldige dingen.",
     "TRANSLATE12": "Continue Verbetering: Wij zijn toegewijd aan continue verbetering. We omarmen feedback, leren van onze ervaringen en passen ons aan aan evoluerende industrie trends.",
     "TRANSLATE13": "Diensten",
-    "TRANSLATE14": "Onze Diensten",
     "TRANSLATE15": "Hostingdiensten",
     "TRANSLATE16-1": "Economy",
     "TRANSLATE16-2": "€20/m",
@@ -49,7 +47,6 @@
     "TRANSLATE41": "Full-stack ontwikkeling",
     "TRANSLATE42": "Wij maken full-stack applicaties die snel, veilig en responsief zijn",
     "TRANSLATE43": "Team",
-    "TRANSLATE44": "Het Team",
     "TRANSLATE45": "Word lid van ons team",
     "TRANSLATE46": "Ben je gepassioneerd om een verschil te maken? Gedij je in een dynamische en samenwerkende omgeving? We zijn altijd op zoek naar getalenteerde individuen om ons team te versterken!",
     "TRANSLATE47": "Als je geïnteresseerd bent om deel uit te van ons team, horen we graag van je. Stuur ons je cv en een motivatiebrief waarin je uitlegt waarom je een geweldige aanvulling zou zijn voor onze organisatie.",
@@ -57,7 +54,6 @@
   },
   "PRIVACYPOLICY": {
     "TRANSLATE1": "Privacybeleid",
-    "TRANSLATE2": "Ons Privacybeleid",
     "TRANSLATE3": "Privacybeleid",
     "TRANSLATE4": "Inleiding",
     "TRANSLATE5-1": "EliasDH zet zich in voor het beschermen van uw privacy. Neem contact met ons op via ",
@@ -108,7 +104,6 @@
   },
   "LEGALGUIDELINES": {
     "TRANSLATE1": "Juridische Richtlijnen",
-    "TRANSLATE2": "Onze Juridische Richtlijnen",
     "TRANSLATE3": "Juridische Richtlijnen",
     "TRANSLATE4": "Eigendom en Inhoud",
     "TRANSLATE5": "EliasDH, een wettelijk erkend bedrijf, is de enige eigenaar en exploitant van deze website.",
@@ -150,8 +145,7 @@
     "TRANSLATE3": "Voor meer informatie, neem contact met ons op via "
   },
   "ACCESSDENIED": {
-    "TRANSLATE1": "403 Pagina",
-    "TRANSLATE2": "403 Toegang Geweigerd"
+    "TRANSLATE1": "403 Pagina"
   },
   "NOTFOUND": {
     "TRANSLATE1": "De pagina die je zoekt, is mogelijk verwijderd, van naam veranderd of tijdelijk niet beschikbaar."
