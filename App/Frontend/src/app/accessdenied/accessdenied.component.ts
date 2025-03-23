@@ -6,14 +6,14 @@
 
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ContextMenuComponent } from '../contextmenu/contextmenu.component';
 import { LanguageService } from '../services/language.service';
+import { SharedModule } from '../shared/shared.module';
 
 @Component({
     selector: 'app-accessdenied',
     templateUrl: './accessdenied.component.html',
     styleUrls: ['./accessdenied.component.css'],
-    imports: [TranslatePipe, ContextMenuComponent],
+    imports: [TranslatePipe, SharedModule],
     standalone: true
 })
 export class AccessDeniedComponent implements OnInit, AfterViewInit {

@@ -7,15 +7,14 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
-import { FooterComponent } from '../footer/footer.component';
-import { ContextMenuComponent } from '../contextmenu/contextmenu.component';
 import { LanguageService } from '../services/language.service';
+import { SharedModule } from '../shared/shared.module';
 
 @Component({
     selector: 'app-index',
     templateUrl: './index.component.html',
     styleUrls: ['./index.component.css'],
-    imports: [TranslatePipe, CommonModule, FooterComponent, ContextMenuComponent],
+    imports: [TranslatePipe, CommonModule, SharedModule],
     standalone: true
 })
 

@@ -6,15 +6,14 @@
 
 import { Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { FooterComponent } from '../footer/footer.component';
-import { ContextMenuComponent } from '../contextmenu/contextmenu.component';
 import { LanguageService } from '../services/language.service';
+import { SharedModule } from '../shared/shared.module';
 
 @Component({
     selector: 'app-legalguidelines',
     templateUrl: './legalguidelines.component.html',
     styleUrls: ['./legalguidelines.component.css'],
-    imports: [TranslatePipe, FooterComponent, ContextMenuComponent],
+    imports: [TranslatePipe, SharedModule],
     standalone: true
 })
 
