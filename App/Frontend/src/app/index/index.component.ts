@@ -26,7 +26,8 @@ export class IndexComponent implements OnInit {
         languages: [
             { code: 'en', name: 'English' },
             { code: 'nl', name: 'Nederlands' },
-            { code: 'fr', name: 'Français' }
+            { code: 'fr', name: 'Français' },
+            { code: 'de', name: 'Deutsch' }
         ]
     };
 
