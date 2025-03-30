@@ -362,6 +362,11 @@
     line-height: 1.5;
 }
 
+.index-team-container-carousel-item-a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
 .index-team-container-carousel-item svg {
     fill: var(--primary);
     width: 48px;
