@@ -1,7 +1,8 @@
-#################################
-# @author K10s Open Source Team #
-# @since 01/01/2025             #
-#################################
+############################
+# @author EliasDH Team     #
+# @see https://eliasdh.com #
+# @since 01/01/2025        #
+############################
 # Frontend build
 FROM nginx:alpine
 
