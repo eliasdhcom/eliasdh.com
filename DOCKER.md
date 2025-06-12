@@ -11,7 +11,7 @@
 - Pull the latest image and run the container
 ```bash
 sudo docker pull ghcr.io/eliasdh-com/eliasdhcom-frontend:latest
-sudo docker run --name eliasdhcom-frontend-container -p 80:80 -d ghcr.io/eliasdh-com/eliasdhcom-frontend:latest
+sudo docker run --name eliasdhcom-frontend-container -p 8080:8080 -d ghcr.io/eliasdh-com/eliasdhcom-frontend:latest
 ```
 
 - Check the logs
