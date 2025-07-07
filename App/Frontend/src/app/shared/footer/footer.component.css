@@ -102,10 +102,6 @@
     height: 100%;
 }
 
-.footer-social-media-ul .footer-social-media-icon a[data-social="x"] .footer-social-media-icon-filled {
-    background-color: var(--x-color);
-}
-
 .footer-social-media-ul .footer-social-media-icon a[data-social="instagram"] .footer-social-media-icon-filled {
     background-color: var(--instagram-color);
 }

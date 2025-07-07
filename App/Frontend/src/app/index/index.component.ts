@@ -78,7 +78,7 @@ export class IndexComponent implements OnInit {
         const emailIcon = document.getElementById('index-team-emailIcon');
         if (emailIcon) {
             emailIcon.addEventListener('click', () => {
-                window.location.href = 'https://www.linkedin.com/company/eliasdh/jobs/';
+                window.location.href = 'https://www.linkedin.com/company/eliasdhcom/jobs/';
             });
         }
     }

@@ -52,5 +52,5 @@ console.log(`
 ███████████████████               ███████████████
 █████████████████████████████████████████████████
 
-Curious? Join us at https://www.linkedin.com/company/eliasdh/jobs
+Curious? Join us at https://www.linkedin.com/company/eliasdhcom/jobs
 `);
