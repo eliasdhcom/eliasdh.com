@@ -10,8 +10,8 @@
 
 - Pull the latest image and run the container
 ```bash
-sudo docker pull ghcr.io/eliasdh-com/eliasdhcom-frontend:latest
-sudo docker run --name eliasdhcom-frontend-container -p 8080:8080 -d ghcr.io/eliasdh-com/eliasdhcom-frontend:latest
+sudo docker pull ghcr.io/eliasdhcom/eliasdhcom-frontend:latest
+sudo docker run --name eliasdhcom-frontend-container -p 8080:8080 -d ghcr.io/eliasdhcom/eliasdhcom-frontend:latest
 ```
 
 - Check the logs
@@ -23,5 +23,5 @@ sudo docker logs eliasdhcom-frontend-container
 ```bash
 sudo docker stop eliasdhcom-frontend-container
 sudo docker rm eliasdhcom-frontend-container
-sudo docker rmi ghcr.io/eliasdh-com/eliasdhcom-frontend:latest
+sudo docker rmi ghcr.io/eliasdhcom/eliasdhcom-frontend:latest
 ```
