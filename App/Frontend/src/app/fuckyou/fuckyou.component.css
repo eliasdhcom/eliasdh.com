@@ -1,0 +1,57 @@
+/**
+    * @author EliasDH Team
+    * @see https://eliasdh.com
+    * @since 01/01/2025
+**/
+
+/* SetUp Grid */
+.fuckyou-main { grid-area: main; }
+.footer { grid-area: footer; }
+
+.fuckyou-body {
+    display: grid;
+    grid-template-areas:
+        'main'
+        'footer';
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    min-height: 100vh;
+    margin: 0;
+}
+/* SetUp Grid */
+
+/* Fuck You */
+.fuckyou-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin: 0;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.fuckyou-main h2 {
+    color: var(--primary);
+    font-size: 10vw;
+    font-weight: 900;
+    text-align: center;
+    margin: 0;
+    line-height: 1.2;
+    max-width: 90vw;
+}
+
+@media (max-width: 768px) {
+    .fuckyou-main h2 {
+        font-size: 12vw;
+        max-width: 95vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .fuckyou-main h2 {
+        font-size: 15vw;
+        max-width: 95vw;
+    }
+}
+/* Fuck You */

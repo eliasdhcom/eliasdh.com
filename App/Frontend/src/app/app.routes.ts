@@ -11,6 +11,7 @@ import { LegalGuidelinesComponent } from './legalguidelines/legalguidelines.comp
 import { DomainRentedComponent } from './domainrented/domainrented.component';
 import { AccessDeniedComponent } from './accessdenied/accessdenied.component';
 import { NotFoundComponent } from './notfound/notfound.component';
+import { FuckYouComponent } from './fuckyou/fuckyou.component';
 
 export const routes: Routes = [
     { path: '', component: IndexComponent, data: { title: 'EliasDH' } },
@@ -19,5 +20,6 @@ export const routes: Routes = [
     { path: 'domainrented', component: DomainRentedComponent, data: { title: 'EliasDH - Domain Rented' } },
     { path: '403', component: AccessDeniedComponent, data: { title: 'EliasDH - Access Denied' } },
     { path: '404', component: NotFoundComponent, data: { title: 'EliasDH - Not Found' } },
+    { path: 'fuckyou', component: FuckYouComponent, data: { title: 'EliasDH - Fuck You' } },
     { path: '**', component: NotFoundComponent, data: { title: 'EliasDH - Not Found' } }
 ];
