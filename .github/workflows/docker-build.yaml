@@ -37,3 +37,6 @@ jobs:
       - name: Build/Push Frontend Docker Image
         run: |
           docker build --push -t ghcr.io/eliasdhcom/eliasdhcom-frontend:latest ./App/Frontend
+      - name: Build/Push AI Docker Image
+        run: |
+          docker build --push -t ghcr.io/eliasdhcom/eliasdhcom-ai-service:latest ./App/Service/ai-service.dockerfile

@@ -6,10 +6,10 @@
 # Frontend build
 FROM nginx:alpine
 
-LABEL maintainer "EliasDH"
-LABEL version "1.0"
-LABEL description "This is the EliasDH website."
-LABEL org.opencontainers.image.description "This is the EliasDH website."
+LABEL maintainer="EliasDH"
+LABEL version="1.0"
+LABEL description="This is the frontend image for the app."
+LABEL org.opencontainers.image.description="This is the frontend image for the app."
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY ./default.conf /etc/nginx/conf.d/default.conf
