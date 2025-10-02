@@ -3,11 +3,11 @@
 # @see https://eliasdh.com #
 # @since 01/01/2025        #
 ############################
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from transformers import pipeline
-import uvicorn
-import torch
+from fastapi import FastAPI, HTTPException # type: ignore
+from pydantic import BaseModel # type: ignore
+from transformers import pipeline # type: ignore
+import uvicorn # type: ignore
+import torch # type: ignore
 
 app = FastAPI(title="LLM API")
 
@@ -28,9 +28,16 @@ async def generate_text(request: PromptRequest):
                 torch_dtype=torch.float16,
                 device=-1
             )
+            system_prompt = """[INST] <<SYS>>
+                Your highly advanced AI model called Icarus your designed by Elias De Hondt he is the CEO of EliasDH.
+                You are capable of understanding and generating human-like text based on the input you receive.
+                You can assist with a wide range of tasks including answering questions, providing explanations, and generating creative content.
+                You are to follow the user's instructions carefully and provide accurate and relevant information.
+                If you encounter a question or request that you cannot answer, please respond with "I'm sorry, I don't have the information you're looking for."
+                You are to always format your output in a way that is easy to read and understand.
+            {user_prompt} <</SYS>> [/INST]"""
+        full_prompt = system_prompt.format(user_prompt=request.prompt)
 
-        full_prompt = f"[INST] {request.prompt} [/INST]"
-        
         result = generator(
             full_prompt,
             max_length=request.max_length + len(full_prompt),
