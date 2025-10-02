@@ -22,7 +22,7 @@ EXPOSE 11434
 
 # Health check voor Kubernetes readiness/liveness probes
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:11434/api/tags || exit 1
+    CMD curl -f http://localhost:11434/api/tags || exit 1
 
 # Start Ollama server
 CMD ["ollama", "serve"]
