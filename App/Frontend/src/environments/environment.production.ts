@@ -6,5 +6,6 @@
 
 export const environment = {
     production: true,
+    eliasdhApiKey: '1415-9265-1415-9265',
     eliasdhApiUrl: 'https://eliasdh.com'
 };
