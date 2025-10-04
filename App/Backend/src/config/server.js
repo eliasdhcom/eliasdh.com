@@ -18,7 +18,7 @@ const app = express();
 app.set('trust proxy', 1);
 
 const corsOptions = {
-    origin: ['http://localhost:4200', 'http://localhost:8080', 'https://eliasdh.com'],
+    origin: ['http://localhost:4200', 'https://eliasdh.com', 'https://www.eliasdh.com', 'https://app.levelup.be', 'https://display.levelup.be'],
     methods: ['GET', 'POST'],
     allowedHeaders: ['X-API-Key', 'Content-Type'],
 };
