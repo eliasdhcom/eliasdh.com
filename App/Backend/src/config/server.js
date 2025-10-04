@@ -19,8 +19,10 @@ app.set('trust proxy', 1);
 
 const corsOptions = {
     origin: ['http://localhost:4200', 'https://eliasdh.com', 'https://www.eliasdh.com', 'https://app.levelup.be', 'https://display.levelup.be'],
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['X-API-Key', 'Content-Type'],
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['X-API-Key', 'Content-Type', 'Authorization'],
+    credentials: true,
+    optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
