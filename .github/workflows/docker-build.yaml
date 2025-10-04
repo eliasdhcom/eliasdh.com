@@ -30,7 +30,7 @@ jobs:
       - name: Build Angular Application
         run: |
           cd ./App/Frontend
-            npm run build
+            npm run build -- --project Frontend --configuration production
       - name: Login to GHCR
         run: |
           echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u eliasdehondt --password-stdin
