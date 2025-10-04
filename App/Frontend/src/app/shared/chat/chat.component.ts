@@ -11,7 +11,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
 
 @Component({
-    selector: 'app-chatbot',
+    selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.css'],
     standalone: true,
@@ -39,10 +39,10 @@ export class ChatComponent {
         try {
             const headers = new HttpHeaders({
                 'Content-Type': 'application/json',
-                'x-api-key': environment.apiKey,
+                'x-api-key': environment.eliasdhApiKey,
             });
 
-            const res: any = await this.http.post(`${environment.apiUrl}/api/v1/icarus`, { message: userMessage }, { headers }).toPromise();
+            const res: any = await this.http.post(`${environment.eliasdhApiUrl}/api/v1/icarus`, { message: userMessage }, { headers }).toPromise();
             this.messages.push({ sender: 'bot', text: res.data.reply });
         } catch (err: any) {
             console.error('Chat API error:', err);
