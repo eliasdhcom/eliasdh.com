@@ -1,0 +1,82 @@
+/**
+    * @author EliasDH Team
+    * @see https://eliasdh.com
+    * @since 01/01/2025
+**/
+
+.chat-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: var(--primary);
+    color: var(--background);
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px var(--shadow);
+    z-index: 1;
+    border-color: var(--secondary);
+    border-width: 1px;
+    border-style: solid;
+}
+
+.chat-window {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    width: 300px;
+    height: 400px;
+    background: var(--background);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px var(--shadow);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1;
+    border-color: var(--secondary);
+    border-width: 1px;
+    border-style: solid;
+}
+
+.chat-header {
+    background: var(--primary);
+    color: var(--background);
+    padding: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 14px;
+}
+
+.chat-messages .user {
+    text-align: right;
+    margin: 5px 0;
+}
+
+.chat-messages .bot {
+    text-align: left;
+    margin: 5px 0;
+}
+
+.chat-input {
+    display: flex;
+    border-top: 1px solid var(--secondary);
+}
+
+.chat-input input {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.chat-input button {
+    border: none;
+    background: var(--primary);
+    color: var(--background);
+    padding: 0 15px;
+}

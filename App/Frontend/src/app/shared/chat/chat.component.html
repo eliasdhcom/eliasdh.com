@@ -1,0 +1,16 @@
+<!--Author EliasDH Team-->
+<div class="cursor-pointer chat-button" (click)="toggleChat()">💬</div>
+<div class="chat-window" *ngIf="isOpen">
+    <div class="chat-header">Icarus</div>
+    <div class="chat-messages">
+        <div *ngFor="let msg of messages" [ngClass]="msg.sender">
+        <b *ngIf="msg.sender === 'user'">You:</b>
+        <b *ngIf="msg.sender === 'bot'">Icarus:</b>
+            {{ msg.text }}
+        </div>
+    </div>
+    <div class="chat-input">
+        <input class="cursor-pointer" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Ask your question..." />
+        <button class="cursor-pointer" (click)="sendMessage()">➤</button>
+    </div>
+</div>
