@@ -10,7 +10,7 @@ const logger = require('../../utils/logger');
 const { PassThrough } = require('stream');
 
 class icarusClient {
-    constructor(baseUrl = config.eliasdhAPIUrl) {
+    constructor(baseUrl = config.eliasdhApiUrlAiService) {
         this.client = axios.create({
             baseURL: baseUrl,
             timeout: 1200000,

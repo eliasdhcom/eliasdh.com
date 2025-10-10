@@ -12,6 +12,6 @@ module.exports = {
     server: {
         port: process.env.PORT || 3000,
         eliasdhAPIKey: process.env.ELIASDH_API_KEY,
-        eliasdhAPIUrl: process.env.ELIASDH_API_URL,
+        eliasdhApiUrlAiService: process.env.ELIASDH_API_URL_AI_SERVICE,
     },
 };
