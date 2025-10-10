@@ -3,21 +3,25 @@
 # @see https://eliasdh.com #
 # @since 01/01/2025        #
 ############################
-# AI build
-FROM python:3.11-slim
+FROM ollama/ollama:latest
 
 LABEL maintainer="EliasDH"
 LABEL version="1.0"
-LABEL description="This is the AI image for the app."
-LABEL org.opencontainers.image.description="This is the AI image for the app."
+LABEL description="This is the Service AI image for the app."
+LABEL org.opencontainers.image.description="This is the Service AI image for the app."
 
-WORKDIR /app
+ENV MODEL=llama3
+EXPOSE 11434
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY app.py .
-
-EXPOSE 3001
-
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "3001"]
+ENTRYPOINT ["/bin/sh", "-c", "\
+echo 'Starting Ollama server in background...' && \
+ollama serve & \
+SERVER_PID=$! && \
+echo 'Waiting for server to become ready...' && \
+until ollama list >/dev/null 2>&1; do sleep 1; done && \
+echo 'Pulling model $MODEL...' && \
+ollama pull $MODEL && \
+echo 'Model ready ✅' && \
+echo 'Switching to Ollama server as main process...' && \
+kill $SERVER_PID && \
+exec ollama serve"]

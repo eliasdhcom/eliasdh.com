@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-chat',
@@ -22,6 +23,7 @@ export class ChatComponent {
     isOpen = false;
     messages: { sender: string; text: string }[] = [];
     userInput = '';
+    isLoading = false;
 
     constructor(private http: HttpClient) {}
 
@@ -32,9 +34,10 @@ export class ChatComponent {
     async sendMessage() {
         if (!this.userInput.trim()) return;
 
-        const userMessage = this.userInput;
-        this.messages.push({ sender: 'user', text: userMessage });
+        const msg = this.userInput;
+        this.messages.push({ sender: 'user', text: msg });
         this.userInput = '';
+        this.isLoading = true;
 
         try {
             const headers = new HttpHeaders({
@@ -42,12 +45,16 @@ export class ChatComponent {
                 'x-api-key': environment.eliasdhApiKey,
             });
 
-            const res: any = await this.http.post(`${environment.eliasdhApiUrl}/api/v1/icarus`, { message: userMessage }, { headers }).toPromise();
-            this.messages.push({ sender: 'bot', text: res.data.reply });
-        } catch (err: any) {
-            console.error('Chat API error:', err);
-            const errorMessage = err.error?.error || 'An error occurred. Please try again later.';
-            this.messages.push({ sender: 'bot', text: `Error: ${err.status} - ${errorMessage}` });
+            const res: any = await firstValueFrom(
+                this.http.post(`${environment.eliasdhApiUrl}/api/v1/icarus`, { message: msg }, { headers })
+            );
+
+            const reply = res?.data?.reply || 'No reply from AI';
+            this.messages.push({ sender: 'bot', text: reply });
+            } catch (err: any) {
+                this.messages.push({ sender: 'bot', text: 'Error: Could not reach API' });
+            } finally {
+                this.isLoading = false;
         }
     }
 }

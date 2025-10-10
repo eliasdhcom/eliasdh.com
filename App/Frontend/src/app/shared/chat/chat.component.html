@@ -1,16 +1,20 @@
-<!--Author EliasDH Team-->
-<div class="cursor-pointer chat-button" (click)="toggleChat()">💬</div>
-<div class="chat-window" *ngIf="isOpen">
-    <div class="chat-header">Icarus</div>
-    <div class="chat-messages">
-        <div *ngFor="let msg of messages" [ngClass]="msg.sender">
-        <b *ngIf="msg.sender === 'user'">You:</b>
-        <b *ngIf="msg.sender === 'bot'">Icarus:</b>
-            {{ msg.text }}
+<div class="chat-wrapper">
+    <button class="chat-toggle" (click)="toggleChat()">💬</button>
+    <div class="chat-container" *ngIf="isOpen">
+        <div class="chat-header">
+            <span>Chat with Icarus</span>
+            <button class="chat-close-btn" (click)="toggleChat()">✖</button>
         </div>
-    </div>
-    <div class="chat-input">
-        <input class="cursor-pointer" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Ask your question..." />
-        <button class="cursor-pointer" (click)="sendMessage()">➤</button>
+        <div class="chat-messages">
+            <div *ngFor="let m of messages" [class.chat-user]="m.sender==='user'" [class.chat-bot]="m.sender==='bot'" class="chat-message">{{ m.text }}</div>
+            <div *ngIf="isLoading" class="chat-loading-message">
+                <div class="chat-spinner"></div>
+                <span>Icarus is typing...</span>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Type a message..." [disabled]="isLoading">
+            <button (click)="sendMessage()" [disabled]="isLoading || !userInput.trim()">Send</button>
+        </div>
     </div>
 </div>
