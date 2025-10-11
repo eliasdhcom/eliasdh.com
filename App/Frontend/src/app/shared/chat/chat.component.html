@@ -1,10 +1,10 @@
 <!--Author EliasDH Team-->
 <div class="chat-wrapper">
-    <button class="chat-toggle" (click)="toggleChat()">💬</button>
+    <button class="cursor-pointer chat-toggle" (click)="toggleChat()">💬</button>
     <div class="chat-container" *ngIf="isOpen">
         <div class="chat-header">
             <span>Chat with Icarus</span>
-            <button class="chat-close-btn" (click)="toggleChat()">✖</button>
+            <button class="cursor-pointer chat-close-btn" (click)="toggleChat()">✖</button>
         </div>
         <div class="chat-messages">
             <div *ngFor="let m of messages" [class.chat-user]="m.sender==='user'" [class.chat-bot]="m.sender==='bot'" class="chat-message">{{ m.text }}</div>
@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="chat-input-area">
-            <input type="text" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Type a message..." [disabled]="isLoading">
+            <input class="cursor-text" type="text" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Type a message..." [disabled]="isLoading">
             <button (click)="sendMessage()" [disabled]="isLoading || !userInput.trim()">Send</button>
         </div>
     </div>
