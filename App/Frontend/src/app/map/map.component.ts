@@ -51,7 +51,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this.map = L.map('map', {
             center: [50.8503, 4.3517],
             zoom: 8,
-            zoomControl: true
+            zoomControl: false
         });
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -99,8 +99,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this.markers = [];
 
         const customIcon = L.divIcon({
-            className: 'custom-marker',
-            html: `<div class="marker-pin"></div>`,
+            className: 'custom-marker cursor-pointer',
+            html: `<div class="marker-pin cursor-pointer"></div>`,
             iconSize: [30, 42],
             iconAnchor: [15, 42]
         });

@@ -9,18 +9,62 @@ const logger = require('../../../utils/logger');
 const mockCustomers = [
     {
         id: '1',
-        name: 'Ter Eiken Sport',
+        name: 'Ter Eiken Edegem',
         address: 'Kattenbroek 33, 2650 Edegem, Belgium',
         vat: 'BE0833830212',
         websites: [
+            { subscriptionType: 'ToDo', url: 'https://www.tereiken.be', name: 'Ter Eiken Website' },
+            { subscriptionType: 'ToDo', url: 'https://www.levelup.be', name: 'Level Up Website' },
             { subscriptionType: 'Professional', url: 'https://app.levelup.be', name: 'Level Up App' },
             { subscriptionType: 'Business', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
         latitude: 51.150800,
         longitude: 4.424345
-    },
+    },    
     {
         id: '2',
+        name: 'Ter Eiken Boechout',
+        address: 'Olieslagerijstraat 19, 2530 Boechout, Belgium',
+        vat: 'BE0451910825',
+        websites: [
+            { subscriptionType: 'ToDo', url: 'https://www.tereiken.be', name: 'Ter Eiken Website' },
+            { subscriptionType: 'ToDo', url: 'https://www.levelup.be', name: 'Level Up Website' },
+            { subscriptionType: 'Professional', url: 'https://app.levelup.be', name: 'Level Up App' },
+            { subscriptionType: 'Business', url: 'https://display.levelup.be', name: 'Level Up Display App' }
+        ],
+        latitude: 51.1803828,
+        longitude: 4.5049921
+    },
+    {
+        id: '3',
+        name: 'Ter Eiken Essen',
+        address: 'Huybergsebaan 164, 2910 Essen, Belgium',
+        vat: 'BE0463353558',
+        websites: [
+            { subscriptionType: 'ToDo', url: 'https://www.tereiken.be', name: 'Ter Eiken Website' },
+            { subscriptionType: 'ToDo', url: 'https://www.levelup.be', name: 'Level Up Website' },
+            { subscriptionType: 'Professional', url: 'https://app.levelup.be', name: 'Level Up App' },
+            { subscriptionType: 'Business', url: 'https://display.levelup.be', name: 'Level Up Display App' }
+        ],
+        latitude: 51.4274217,
+        longitude: 4.4309693
+    },
+    {
+        id: '4',
+        name: 'Ter Eiken Lede',
+        address: 'Grote Steenweg 304, 9340 Lede, Belgium',
+        vat: 'BE0833830212',
+        websites: [
+            { subscriptionType: 'ToDo', url: 'https://www.tereiken.be', name: 'Ter Eiken Website' },
+            { subscriptionType: 'ToDo', url: 'https://www.levelup.be', name: 'Level Up Website' },
+            { subscriptionType: 'Professional', url: 'https://app.levelup.be', name: 'Level Up App' },
+            { subscriptionType: 'Business', url: 'https://display.levelup.be', name: 'Level Up Display App' }
+        ],
+        latitude: 50.9541437,
+        longitude: 3.9190651
+    },
+    {
+        id: '5',
         name: 'Zizis',
         address: 'Provinciesteenweg 557, 2530 Boechout, Belgium',
         vat: 'BE0000000000',

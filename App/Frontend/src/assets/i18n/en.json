@@ -152,10 +152,11 @@
   },
   "FOOTER": {
     "TRANSLATE1": "Privacy Policy",
-    "TRANSLATE2": "Legal Guidelines",
-    "TRANSLATE3": "Designed by the EliasDH Team",
-    "TRANSLATE4": " EliasDH. ",
-    "TRANSLATE5": "All rights reserved."
+    "TRANSLATE2": "Map",
+    "TRANSLATE3": "Legal Guidelines",
+    "TRANSLATE4": "Designed by the EliasDH Team",
+    "TRANSLATE5": " EliasDH. ",
+    "TRANSLATE6": "All rights reserved."
   },
   "CONTEXTMENU": {
     "TRANSLATE1": "Copy Link Address",

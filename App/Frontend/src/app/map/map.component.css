@@ -189,7 +189,6 @@
     border: 2px solid var(--background);
     border-radius: 50%;
     color: var(--background);
-    cursor: pointer;
     transition: all 0.3s ease;
 }
 
@@ -325,6 +324,11 @@
 
 .map-sidebar-website-type.type-free {
     background-color: var(--type-free-color);
+    color: white;
+}
+
+.map-sidebar-website-type.type-todo {
+    background-color: var(--type-todo-color);
     color: white;
 }
 
