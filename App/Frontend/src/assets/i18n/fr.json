@@ -161,5 +161,18 @@
     "TRANSLATE1": "Copier l'adresse du lien",
     "TRANSLATE2": "Copier dans le presse-papiers",
     "TRANSLATE3": "Basculer le thème"
+  },
+  "MAP": {
+    "TRANSLATE1": "Carte des clients",
+    "TRANSLATE2": "Retour",
+    "TRANSLATE3": "Chargement des clients...",
+    "TRANSLATE4": "Réessayer",
+    "TRANSLATE5": "Détails du client",
+    "TRANSLATE6": "Nom de l'entreprise",
+    "TRANSLATE7": "Adresse",
+    "TRANSLATE8": "Numéro de TVA",
+    "TRANSLATE9": "Coordonnées",
+    "TRANSLATE10": "Sites web",
+    "TRANSLATE11": "Visiter"
   }
 }

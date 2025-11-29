@@ -161,5 +161,18 @@
     "TRANSLATE1": "Copy Link Address",
     "TRANSLATE2": "Copy To Clipboard",
     "TRANSLATE3": "Toggle Theme"
+  },
+  "MAP": {
+    "TRANSLATE1": "Customer Map",
+    "TRANSLATE2": "Back",
+    "TRANSLATE3": "Loading customers...",
+    "TRANSLATE4": "Retry",
+    "TRANSLATE5": "Customer Details",
+    "TRANSLATE6": "Company Name",
+    "TRANSLATE7": "Address",
+    "TRANSLATE8": "VAT Number",
+    "TRANSLATE9": "Coordinates",
+    "TRANSLATE10": "Websites",
+    "TRANSLATE11": "Visit"
   }
 }

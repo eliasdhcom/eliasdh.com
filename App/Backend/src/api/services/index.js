@@ -8,4 +8,7 @@ module.exports = {
     icarus: {
         icarusService: require('./icarus/icarusService'),
     },
+    customers: {
+        customersService: require('./customers/customersService'),
+    },
 };

@@ -161,5 +161,18 @@
     "TRANSLATE1": "Linkadresse kopieren",
     "TRANSLATE2": "In die Zwischenablage kopieren",
     "TRANSLATE3": "Thema wechseln"
+  },
+  "MAP": {
+    "TRANSLATE1": "Kundenkarte",
+    "TRANSLATE2": "Zurück",
+    "TRANSLATE3": "Kunden werden geladen...",
+    "TRANSLATE4": "Erneut versuchen",
+    "TRANSLATE5": "Kundendetails",
+    "TRANSLATE6": "Firmenname",
+    "TRANSLATE7": "Adresse",
+    "TRANSLATE8": "USt-IdNr.",
+    "TRANSLATE9": "Koordinaten",
+    "TRANSLATE10": "Websites",
+    "TRANSLATE11": "Besuchen"
   }
 }

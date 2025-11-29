@@ -161,5 +161,18 @@
     "TRANSLATE1": "Kopieer linkadres",
     "TRANSLATE2": "Kopieer naar klembord",
     "TRANSLATE3": "Wissel thema"
+  },
+  "MAP": {
+    "TRANSLATE1": "Klantenkaart",
+    "TRANSLATE2": "Terug",
+    "TRANSLATE3": "Klanten laden...",
+    "TRANSLATE4": "Opnieuw proberen",
+    "TRANSLATE5": "Klantgegevens",
+    "TRANSLATE6": "Bedrijfsnaam",
+    "TRANSLATE7": "Adres",
+    "TRANSLATE8": "BTW-nummer",
+    "TRANSLATE9": "Coördinaten",
+    "TRANSLATE10": "Websites",
+    "TRANSLATE11": "Bezoek"
   }
 }

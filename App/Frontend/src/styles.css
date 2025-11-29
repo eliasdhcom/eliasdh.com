@@ -33,6 +33,13 @@
     --telegram-color: #0088cc;
     --discord-color: #7289da;
     --twitch-color: #6441a5;
+
+    --type-custom-color: #bfe1f6;
+    --type-personal-color: #d4edbc;
+    --type-professional-color: #e6cff2;
+    --type-business-color: #ffe5a0;
+    --type-economy-color: #ffc8aa;
+    --type-free-color: #ffcfc9;
 }
 /* Global Styles */
 
@@ -240,3 +247,33 @@
     border-radius: 16px;
 }
 /* Global Dropdown */
+
+/* Leaflet Custom Markers */
+.custom-marker {
+    background: transparent;
+    border: none;
+}
+
+.marker-pin {
+    width: 30px;
+    height: 30px;
+    border-radius: 50% 50% 50% 0;
+    background: var(--primary);
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 50%;
+    top: 50%;
+    margin: -15px 0 0 -15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.marker-pin::after {
+    content: '';
+    width: 14px;
+    height: 14px;
+    margin: 8px 0 0 8px;
+    background: var(--background);
+    position: absolute;
+    border-radius: 50%;
+}
+/* Leaflet Custom Markers */
