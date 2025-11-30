@@ -5,6 +5,7 @@
 **/
 
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
@@ -16,7 +17,7 @@ import * as L from 'leaflet';
     selector: 'app-map',
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.css'],
-    imports: [CommonModule, TranslatePipe, SharedModule],
+    imports: [CommonModule, TranslatePipe, RouterLink, SharedModule],
     standalone: true
 })
 
@@ -143,9 +144,5 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
     openWebsite(url: string): void {
         window.open(url, '_blank');
-    }
-
-    goBack(): void {
-        window.history.back();
     }
 }
