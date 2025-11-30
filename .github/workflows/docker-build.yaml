@@ -13,6 +13,9 @@ on:
     branches:
       - main
 
+env:
+  IMAGE_TAG: ${{ github.sha }}
+
 jobs:
    build-push-frontend:
     runs-on: ubuntu-latest
@@ -36,10 +39,10 @@ jobs:
           echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u eliasdehondt --password-stdin
       - name: Build/Push Frontend Docker Image
         run: |
-          docker build --push -t ghcr.io/eliasdhcom/eliasdhcom-frontend:latest ./App/Frontend
+          docker build --push -t ghcr.io/eliasdhcom/eliasdhcom-frontend:${{ env.IMAGE_TAG }} ./App/Frontend
       - name: Build/Push Backend Docker Image
         run: |
-            docker build --push -t ghcr.io/eliasdhcom/eliasdhcom-backend:latest ./App/Backend
+            docker build --push -t ghcr.io/eliasdhcom/eliasdhcom-backend:${{ env.IMAGE_TAG }} ./App/Backend
       - name: Build/Push AI Docker Image
         run: |
-          docker build --push -t ghcr.io/eliasdhcom/eliasdhcom-ai-service:latest ./App/Service/AI
+          docker build --push -t ghcr.io/eliasdhcom/eliasdhcom-ai-service:${{ env.IMAGE_TAG }} ./App/Service/AI
