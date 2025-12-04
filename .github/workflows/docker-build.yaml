@@ -14,7 +14,7 @@ on:
       - main
 
 jobs:
-   build-push-frontend:
+   build-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -33,7 +33,7 @@ jobs:
             npm run build -- --project Frontend --configuration production
       - name: Login to GHCR
         run: |
-          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u eliasdehondt --password-stdin
+          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u eliasdhcom --password-stdin
       - name: Build/Push Frontend Docker Image
         run: |
           docker build --push -t ghcr.io/eliasdhcom/eliasdhcom-frontend:latest ./App/Frontend
