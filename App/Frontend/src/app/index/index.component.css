@@ -5,712 +5,134 @@
 **/
 
 /* Title */
-.index-title {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 0px;
-    margin-right: 0px;
-}
-
-.index-title-text {
-    color: var(--background);
-    font-size: 144px;
-    font-weight: 900;
-    line-height: 1.2;
-    margin: 5%;
-    text-transform: uppercase;
-    -webkit-text-stroke: 1px var(--primary);
-}
-
-.index-subtitle {
-    color: var(--secondary);
-    font-size: 24px;
-    font-weight: 400;
-    margin-top: 20px;
-    min-height: 1.2em;
-    display: inline-block;
-}
-/* Title */
+.index-title { position: relative; display: flex; align-items: center; justify-content: center; margin: 0; }
+.index-title-text { color: var(--background); font-size: 144px; font-weight: 900; line-height: 1.2; margin: 5%; text-transform: uppercase; -webkit-text-stroke: 1px var(--primary); }
+.index-subtitle { color: var(--secondary); font-size: 24px; font-weight: 400; margin-top: 20px; min-height: 1.2em; display: inline-block; }
 
 /* Header */
-.index-header-container {
-    background-color: var(--primary);
-    color: var(--background);
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-}
-
-.index-header-container .index-header-logo {
-    fill: var(--background);
-    transform: translateX(50%);
-    width: 456px;
-    height: 456px;
-}
-
-.index-header-container .index-header-title {
-    font-size: 24px;
-    font-weight: 1000;
-}
-
-.index-header-container .index-header-company-name {
-    color: var(--primary);
-    font-size: 96px;
-    font-weight: 300;
-    line-height: 1.2;
-    text-transform: uppercase;
-    -webkit-text-stroke: 2px var(--background);
-    margin-top: 0px;
-}
-
-.index-header-arrow {
-    position: absolute;
-    bottom: 20px;
-    left: 48%;
-    width: 4%;
-    height: auto;
-    fill: var(--background);
-    animation: bounce 1.5s infinite;
-}
-
-@keyframes bounce {
-    0%, 100% {transform: translateY(0)}
-    50% {transform: translateY(-10px)}
-}
-
-@keyframes blink {
-    0%, 100% {opacity: 1}
-    50% {opacity: 0}
-}
-
-.index-header-language {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-/* Header */
+.index-header-container { background-color: var(--primary); color: var(--background); top: 0; left: 0; width: 100%; height: 100vh; display: flex; justify-content: space-between; align-items: center; position: relative; }
+.index-header-container .index-header-logo { fill: var(--background); transform: translateX(50%); width: 456px; height: 456px; }
+.index-header-container .index-header-title { font-size: 24px; font-weight: 1000; }
+.index-header-container .index-header-company-name { color: var(--primary); font-size: 96px; font-weight: 300; line-height: 1.2; text-transform: uppercase; -webkit-text-stroke: 2px var(--background); margin-top: 0; }
+.index-header-arrow { position: absolute; bottom: 20px; left: 48%; width: 4%; height: auto; fill: var(--background); animation: bounce 1.5s infinite; }
+@keyframes bounce { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-10px) } }
+@keyframes blink { 0%, 100% { opacity: 1 } 50% { opacity: 0 } }
+.index-header-language { position: absolute; top: 20px; left: 20px; display: flex; align-items: center; justify-content: center; }
 
 /* About */
-.index-about-company {
-    display: flex;
-    justify-content: space-between;
-}
-
-.index-company-introduction, .index-company-values {
-    margin-left: 5%;
-    margin-right: 5%;
-    width: 48%;
-}
-
-.index-about-company h4 {
-    color: var(--primary);
-    font-size: 24px;
-    font-weight: 900;
-    margin-bottom: 20px;
-}
-
-.index-company-introduction p, .index-company-values li {
-    color: var(--secondary);
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.5;
-}
-
-.index-company-values strong {
-    color: var(--primary);
-    font-weight: 900;
-}
-/* About */
+.index-about-company { display: flex; justify-content: space-between; }
+.index-company-introduction, .index-company-values { margin: 0 5%; width: 48%; }
+.index-about-company h4 { color: var(--primary); font-size: 24px; font-weight: 900; margin-bottom: 20px; }
+.index-company-introduction p, .index-company-values li { color: var(--secondary); font-size: 16px; font-weight: 400; line-height: 1.5; }
+.index-company-values strong { color: var(--primary); font-weight: 900; }
 
 /* Services */
-.index-services-container {
-    margin-top: 0px;
-    margin-left: 10%;
-    margin-right: 10%;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.index-services-container-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.index-services-box {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-    border-radius: 24px;
-    padding: 20px;
-    margin: 30px;
-    width: 500px;
-}
-
-.index-services-box.hosting-services {
-    height: 340px;
-}
-
-.index-services-box.web-services {
-    min-height: 220px;
-}
-
-.index-services-box:hover {
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-    transition: 1s;
-}
-
-.index-services-box-title {
-    color: var(--primary);
-    font-size: 24px;
-    font-weight: 1000;
-    display: flex;
-    align-items: center;
-}
-
-.index-services-circle {
-    background-color: var(--primary);
-    color: var(--text);
-    width: 64px;
-    height: 64px;
-    border-radius: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 10px;
-}
-
-.index-services-svg {
-    fill: var(--background);
-    width: 64px;
-    height: 64px;
-    margin: 10px;
-}
-
-.index-services-box.hosting-services ul {
-    list-style: none;
-    padding: 0;
-}
-
-.index-services-box.hosting-services ul li {
-    color: var(--secondary);
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.5;
-    margin-bottom: 10px;
-}
-
-.index-services-box.web-services p {
-    color: var(--secondary);
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.5;
-    margin-bottom: 10px;
-}
-/* Services */
+.index-services-container { margin: 0 10%; padding: 20px; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+.index-services-container-item { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; }
+.index-services-box { box-shadow: 0 0 10px rgba(0,0,0,.4); border-radius: 24px; padding: 20px; margin: 30px; width: 500px; }
+.index-services-box.hosting-services { height: 340px; }
+.index-services-box.web-services { min-height: 220px; }
+.index-services-box:hover { box-shadow: 0 0 20px rgba(0,0,0,.4); transition: 1s; }
+.index-services-box-title { color: var(--primary); font-size: 24px; font-weight: 1000; display: flex; align-items: center; }
+.index-services-circle { background-color: var(--primary); color: var(--text); width: 64px; height: 64px; border-radius: 16px; display: flex; justify-content: center; align-items: center; margin-right: 10px; }
+.index-services-svg { fill: var(--background); width: 64px; height: 64px; margin: 10px; }
+.index-services-box.hosting-services ul { list-style: none; padding: 0; }
+.index-services-box.hosting-services ul li, .index-services-box.web-services p { color: var(--secondary); font-size: 20px; font-weight: 700; line-height: 1.5; margin-bottom: 10px; }
 
 /* Trusted Clients */
-.index-trusted-clients {
-    background-color: var(--primary);
-    margin-top: 100px;
-    margin-bottom: 100px;
-    padding: 60px 0;
-    text-align: center;
-    position: relative;
-}
-
-.index-trusted-clients::before {
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--primary));
-    content: "";
-    position: absolute;
-    top: -20px;
-    left: 0;
-    right: 0;
-    height: 20px;
-}
-
-.index-trusted-clients::after {
-    background: linear-gradient(to top, rgba(255, 255, 255, 0), var(--primary));
-    content: "";
-    position: absolute;
-    bottom: -20px;
-    left: 0;
-    right: 0;
-    height: 20px;
-}
-
-.index-trusted-clients p {
-    color: var(--secondary);
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.5;
-}
-
-.index-trusted-clients-logo-slider {
-    overflow: hidden;
-    width: 100%;
-    position: relative;
-}
-
-.index-trusted-clients-logos {
-    display: flex;
-    animation: scroll 20s linear infinite;
-}
-
-.index-trusted-clients-logos img {
-    height: 120px;
-    width: auto;
-    margin: 0 60px;
-    transition: transform 0.3s ease;
-}
-
-.index-trusted-clients-logos img:hover {
-    transform: scale(1.1);
-}
-
-@keyframes scroll {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-50%);
-    }
-}
-/* Trusted Clients */
+.index-trusted-clients { background-color: var(--primary); margin: 100px 0; padding: 60px 0; text-align: center; position: relative; }
+.index-trusted-clients::before, .index-trusted-clients::after { content: ""; position: absolute; left: 0; right: 0; height: 20px; }
+.index-trusted-clients::before { background: linear-gradient(to bottom, transparent, var(--primary)); top: -20px; }
+.index-trusted-clients::after { background: linear-gradient(to top, transparent, var(--primary)); bottom: -20px; }
+.index-trusted-clients p { color: var(--secondary); font-size: 16px; font-weight: 400; line-height: 1.5; }
+.index-trusted-clients-logo-slider { overflow: hidden; width: 100%; position: relative; }
+.index-trusted-clients-logos { display: flex; animation: scroll 20s linear infinite; }
+.index-trusted-clients-logos img { height: 120px; width: auto; margin: 0 60px; transition: transform .3s ease; }
+.index-trusted-clients-logos img:hover { transform: scale(1.1); }
+@keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 /* Team */
-.index-team-container {
-    margin-top: 0px;
-    margin-left: 5%;
-    margin-right: 5%;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    overflow: visible;
-}
-
-.index-team-carousel-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 1400px;
-    gap: 20px;
-    overflow: visible;
-}
-
-.index-team-carousel-btn {
-    background-color: var(--primary);
-    border: none;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
-    flex-shrink: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-}
-
-.index-team-carousel-btn:hover:not(:disabled) {
-    background-color: var(--secondary);
-    transform: scale(1.1);
-}
-
-.index-team-carousel-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-}
-
-.index-team-carousel-btn svg {
-    width: 24px;
-    height: 24px;
-    fill: var(--background);
-}
-
-.index-team-carousel-viewport {
-    overflow: hidden;
-    flex: 1;
-    max-width: 1200px;
-    position: relative;
-    padding: 25px 0;
-    margin: -25px 0;
-}
-
-.index-team-carousel-viewport::before,
-.index-team-carousel-viewport::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 60px;
-    z-index: 5;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.index-team-carousel-viewport::before {
-    left: 0;
-    background: linear-gradient(to right, var(--background) 0%, transparent 100%);
-}
-
-.index-team-carousel-viewport::after {
-    right: 0;
-    background: linear-gradient(to left, var(--background) 0%, transparent 100%);
-}
-
-.index-team-carousel-viewport.no-scroll::before,
-.index-team-carousel-viewport.no-scroll::after {
-    opacity: 0 !important;
-}
-
-.index-team-container-carousel {
-    overflow: visible;
-    width: 100%;
-    cursor: default;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: pan-y;
-    position: relative;
-}
-
-.index-team-container-carousel-track {
-    display: flex;
-    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    will-change: transform;
-    padding: 25px 0;
-    margin: -25px 0;
-}
-
-.index-team-container-carousel-track.dragging {
-    transition: none;
-}
-
-.index-team-container-carousel-item {
-    background-color: var(--background);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    border-radius: 24px;
-    margin: 0 15px;
-    padding: 20px;
-    min-width: 300px;
-    max-width: 300px;
-    flex-shrink: 0;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.index-team-container-carousel-item:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-    transform: translateY(-5px);
-}
-
-.index-team-container-carousel-item img {
-    border-radius: 10%;
-    margin-bottom: 20px;
-    width: 100%;
-    max-width: 300px;
-    pointer-events: none;
-    display: block;
-}
-
-.index-team-container-carousel-item h4 {
-    color: var(--primary);
-    font-size: 24px;
-    font-weight: 900;
-    margin-bottom: 10px;
-}
-
-.index-team-container-carousel-item p {
-    color: var(--secondary);
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.5;
-}
-
-.index-team-container-carousel-item-a {
-    color: var(--primary);
-    text-decoration: none;
-}
-
-.index-team-container-carousel-item svg {
-    fill: var(--primary);
-    width: 48px;
-    height: 48px;
-    transition: transform 0.3s ease;
-}
-
-.index-team-container-carousel-item svg:hover {
-    transform: scale(1.2);
-}
-
-.index-team-carousel-dots {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.index-team-carousel-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: var(--secondary);
-    opacity: 0.4;
-    transition: all 0.3s ease;
-}
-
-.index-team-carousel-dot:hover {
-    opacity: 0.7;
-}
-
-.index-team-carousel-dot.active {
-    background-color: var(--primary);
-    opacity: 1;
-    transform: scale(1.2);
-}
-/* Team */
+.index-team-container { margin: 0 5%; padding: 20px; display: flex; justify-content: center; align-items: center; flex-direction: column; overflow: visible; }
+.index-team-carousel-wrapper { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 1400px; gap: 20px; overflow: visible; }
+.index-team-carousel-btn { background-color: var(--primary); border: none; border-radius: 50%; width: 48px; height: 48px; min-width: 48px; flex-shrink: 0; display: none; align-items: center; justify-content: center; transition: all .3s ease; box-shadow: 0 2px 8px rgba(0,0,0,.2); z-index: 10; }
+.index-team-carousel-btn:hover:not(:disabled) { background-color: var(--secondary); transform: scale(1.1); }
+.index-team-carousel-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.index-team-carousel-btn svg { width: 24px; height: 24px; fill: var(--background); }
+.index-team-carousel-viewport { overflow: hidden; flex: 1; max-width: 1200px; position: relative; padding: 25px 0; margin: -25px 0; }
+.index-team-carousel-viewport::before, .index-team-carousel-viewport::after { content: ''; position: absolute; top: 0; bottom: 0; width: 60px; z-index: 5; pointer-events: none; opacity: 0; transition: opacity .3s ease; }
+.index-team-carousel-viewport::before { left: 0; background: linear-gradient(to right, var(--background), transparent); }
+.index-team-carousel-viewport::after { right: 0; background: linear-gradient(to left, var(--background), transparent); }
+.index-team-carousel-viewport.no-scroll::before, .index-team-carousel-viewport.no-scroll::after { opacity: 0 !important; }
+.index-team-container-carousel { overflow: visible; width: 100%; cursor: default; user-select: none; -webkit-user-select: none; touch-action: pan-y; position: relative; }
+.index-team-container-carousel-track { display: flex; transition: transform .5s cubic-bezier(.25,.46,.45,.94); will-change: transform; padding: 25px 0; margin: -25px 0; }
+.index-team-container-carousel-track.dragging { transition: none; }
+.index-team-container-carousel-item { background-color: var(--background); box-shadow: 0 4px 20px rgba(0,0,0,.15); border-radius: 24px; margin: 0 15px; padding: 20px; min-width: 300px; max-width: 300px; flex-shrink: 0; transition: box-shadow .3s ease, transform .3s ease; }
+.index-team-container-carousel-item:hover { box-shadow: 0 8px 30px rgba(0,0,0,.25); transform: translateY(-5px); }
+.index-team-container-carousel-item img { border-radius: 10%; margin-bottom: 20px; width: 100%; max-width: 300px; pointer-events: none; display: block; }
+.index-team-container-carousel-item h4 { color: var(--primary); font-size: 24px; font-weight: 900; margin-bottom: 10px; }
+.index-team-container-carousel-item p { color: var(--secondary); font-size: 16px; font-weight: 400; line-height: 1.5; }
+.index-team-container-carousel-item-a { color: var(--primary); text-decoration: none; }
+.index-team-container-carousel-item svg { fill: var(--primary); width: 48px; height: 48px; transition: transform .3s ease; }
+.index-team-container-carousel-item svg:hover { transform: scale(1.2); }
+.index-team-carousel-dots { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
+.index-team-carousel-dot { width: 12px; height: 12px; border-radius: 50%; background-color: var(--secondary); opacity: 0.4; transition: all .3s ease; }
+.index-team-carousel-dot:hover { opacity: 0.7; }
+.index-team-carousel-dot.active { background-color: var(--primary); opacity: 1; transform: scale(1.2); }
 
 /* Media Queries */
 @media screen and (max-width: 1099px) {
-    .index-team-carousel-btn {
-        display: flex;
-    }
-    
-    .index-team-carousel-viewport::before,
-    .index-team-carousel-viewport::after {
-        opacity: 1;
-    }
+    .index-team-carousel-btn { display: flex; }
+    .index-team-carousel-viewport::before, .index-team-carousel-viewport::after { opacity: 1; }
 }
 
 @media screen and (max-width: 1500px) {
-    .index-team-container {
-        margin-left: 5%;
-        margin-right: 5%;
-    }
+    .index-team-container { margin-left: 5%; margin-right: 5%; }
 }
 
 @media screen and (max-width: 1300px) {
-    .index-header-container .index-header-logo {
-        transform: translateX(0%);
-        width: 300px;
-        height: 300px;
-    }
-
-    .index-services-container {
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .index-team-container {
-        margin-left: 2%;
-        margin-right: 2%;
-    }
-
-    .index-team-carousel-wrapper {
-        gap: 15px;
-        padding: 0 10px;
-    }
-
-    .index-team-carousel-btn {
-        width: 44px;
-        height: 44px;
-        min-width: 44px;
-    }
-
-    .index-team-carousel-btn svg {
-        width: 22px;
-        height: 22px;
-    }
-
-    .index-team-carousel-viewport::before,
-    .index-team-carousel-viewport::after {
-        width: 30px;
-    }
+    .index-header-container .index-header-logo { transform: translateX(0%); width: 300px; height: 300px; }
+    .index-services-container { margin-left: 0; margin-right: 0; }
+    .index-team-container { margin-left: 2%; margin-right: 2%; }
+    .index-team-carousel-wrapper { gap: 15px; padding: 0 10px; }
+    .index-team-carousel-btn { width: 44px; height: 44px; min-width: 44px; }
+    .index-team-carousel-btn svg { width: 22px; height: 22px; }
+    .index-team-carousel-viewport::before, .index-team-carousel-viewport::after { width: 30px; }
 }
 
 @media (max-width: 768px) {
-    .index-header-arrow {
-        left: 45%;
-        width: 10%;
-    }
-
-    .index-title-text {
-        font-size: 80px;
-        font-weight: 900;
-        line-height: 1.2;
-    }
-
-    .index-header-container {
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .index-header-title {
-        margin: 5px;
-    }
-
-    .index-header-container .index-header-company-name {
-        color: var(--primary);
-        font-size: 84px;
-        font-weight: 250;
-        margin: 5px;
-    }
-
-    .index-about-company {
-        flex-direction: column;
-    }
-
-    .index-company-introduction, .index-company-values {
-        margin-left: 5%;
-        margin-right: 5%;
-        width: 90%;
-    }
-
-    .index-services-container {
-        margin-left: 5%;
-        margin-right: 5%;
-    }
-
-    .index-services-box {
-        width: 270px;
-    }
-
-    .index-services-box-title {
-        font-size: 22px;
-    }
-
-    .index-team-container {
-        margin-left: 0;
-        margin-right: 0;
-        padding: 15px 5px;
-    }
-
-    .index-team-carousel-wrapper {
-        gap: 10px;
-        padding: 0 5px;
-    }
-
-    .index-team-carousel-btn {
-        width: 40px;
-        height: 40px;
-        min-width: 40px;
-    }
-
-    .index-team-carousel-btn svg {
-        width: 20px;
-        height: 20px;
-    }
-
-    .index-team-carousel-viewport {
-        padding: 20px 0;
-        margin: -20px 0;
-    }
-
-    .index-team-carousel-viewport::before,
-    .index-team-carousel-viewport::after {
-        width: 50px;
-    }
-
-    .index-team-container-carousel-track {
-        padding: 20px 0;
-        margin: -20px 0;
-    }
-
-    .index-team-container-carousel-item {
-        min-width: 280px;
-        max-width: 280px;
-        margin: 0 15px;
-        padding: 18px;
-    }
-
-    .index-team-carousel-dots {
-        gap: 8px;
-        margin-top: 15px;
-    }
-
-    .index-team-carousel-dot {
-        width: 10px;
-        height: 10px;
-    }
+    .index-header-arrow { left: 45%; width: 10%; }
+    .index-title-text { font-size: 80px; }
+    .index-header-container { flex-direction: column; justify-content: center; }
+    .index-header-title { margin: 5px; }
+    .index-header-container .index-header-company-name { font-size: 84px; font-weight: 250; margin: 5px; }
+    .index-about-company { flex-direction: column; }
+    .index-company-introduction, .index-company-values { margin-left: 5%; margin-right: 5%; width: 90%; }
+    .index-services-container { margin-left: 5%; margin-right: 5%; }
+    .index-services-box { width: 270px; }
+    .index-services-box-title { font-size: 22px; }
+    .index-team-container { margin: 0; padding: 15px 5px; }
+    .index-team-carousel-wrapper { gap: 10px; padding: 0 5px; }
+    .index-team-carousel-btn { width: 40px; height: 40px; min-width: 40px; }
+    .index-team-carousel-btn svg { width: 20px; height: 20px; }
+    .index-team-carousel-viewport, .index-team-container-carousel-track { padding: 20px 0; margin: -20px 0; }
+    .index-team-carousel-viewport::before, .index-team-carousel-viewport::after { width: 50px; }
+    .index-team-container-carousel-item { min-width: 280px; max-width: 280px; margin: 0 15px; padding: 18px; }
+    .index-team-carousel-dots { gap: 8px; margin-top: 15px; }
+    .index-team-carousel-dot { width: 10px; height: 10px; }
 }
 
 @media (max-width: 480px) {
-    .index-team-container {
-        padding: 10px 0;
-    }
-
-    .index-team-carousel-wrapper {
-        gap: 8px;
-        padding: 0;
-    }
-
-    .index-team-carousel-btn {
-        width: 36px;
-        height: 36px;
-        min-width: 36px;
-    }
-
-    .index-team-carousel-btn svg {
-        width: 18px;
-        height: 18px;
-    }
-
-    .index-team-carousel-viewport::before,
-    .index-team-carousel-viewport::after {
-        width: 30px;
-    }
-
-    .index-team-container-carousel-item {
-        min-width: 260px;
-        max-width: 260px;
-        margin: 0 10px;
-        padding: 16px;
-    }
-
-    .index-team-container-carousel-item img {
-        max-width: 100%;
-    }
+    .index-team-container { padding: 10px 0; }
+    .index-team-carousel-wrapper { gap: 8px; padding: 0; }
+    .index-team-carousel-btn { width: 36px; height: 36px; min-width: 36px; }
+    .index-team-carousel-btn svg { width: 18px; height: 18px; }
+    .index-team-carousel-viewport::before, .index-team-carousel-viewport::after { width: 30px; }
+    .index-team-container-carousel-item { min-width: 260px; max-width: 260px; margin: 0 10px; padding: 16px; }
 }
 
 @media (max-width: 380px) {
-    .index-team-container-carousel-item {
-        min-width: 230px;
-        max-width: 230px;
-        margin: 0 10px;
-        padding: 14px;
-    }
-
-    .index-team-carousel-btn {
-        width: 32px;
-        height: 32px;
-        min-width: 32px;
-    }
-
-    .index-team-carousel-btn svg {
-        width: 16px;
-        height: 16px;
-    }
-
-    .index-team-carousel-viewport::before,
-    .index-team-carousel-viewport::after {
-        width: 20px;
-    }
+    .index-team-container-carousel-item { min-width: 230px; max-width: 230px; padding: 14px; }
+    .index-team-carousel-btn { width: 32px; height: 32px; min-width: 32px; }
+    .index-team-carousel-btn svg { width: 16px; height: 16px; }
+    .index-team-carousel-viewport::before, .index-team-carousel-viewport::after { width: 20px; }
 }
-/* Media Queries */
