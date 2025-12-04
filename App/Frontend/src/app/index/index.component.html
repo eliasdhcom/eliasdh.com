@@ -288,32 +288,57 @@
             <section class="index-title">
                 <h3 class="index-title-text">{{'INDEX.TRANSLATE43' | translate}}</h3>
             </section>
-            <section class="index-team-container-carousel">
-                <section class="index-team-container-carousel-item">
-                    <svg class="cursor-pointer" id="index-team-emailIcon" viewBox="0 0 16 16" aria-labelledby="email-title">
-                        <title id="email-title">Email</title>
-                        <path d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+            <section class="index-team-carousel-wrapper">
+                <button class="index-team-carousel-btn index-team-carousel-btn-prev cursor-pointer"
+                        (click)="prevTeamSlide()" 
+                        [disabled]="currentTeamIndex === 0"
+                        [hidden]="maxTeamIndex === 0">
+                    <svg viewBox="0 0 16 16" aria-labelledby="prev-title" class="cursor-pointer">
+                        <title id="prev-title">Previous</title>
+                        <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                     </svg>
-                    <h4>{{'INDEX.TRANSLATE45' | translate}}</h4>
-                    <p>{{'INDEX.TRANSLATE46' | translate}}</p>
-                    <p>{{'INDEX.TRANSLATE47' | translate}}</p>
-                    <p>{{'INDEX.TRANSLATE48' | translate}}</p>
-                    <a class="global-button cursor-pointer" href="https://www.linkedin.com/company/eliasdhcom/jobs/">
-                        <span class="cursor-pointer">{{'INDEX.TRANSLATE-APPLY' | translate}}</span>
-                    </a>
+                </button>
+                <section class="index-team-carousel-viewport" [class.no-scroll]="maxTeamIndex === 0">
+                    <section class="index-team-container-carousel"
+                        (mousedown)="onTeamDragStart($event)"
+                        (mousemove)="onTeamDragMove($event)"
+                        (mouseup)="onTeamDragEnd()"
+                        (mouseleave)="onTeamDragEnd()"
+                        (touchstart)="onTeamTouchStart($event)"
+                        (touchmove)="onTeamTouchMove($event)"
+                        (touchend)="onTeamDragEnd()">
+                        <section class="index-team-container-carousel-track cursor-move" [style.transform]="'translateX(' + teamTranslateX + 'px)'" [class.dragging]="isTeamDragging">
+                            <ng-container *ngFor="let member of teamMembers">
+                                <section class="index-team-container-carousel-item cursor-move" *ngIf="member.type === 'join'">
+                                    <svg class="cursor-pointer" id="index-team-emailIcon" viewBox="0 0 16 16" aria-labelledby="email-title">
+                                        <title id="email-title">Email</title>
+                                        <path d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                                    </svg>
+                                    <h4 class="cursor-move" >{{member.titleKey | translate}}</h4>
+                                    <p class="cursor-move" *ngFor="let descKey of member.descriptionKeys">{{descKey | translate}}</p>
+                                    <a class="global-button cursor-pointer" [href]="member.buttonLink">
+                                        <span class="cursor-pointer">{{member.buttonKey | translate}}</span>
+                                    </a>
+                                </section>
+                                <section class="index-team-container-carousel-item cursor-move" *ngIf="member.type === 'member'">
+                                    <img [src]="member.image" [alt]="member.name">
+                                    <h4><a class="index-team-container-carousel-item-a cursor-pointer" [href]="member.linkedIn" target="_blank">{{member.name}}</a></h4>
+                                    <p><a class="index-team-container-carousel-item-a cursor-pointer" [href]="member.roleLink" target="_blank">{{member.role}}</a></p>
+                                    <p class="cursor-move" >{{member.roleAbbreviation}}</p>
+                                </section>
+                            </ng-container>
+                        </section>
+                    </section>
                 </section>
-                <section class="index-team-container-carousel-item">
-                    <img src="assets/media/images/team/team1.png" alt="Elias De Hondt">
-                    <h4><a class="index-team-container-carousel-item-a cursor-pointer" href="https://www.linkedin.com/in/eliasdehondt" target="_blank">Elias De Hondt</a></h4>
-                    <p><a class="index-team-container-carousel-item-a cursor-pointer" href="https://en.wikipedia.org/wiki/Chief_executive_officer" target="_blank">Chief Executive Officer</a></p>
-                    <p>CEO</p>
-                </section>
-                <section class="index-team-container-carousel-item">
-                    <img src="assets/media/images/team/team2.png" alt="Thomas Deweerdt">
-                    <h4><a class="index-team-container-carousel-item-a cursor-pointer" href="https://www.linkedin.com/in/thomasdeweerdt" target="_blank">Thomas Deweerdt</a></h4>
-                    <p><a class="index-team-container-carousel-item-a cursor-pointer" href="https://en.wikipedia.org/wiki/Chief_financial_officer" target="_blank">Chief Financial Officer</a></p>
-                    <p>CFO</p>
-                </section>
+                <button class="index-team-carousel-btn index-team-carousel-btn-next cursor-pointer" (click)="nextTeamSlide()" [disabled]="currentTeamIndex >= maxTeamIndex" [hidden]="maxTeamIndex === 0">
+                    <svg viewBox="0 0 16 16" aria-labelledby="next-title" class="cursor-pointer">
+                        <title id="next-title">Next</title>
+                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </button>
+            </section>
+            <section class="index-team-carousel-dots cursor-pointer" [hidden]="maxTeamIndex === 0">
+                <span *ngFor="let dot of teamDots; let i = index" class="index-team-carousel-dot" [class.active]="i === currentTeamIndex" (click)="goToTeamSlide(i)"></span>
             </section>
         </article>
     </main>
