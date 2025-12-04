@@ -28,6 +28,12 @@ interface MemberCard {
     roleAbbreviation: string;
 }
 
+interface TrustedClient {
+    name: string;
+    logo: string;
+    url: string;
+}
+
 type TeamMember = JoinCard | MemberCard;
 
 @Component({
@@ -41,6 +47,26 @@ type TeamMember = JoinCard | MemberCard;
 export class IndexComponent implements OnInit, OnDestroy {
     dropdownOpen: boolean = false;
     currentLanguage: string = 'en';
+
+    trustedClients: TrustedClient[] = [ // Trusted Clients
+        { name: 'Ter Eiken', logo: 'assets/media/images/trusted-clients/tereiken-logo.png', url: 'https://www.tereiken.be' },
+        { name: 'Level Up', logo: 'assets/media/images/trusted-clients/levelup-logo.png', url: 'https://www.levelup.be' },
+        { name: 'Zizis', logo: 'assets/media/images/trusted-clients/zizis-logo.png', url: 'https://www.zizis.be' },
+        { name: 'Ter Eiken', logo: 'assets/media/images/trusted-clients/tereiken-logo.png', url: 'https://www.tereiken.be' },
+        { name: 'Level Up', logo: 'assets/media/images/trusted-clients/levelup-logo.png', url: 'https://www.levelup.be' },
+        { name: 'Zizis', logo: 'assets/media/images/trusted-clients/zizis-logo.png', url: 'https://www.zizis.be' }
+    ];
+
+    // Clients slider state
+    clientsTranslateX: number = 0;
+    isClientsDragging: boolean = false;
+    clientsDragStartX: number = 0;
+    clientsStartTranslateX: number = 0;
+    clientsAutoScrollInterval: any = null;
+    clientsResumeTimeout: any = null;
+    clientsScrollSpeed: number = 0.5;
+    clientsSingleSetWidth: number = 0;
+    clientsHasDragged: boolean = false;
 
     teamMembers: TeamMember[] = [ // Team members
         {
@@ -101,9 +127,15 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.languageService.checkAndSetLanguage();
         this.initializeTeamCarousel();
         this.setupEmailIconClick();
+        this.initializeClientsSlider();
     }
 
-    ngOnDestroy(): void {}
+    ngOnDestroy(): void {
+        this.stopClientsAutoScroll();
+        if (this.clientsResumeTimeout) {
+            clearTimeout(this.clientsResumeTimeout);
+        }
+    }
 
     @HostListener('window:resize')
     onResize(): void {
@@ -144,9 +176,7 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.maxTeamIndex = Math.max(0, this.totalTeamItems - this.itemsToShow);
         this.teamDots = Array(this.maxTeamIndex + 1).fill(0);
 
-        if (this.currentTeamIndex > this.maxTeamIndex) {
-            this.currentTeamIndex = this.maxTeamIndex;
-        }
+        if (this.currentTeamIndex > this.maxTeamIndex) this.currentTeamIndex = this.maxTeamIndex;
     }
 
     private updateTeamTranslateX(): void {
@@ -264,5 +294,110 @@ export class IndexComponent implements OnInit, OnDestroy {
 
     toggleDropdown() {
         this.dropdownOpen = !this.dropdownOpen;
+    }
+
+    private initializeClientsSlider(): void {
+        setTimeout(() => {
+            this.calculateClientsSingleSetWidth();
+            this.clientsTranslateX = 0;
+            this.startClientsAutoScroll();
+        }, 100);
+    }
+
+    private calculateClientsSingleSetWidth(): void {
+        const logos = document.querySelector('.index-trusted-clients-logos');
+        if (logos) {
+            const items = logos.querySelectorAll('.client-logo-wrapper');
+            const numClients = this.trustedClients.length;
+            if (items.length > 0 && numClients > 0) {
+                let totalWidth = 0;
+                for (let i = 0; i < numClients; i++) {
+                    const item = items[i] as HTMLElement;
+                    totalWidth += item.offsetWidth;
+                }
+                this.clientsSingleSetWidth = totalWidth;
+            }
+        }
+    }
+
+    private startClientsAutoScroll(): void {
+        if (this.clientsAutoScrollInterval) return;
+
+        const animate = () => {
+            this.clientsTranslateX -= this.clientsScrollSpeed;
+            if (this.clientsTranslateX <= -this.clientsSingleSetWidth) this.clientsTranslateX += this.clientsSingleSetWidth;
+            this.clientsAutoScrollInterval = requestAnimationFrame(animate);
+        };
+
+        this.clientsAutoScrollInterval = requestAnimationFrame(animate);
+    }
+
+    private normalizeClientsPosition(): void {
+        if (this.clientsSingleSetWidth <= 0) return;
+        while (this.clientsTranslateX <= -this.clientsSingleSetWidth) this.clientsTranslateX += this.clientsSingleSetWidth;
+        while (this.clientsTranslateX > 0) this.clientsTranslateX -= this.clientsSingleSetWidth;
+    }
+
+    private stopClientsAutoScroll(): void {
+        if (this.clientsAutoScrollInterval) {
+            cancelAnimationFrame(this.clientsAutoScrollInterval);
+            this.clientsAutoScrollInterval = null;
+        }
+    }
+
+    private resumeClientsAutoScroll(): void {
+        if (this.clientsResumeTimeout) clearTimeout(this.clientsResumeTimeout);
+
+        this.clientsResumeTimeout = setTimeout(() => {
+            this.startClientsAutoScroll();
+        }, 2000);
+    }
+
+    onClientsDragStart(event: MouseEvent): void {
+        this.isClientsDragging = true;
+        this.clientsHasDragged = false;
+        this.clientsDragStartX = event.clientX;
+        this.clientsStartTranslateX = this.clientsTranslateX;
+        this.stopClientsAutoScroll();
+        event.preventDefault();
+    }
+
+    onClientsDragMove(event: MouseEvent): void {
+        if (!this.isClientsDragging) return;
+
+        const diff = event.clientX - this.clientsDragStartX;
+        if (Math.abs(diff) > 5) this.clientsHasDragged = true;
+
+        this.clientsTranslateX = this.clientsStartTranslateX + diff;
+        this.normalizeClientsPosition();
+    }
+
+    onClientsDragEnd(): void {
+        if (!this.isClientsDragging) return;
+
+        setTimeout(() => {
+            this.isClientsDragging = false;
+            this.clientsHasDragged = false;
+        }, 50);
+
+        this.resumeClientsAutoScroll();
+    }
+
+    onClientsTouchStart(event: TouchEvent): void {
+        this.isClientsDragging = true;
+        this.clientsHasDragged = false;
+        this.clientsDragStartX = event.touches[0].clientX;
+        this.clientsStartTranslateX = this.clientsTranslateX;
+        this.stopClientsAutoScroll();
+    }
+
+    onClientsTouchMove(event: TouchEvent): void {
+        if (!this.isClientsDragging) return;
+
+        const diff = event.touches[0].clientX - this.clientsDragStartX;
+        if (Math.abs(diff) > 5) this.clientsHasDragged = true;
+
+        this.clientsTranslateX = this.clientsStartTranslateX + diff;
+        this.normalizeClientsPosition();
     }
 }

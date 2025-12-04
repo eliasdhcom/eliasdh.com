@@ -160,11 +160,29 @@
 }
 
 .index-services-box.hosting-services {
-    height: 340px;
+    height: auto;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+}
+
+.index-services-box.hosting-services .index-services-box-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .index-services-box.web-services {
     min-height: 220px;
+}
+
+.index-services-box.web-services p {
+    color: var(--secondary);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-bottom: 20px;
 }
 
 .index-services-box:hover {
@@ -199,26 +217,99 @@
     margin: 10px;
 }
 
-.index-services-box.hosting-services ul {
+/* New hosting services styling */
+.index-services-section-title {
+    color: var(--primary);
+    font-size: 28px;
+    font-weight: 900;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.index-services-section-desc {
+    color: var(--secondary);
+    font-size: 18px;
+    font-weight: 400;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 30px auto;
+    line-height: 1.6;
+}
+
+.index-services-box-header {
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.index-services-plan-name {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 900;
+    margin: 0;
+}
+
+.index-services-plan-price {
+    color: var(--primary);
+    font-size: 32px;
+    font-weight: 700;
+    margin: 10px 0 5px 0;
+}
+
+.index-services-plan-tagline {
+    color: var(--secondary);
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+    font-style: italic;
+}
+
+.index-services-box-content ul {
     list-style: none;
     padding: 0;
+    margin: 0 0 20px 0;
 }
 
-.index-services-box.hosting-services ul li {
+.index-services-box-content ul li {
     color: var(--secondary);
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.5;
-    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.8;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.index-services-box.web-services p {
-    color: var(--secondary);
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.5;
-    margin-bottom: 10px;
+.index-services-check {
+    fill: var(--primary);
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
 }
+
+.index-services-box.hosting-services.popular {
+    border: 3px solid var(--primary);
+    position: relative;
+    transform: scale(1.02);
+}
+
+.index-services-popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary);
+    color: var(--background);
+    padding: 5px 20px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 /* Services */
 
 /* Trusted Clients */
@@ -229,6 +320,20 @@
     padding: 60px 0;
     text-align: center;
     position: relative;
+    cursor: url('/assets/svg/cursor-move.svg'), move;
+    user-select: none;
+}
+
+.index-trusted-clients.dragging {
+    cursor: url('/assets/svg/cursor-move.svg'), move;
+}
+
+.index-trusted-clients .client-logo-wrapper a {
+    cursor: url('/assets/svg/cursor-pointer.svg'), pointer;
+}
+
+.index-trusted-clients.dragging .client-logo-wrapper a {
+    cursor: url('/assets/svg/cursor-move.svg'), move;
 }
 
 .index-trusted-clients::before {
@@ -266,7 +371,22 @@
 
 .index-trusted-clients-logos {
     display: flex;
-    animation: scroll 20s linear infinite;
+    will-change: transform;
+}
+
+.index-trusted-clients-logos .client-logo-wrapper {
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+.index-trusted-clients-logos .client-logo-wrapper.no-click a {
+    pointer-events: none;
+}
+
+.index-trusted-clients-logos a {
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 .index-trusted-clients-logos img {
@@ -274,20 +394,15 @@
     width: auto;
     margin: 0 60px;
     transition: transform 0.3s ease;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
-.index-trusted-clients-logos img:hover {
+.index-trusted-clients:not(.dragging) .index-trusted-clients-logos a:hover img {
     transform: scale(1.1);
 }
 
-@keyframes scroll {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-50%);
-    }
-}
 /* Trusted Clients */
 
 /* Team */
