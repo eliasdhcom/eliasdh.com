@@ -13,8 +13,8 @@ const mockCustomers = [
         address: 'Kattenbroek 33, 2650 Edegem, Belgium',
         vat: 'BE0833830212',
         websites: [
-            { subscriptionType: 'ToDo', url: 'https://www.tereiken.be', name: 'Ter Eiken Website' },
-            { subscriptionType: 'ToDo', url: 'https://www.levelup.be', name: 'Level Up Website' },
+            { subscriptionType: 'ToDo', url: 'https://tereiken.be', name: 'Ter Eiken Website' },
+            { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
             { subscriptionType: 'Professional', url: 'https://app.levelup.be', name: 'Level Up App' },
             { subscriptionType: 'Business', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
@@ -27,8 +27,8 @@ const mockCustomers = [
         address: 'Olieslagerijstraat 19, 2530 Boechout, Belgium',
         vat: 'BE0451910825',
         websites: [
-            { subscriptionType: 'ToDo', url: 'https://www.tereiken.be', name: 'Ter Eiken Website' },
-            { subscriptionType: 'ToDo', url: 'https://www.levelup.be', name: 'Level Up Website' },
+            { subscriptionType: 'ToDo', url: 'https://tereiken.be', name: 'Ter Eiken Website' },
+            { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
             { subscriptionType: 'Professional', url: 'https://app.levelup.be', name: 'Level Up App' },
             { subscriptionType: 'Business', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
@@ -41,8 +41,8 @@ const mockCustomers = [
         address: 'Huybergsebaan 164, 2910 Essen, Belgium',
         vat: 'BE0463353558',
         websites: [
-            { subscriptionType: 'ToDo', url: 'https://www.tereiken.be', name: 'Ter Eiken Website' },
-            { subscriptionType: 'ToDo', url: 'https://www.levelup.be', name: 'Level Up Website' },
+            { subscriptionType: 'ToDo', url: 'https://tereiken.be', name: 'Ter Eiken Website' },
+            { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
             { subscriptionType: 'Professional', url: 'https://app.levelup.be', name: 'Level Up App' },
             { subscriptionType: 'Business', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
@@ -55,8 +55,8 @@ const mockCustomers = [
         address: 'Grote Steenweg 304, 9340 Lede, Belgium',
         vat: 'BE0833830212',
         websites: [
-            { subscriptionType: 'ToDo', url: 'https://www.tereiken.be', name: 'Ter Eiken Website' },
-            { subscriptionType: 'ToDo', url: 'https://www.levelup.be', name: 'Level Up Website' },
+            { subscriptionType: 'ToDo', url: 'https://tereiken.be', name: 'Ter Eiken Website' },
+            { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
             { subscriptionType: 'Professional', url: 'https://app.levelup.be', name: 'Level Up App' },
             { subscriptionType: 'Business', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
@@ -69,7 +69,7 @@ const mockCustomers = [
         address: 'Provinciesteenweg 557, 2530 Boechout, Belgium',
         vat: 'BE0000000000',
         websites: [
-            { subscriptionType: 'Free', url: 'https://www.zizis.be', name: 'Zizis Website' }
+            { subscriptionType: 'Free', url: 'https://zizis.be', name: 'Zizis Website' }
         ],
         latitude: 51.1579064,
         longitude: 4.5154518
@@ -80,7 +80,7 @@ const mockCustomers = [
         address: 'Nationalestraat 33, 2000 Antwerpen, Belgium',
         vat: 'BE0443920597',
         websites: [
-            { subscriptionType: 'Personal', url: 'https://www.bistrotheo.be', name: 'Bistro Theo Website' }
+            { subscriptionType: 'Personal', url: 'https://bistrotheo.be', name: 'Bistro Theo Website' }
         ],
         latitude: 51.2169627,
         longitude: 4.3998624
