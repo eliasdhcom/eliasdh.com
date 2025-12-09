@@ -14,14 +14,9 @@ ENV MODEL=llama3
 EXPOSE 11434
 
 ENTRYPOINT ["/bin/sh", "-c", "\
-echo 'Starting Ollama server in background...' && \
 ollama serve & \
 SERVER_PID=$! && \
-echo 'Waiting for server to become ready...' && \
 until ollama list >/dev/null 2>&1; do sleep 1; done && \
-echo 'Pulling model $MODEL...' && \
 ollama pull $MODEL && \
-echo 'Model ready ✅' && \
-echo 'Switching to Ollama server as main process...' && \
 kill $SERVER_PID && \
 exec ollama serve"]
