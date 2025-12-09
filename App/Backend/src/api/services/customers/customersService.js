@@ -73,6 +73,17 @@ const mockCustomers = [
         ],
         latitude: 51.1579064,
         longitude: 4.5154518
+    },
+    {
+        id: '6',
+        name: 'Bistro Theo',
+        address: 'Nationalestraat 33, 2000 Antwerpen, Belgium',
+        vat: 'BE0443920597',
+        websites: [
+            { subscriptionType: 'Personal', url: 'https://www.bistrotheo.be', name: 'Bistro Theo Website' }
+        ],
+        latitude: 51.2169627,
+        longitude: 4.3998624
     }
 ];
 

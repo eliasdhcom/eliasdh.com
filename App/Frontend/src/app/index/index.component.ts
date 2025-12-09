@@ -359,17 +359,21 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.clientsDragStartX = event.clientX;
         this.clientsStartTranslateX = this.clientsTranslateX;
         this.stopClientsAutoScroll();
-        event.preventDefault();
     }
 
     onClientsDragMove(event: MouseEvent): void {
         if (!this.isClientsDragging) return;
 
         const diff = event.clientX - this.clientsDragStartX;
-        if (Math.abs(diff) > 5) this.clientsHasDragged = true;
+        if (Math.abs(diff) > 5) {
+            this.clientsHasDragged = true;
+            event.preventDefault();
+        }
 
-        this.clientsTranslateX = this.clientsStartTranslateX + diff;
-        this.normalizeClientsPosition();
+        if (this.clientsHasDragged) {
+            this.clientsTranslateX = this.clientsStartTranslateX + diff;
+            this.normalizeClientsPosition();
+        }
     }
 
     onClientsDragEnd(): void {
@@ -381,6 +385,12 @@ export class IndexComponent implements OnInit, OnDestroy {
         }, 50);
 
         this.resumeClientsAutoScroll();
+    }
+
+    onLogoClick(event: MouseEvent): void {
+        if (this.clientsHasDragged) {
+            event.preventDefault();
+        }
     }
 
     onClientsTouchStart(event: TouchEvent): void {
