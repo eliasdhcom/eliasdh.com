@@ -33,16 +33,14 @@ class MetricsService {
     }
 
     async getVisitorCountFromLogs(domain) {
-        if (!this.kubeEnabled) {
-            throw new Error('Kubernetes API not available');
-        }
+        if (!this.kubeEnabled) throw new Error('Kubernetes API not available');
 
         try {
             const coreApi = this.kc.makeApiClient(k8s.CoreV1Api);
 
             const namespace = process.env.INGRESS_NAMESPACE || 'ingress-nginx';
             const labelSelector = 'app.kubernetes.io/name=ingress-nginx';
-            
+
             const podsResponse = await coreApi.listNamespacedPod(
                 namespace,
                 undefined,
@@ -52,11 +50,24 @@ class MetricsService {
                 labelSelector
             );
 
-            if (podsResponse.body.items.length === 0) {
-                throw new Error(`No ingress pods found in ${namespace}`);
-            }
+            if (podsResponse.body.items.length === 0) throw new Error(`No ingress pods found in ${namespace}`);
 
             let totalCount = 0;
+
+            const baseDomain = domain.replace(/^www\./, '');
+            const isRootDomain = baseDomain.split('.').length === 2;
+            const domainPatterns = [];
+
+            if (isRootDomain) {
+                domainPatterns.push(
+                    new RegExp(`\\b${baseDomain.replace(/\./g, '\\.')}\\b`, 'g'),
+                    new RegExp(`\\bwww\\.${baseDomain.replace(/\./g, '\\.')}\\b`, 'g')
+                );
+            } else {
+                domainPatterns.push(
+                    new RegExp(`\\b${baseDomain.replace(/\./g, '\\.')}\\b`, 'g')
+                );
+            }
 
             for (const pod of podsResponse.body.items) {
                 try {
@@ -72,17 +83,17 @@ class MetricsService {
                         2592000 // Last 30 days
                     );
 
-                    const domainPattern = new RegExp(domain.replace(/\./g, '\\.'), 'g');
-                    const matches = logs.body.match(domainPattern);
-                    if (matches) {
-                        totalCount += matches.length;
+                    for (const pattern of domainPatterns) {
+                        const matches = logs.body.match(pattern);
+                        if (matches) totalCount += matches.length;
                     }
                 } catch (logError) {
                     logger.warn(`Failed to read logs from ${pod.metadata.name}: ${logError.message}`);
                 }
             }
 
-            logger.info(`Got ${totalCount} visitors for ${domain} from ingress logs`);
+            const wwwInfo = isRootDomain ? ' (including www)' : '';
+            logger.info(`Got ${totalCount} visitors for ${domain}${wwwInfo} from ingress logs`);
             return totalCount;
         } catch (error) {
             logger.error(`Error reading ingress logs: ${error.message}`);
@@ -94,7 +105,7 @@ class MetricsService {
         const seed = domain.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
         const baseCount = 1000 + (seed % 9000);
         const variation = Math.floor(Math.random() * 500);
-        
+
         const count = baseCount + variation;
         logger.info(`Mock data for ${domain}: ${count}`);
         return count;
@@ -106,10 +117,7 @@ class MetricsService {
                 throw new Error('Invalid domain');
             }
 
-            const cleanDomain = domain
-                .replace(/^https?:\/\//, '')
-                .replace(/\/$/, '')
-                .toLowerCase();
+            const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/\/$/, '').toLowerCase();
 
             const cached = this.cache.get(cleanDomain);
             if (cached && Date.now() - cached.timestamp < this.cacheTTL) {
@@ -123,11 +131,11 @@ class MetricsService {
                 try {
                     count = await this.getVisitorCountFromLogs(cleanDomain);
                 } catch (error) {
-                    logger.error(`Kubernetes error: ${error.message} - using mock data`);
-                    count = this.getMockVisitorCount(cleanDomain);
+                    logger.error(`Kubernetes error: ${error.message} - returning 0`);
                 }
             } else {
-                count = this.getMockVisitorCount(cleanDomain);
+                if (process.env.NODE_ENV === 'development') count = this.getMockVisitorCount(cleanDomain);
+                else count = 0;
             }
 
             this.cache.set(cleanDomain, {
