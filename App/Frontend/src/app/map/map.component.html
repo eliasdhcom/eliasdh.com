@@ -118,8 +118,8 @@
                             <span class="map-sidebar-website-type" [class]="'type-' + website.subscriptionType.toLowerCase()">
                                 {{ website.subscriptionType }}
                             </span>
-                            <span class="map-sidebar-website-visitors" *ngIf="website.visitors !== undefined">
-                                {{ website.visitors | number }} visits/month
+                            <span class="map-sidebar-website-visitors" *ngIf="website.visitors !== undefined" [title]="'MAP.TRANSLATE14' | translate">
+                                {{ website.visitors | number }} visits
                             </span>
                         </div>
                     </div>
