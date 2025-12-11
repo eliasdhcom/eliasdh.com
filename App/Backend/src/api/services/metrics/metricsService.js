@@ -76,18 +76,18 @@ class MetricsService {
                         2592000 // Last 30 days
                     );
 
-                    // Parse nginx access log lines only (ignore error logs and other output)
                     const lines = logs.body.split('\n');
                     for (const line of lines) {
-                        // NGINX access log format contains: "GET /path HTTP/1.1" followed by status code
-                        // and includes the Host header which contains the domain
-                        if (!line.includes('HTTP/') || !line.includes('"')) continue;
-                        
+                        if (!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.test(line)) continue;
+
+                        if (line.includes('/api/v1/metrics/')) continue;
+
                         for (const domainToCheck of domainsToCheck) {
-                            // Match domain in Host header part of the log
-                            if (line.includes(domainToCheck)) {
+                            if (line.includes(` ${domainToCheck} `) || 
+                                line.includes(`"${domainToCheck}"`) ||
+                                line.includes(`/${domainToCheck}/`)) {
                                 totalCount++;
-                                break; // Count once per line, even if multiple domains match
+                                break;
                             }
                         }
                     }
@@ -104,8 +104,6 @@ class MetricsService {
             throw error;
         }
     }
-
-
 
     async getVisitorCount(domain) {
         try {
