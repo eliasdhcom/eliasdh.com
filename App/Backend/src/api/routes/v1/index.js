@@ -5,12 +5,10 @@
 **/
 
 const express = require('express');
-const icarusRoutes = require('./icarus');
 const customersRoutes = require('./customers');
 
 const router = express.Router();
 
-router.use('/icarus', icarusRoutes);
 router.use('/customers', customersRoutes);
 
 module.exports = router;
