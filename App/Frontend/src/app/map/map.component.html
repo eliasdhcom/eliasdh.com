@@ -10,12 +10,10 @@
         <h1 class="map-title">{{ 'MAP.TRANSLATE1' | translate }}</h1>
         <div class="map-header-spacer"></div>
     </header>
-
     <div *ngIf="isLoading" class="map-loading">
         <div class="map-loading-spinner"></div>
         <p>{{ 'MAP.TRANSLATE3' | translate }}</p>
     </div>
-
     <div *ngIf="error" class="map-error cursor-pointer">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
@@ -23,9 +21,40 @@
         <p>{{ error }}</p>
         <button (click)="loadCustomers()">{{ 'MAP.TRANSLATE4' | translate }}</button>
     </div>
-
-    <div id="map" class="map-leaflet" [class.map-with-sidebar]="isSidebarOpen"></div>
-
+    <div class="map-search-container">
+        <div class="map-search-wrapper">
+            <div class="map-search-input-container">
+                <svg class="map-search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+                <input type="text" class="map-search-input cursor-text" [(ngModel)]="searchQuery" (input)="onSearchInput()" (focus)="onSearchFocus()" (blur)="onSearchBlur()" [placeholder]="'MAP.TRANSLATE12' | translate"/>
+                <button *ngIf="searchQuery" class="map-search-clear cursor-pointer" (click)="clearSearch()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="map-search-dropdown" *ngIf="isSearchFocused && filteredCustomers.length > 0">
+                <div class="map-search-result cursor-pointer" *ngFor="let customer of filteredCustomers" (click)="selectSearchResult(customer)">
+                    <div class="map-search-result-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    </div>
+                    <div class="map-search-result-info">
+                        <div class="map-search-result-name">{{ customer.name }}</div>
+                        <div class="map-search-result-address">{{ customer.address }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="map-search-dropdown" *ngIf="isSearchFocused && searchQuery.trim() && filteredCustomers.length === 0">
+                <div class="map-search-no-results">
+                    {{ 'MAP.TRANSLATE13' | translate }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="map" class="map-leaflet cursor-move" [class.map-with-sidebar]="isSidebarOpen"></div>
     <div class="map-sidebar" [class.map-sidebar-open]="isSidebarOpen">
         <div class="map-sidebar-header ">
             <h2>{{ 'MAP.TRANSLATE5' | translate }}</h2>
@@ -35,7 +64,6 @@
                 </svg>
             </button>
         </div>
-
         <div class="map-sidebar-content" *ngIf="selectedCustomer">
             <div class="map-sidebar-section">
                 <div class="map-sidebar-icon">
@@ -48,7 +76,6 @@
                     <span class="map-sidebar-value">{{ selectedCustomer.name }}</span>
                 </div>
             </div>
-
             <div class="map-sidebar-section">
                 <div class="map-sidebar-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -57,10 +84,9 @@
                 </div>
                 <div class="map-sidebar-info">
                     <span class="map-sidebar-label">{{ 'MAP.TRANSLATE7' | translate }}</span>
-                    <span class="map-sidebar-value">{{ selectedCustomer.address }}</span>
+                    <a [href]="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(selectedCustomer.address)" target="_blank" rel="noopener noreferrer" class="map-sidebar-value map-address-link cursor-pointer">{{ selectedCustomer.address }}</a>
                 </div>
             </div>
-
             <div class="map-sidebar-section">
                 <div class="map-sidebar-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -72,7 +98,6 @@
                     <span class="map-sidebar-value">{{ selectedCustomer.vat }}</span>
                 </div>
             </div>
-
             <div class="map-sidebar-section">
                 <div class="map-sidebar-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -84,7 +109,6 @@
                     <span class="map-sidebar-value">{{ selectedCustomer.latitude }}, {{ selectedCustomer.longitude }}</span>
                 </div>
             </div>
-
             <div class="map-sidebar-websites" *ngIf="selectedCustomer.websites && selectedCustomer.websites.length > 0">
                 <h3>{{ 'MAP.TRANSLATE10' | translate }}</h3>
                 <div class="map-sidebar-website" *ngFor="let website of selectedCustomer.websites">

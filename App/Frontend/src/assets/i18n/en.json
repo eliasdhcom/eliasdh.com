@@ -181,6 +181,8 @@
     "TRANSLATE8": "VAT Number",
     "TRANSLATE9": "Coordinates",
     "TRANSLATE10": "Websites",
-    "TRANSLATE11": "Visit"
+    "TRANSLATE11": "Visit",
+    "TRANSLATE12": "Search for companies...",
+    "TRANSLATE13": "No results found"
   }
 }

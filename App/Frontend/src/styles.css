@@ -249,7 +249,7 @@
 }
 /* Global Dropdown */
 
-/* Leaflet Custom Markers */
+/* Global Map */
 .custom-marker {
     background: transparent;
     border: none;
@@ -277,4 +277,12 @@
     position: absolute;
     border-radius: 50%;
 }
-/* Leaflet Custom Markers */
+
+.leaflet-control-attribution {
+    display: none;
+}
+
+.leaflet-control {
+    display: none;
+}
+/* Global Map */

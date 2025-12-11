@@ -7,6 +7,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
 import { CustomersService, Customer } from '../services/customers.service';
@@ -17,7 +18,7 @@ import * as L from 'leaflet';
     selector: 'app-map',
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.css'],
-    imports: [CommonModule, TranslatePipe, RouterLink, SharedModule],
+    imports: [CommonModule, FormsModule, TranslatePipe, RouterLink, SharedModule],
     standalone: true
 })
 
@@ -29,6 +30,12 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     isLoading: boolean = true;
     error: string | null = null;
     isSidebarOpen: boolean = false;
+
+    searchQuery: string = '';
+    filteredCustomers: Customer[] = [];
+    isSearchFocused: boolean = false;
+
+    encodeURIComponent = encodeURIComponent;
 
     constructor(
         private customersService: CustomersService,
@@ -134,9 +141,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
             customer.websites.forEach(website => {
                 this.customersService.getVisitorCount(website.url).subscribe({
                     next: (response) => {
-                        if (response.success) {
-                            website.visitors = response.visitors;
-                        }
+                        if (response.success) website.visitors = response.visitors;
                     },
                     error: (err) => {
                         console.error(`Failed to load visitors for ${website.url}:`, err);
@@ -160,5 +165,45 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
     openWebsite(url: string): void {
         window.open(url, '_blank');
+    }
+
+    onSearchInput(): void {
+        if (!this.searchQuery.trim()) {
+            this.filteredCustomers = [];
+            return;
+        }
+
+        const query = this.searchQuery.toLowerCase().trim();
+        this.filteredCustomers = this.customers.filter(customer => 
+            customer.name.toLowerCase().includes(query) ||
+            customer.address?.toLowerCase().includes(query) ||
+            customer.vat?.toLowerCase().includes(query)
+        ).slice(0, 5);
+    }
+
+    onSearchFocus(): void {
+        this.isSearchFocused = true;
+        if (this.searchQuery.trim()) {
+            this.onSearchInput();
+        }
+    }
+
+    onSearchBlur(): void {
+        setTimeout(() => {
+            this.isSearchFocused = false;
+        }, 200);
+    }
+
+    selectSearchResult(customer: Customer): void {
+        this.searchQuery = '';
+        this.filteredCustomers = [];
+        this.isSearchFocused = false;
+        this.selectCustomer(customer);
+    }
+
+    clearSearch(): void {
+        this.searchQuery = '';
+        this.filteredCustomers = [];
+        this.isSearchFocused = false;
     }
 }
