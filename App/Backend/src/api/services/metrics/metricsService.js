@@ -13,7 +13,7 @@ class MetricsService {
         this.kubeEnabled = false;
         this.initKubeConfig();
         this.cache = new Map();
-        this.cacheTTL = 10 * 60 * 1000; // 10 minutes cache
+        this.cacheTTL = 1 * 60 * 1000; // 1 minutes
     }
 
     initKubeConfig() {
@@ -56,17 +56,10 @@ class MetricsService {
 
             const baseDomain = domain.replace(/^www\./, '');
             const isRootDomain = baseDomain.split('.').length === 2;
-            const domainPatterns = [];
-
+            const domainsToCheck = [baseDomain];
+            
             if (isRootDomain) {
-                domainPatterns.push(
-                    new RegExp(`\\b${baseDomain.replace(/\./g, '\\.')}\\b`, 'g'),
-                    new RegExp(`\\bwww\\.${baseDomain.replace(/\./g, '\\.')}\\b`, 'g')
-                );
-            } else {
-                domainPatterns.push(
-                    new RegExp(`\\b${baseDomain.replace(/\./g, '\\.')}\\b`, 'g')
-                );
+                domainsToCheck.push(`www.${baseDomain}`);
             }
 
             for (const pod of podsResponse.body.items) {
@@ -83,9 +76,20 @@ class MetricsService {
                         2592000 // Last 30 days
                     );
 
-                    for (const pattern of domainPatterns) {
-                        const matches = logs.body.match(pattern);
-                        if (matches) totalCount += matches.length;
+                    // Parse nginx access log lines only (ignore error logs and other output)
+                    const lines = logs.body.split('\n');
+                    for (const line of lines) {
+                        // NGINX access log format contains: "GET /path HTTP/1.1" followed by status code
+                        // and includes the Host header which contains the domain
+                        if (!line.includes('HTTP/') || !line.includes('"')) continue;
+                        
+                        for (const domainToCheck of domainsToCheck) {
+                            // Match domain in Host header part of the log
+                            if (line.includes(domainToCheck)) {
+                                totalCount++;
+                                break; // Count once per line, even if multiple domains match
+                            }
+                        }
                     }
                 } catch (logError) {
                     logger.warn(`Failed to read logs from ${pod.metadata.name}: ${logError.message}`);
@@ -101,15 +105,7 @@ class MetricsService {
         }
     }
 
-    getMockVisitorCount(domain) {
-        const seed = domain.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-        const baseCount = 1000 + (seed % 9000);
-        const variation = Math.floor(Math.random() * 500);
 
-        const count = baseCount + variation;
-        logger.info(`Mock data for ${domain}: ${count}`);
-        return count;
-    }
 
     async getVisitorCount(domain) {
         try {
@@ -134,8 +130,8 @@ class MetricsService {
                     logger.error(`Kubernetes error: ${error.message} - returning 0`);
                 }
             } else {
-                if (process.env.NODE_ENV === 'development') count = this.getMockVisitorCount(cleanDomain);
-                else count = 0;
+                logger.warn(`Kubernetes not available - returning 0 for ${cleanDomain}`);
+                count = 0;
             }
 
             this.cache.set(cleanDomain, {
