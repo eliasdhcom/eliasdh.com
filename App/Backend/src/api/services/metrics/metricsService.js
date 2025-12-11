@@ -73,7 +73,7 @@ class MetricsService {
                         undefined,
                         undefined,
                         undefined,
-                        2592000 // Last 30 days
+                        undefined // No time limit - get all available logs
                     );
 
                     const lines = logs.body.split('\n');
