@@ -279,7 +279,7 @@
 .map-sidebar-website-info {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
 .map-sidebar-website-name {
@@ -288,12 +288,30 @@
     color: var(--primary);
 }
 
+.map-sidebar-website-badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
 .map-sidebar-website-type {
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     padding: 4px 8px;
     border-radius: 4px;
+    width: fit-content;
+}
+
+.map-sidebar-website-visitors {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: #3498db;
+    color: white;
     width: fit-content;
 }
 

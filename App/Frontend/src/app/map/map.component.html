@@ -90,9 +90,14 @@
                 <div class="map-sidebar-website" *ngFor="let website of selectedCustomer.websites">
                     <div class="map-sidebar-website-info">
                         <span class="map-sidebar-website-name">{{ website.name }}</span>
-                        <span class="map-sidebar-website-type" [class]="'type-' + website.subscriptionType.toLowerCase()">
-                            {{ website.subscriptionType }}
-                        </span>
+                        <div class="map-sidebar-website-badges">
+                            <span class="map-sidebar-website-type" [class]="'type-' + website.subscriptionType.toLowerCase()">
+                                {{ website.subscriptionType }}
+                            </span>
+                            <span class="map-sidebar-website-visitors" *ngIf="website.visitors !== undefined">
+                                {{ website.visitors | number }} visits
+                            </span>
+                        </div>
                     </div>
                     <button class="map-sidebar-website-button cursor-pointer" (click)="openWebsite(website.url)">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
