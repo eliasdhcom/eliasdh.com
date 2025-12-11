@@ -69,7 +69,7 @@ class MetricsService {
                         undefined,
                         undefined,
                         undefined,
-                        86400 // Last 24 hours
+                        2592000 // Last 30 days
                     );
 
                     const domainPattern = new RegExp(domain.replace(/\./g, '\\.'), 'g');
