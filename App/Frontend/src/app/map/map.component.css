@@ -321,8 +321,8 @@
     color: white;
 }
 
-.map-sidebar-website-type.type-professional {
-    background-color: var(--type-professional-color);
+.map-sidebar-website-type.type-enterprise {
+    background-color: var(--type-enterprise-color);
     color: white;
 }
 
@@ -332,22 +332,12 @@
 }
 
 .map-sidebar-website-type.type-startup {
-    background-color: var(--type-personal-color);
-    color: white;
-}
-
-.map-sidebar-website-type.type-personal {
-    background-color: var(--type-personal-color);
+    background-color: var(--type-startup-color);
     color: white;
 }
 
 .map-sidebar-website-type.type-basic {
-    background-color: var(--type-economy-color);
-    color: white;
-}
-
-.map-sidebar-website-type.type-economy {
-    background-color: var(--type-economy-color);
+    background-color: var(--type-basic-color);
     color: white;
 }
 

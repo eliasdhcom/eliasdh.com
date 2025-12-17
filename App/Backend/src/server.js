@@ -4,6 +4,8 @@
     * @since 01/01/2025
 **/
 
+require('dotenv').config();
+
 const { startServer } = require('./config/server');
 
 startServer();

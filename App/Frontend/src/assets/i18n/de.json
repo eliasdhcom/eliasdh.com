@@ -185,5 +185,23 @@
     "TRANSLATE12": "Nach Unternehmen suchen...",
     "TRANSLATE13": "Keine Ergebnisse gefunden",
     "TRANSLATE14": "Besuchsprotokolle werden gelöscht, wenn sie nicht mehr relevant sind, nicht zeitbasiert"
+  },
+  "CONTACT": {
+    "TITLE": "Kontaktieren Sie uns",
+    "NAME": "Name",
+    "NAME_PLACEHOLDER": "Ihr Name",
+    "EMAIL": "E-Mail",
+    "EMAIL_PLACEHOLDER": "ihre.email@beispiel.de",
+    "SUBJECT": "Betreff",
+    "SUBJECT_PLACEHOLDER": "Worum geht es?",
+    "MESSAGE": "Nachricht",
+    "MESSAGE_PLACEHOLDER": "Ihre Nachricht...",
+    "SUBMIT": "Nachricht senden",
+    "SUBMITTING": "Wird gesendet...",
+    "CANCEL": "Abbrechen",
+    "SUCCESS": "Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet.",
+    "ERROR_REQUIRED": "Alle Felder sind erforderlich.",
+    "ERROR_EMAIL": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "ERROR_GENERIC": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
   }
 }

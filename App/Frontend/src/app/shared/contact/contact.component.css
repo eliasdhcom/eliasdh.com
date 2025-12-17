@@ -1,0 +1,231 @@
+/**
+    * @author EliasDH Team
+    * @see https://eliasdh.com
+    * @since 01/01/2025
+**/
+
+/* Contact */
+.contact-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.contact-modal {
+    background: var(--background);
+    border-radius: 16px;
+    padding: 2.5rem;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    animation: slideUp 0.3s ease;
+    border: 2px solid var(--primary);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.contact-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.contact-modal-header h2 {
+    color: var(--primary);
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.contact-modal-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--text);
+    transition: all 0.3s ease;
+}
+
+.contact-modal-close:hover {
+    color: var(--primary);
+    transform: rotate(90deg);
+}
+
+.contact-modal-close svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.contact-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.contact-form-group label {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.contact-form-group input,
+.contact-form-group textarea {
+    background: var(--background);
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    padding: 0.8rem;
+    color: var(--text);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.contact-form-group input:focus,
+.contact-form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 15px var(--primary);
+}
+
+.contact-form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.contact-form-alerts {
+    min-height: 40px;
+}
+
+.contact-alert {
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.contact-alert-success {
+    background: rgba(79, 148, 240, 0.15);
+    border: 2px var(--background);
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.contact-alert-error {
+    background: var(--background);
+    border: 2px solid #ae0f0f;
+    font-weight: 600;
+}
+
+.contact-form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.contact-button {
+    padding: 0.8rem 1.8rem;
+    border: none;
+    border-radius: 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.contact-button-primary {
+    background: var(--primary);
+    color: var(--background);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.contact-button-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    background: var(--accent);
+    color: var(--text);
+}
+
+.contact-button-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.contact-button-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 2px solid var(--secondary);
+}
+
+.contact-button-secondary:hover {
+    background: var(--secondary);
+    color: var(--background);
+    border-color: var(--secondary);
+}
+/* Contact */
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .contact-modal {
+        padding: 1.5rem;
+        width: 95%;
+    }
+
+    .contact-modal-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .contact-form-actions {
+        flex-direction: column;
+    }
+
+    .contact-button {
+        width: 100%;
+    }
+}
+/* Media Queries */

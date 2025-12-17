@@ -1,0 +1,48 @@
+<!--Author EliasDH Team-->
+<div class="contact-modal-backdrop" (click)="onBackdropClick($event)">
+    <div class="contact-modal">
+        <div class="contact-modal-header">
+            <h2>{{'CONTACT.TITLE' | translate}}</h2>
+            <button class="contact-modal-close cursor-pointer" (click)="close()">
+                <svg class="cursor-pointer" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </button>
+        </div>
+        <form class="contact-form" (ngSubmit)="onSubmit()">
+            <div class="contact-form-group">
+                <label for="contact-name">{{'CONTACT.NAME' | translate}} *</label>
+                <input class="cursor-text" type="text" id="contact-name" [(ngModel)]="formData.name" name="name" [placeholder]="'CONTACT.NAME_PLACEHOLDER' | translate" required/>
+            </div>
+            <div class="contact-form-group">
+                <label for="contact-email">{{'CONTACT.EMAIL' | translate}} *</label>
+                <input class="cursor-text" type="email" id="contact-email" [(ngModel)]="formData.email" name="email" [placeholder]="'CONTACT.EMAIL_PLACEHOLDER' | translate" required/>
+            </div>
+            <div class="contact-form-group">
+                <label for="contact-subject">{{'CONTACT.SUBJECT' | translate}} *</label>
+                <input class="cursor-text" type="text" id="contact-subject" [(ngModel)]="formData.subject" name="subject" [placeholder]="'CONTACT.SUBJECT_PLACEHOLDER' | translate" required/>
+            </div>
+            <div class="contact-form-group">
+                <label for="contact-message">{{'CONTACT.MESSAGE' | translate}} *</label>
+                <textarea class="cursor-text" id="contact-message" [(ngModel)]="formData.message" name="message" rows="5" [placeholder]="'CONTACT.MESSAGE_PLACEHOLDER' | translate"required></textarea>
+            </div>
+            <div class="contact-form-alerts">
+                <div class="contact-alert contact-alert-success" *ngIf="submitSuccess">
+                    {{'CONTACT.SUCCESS' | translate}}
+                </div>
+                <div class="contact-alert contact-alert-error" *ngIf="submitError">
+                    {{errorMessage | translate}}
+                </div>
+            </div>
+            <div class="contact-form-actions">
+                <button type="button" class="contact-button contact-button-secondary cursor-pointer" (click)="close()">
+                    <span class="cursor-pointer">{{'CONTACT.CANCEL' | translate}}</span>
+                </button>
+                <button type="submit" class="contact-button contact-button-primary cursor-pointer" [disabled]="isSubmitting">
+                    <span class="cursor-pointer" *ngIf="!isSubmitting">{{'CONTACT.SUBMIT' | translate}}</span>
+                    <span class="cursor-pointer" *ngIf="isSubmitting">{{'CONTACT.SUBMITTING' | translate}}</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

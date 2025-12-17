@@ -185,5 +185,23 @@
     "TRANSLATE12": "Rechercher des entreprises...",
     "TRANSLATE13": "Aucun résultat trouvé",
     "TRANSLATE14": "Les journaux de visite sont supprimés lorsqu'ils ne sont plus pertinents, et non en fonction du temps"
+  },
+  "CONTACT": {
+    "TITLE": "Contactez-nous",
+    "NAME": "Nom",
+    "NAME_PLACEHOLDER": "Votre nom",
+    "EMAIL": "E-mail",
+    "EMAIL_PLACEHOLDER": "votre.email@exemple.fr",
+    "SUBJECT": "Sujet",
+    "SUBJECT_PLACEHOLDER": "De quoi s'agit-il ?",
+    "MESSAGE": "Message",
+    "MESSAGE_PLACEHOLDER": "Votre message...",
+    "SUBMIT": "Envoyer le message",
+    "SUBMITTING": "Envoi en cours...",
+    "CANCEL": "Annuler",
+    "SUCCESS": "Merci ! Votre message a été envoyé avec succès.",
+    "ERROR_REQUIRED": "Tous les champs sont obligatoires.",
+    "ERROR_EMAIL": "Veuillez saisir une adresse e-mail valide.",
+    "ERROR_GENERIC": "Une erreur s'est produite. Veuillez réessayer."
   }
 }

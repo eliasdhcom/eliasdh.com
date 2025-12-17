@@ -110,9 +110,9 @@
                                 {{'INDEX.TRANSLATE20' | translate}}
                             </li>
                         </ul>
-                        <a class="global-button cursor-pointer" href="mailto:info@eliasdh.com?SUBJECT=Hosting%20(Economy)&BODY=Dear%20EliasDH%20Team">
+                        <button class="global-button cursor-pointer" (click)="openContactModal('Hosting (Basic)')">
                             <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
-                        </a>
+                        </button>
                     </section>
                 </section>
                 <section class="index-services-box hosting-services">
@@ -148,9 +148,9 @@
                                 {{'INDEX.TRANSLATE25' | translate}}
                             </li>
                         </ul>
-                        <a class="global-button cursor-pointer" href="mailto:info@eliasdh.com?SUBJECT=Hosting%20(Personal)&BODY=Dear%20EliasDH%20Team">
+                        <button class="global-button cursor-pointer" (click)="openContactModal('Hosting (Startup)')">
                             <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
-                        </a>
+                        </button>
                     </section>
                 </section>
                 <section class="index-services-box hosting-services popular">
@@ -187,9 +187,9 @@
                                 {{'INDEX.TRANSLATE30' | translate}}
                             </li>
                         </ul>
-                        <a class="global-button cursor-pointer" href="mailto:info@eliasdh.com?SUBJECT=Hosting%20(Business)&BODY=Dear%20EliasDH%20Team">
+                        <button class="global-button cursor-pointer" (click)="openContactModal('Hosting (Business)')">
                             <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
-                        </a>
+                        </button>
                     </section>
                 </section>
                 <section class="index-services-box hosting-services">
@@ -225,9 +225,9 @@
                                 {{'INDEX.TRANSLATE35' | translate}}
                             </li>
                         </ul>
-                        <a class="global-button cursor-pointer" href="mailto:info@eliasdh.com?SUBJECT=Hosting%20(Enterprise)&BODY=Dear%20EliasDH%20Team">
+                        <button class="global-button cursor-pointer" (click)="openContactModal('Hosting (Enterprise)')">
                             <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
-                        </a>
+                        </button>
                     </section>
                 </section>
             </section>
@@ -246,9 +246,9 @@
                     </section>
                     <section>
                         <p>{{'INDEX.TRANSLATE38' | translate}}</p>
-                        <a class="global-button cursor-pointer" href="mailto:info@eliasdh.com?SUBJECT=Web%20Development%20(Front%20end%20development)&BODY=Dear%20EliasDH%20Team">
+                        <button class="global-button cursor-pointer" (click)="openContactModal('Web Development (Front end development)')">
                             <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
-                        </a>
+                        </button>
                     </section>
                 </section>
                 <section class="index-services-box web-services">
@@ -263,9 +263,9 @@
                     </section>
                     <section>
                         <p>{{'INDEX.TRANSLATE40' | translate}}</p>
-                        <a class="global-button cursor-pointer" href="mailto:info@eliasdh.com?SUBJECT=Web%20Development%20(Back%20end%20development)&BODY=Dear%20EliasDH%20Team">
+                        <button class="global-button cursor-pointer" (click)="openContactModal('Web Development (Back end development)')">
                             <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
-                        </a>
+                        </button>
                     </section>
                 </section>
                 <section class="index-services-box web-services">
@@ -281,9 +281,9 @@
                     </section>
                     <section>
                         <p>{{'INDEX.TRANSLATE42' | translate}}</p>
-                        <a class="global-button cursor-pointer" href="mailto:info@eliasdh.com?SUBJECT=Web%20Development%20(Full%20stack%20development)&BODY=Dear%20EliasDH%20Team">
+                        <button class="global-button cursor-pointer" (click)="openContactModal('Web Development (Full stack development)')">
                             <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
-                        </a>
+                        </button>
                     </section>
                 </section>
             </section>
@@ -375,6 +375,7 @@
             </section>
         </article>
     </main>
+    <app-contact *ngIf="showContactModal" [defaultSubject]="contactSubject" (closeModal)="closeContactModal()"></app-contact>
     <app-footer></app-footer>
     <app-contextmenu></app-contextmenu>
 </body>

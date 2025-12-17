@@ -185,5 +185,23 @@
     "TRANSLATE12": "Search for companies...",
     "TRANSLATE13": "No results found",
     "TRANSLATE14": "Visit logs are deleted when no longer relevant, not based on time"
+  },
+  "CONTACT": {
+    "TITLE": "Contact Us",
+    "NAME": "Name",
+    "NAME_PLACEHOLDER": "Your name",
+    "EMAIL": "Email",
+    "EMAIL_PLACEHOLDER": "your.email@example.com",
+    "SUBJECT": "Subject",
+    "SUBJECT_PLACEHOLDER": "What is this about?",
+    "MESSAGE": "Message",
+    "MESSAGE_PLACEHOLDER": "Your message...",
+    "SUBMIT": "Send Message",
+    "SUBMITTING": "Sending...",
+    "CANCEL": "Cancel",
+    "SUCCESS": "Thank you! Your message has been sent successfully.",
+    "ERROR_REQUIRED": "All fields are required.",
+    "ERROR_EMAIL": "Please enter a valid email address.",
+    "ERROR_GENERIC": "Something went wrong. Please try again."
   }
 }

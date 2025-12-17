@@ -29,14 +29,29 @@ app.use(cors(corsOptions));
 app.use(helmet());
 
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minuten
-    max: 100, // Max 100 verzoeken per IP
+    windowMs: 15 * 60 * 1000,
+    max: 100,
     message: { error: { message: 'Too many requests, please try again later' } },
+});
+
+const contactLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 5,
+    message: { error: { message: 'Too many contact requests, please try again later' } },
 });
 
 app.use(limiter);
 app.use(express.json());
-app.use(apiKeyAuth);
+
+app.use((req, res, next) => {
+    if (req.path.startsWith('/api/v1/contact')) {
+        return next();
+    }
+    apiKeyAuth(req, res, next);
+});
+
+app.use('/api/v1/contact', contactLimiter);
+
 app.use('/api', routes);
 app.use(errorHandler);
 

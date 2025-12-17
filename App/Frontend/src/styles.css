@@ -35,10 +35,10 @@
     --twitch-color: #6441a5;
 
     --type-custom-color: #bfe1f6;
-    --type-personal-color: #d4edbc;
-    --type-professional-color: #e6cff2;
-    --type-business-color: #ffe5a0;
-    --type-economy-color: #ffc8aa;
+    --type-enterprise-color: #d4edbc;
+    --type-business-color: #e6cff2;
+    --type-startup-color: #ffe5a0;
+    --type-basic-color: #ffc8aa;
     --type-free-color: #ffcfc9;
     --type-todo-color: #4f94f0;
 }

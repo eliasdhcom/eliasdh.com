@@ -41,14 +41,18 @@ type TeamMember = JoinCard | MemberCard;
     templateUrl: './index.component.html',
     styleUrls: ['./index.component.css'],
     imports: [TranslatePipe, CommonModule, SharedModule],
-    standalone: true
+    standalone: true,
+    providers: []
 })
 
 export class IndexComponent implements OnInit, OnDestroy {
     dropdownOpen: boolean = false;
     currentLanguage: string = 'en';
+    
+    showContactModal: boolean = false;
+    contactSubject: string = '';
 
-    trustedClients: TrustedClient[] = [ // Trusted Clients
+    trustedClients: TrustedClient[] = [
         { name: 'Ter Eiken', logo: 'assets/media/images/trusted-clients/tereiken-logo.png', url: 'https://www.tereiken.be' },
         { name: 'Level Up', logo: 'assets/media/images/trusted-clients/levelup-logo.png', url: 'https://www.levelup.be' },
         { name: 'Zizis', logo: 'assets/media/images/trusted-clients/zizis-logo.png', url: 'https://www.zizis.be' },
@@ -57,7 +61,6 @@ export class IndexComponent implements OnInit, OnDestroy {
         { name: 'Zizis', logo: 'assets/media/images/trusted-clients/zizis-logo.png', url: 'https://www.zizis.be' }
     ];
 
-    // Clients slider state
     clientsTranslateX: number = 0;
     isClientsDragging: boolean = false;
     clientsDragStartX: number = 0;
@@ -68,7 +71,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     clientsSingleSetWidth: number = 0;
     clientsHasDragged: boolean = false;
 
-    teamMembers: TeamMember[] = [ // Team members
+    teamMembers: TeamMember[] = [
         {
             type: 'join',
             titleKey: 'INDEX.TRANSLATE45',
@@ -181,7 +184,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
     private updateTeamTranslateX(): void {
         const firstItem = document.querySelector('.index-team-container-carousel-item') as HTMLElement;
-        let marginLeft = 15; // default
+        let marginLeft = 15;
 
         if (firstItem) {
             const style = window.getComputedStyle(firstItem);
@@ -294,6 +297,16 @@ export class IndexComponent implements OnInit, OnDestroy {
 
     toggleDropdown() {
         this.dropdownOpen = !this.dropdownOpen;
+    }
+
+    openContactModal(subject: string = ''): void {
+        this.contactSubject = subject;
+        this.showContactModal = true;
+    }
+
+    closeContactModal(): void {
+        this.showContactModal = false;
+        this.contactSubject = '';
     }
 
     private initializeClientsSlider(): void {

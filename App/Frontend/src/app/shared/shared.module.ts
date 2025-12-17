@@ -1,21 +1,24 @@
 /**
- * @author EliasDH Team
- * @see https://eliasdh.com
- * @since 01/01/2025
- */
+    * @author EliasDH Team
+    * @see https://eliasdh.com
+    * @since 01/01/2025
+**/
 
 import { NgModule } from '@angular/core';
 import { ContextMenuComponent } from './contextmenu/contextmenu.component';
 import { FooterComponent } from './footer/footer.component';
+import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
     imports: [
         ContextMenuComponent,
-        FooterComponent
+        FooterComponent,
+        ContactComponent
     ],
     exports: [
         ContextMenuComponent,
-        FooterComponent
+        FooterComponent,
+        ContactComponent
     ]
 })
 
