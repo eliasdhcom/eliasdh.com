@@ -331,8 +331,18 @@
     color: white;
 }
 
+.map-sidebar-website-type.type-startup {
+    background-color: var(--type-personal-color);
+    color: white;
+}
+
 .map-sidebar-website-type.type-personal {
     background-color: var(--type-personal-color);
+    color: white;
+}
+
+.map-sidebar-website-type.type-basic {
+    background-color: var(--type-economy-color);
     color: white;
 }
 

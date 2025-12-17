@@ -15,8 +15,8 @@ const mockCustomers = [
         websites: [
             { subscriptionType: 'ToDo', url: 'https://tereiken.be', name: 'Ter Eiken Website' },
             { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
-            { subscriptionType: 'Professional', url: 'https://app.levelup.be', name: 'Level Up App' },
-            { subscriptionType: 'Business', url: 'https://display.levelup.be', name: 'Level Up Display App' }
+            { subscriptionType: 'Business', url: 'https://app.levelup.be', name: 'Level Up App' },
+            { subscriptionType: 'Enterprise', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
         latitude: 51.150800,
         longitude: 4.424345
@@ -29,8 +29,8 @@ const mockCustomers = [
         websites: [
             { subscriptionType: 'ToDo', url: 'https://tereiken.be', name: 'Ter Eiken Website' },
             { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
-            { subscriptionType: 'Professional', url: 'https://app.levelup.be', name: 'Level Up App' },
-            { subscriptionType: 'Business', url: 'https://display.levelup.be', name: 'Level Up Display App' }
+            { subscriptionType: 'Business', url: 'https://app.levelup.be', name: 'Level Up App' },
+            { subscriptionType: 'Enterprise', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
         latitude: 51.1803828,
         longitude: 4.5049921
@@ -43,8 +43,8 @@ const mockCustomers = [
         websites: [
             { subscriptionType: 'ToDo', url: 'https://tereiken.be', name: 'Ter Eiken Website' },
             { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
-            { subscriptionType: 'Professional', url: 'https://app.levelup.be', name: 'Level Up App' },
-            { subscriptionType: 'Business', url: 'https://display.levelup.be', name: 'Level Up Display App' }
+            { subscriptionType: 'Business', url: 'https://app.levelup.be', name: 'Level Up App' },
+            { subscriptionType: 'Enterprise', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
         latitude: 51.4274217,
         longitude: 4.4309693
@@ -57,8 +57,8 @@ const mockCustomers = [
         websites: [
             { subscriptionType: 'ToDo', url: 'https://tereiken.be', name: 'Ter Eiken Website' },
             { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
-            { subscriptionType: 'Professional', url: 'https://app.levelup.be', name: 'Level Up App' },
-            { subscriptionType: 'Business', url: 'https://display.levelup.be', name: 'Level Up Display App' }
+            { subscriptionType: 'Business', url: 'https://app.levelup.be', name: 'Level Up App' },
+            { subscriptionType: 'Enterprise', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
         latitude: 50.9541437,
         longitude: 3.9190651
@@ -80,7 +80,7 @@ const mockCustomers = [
         address: 'Nationalestraat 33, 2000 Antwerpen, Belgium',
         vat: 'BE0443920597',
         websites: [
-            { subscriptionType: 'Personal', url: 'https://bistrotheo.be', name: 'Bistro Theo Website' }
+            { subscriptionType: 'Startup', url: 'https://bistrotheo.be', name: 'Bistro Theo Website' }
         ],
         latitude: 51.2169627,
         longitude: 4.3998624
