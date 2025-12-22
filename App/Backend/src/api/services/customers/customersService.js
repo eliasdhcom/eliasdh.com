@@ -15,7 +15,7 @@ const mockCustomers = [
         websites: [
             { subscriptionType: 'ToDo', url: 'https://tereiken.be', name: 'Ter Eiken Website' },
             { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
-            { subscriptionType: 'Business', url: 'https://app.levelup.be', name: 'Level Up App' },
+            { subscriptionType: 'Enterprise', url: 'https://app.levelup.be', name: 'Level Up App' },
             { subscriptionType: 'Enterprise', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
         latitude: 51.150800,
@@ -29,7 +29,7 @@ const mockCustomers = [
         websites: [
             { subscriptionType: 'ToDo', url: 'https://tereiken.be', name: 'Ter Eiken Website' },
             { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
-            { subscriptionType: 'Business', url: 'https://app.levelup.be', name: 'Level Up App' },
+            { subscriptionType: 'Enterprise', url: 'https://app.levelup.be', name: 'Level Up App' },
             { subscriptionType: 'Enterprise', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
         latitude: 51.1803828,
@@ -43,7 +43,7 @@ const mockCustomers = [
         websites: [
             { subscriptionType: 'ToDo', url: 'https://tereiken.be', name: 'Ter Eiken Website' },
             { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
-            { subscriptionType: 'Business', url: 'https://app.levelup.be', name: 'Level Up App' },
+            { subscriptionType: 'Enterprise', url: 'https://app.levelup.be', name: 'Level Up App' },
             { subscriptionType: 'Enterprise', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
         latitude: 51.4274217,
@@ -57,7 +57,7 @@ const mockCustomers = [
         websites: [
             { subscriptionType: 'ToDo', url: 'https://tereiken.be', name: 'Ter Eiken Website' },
             { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
-            { subscriptionType: 'Business', url: 'https://app.levelup.be', name: 'Level Up App' },
+            { subscriptionType: 'Enterprise', url: 'https://app.levelup.be', name: 'Level Up App' },
             { subscriptionType: 'Enterprise', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
         latitude: 50.9541437,
