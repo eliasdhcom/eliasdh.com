@@ -95,7 +95,7 @@ export class IndexComponent implements OnInit, OnDestroy {
             linkedIn: 'https://www.linkedin.com/in/thomasdeweerdt',
             role: 'Chief Financial Officer',
             roleLink: 'https://en.wikipedia.org/wiki/Chief_financial_officer',
-            roleAbbreviation: 'CFO / Founder'
+            roleAbbreviation: 'CFO / Co-Founder'
         }
     ];
 
