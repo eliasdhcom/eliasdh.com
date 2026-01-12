@@ -209,6 +209,27 @@
     overflow-y: auto;
 }
 
+.map-sidebar-logo-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 6px;
+}
+
+.map-sidebar-logo-icon img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
 .map-sidebar-section {
     display: flex;
     align-items: flex-start;

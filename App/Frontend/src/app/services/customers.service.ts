@@ -21,6 +21,7 @@ export interface Customer {
     name: string;
     address: string;
     vat: string;
+    logo?: string;
     websites: CustomerWebsite[];
     latitude: number;
     longitude: number;

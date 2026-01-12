@@ -56,9 +56,11 @@ export class IndexComponent implements OnInit, OnDestroy {
         { name: 'Ter Eiken', logo: 'assets/media/images/trusted-clients/tereiken-logo.png', url: 'https://www.tereiken.be' },
         { name: 'Level Up', logo: 'assets/media/images/trusted-clients/levelup-logo.png', url: 'https://www.levelup.be' },
         { name: 'Zizis', logo: 'assets/media/images/trusted-clients/zizis-logo.png', url: 'https://www.zizis.be' },
+        { name: 'Bistro Theo', logo: 'assets/media/images/trusted-clients/bistrotheo-logo.png', url: 'https://www.bistrotheo.be' },
         { name: 'Ter Eiken', logo: 'assets/media/images/trusted-clients/tereiken-logo.png', url: 'https://www.tereiken.be' },
         { name: 'Level Up', logo: 'assets/media/images/trusted-clients/levelup-logo.png', url: 'https://www.levelup.be' },
-        { name: 'Zizis', logo: 'assets/media/images/trusted-clients/zizis-logo.png', url: 'https://www.zizis.be' }
+        { name: 'Zizis', logo: 'assets/media/images/trusted-clients/zizis-logo.png', url: 'https://www.zizis.be' },
+        { name: 'Bistro Theo', logo: 'assets/media/images/trusted-clients/bistrotheo-logo.png', url: 'https://www.bistrotheo.be' }
     ];
 
     clientsTranslateX: number = 0;
@@ -191,9 +193,16 @@ export class IndexComponent implements OnInit, OnDestroy {
             marginLeft = parseFloat(style.marginLeft) || 15;
         }
 
-        const totalVisibleWidth = this.itemsToShow * this.teamItemWidth;
-        const centerOffset = (this.viewportWidth - totalVisibleWidth) / 2 + marginLeft;
-        this.teamTranslateX = -this.currentTeamIndex * this.teamItemWidth + centerOffset;
+        const totalItemsWidth = this.totalTeamItems * this.teamItemWidth;
+        const visibleItemsWidth = this.itemsToShow * this.teamItemWidth;
+
+        if (this.totalTeamItems <= this.itemsToShow) {
+            const centerOffset = (this.viewportWidth - totalItemsWidth) / 2 + marginLeft;
+            this.teamTranslateX = centerOffset;
+        } else {
+            const centerOffset = (this.viewportWidth - visibleItemsWidth) / 2 + marginLeft;
+            this.teamTranslateX = -this.currentTeamIndex * this.teamItemWidth + centerOffset;
+        }
     }
 
     nextTeamSlide(): void {

@@ -367,11 +367,14 @@
     overflow: hidden;
     width: 100%;
     position: relative;
+    padding: 15px 0;
+    margin: -15px 0;
 }
 
 .index-trusted-clients-logos {
     display: flex;
     will-change: transform;
+    padding: 15px 0;
 }
 
 .index-trusted-clients-logos .client-logo-wrapper {
@@ -415,7 +418,8 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
 }
 
 .index-team-carousel-wrapper {
@@ -426,6 +430,7 @@
     max-width: 1400px;
     gap: 20px;
     overflow: visible;
+    box-sizing: border-box;
 }
 
 .index-team-carousel-btn {
@@ -461,12 +466,14 @@
 }
 
 .index-team-carousel-viewport {
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: visible;
     flex: 1;
     max-width: 1200px;
     position: relative;
-    padding: 25px 0;
-    margin: -25px 0;
+    padding: 30px 0;
+    margin: -30px 0;
+    box-sizing: border-box;
 }
 
 .index-team-carousel-viewport::before,
@@ -511,8 +518,8 @@
     display: flex;
     transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     will-change: transform;
-    padding: 25px 0;
-    margin: -25px 0;
+    padding: 30px 0;
+    margin: -30px 0;
 }
 
 .index-team-container-carousel-track.dragging {
@@ -714,44 +721,46 @@
     .index-team-container {
         margin-left: 0;
         margin-right: 0;
-        padding: 15px 5px;
+        padding: 15px 0;
     }
 
     .index-team-carousel-wrapper {
-        gap: 10px;
-        padding: 0 5px;
+        gap: 8px;
+        padding: 0;
+        width: 100%;
     }
 
     .index-team-carousel-btn {
-        width: 40px;
-        height: 40px;
-        min-width: 40px;
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
     }
 
     .index-team-carousel-btn svg {
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
     }
 
     .index-team-carousel-viewport {
-        padding: 20px 0;
-        margin: -20px 0;
+        padding: 25px 0;
+        margin: -25px 0;
+        width: 100%;
     }
 
     .index-team-carousel-viewport::before,
     .index-team-carousel-viewport::after {
-        width: 50px;
+        width: 40px;
     }
 
     .index-team-container-carousel-track {
-        padding: 20px 0;
-        margin: -20px 0;
+        padding: 25px 0;
+        margin: -25px 0;
     }
 
     .index-team-container-carousel-item {
-        min-width: 280px;
-        max-width: 280px;
-        margin: 0 15px;
+        min-width: 260px;
+        max-width: 260px;
+        margin: 0 12px;
         padding: 18px;
     }
 
@@ -772,44 +781,8 @@
     }
 
     .index-team-carousel-wrapper {
-        gap: 8px;
+        gap: 5px;
         padding: 0;
-    }
-
-    .index-team-carousel-btn {
-        width: 36px;
-        height: 36px;
-        min-width: 36px;
-    }
-
-    .index-team-carousel-btn svg {
-        width: 18px;
-        height: 18px;
-    }
-
-    .index-team-carousel-viewport::before,
-    .index-team-carousel-viewport::after {
-        width: 30px;
-    }
-
-    .index-team-container-carousel-item {
-        min-width: 260px;
-        max-width: 260px;
-        margin: 0 10px;
-        padding: 16px;
-    }
-
-    .index-team-container-carousel-item img {
-        max-width: 100%;
-    }
-}
-
-@media (max-width: 380px) {
-    .index-team-container-carousel-item {
-        min-width: 230px;
-        max-width: 230px;
-        margin: 0 10px;
-        padding: 14px;
     }
 
     .index-team-carousel-btn {
@@ -823,9 +796,69 @@
         height: 16px;
     }
 
+    .index-team-carousel-viewport {
+        padding: 20px 0;
+        margin: -20px 0;
+    }
+
     .index-team-carousel-viewport::before,
     .index-team-carousel-viewport::after {
-        width: 20px;
+        width: 25px;
+    }
+
+    .index-team-container-carousel-track {
+        padding: 20px 0;
+        margin: -20px 0;
+    }
+
+    .index-team-container-carousel-item {
+        min-width: 240px;
+        max-width: 240px;
+        margin: 0 10px;
+        padding: 16px;
+    }
+
+    .index-team-container-carousel-item img {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 380px) {
+    .index-team-carousel-wrapper {
+        gap: 3px;
+    }
+
+    .index-team-container-carousel-item {
+        min-width: 220px;
+        max-width: 220px;
+        margin: 0 8px;
+        padding: 14px;
+    }
+
+    .index-team-carousel-btn {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+    }
+
+    .index-team-carousel-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .index-team-carousel-viewport {
+        padding: 18px 0;
+        margin: -18px 0;
+    }
+
+    .index-team-carousel-viewport::before,
+    .index-team-carousel-viewport::after {
+        width: 15px;
+    }
+
+    .index-team-container-carousel-track {
+        padding: 18px 0;
+        margin: -18px 0;
     }
 }
 /* Media Queries */
