@@ -14,9 +14,7 @@ const mockCustomers = [
         vat: 'BE0833830212',
         logo: 'tereiken-logo.png',
         websites: [
-            { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
-            { subscriptionType: 'Enterprise', url: 'https://app.levelup.be', name: 'Level Up App' },
-            { subscriptionType: 'Enterprise', url: 'https://display.levelup.be', name: 'Level Up Display App' }
+            { subscriptionType: 'ToDo', url: 'https://tereiken.be', name: 'Ter Eiken Website' }
         ],
         latitude: 51.1508601,
         longitude: 4.4251688
@@ -28,7 +26,9 @@ const mockCustomers = [
         vat: 'BE0833830212',
         logo: 'levelup-logo.png',
         websites: [
-            { subscriptionType: 'ToDo', url: 'https://tereiken.be', name: 'Ter Eiken Website' }
+            { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
+            { subscriptionType: 'Enterprise', url: 'https://app.levelup.be', name: 'Level Up App' },
+            { subscriptionType: 'Enterprise', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
         latitude: 51.1507722,
         longitude: 4.4239241
