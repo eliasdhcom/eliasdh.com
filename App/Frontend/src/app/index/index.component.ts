@@ -34,6 +34,12 @@ interface TrustedClient {
     url: string;
 }
 
+interface Review {
+    rating: number;
+    textKey: string;
+    name: string;
+}
+
 type TeamMember = JoinCard | MemberCard;
 
 @Component({
@@ -51,6 +57,19 @@ export class IndexComponent implements OnInit, OnDestroy {
     
     showContactModal: boolean = false;
     contactSubject: string = '';
+
+    reviews: Review[] = [
+        { rating: 5, textKey: 'INDEX.REVIEW1', name: 'Sarah Van den Berg' },
+        { rating: 5, textKey: 'INDEX.REVIEW2', name: 'Michel Dupont' },
+        { rating: 5, textKey: 'INDEX.REVIEW3', name: 'Jan Peeters' },
+        { rating: 4, textKey: 'INDEX.REVIEW4', name: 'Emma De Smet' },
+        { rating: 5, textKey: 'INDEX.REVIEW5', name: 'Thomas Janssen' },
+        { rating: 5, textKey: 'INDEX.REVIEW6', name: 'Lisa Mertens' }
+    ];
+
+    currentReviewIndex: number = 0;
+    reviewsAutoRotateInterval: any = null;
+    reviewsVisible: number = 3;
 
     trustedClients: TrustedClient[] = [
         { name: 'Ter Eiken', logo: 'assets/media/images/trusted-clients/tereiken-logo.png', url: 'https://www.tereiken.be' },
@@ -95,9 +114,9 @@ export class IndexComponent implements OnInit, OnDestroy {
             name: 'Thomas Deweerdt',
             image: 'assets/media/images/team/team2.png',
             linkedIn: 'https://www.linkedin.com/in/thomasdeweerdt',
-            role: 'Chief Financial Officer',
-            roleLink: 'https://en.wikipedia.org/wiki/Chief_financial_officer',
-            roleAbbreviation: 'CFO / Co-Founder'
+            role: 'Chief Marketing Officer',
+            roleLink: 'https://en.wikipedia.org/wiki/Chief_marketing_officer',
+            roleAbbreviation: 'CMO / Co-Founder'
         }
     ];
 
@@ -133,10 +152,13 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.initializeTeamCarousel();
         this.setupEmailIconClick();
         this.initializeClientsSlider();
+        this.startReviewsAutoRotate();
+        this.calculateReviewsVisible();
     }
 
     ngOnDestroy(): void {
         this.stopClientsAutoScroll();
+        this.stopReviewsAutoRotate();
         if (this.clientsResumeTimeout) {
             clearTimeout(this.clientsResumeTimeout);
         }
@@ -146,6 +168,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     onResize(): void {
         this.calculateCarouselDimensions();
         this.updateTeamTranslateX();
+        this.calculateReviewsVisible();
     }
 
     private initializeTeamCarousel(): void {
@@ -431,5 +454,33 @@ export class IndexComponent implements OnInit, OnDestroy {
 
         this.clientsTranslateX = this.clientsStartTranslateX + diff;
         this.normalizeClientsPosition();
+    }
+
+    private startReviewsAutoRotate(): void {
+        this.reviewsAutoRotateInterval = setInterval(() => {
+            this.currentReviewIndex = (this.currentReviewIndex + 1) % this.reviews.length;
+        }, 4000);
+    }
+
+    private stopReviewsAutoRotate(): void {
+        if (this.reviewsAutoRotateInterval) {
+            clearInterval(this.reviewsAutoRotateInterval);
+            this.reviewsAutoRotateInterval = null;
+        }
+    }
+
+    private calculateReviewsVisible(): void {
+        const windowWidth = window.innerWidth;
+        if (windowWidth >= 1200) this.reviewsVisible = 3;
+        else if (windowWidth >= 768) this.reviewsVisible = 2;
+        else this.reviewsVisible = 1;
+    }
+
+    isReviewVisible(index: number): boolean {
+        const total = this.reviews.length;
+        for (let i = 0; i < this.reviewsVisible; i++) {
+            if ((this.currentReviewIndex + i) % total === index) return true;
+        }
+        return false;
     }
 }
