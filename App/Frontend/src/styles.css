@@ -33,6 +33,7 @@
     --telegram-color: #0088cc;
     --discord-color: #7289da;
     --twitch-color: #6441a5;
+    --google-color: linear-gradient(135deg, #4285f4 0%, #ea4335 33%, #fbbc05 66%, #34a853 100%);
 
     --type-custom-color: #bfe1f6;
     --type-enterprise-color: #d4edbc;

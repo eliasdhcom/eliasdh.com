@@ -113,4 +113,8 @@
 .footer-social-media-ul .footer-social-media-icon a[data-social="linkedin"] .footer-social-media-icon-filled {
     background-color: var(--linkedin-color);
 }
+
+.footer-social-media-ul .footer-social-media-icon a[data-social="google"] .footer-social-media-icon-filled {
+    background: var(--google-color);
+}
 /* Footer */
