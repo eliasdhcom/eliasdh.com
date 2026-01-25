@@ -396,6 +396,29 @@
                 <span *ngFor="let dot of teamDots; let i = index" class="index-team-carousel-dot" [class.active]="i === currentTeamIndex" (click)="goToTeamSlide(i)"></span>
             </section>
         </article>
+        <article class="index-faq-container">
+            <section class="index-title">
+                <h3 class="index-title-text">{{'INDEX.TRANSLATE49' | translate}}</h3>
+            </section>
+            <section class="index-faq-wrapper">
+                <section class="index-faq-item" 
+                    *ngFor="let faq of faqItems; let i = index"
+                    [class.active]="faq.isOpen">
+                    <section class="index-faq-question cursor-pointer" (click)="toggleFaq(i)">
+                        <span class="index-faq-accent"></span>
+                        <span class="index-faq-content">
+                            <h4>{{faq.questionKey | translate}}</h4>
+                            <svg class="index-faq-chevron" viewBox="0 0 24 24" [class.rotated]="faq.isOpen">
+                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                            </svg>
+                        </span>
+                    </section>
+                    <section class="index-faq-answer">
+                        <p>{{faq.answerKey | translate}}</p>
+                    </section>
+                </section>
+            </section>
+        </article>
     </main>
     <app-contact *ngIf="showContactModal" [defaultSubject]="contactSubject" (closeModal)="closeContactModal()"></app-contact>
     <app-footer></app-footer>

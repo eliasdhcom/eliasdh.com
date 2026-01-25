@@ -700,6 +700,123 @@
 }
 /* Team */
 
+/* FAQ */
+.index-faq-container {
+    margin: 20px auto 80px;
+    padding: 0 5%;
+    max-width: 900px;
+}
+
+.index-faq-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.index-faq-item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.index-faq-item:last-child {
+    border-bottom: none;
+}
+
+.index-faq-question {
+    display: flex;
+    align-items: stretch;
+    padding: 28px 0;
+    position: relative;
+}
+
+.index-faq-accent {
+    width: 4px;
+    background: linear-gradient(180deg, var(--primary) 0%, var(--primary) 100%);
+    border-radius: 4px;
+    margin-right: 24px;
+    flex-shrink: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.index-faq-item:hover .index-faq-accent,
+.index-faq-item.active .index-faq-accent {
+    transform: scaleY(1);
+}
+
+.index-faq-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.index-faq-question h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary);
+    margin: 0;
+    line-height: 1.5;
+    transition: all 0.3s ease;
+}
+
+.index-faq-item:hover .index-faq-question h4 {
+    transform: translateX(8px);
+}
+
+.index-faq-item.active .index-faq-question h4 {
+    transform: translateX(8px);
+    font-weight: 700;
+}
+
+.index-faq-chevron {
+    width: 24px;
+    height: 24px;
+    color: var(--primary);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    opacity: 0.4;
+}
+
+.index-faq-item:hover .index-faq-chevron {
+    opacity: 0.7;
+}
+
+.index-faq-item.active .index-faq-chevron {
+    opacity: 1;
+}
+
+.index-faq-chevron.rotated {
+    transform: rotate(180deg);
+}
+
+.index-faq-answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                padding 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease;
+    opacity: 0;
+    padding-left: 28px;
+}
+
+.index-faq-item.active .index-faq-answer {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    padding-bottom: 28px;
+}
+
+.index-faq-answer p {
+    overflow: hidden;
+    color: var(--secondary);
+    font-size: 16px;
+    line-height: 1.8;
+    margin: 0;
+    padding-right: 48px;
+}
+/* FAQ */
+
 /* Media Queries */
 @media screen and (max-width: 1099px) {
     .index-team-carousel-btn {
@@ -794,6 +911,48 @@
         margin-left: 5%;
         margin-right: 5%;
         width: 90%;
+    }
+
+    .index-faq-container {
+        margin: 40px auto;
+        padding: 20px 4%;
+    }
+
+    .index-faq-container {
+        margin: 40px auto 60px;
+        padding: 0 4%;
+    }
+
+    .index-faq-question {
+        padding: 22px 0;
+    }
+
+    .index-faq-accent {
+        width: 3px;
+        margin-right: 18px;
+    }
+
+    .index-faq-question h4 {
+        font-size: 16px;
+    }
+
+    .index-faq-chevron {
+        width: 20px;
+        height: 20px;
+    }
+
+    .index-faq-answer {
+        padding-left: 21px;
+    }
+
+    .index-faq-item.active .index-faq-answer {
+        padding-bottom: 22px;
+    }
+
+    .index-faq-answer p {
+        font-size: 14px;
+        padding-right: 20px;
+        line-height: 1.7;
     }
 
     .index-reviews-container {
@@ -958,6 +1117,43 @@
     .index-reviews-star {
         width: 12px;
         height: 12px;
+    }
+
+    .index-faq-container {
+        margin: 30px auto 50px;
+        padding: 0 3%;
+    }
+
+    .index-faq-question {
+        padding: 18px 0;
+    }
+
+    .index-faq-accent {
+        width: 3px;
+        margin-right: 14px;
+    }
+
+    .index-faq-question h4 {
+        font-size: 14px;
+    }
+
+    .index-faq-chevron {
+        width: 18px;
+        height: 18px;
+    }
+
+    .index-faq-answer {
+        padding-left: 17px;
+    }
+
+    .index-faq-item.active .index-faq-answer {
+        padding-bottom: 18px;
+    }
+
+    .index-faq-answer p {
+        font-size: 13px;
+        padding-right: 10px;
+        line-height: 1.6;
     }
 }
 

@@ -40,6 +40,12 @@ interface Review {
     name: string;
 }
 
+interface FaqItem {
+    questionKey: string;
+    answerKey: string;
+    isOpen: boolean;
+}
+
 type TeamMember = JoinCard | MemberCard;
 
 @Component({
@@ -65,6 +71,15 @@ export class IndexComponent implements OnInit, OnDestroy {
         { rating: 4, textKey: 'INDEX.REVIEW4', name: 'Emma De Smet' },
         { rating: 5, textKey: 'INDEX.REVIEW5', name: 'Thomas Janssen' },
         { rating: 5, textKey: 'INDEX.REVIEW6', name: 'Lisa Mertens' }
+    ];
+
+    faqItems: FaqItem[] = [
+        { questionKey: 'INDEX.TRANSLATE50', answerKey: 'INDEX.TRANSLATE51', isOpen: false },
+        { questionKey: 'INDEX.TRANSLATE52', answerKey: 'INDEX.TRANSLATE53', isOpen: false },
+        { questionKey: 'INDEX.TRANSLATE54', answerKey: 'INDEX.TRANSLATE55', isOpen: false },
+        { questionKey: 'INDEX.TRANSLATE56', answerKey: 'INDEX.TRANSLATE57', isOpen: false },
+        { questionKey: 'INDEX.TRANSLATE58', answerKey: 'INDEX.TRANSLATE59', isOpen: false },
+        { questionKey: 'INDEX.TRANSLATE60', answerKey: 'INDEX.TRANSLATE61', isOpen: false }
     ];
 
     currentReviewIndex: number = 0;
@@ -482,5 +497,9 @@ export class IndexComponent implements OnInit, OnDestroy {
             if ((this.currentReviewIndex + i) % total === index) return true;
         }
         return false;
+    }
+
+    toggleFaq(index: number): void {
+        this.faqItems[index].isOpen = !this.faqItems[index].isOpen;
     }
 }
