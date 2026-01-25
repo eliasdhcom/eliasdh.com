@@ -16,12 +16,18 @@ export interface CustomerWebsite {
     visitors?: number;
 }
 
+export interface SocialLink {
+    type: 'facebook' | 'instagram' | 'linkedin' | 'twitter' | 'tiktok' | 'youtube';
+    url: string;
+}
+
 export interface Customer {
     id: string;
     name: string;
     address: string;
     vat: string;
     logo?: string;
+    socialLinks?: SocialLink[];
     websites: CustomerWebsite[];
     latitude: number;
     longitude: number;

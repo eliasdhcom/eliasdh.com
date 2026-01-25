@@ -10,6 +10,10 @@ const mockCustomers = [
     {
         id: '1',
         name: 'Ter Eiken Edegem',
+        socialLinks: [
+            { type: "instagram", url: "https://www.instagram.com/tereikensport" },
+            { type: "facebook", url: "https://www.facebook.com/tereiken" }
+        ],
         address: 'Kattenbroek 33, 2650 Edegem, Belgium',
         vat: 'BE0833830212',
         logo: 'tereiken-logo.png',
@@ -22,6 +26,10 @@ const mockCustomers = [
     {
         id: '2',
         name: 'Level Up Edegem',
+        socialLinks: [
+            { type: "instagram", url: "https://www.instagram.com/levelupedegem" },
+            { type: "facebook", url: "https://www.facebook.com/levelupleisureandsports" }
+        ],
         address: 'Kattenbroek 33, 2650 Edegem, Belgium',
         vat: 'BE0833830212',
         logo: 'levelup-logo.png',
@@ -36,6 +44,10 @@ const mockCustomers = [
     {
         id: '3',
         name: 'Ter Eiken Boechout',
+        socialLinks: [
+            { type: "instagram", url: "https://www.instagram.com/tereikensport" },
+            { type: "facebook", url: "https://www.facebook.com/tereiken" }
+        ],
         address: 'Olieslagerijstraat 19, 2530 Boechout, Belgium',
         vat: 'BE0451910825',
         logo: 'tereiken-logo.png',
@@ -48,6 +60,10 @@ const mockCustomers = [
     {
         id: '4',
         name: 'Ter Eiken Essen',
+        socialLinks: [
+            { type: "instagram", url: "https://www.instagram.com/tereikenessen" },
+            { type: "facebook", url: "https://www.facebook.com/TereikenEssen" }
+        ],
         address: 'Huybergsebaan 164, 2910 Essen, Belgium',
         vat: 'BE0463353558',
         logo: 'tereiken-logo.png',
@@ -60,6 +76,10 @@ const mockCustomers = [
     {
         id: '5',
         name: 'Ter Eiken Lede',
+        socialLinks: [
+            { type: "instagram", url: "https://www.instagram.com/tereikenlede" },
+            { type: "facebook", url: "https://www.facebook.com/profile.php?id=61570368526149" }
+        ],
         address: 'Grote Steenweg 304, 9340 Lede, Belgium',
         vat: 'BE0833830212',
         logo: 'tereiken-logo.png',
@@ -72,6 +92,8 @@ const mockCustomers = [
     {
         id: '6',
         name: 'Level Up Lede',
+        socialLinks: [
+        ],
         address: 'Grote Steenweg 304, 9340 Lede, Belgium',
         vat: 'BE0833830212',
         logo: 'levelup-logo.png',
@@ -86,6 +108,9 @@ const mockCustomers = [
     {
         id: '7',
         name: 'Zizis',
+        socialLinks: [
+            { type: "instagram", url: "https://www.instagram.com/hairfashionzizis" },
+        ],
         address: 'Provinciesteenweg 557, 2530 Boechout, Belgium',
         vat: 'BE0000000000',
         logo: 'zizis-logo.png',
@@ -98,6 +123,10 @@ const mockCustomers = [
     {
         id: '8',
         name: 'Bistro Theo',
+        socialLinks: [
+            { type: "instagram", url: "https://www.instagram.com/bistrotheo/" },
+            { type: "facebook", url: "https://www.facebook.com/bistrotheo" }
+        ],
         address: 'Nationalestraat 33, 2000 Antwerpen, Belgium',
         vat: 'BE0443920597',
         logo: 'bistrotheo-logo.png',
