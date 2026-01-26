@@ -65,21 +65,21 @@ export class IndexComponent implements OnInit, OnDestroy {
     contactSubject: string = '';
 
     reviews: Review[] = [
-        { rating: 5, textKey: 'INDEX.REVIEW1', name: 'Sarah Van den Berg' },
-        { rating: 5, textKey: 'INDEX.REVIEW2', name: 'Michel Dupont' },
-        { rating: 5, textKey: 'INDEX.REVIEW3', name: 'Jan Peeters' },
-        { rating: 4, textKey: 'INDEX.REVIEW4', name: 'Emma De Smet' },
-        { rating: 5, textKey: 'INDEX.REVIEW5', name: 'Thomas Janssen' },
-        { rating: 5, textKey: 'INDEX.REVIEW6', name: 'Lisa Mertens' }
+        { rating: 5, textKey: 'INDEX.REVIEW.REVIEW1', name: 'Sarah Van den Berg' },
+        { rating: 5, textKey: 'INDEX.REVIEW.REVIEW2', name: 'Michel Dupont' },
+        { rating: 5, textKey: 'INDEX.REVIEW.REVIEW3', name: 'Jan Peeters' },
+        { rating: 4, textKey: 'INDEX.REVIEW.REVIEW4', name: 'Emma De Smet' },
+        { rating: 5, textKey: 'INDEX.REVIEW.REVIEW5', name: 'Thomas Janssen' },
+        { rating: 5, textKey: 'INDEX.REVIEW.REVIEW6', name: 'Lisa Mertens' }
     ];
 
     faqItems: FaqItem[] = [
-        { questionKey: 'INDEX.TRANSLATE50', answerKey: 'INDEX.TRANSLATE51', isOpen: false },
-        { questionKey: 'INDEX.TRANSLATE52', answerKey: 'INDEX.TRANSLATE53', isOpen: false },
-        { questionKey: 'INDEX.TRANSLATE54', answerKey: 'INDEX.TRANSLATE55', isOpen: false },
-        { questionKey: 'INDEX.TRANSLATE56', answerKey: 'INDEX.TRANSLATE57', isOpen: false },
-        { questionKey: 'INDEX.TRANSLATE58', answerKey: 'INDEX.TRANSLATE59', isOpen: false },
-        { questionKey: 'INDEX.TRANSLATE60', answerKey: 'INDEX.TRANSLATE61', isOpen: false }
+        { questionKey: 'INDEX.FAQ.QUESTION1', answerKey: 'INDEX.FAQ.ANSWER1', isOpen: false },
+        { questionKey: 'INDEX.FAQ.QUESTION2', answerKey: 'INDEX.FAQ.ANSWER2', isOpen: false },
+        { questionKey: 'INDEX.FAQ.QUESTION3', answerKey: 'INDEX.FAQ.ANSWER3', isOpen: false },
+        { questionKey: 'INDEX.FAQ.QUESTION4', answerKey: 'INDEX.FAQ.ANSWER4', isOpen: false },
+        { questionKey: 'INDEX.FAQ.QUESTION5', answerKey: 'INDEX.FAQ.ANSWER5', isOpen: false },
+        { questionKey: 'INDEX.FAQ.QUESTION6', answerKey: 'INDEX.FAQ.ANSWER6', isOpen: false }
     ];
 
     currentReviewIndex: number = 0;
