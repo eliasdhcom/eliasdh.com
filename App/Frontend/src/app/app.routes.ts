@@ -20,7 +20,8 @@ export const routes: Routes = [
         component: IndexComponent, 
         data: { 
             title: 'EliasDH', 
-            description: 'Welcome to EliasDH, a company that offers hosting services, web development, and tailored IT solutions for businesses and individuals.' 
+            description: 'Welcome to EliasDH, a company that offers hosting services, web development, and tailored IT solutions for businesses and individuals.',
+            canonical: 'https://eliasdh.com/'
         } 
     },
     { 
@@ -28,7 +29,8 @@ export const routes: Routes = [
         component: PrivacyPolicyComponent, 
         data: { 
             title: 'EliasDH - Privacy Policy', 
-            description: 'Read the Privacy Policy of EliasDH. Learn how we collect, use, and protect your personal data when using our hosting and web development services.' 
+            description: 'Read the Privacy Policy of EliasDH. Learn how we collect, use, and protect your personal data when using our hosting and web development services.',
+            canonical: 'https://eliasdh.com/privacypolicy'
         } 
     },
     { 
@@ -36,7 +38,8 @@ export const routes: Routes = [
         component: LegalGuidelinesComponent, 
         data: { 
             title: 'EliasDH - Legal Guidelines', 
-            description: 'Legal guidelines and terms of service for EliasDH. All content and materials showcased on this platform are subject to these guidelines.' 
+            description: 'Legal guidelines and terms of service for EliasDH. All content and materials showcased on this platform are subject to these guidelines.',
+            canonical: 'https://eliasdh.com/legalguidelines'
         } 
     },
     { 
@@ -44,7 +47,8 @@ export const routes: Routes = [
         component: MapComponent, 
         data: { 
             title: 'EliasDH - Customer Map', 
-            description: 'Explore our customer map to see where EliasDH clients are located. Discover businesses and individuals who trust our hosting and web development services.' 
+            description: 'Explore our customer map to see where EliasDH clients are located. Discover businesses and individuals who trust our hosting and web development services.',
+            canonical: 'https://eliasdh.com/map'
         } 
     },
     { 
@@ -52,7 +56,8 @@ export const routes: Routes = [
         component: DomainRentedComponent, 
         data: { 
             title: 'EliasDH - Domain Rented', 
-            description: 'This domain is currently rented and managed by EliasDH. Contact us for more information about domain services.' 
+            description: 'This domain is currently rented and managed by EliasDH. Contact us for more information about domain services.',
+            canonical: 'https://eliasdh.com/domainrented'
         } 
     },
     { 
@@ -60,7 +65,8 @@ export const routes: Routes = [
         component: AccessDeniedComponent, 
         data: { 
             title: 'EliasDH - Access Denied', 
-            description: 'Access denied. You do not have permission to view this page on EliasDH.' 
+            description: 'Access denied. You do not have permission to view this page on EliasDH.',
+            canonical: 'https://eliasdh.com/403'
         } 
     },
     { 
@@ -68,7 +74,8 @@ export const routes: Routes = [
         component: NotFoundComponent, 
         data: { 
             title: 'EliasDH - Not Found', 
-            description: 'Page not found. The page you are looking for does not exist on EliasDH.' 
+            description: 'Page not found. The page you are looking for does not exist on EliasDH.',
+            canonical: 'https://eliasdh.com/404'
         } 
     },
     { 
@@ -76,7 +83,8 @@ export const routes: Routes = [
         component: FuckYouComponent, 
         data: { 
             title: 'EliasDH - Fuck You', 
-            description: 'EliasDH - Special page.' 
+            description: 'EliasDH - Special page.',
+            canonical: 'https://eliasdh.com/fuckyou'
         } 
     },
     { 
@@ -84,7 +92,7 @@ export const routes: Routes = [
         component: NotFoundComponent, 
         data: { 
             title: 'EliasDH - Not Found', 
-            description: 'Page not found. The page you are looking for does not exist on EliasDH.' 
+            description: 'Page not found. The page you are looking for does not exist on EliasDH.'
         } 
     }
 ];

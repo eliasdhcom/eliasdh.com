@@ -35,16 +35,19 @@ export class AppComponent {
                 }
                 return {
                     title: route.snapshot.data['title'] || 'EliasDH',
-                    description: route.snapshot.data['description'] || this.defaultDescription
+                    description: route.snapshot.data['description'] || this.defaultDescription,
+                    canonical: route.snapshot.data['canonical'] || 'https://eliasdh.com'
                 };
             })
-        ).subscribe(({ title, description }) => {
+        ).subscribe(({ title, description, canonical }) => {
             this.titleService.setTitle(title);
             this.metaService.updateTag({ name: 'description', content: description });
             this.metaService.updateTag({ property: 'og:title', content: title });
             this.metaService.updateTag({ property: 'og:description', content: description });
             this.metaService.updateTag({ name: 'twitter:title', content: title });
             this.metaService.updateTag({ name: 'twitter:description', content: description });
+            this.metaService.updateTag({ rel: 'canonical', href: canonical });
+            this.metaService.updateTag({ property: 'og:url', content: canonical });
         });
     }
 }
