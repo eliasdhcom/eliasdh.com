@@ -1,6 +1,12 @@
 User-agent: *
-Allow: index.html
-Disallow: /assets/
+Allow: /
+
+# Block client logos and team photos from indexing
+Disallow: /assets/media/images/trusted-clients/
+
+# Block Google Images specifically from indexing client logos
+User-agent: Googlebot-Image
+Disallow: /assets/media/images/trusted-clients/
 
 Sitemap: https://eliasdh.com/sitemap.xml
 
