@@ -22,11 +22,11 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/assets",
-              "sitemap.xml",
-              "robots.txt",
+              "src/sitemap.xml",
+              "src/robots.txt",
               {
                 "glob": "**/*",
-                "input": "assets"
+                "input": "src/assets"
               }
             ],
             "styles": [
