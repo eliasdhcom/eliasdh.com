@@ -13,6 +13,7 @@ const errorHandler = require('../middleware/errorHandler');
 const { apiKeyAuth } = require('../middleware/auth');
 const { server: config } = require('./env');
 const logger = require('../utils/logger');
+const clusterService = require('../api/services/cluster/clusterService');
 const app = express();
 
 app.set('trust proxy', 1);
@@ -59,6 +60,8 @@ const startServer = () => {
     app.listen(config.port, () => {
         logger.info(`Server running on port ${config.port} (HTTP)`);
         logger.info(process.env.NODE_ENV === 'production' ? 'Production mode!' : 'Development mode!');
+
+        clusterService.startNodeMonitoring();
     });
 };
 

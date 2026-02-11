@@ -6,6 +6,7 @@
 
 const k8s = require('@kubernetes/client-node');
 const logger = require('../../../utils/logger');
+const notificationService = require('../notifications/notificationService');
 
 class ClusterService {
     constructor() {
@@ -14,6 +15,11 @@ class ClusterService {
         this.initKubeConfig();
         this.cache = new Map();
         this.cacheTTL = 30 * 1000;
+        
+        // Node monitoring
+        this.nodeStatusHistory = new Map();
+        this.monitoringInterval = null;
+        this.monitoringIntervalMs = 60 * 1000; // Check every 60 seconds
     }
 
     initKubeConfig() {
@@ -568,6 +574,146 @@ class ClusterService {
             total: filteredPods.length,
             pods: filteredPods,
             timestamp: new Date().toISOString()
+        };
+    }
+
+    // Node Status Monitoring Methods
+    startNodeMonitoring() {
+        if (!this.kubeEnabled) {
+            logger.info('Node monitoring not started - Kubernetes unavailable');
+            return false;
+        }
+
+        if (this.monitoringInterval) {
+            logger.warn('Node monitoring is already running');
+            return true;
+        }
+
+        logger.info('Starting node status monitoring...');
+        
+        // Initial check
+        this.checkNodeStatuses();
+        
+        // Set up interval for continuous monitoring
+        this.monitoringInterval = setInterval(() => {
+            this.checkNodeStatuses();
+        }, this.monitoringIntervalMs);
+
+        logger.info(`Node monitoring started - checking every ${this.monitoringIntervalMs / 1000} seconds`);
+        return true;
+    }
+
+    stopNodeMonitoring() {
+        if (this.monitoringInterval) {
+            clearInterval(this.monitoringInterval);
+            this.monitoringInterval = null;
+            logger.info('Node monitoring stopped');
+            return true;
+        }
+        return false;
+    }
+
+    async checkNodeStatuses() {
+        try {
+            if (!this.kubeEnabled) return;
+
+            const coreApi = this.kc.makeApiClient(k8s.CoreV1Api);
+            const nodesResponse = await coreApi.listNode();
+            const nodes = nodesResponse.body.items;
+
+            for (const node of nodes) {
+                const nodeName = node.metadata.name;
+                const currentStatus = this.getNodeStatus(node);
+                const isCurrentlyReady = currentStatus.status === 'Ready';
+                
+                const previousState = this.nodeStatusHistory.get(nodeName);
+                
+                if (previousState !== undefined) {
+                    const wasReady = previousState.isReady;
+                    
+                    // Node went offline
+                    if (wasReady && !isCurrentlyReady) {
+                        logger.warn(`Node ${nodeName} went OFFLINE - Status: ${currentStatus.status}`);
+                        await this.handleNodeOffline(nodeName, currentStatus, previousState);
+                    }
+                    // Node came back online
+                    else if (!wasReady && isCurrentlyReady) {
+                        logger.info(`Node ${nodeName} is back ONLINE`);
+                        await this.handleNodeOnline(nodeName, currentStatus, previousState);
+                    }
+                }
+                
+                // Update status history
+                this.nodeStatusHistory.set(nodeName, {
+                    isReady: isCurrentlyReady,
+                    status: currentStatus.status,
+                    reason: currentStatus.reason,
+                    message: currentStatus.message,
+                    lastChecked: new Date().toISOString()
+                });
+            }
+            
+            logger.debug(`Node status check completed for ${nodes.length} nodes`);
+        } catch (error) {
+            logger.error(`Error checking node statuses: ${error.message}`);
+        }
+    }
+
+    async handleNodeOffline(nodeName, currentStatus, previousState) {
+        try {
+            const nodeDetails = {
+                lastKnownStatus: previousState?.status || 'Ready',
+                reason: currentStatus.reason,
+                message: currentStatus.message,
+                currentStatus: currentStatus.status
+            };
+            
+            const results = await notificationService.sendNodeOfflineNotification(nodeName, nodeDetails);
+            
+            logger.info(`Offline notification results for ${nodeName}: Email=${results.email.sent}, Discord=${results.discord.sent}`);
+        } catch (error) {
+            logger.error(`Failed to send offline notifications for ${nodeName}: ${error.message}`);
+        }
+    }
+
+    async handleNodeOnline(nodeName, currentStatus, previousState) {
+        try {
+            const nodeDetails = {
+                previousStatus: previousState?.status || 'Unknown',
+                downtime: previousState?.lastChecked 
+                    ? this.calculateDowntime(previousState.lastChecked) 
+                    : 'Unknown'
+            };
+            
+            const results = await notificationService.sendNodeOnlineNotification(nodeName, nodeDetails);
+            
+            logger.info(`Recovery notification results for ${nodeName}: Email=${results.email.sent}, Discord=${results.discord.sent}`);
+        } catch (error) {
+            logger.error(`Failed to send recovery notifications for ${nodeName}: ${error.message}`);
+        }
+    }
+
+    calculateDowntime(lastCheckedTime) {
+        const lastChecked = new Date(lastCheckedTime);
+        const now = new Date();
+        const diffMs = now - lastChecked;
+        
+        const hours = Math.floor(diffMs / (1000 * 60 * 60));
+        const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+        
+        if (hours > 0) return `${hours}h ${minutes}m ${seconds}s`;
+        if (minutes > 0) return `${minutes}m ${seconds}s`;
+        return `${seconds}s`;
+    }
+
+    getNodeMonitoringStatus() {
+        return {
+            isRunning: !!this.monitoringInterval,
+            kubeEnabled: this.kubeEnabled,
+            monitoringIntervalMs: this.monitoringIntervalMs,
+            trackedNodes: Array.from(this.nodeStatusHistory.keys()),
+            nodeStatuses: Object.fromEntries(this.nodeStatusHistory)
         };
     }
 }
