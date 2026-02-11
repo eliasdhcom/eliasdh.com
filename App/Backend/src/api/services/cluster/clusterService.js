@@ -333,12 +333,10 @@ class ClusterService {
 
         quantity = String(quantity);
 
-        // CPU units
         if (quantity.endsWith('n')) return parseInt(quantity) / 1000000000;
         if (quantity.endsWith('u')) return parseInt(quantity) / 1000000;
         if (quantity.endsWith('m')) return parseInt(quantity) / 1000;
 
-        // Memory units
         if (quantity.endsWith('Ki')) return parseInt(quantity) * 1024;
         if (quantity.endsWith('Mi')) return parseInt(quantity) * 1024 * 1024;
         if (quantity.endsWith('Gi')) return parseInt(quantity) * 1024 * 1024 * 1024;
@@ -563,9 +561,7 @@ class ClusterService {
             }
         ];
 
-        const filteredPods = namespace 
-            ? mockPods.filter(p => p.namespace === namespace)
-            : mockPods;
+        const filteredPods = namespace ? mockPods.filter(p => p.namespace === namespace) : mockPods;
 
         return {
             namespace: namespace || 'all',
