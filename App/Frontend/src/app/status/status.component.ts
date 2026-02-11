@@ -116,51 +116,35 @@ export class StatusComponent implements OnInit, OnDestroy {
     }
 
     getMemoryPercentage(node: StatusNode): number {
-        if (!node.resources.memoryAllocatable || !node.resources.memoryCapacity) {
-            return 0;
+        if (node.usage?.memoryPercent !== undefined) {
+            return node.usage.memoryPercent;
         }
-
-        const allocatable = this.statusService.parseMemory(node.resources.memoryAllocatable);
-        const capacity = this.statusService.parseMemory(node.resources.memoryCapacity);
-
-        if (capacity === 0) return 0;
-        return (allocatable / capacity) * 100;
+        return 0;
     }
 
     getMemoryUsed(node: StatusNode): string {
-        if (!node.resources.memoryCapacity || !node.resources.memoryAllocatable) {
-            return 'N/A';
+        if (node.usage?.memoryUsed && node.resources.memoryCapacity) {
+            const used = this.statusService.parseMemory(node.usage.memoryUsed);
+            const capacity = this.statusService.parseMemory(node.resources.memoryCapacity);
+            return `${this.statusService.formatBytes(used)} / ${this.statusService.formatBytes(capacity)}`;
         }
-
-        const capacity = this.statusService.parseMemory(node.resources.memoryCapacity);
-        const allocatable = this.statusService.parseMemory(node.resources.memoryAllocatable);
-        const used = capacity - allocatable;
-
-        return `${this.statusService.formatBytes(used)} / ${this.statusService.formatBytes(capacity)}`;
+        return 'N/A';
     }
 
     getCPUPercentage(node: StatusNode): number {
-        if (!node.resources.cpuAllocatable || !node.resources.cpuCapacity) {
-            return 0;
+        if (node.usage?.cpuPercent !== undefined) {
+            return node.usage.cpuPercent;
         }
-
-        const allocatable = this.statusService.parseCpu(node.resources.cpuAllocatable);
-        const capacity = this.statusService.parseCpu(node.resources.cpuCapacity);
-
-        if (capacity === 0) return 0;
-        return (allocatable / capacity) * 100;
+        return 0;
     }
 
     getCPUUsed(node: StatusNode): string {
-        if (!node.resources.cpuCapacity || !node.resources.cpuAllocatable) {
-            return 'N/A';
+        if (node.usage?.cpuUsed && node.resources.cpuCapacity) {
+            const used = this.statusService.parseCpu(node.usage.cpuUsed);
+            const capacity = this.statusService.parseCpu(node.resources.cpuCapacity);
+            return `${(used * 1000).toFixed(0)}m / ${(capacity * 1000).toFixed(0)}m`;
         }
-
-        const capacity = this.statusService.parseCpu(node.resources.cpuCapacity);
-        const allocatable = this.statusService.parseCpu(node.resources.cpuAllocatable);
-        const used = capacity - allocatable;
-
-        return `${(used * 1000).toFixed(0)}m / ${(capacity * 1000).toFixed(0)}m`;
+        return 'N/A';
     }
 
     getHealthPercentage(): number {

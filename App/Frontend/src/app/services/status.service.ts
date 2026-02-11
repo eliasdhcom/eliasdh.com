@@ -30,10 +30,18 @@ export interface NodeResources {
     storageAllocatable?: string;
 }
 
+export interface NodeUsage {
+    cpuUsed: string;
+    memoryUsed: string;
+    cpuPercent: number;
+    memoryPercent: number;
+}
+
 export interface StatusNode {
     name: string;
     status: string;
     resources: NodeResources;
+    usage?: NodeUsage;
     allocatable: { [key: string]: string };
     capacity: { [key: string]: string };
     createdAt: string;
@@ -159,32 +167,28 @@ export class StatusService {
     parseMemory(memory: string): number {
         if (!memory) return 0;
 
-        const value = memory.replace(/[a-zA-Z]/g, '');
-        const unit = memory.replace(/[0-9]/g, '');
+        const str = String(memory);
 
-        const numValue = parseFloat(value);
+        // Handle different memory units
+        if (str.endsWith('Ki')) return parseFloat(str) * 1024;
+        if (str.endsWith('Mi')) return parseFloat(str) * 1024 * 1024;
+        if (str.endsWith('Gi')) return parseFloat(str) * 1024 * 1024 * 1024;
+        if (str.endsWith('Ti')) return parseFloat(str) * 1024 * 1024 * 1024 * 1024;
 
-        switch (unit) {
-            case 'Ki':
-                return numValue * 1024;
-            case 'Mi':
-                return numValue * 1024 * 1024;
-            case 'Gi':
-                return numValue * 1024 * 1024 * 1024;
-            case 'Ti':
-                return numValue * 1024 * 1024 * 1024 * 1024;
-            default:
-                return numValue;
-        }
+        return parseFloat(str) || 0;
     }
 
     parseCpu(cpu: string): number {
         if (!cpu) return 0;
 
-        if (cpu.endsWith('m')) {
-            return parseFloat(cpu) / 1000;
-        }
-        return parseFloat(cpu);
+        const str = String(cpu);
+
+        // Handle different CPU units from Metrics API
+        if (str.endsWith('n')) return parseFloat(str) / 1000000000; // nanocores
+        if (str.endsWith('u')) return parseFloat(str) / 1000000;    // microcores
+        if (str.endsWith('m')) return parseFloat(str) / 1000;       // millicores
+
+        return parseFloat(str) || 0;
     }
 
     formatBytes(bytes: number): string {

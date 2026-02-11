@@ -13,7 +13,7 @@ class ClusterService {
         this.kubeEnabled = false;
         this.initKubeConfig();
         this.cache = new Map();
-        this.cacheTTL = 5 * 60 * 1000;
+        this.cacheTTL = 30 * 1000;
     }
 
     initKubeConfig() {
@@ -54,6 +54,34 @@ class ClusterService {
         });
     }
 
+    async getNodeMetrics() {
+        if (!this.kubeEnabled) return new Map();
+
+        try {
+            const customApi = this.kc.makeApiClient(k8s.CustomObjectsApi);
+            const metricsResponse = await customApi.listClusterCustomObject(
+                'metrics.k8s.io',
+                'v1beta1',
+                'nodes'
+            );
+
+            const metricsMap = new Map();
+            for (const item of metricsResponse.body.items || []) {
+                metricsMap.set(item.metadata.name, {
+                    cpuUsage: item.usage?.cpu || '0',
+                    memoryUsage: item.usage?.memory || '0',
+                    timestamp: item.timestamp
+                });
+            }
+
+            logger.info(`Retrieved metrics for ${metricsMap.size} nodes`);
+            return metricsMap;
+        } catch (error) {
+            logger.warn(`Metrics API unavailable: ${error.message}`);
+            return new Map();
+        }
+    }
+
     async getClusterNodes() {
         if (!this.kubeEnabled) {
             logger.info('Kubernetes unavailable - returning mock cluster nodes data');
@@ -62,16 +90,31 @@ class ClusterService {
 
         try {
             const coreApi = this.kc.makeApiClient(k8s.CoreV1Api);
-            const nodesResponse = await coreApi.listNode();
+            const [nodesResponse, nodeMetrics] = await Promise.all([
+                coreApi.listNode(),
+                this.getNodeMetrics()
+            ]);
 
             const nodes = nodesResponse.body.items.map(node => {
                 const nodeStatus = this.getNodeStatus(node);
                 const nodeResources = this.getNodeResources(node);
+                const metrics = nodeMetrics.get(node.metadata.name) || {};
+
+                const cpuCapacity = this.parseK8sQuantity(node.status.capacity?.cpu || '0');
+                const memoryCapacity = this.parseK8sQuantity(node.status.capacity?.memory || '0');
+                const cpuUsed = this.parseK8sQuantity(metrics.cpuUsage || '0');
+                const memoryUsed = this.parseK8sQuantity(metrics.memoryUsage || '0');
 
                 return {
                     name: node.metadata.name,
                     status: nodeStatus.status,
                     resources: nodeResources,
+                    usage: {
+                        cpuUsed: metrics.cpuUsage || '0',
+                        memoryUsed: metrics.memoryUsage || '0',
+                        cpuPercent: cpuCapacity > 0 ? Math.round((cpuUsed / cpuCapacity) * 100) : 0,
+                        memoryPercent: memoryCapacity > 0 ? Math.round((memoryUsed / memoryCapacity) * 100) : 0
+                    },
                     allocatable: node.status.allocatable,
                     capacity: node.status.capacity,
                     createdAt: node.metadata.creationTimestamp,
@@ -290,12 +333,18 @@ class ClusterService {
 
         quantity = String(quantity);
 
+        // CPU units
+        if (quantity.endsWith('n')) return parseInt(quantity) / 1000000000;
+        if (quantity.endsWith('u')) return parseInt(quantity) / 1000000;
         if (quantity.endsWith('m')) return parseInt(quantity) / 1000;
+
+        // Memory units
         if (quantity.endsWith('Ki')) return parseInt(quantity) * 1024;
         if (quantity.endsWith('Mi')) return parseInt(quantity) * 1024 * 1024;
         if (quantity.endsWith('Gi')) return parseInt(quantity) * 1024 * 1024 * 1024;
+        if (quantity.endsWith('Ti')) return parseInt(quantity) * 1024 * 1024 * 1024 * 1024;
 
-        return parseInt(quantity) || 0;
+        return parseFloat(quantity) || 0;
     }
 
     getMockNodeData() {
@@ -310,6 +359,12 @@ class ClusterService {
                     memoryAllocatable: '28Gi',
                     podsCapacity: '110',
                     podsAllocatable: '110'
+                },
+                usage: {
+                    cpuUsed: '320m',
+                    memoryUsed: '8192Mi',
+                    cpuPercent: 4,
+                    memoryPercent: 25
                 },
                 allocatable: {
                     cpu: '7500m',
@@ -335,6 +390,12 @@ class ClusterService {
                     podsCapacity: '110',
                     podsAllocatable: '110'
                 },
+                usage: {
+                    cpuUsed: '1250m',
+                    memoryUsed: '24576Mi',
+                    cpuPercent: 8,
+                    memoryPercent: 38
+                },
                 allocatable: {
                     cpu: '15500m',
                     memory: '59Gi',
@@ -358,6 +419,12 @@ class ClusterService {
                     memoryAllocatable: '57Gi',
                     podsCapacity: '110',
                     podsAllocatable: '110'
+                },
+                usage: {
+                    cpuUsed: '890m',
+                    memoryUsed: '16384Mi',
+                    cpuPercent: 6,
+                    memoryPercent: 26
                 },
                 allocatable: {
                     cpu: '15200m',
