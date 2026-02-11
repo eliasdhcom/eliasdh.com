@@ -5,7 +5,6 @@
 **/
 
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -18,7 +17,7 @@ import * as L from 'leaflet';
     selector: 'app-map',
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.css'],
-    imports: [CommonModule, FormsModule, TranslatePipe, RouterLink, SharedModule],
+    imports: [CommonModule, FormsModule, TranslatePipe, SharedModule],
     standalone: true
 })
 
@@ -65,21 +64,6 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(this.map);
-
-        this.fixLeafletIcons();
-    }
-
-    private fixLeafletIcons(): void {
-        const iconDefault = L.icon({
-            iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-            iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
-        });
-        L.Marker.prototype.options.icon = iconDefault;
     }
 
     loadCustomers(): void {

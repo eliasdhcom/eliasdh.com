@@ -227,5 +227,31 @@
     "ERROR_REQUIRED": "Tous les champs sont obligatoires.",
     "ERROR_EMAIL": "Veuillez saisir une adresse e-mail valide.",
     "ERROR_GENERIC": "Une erreur s'est produite. Veuillez réessayer."
+  },
+  "STATUS": {
+    "TITLE": "État de l'Infrastructure",
+    "BACK": "Retour",
+    "LOADING": "Chargement des données d'infrastructure...",
+    "HEALTH": "Santé du Cluster",
+    "HEALTHY_NODES": "Nœuds Sains",
+    "RUNNING_PODS": "Pods en Cours d'Exécution",
+    "READY_DEPLOYMENTS": "Déploiements Prêts",
+    "OPERATIONAL": "% Opérationnel",
+    "RUNNING": "En cours d'exécution",
+    "PENDING": "En attente",
+    "READY": "Prêt",
+    "NOTREADY": "Non prêt",
+    "UPDATED": "Mis à jour",
+    "NODE_DETAILS": "Détails du Nœud",
+    "MEMORY": "Mémoire",
+    "CPU": "CPU",
+    "USED": "Utilisé",
+    "CONDITIONS": "Conditions",
+    "CREATED": "Créé",
+    "NODE_NAME": "Nom du Nœud",
+    "STATUS": "Statut",
+    "PREVIOUS": "Précédent",
+    "NEXT": "Suivant",
+    "PAGE": "Page"
   }
 }

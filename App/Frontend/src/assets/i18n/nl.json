@@ -227,5 +227,32 @@
     "ERROR_REQUIRED": "Alle velden zijn verplicht.",
     "ERROR_EMAIL": "Gelieve een geldig e-mailadres in te voeren.",
     "ERROR_GENERIC": "Er is iets misgegaan. Probeer het opnieuw."
+  },
+  "STATUS": {
+    "TITLE": "Infrastructuur Status",
+    "BACK": "Terug",
+    "LOADING": "Infrastructuurgegevens laden...",
+    "HEALTH": "Cluster Gezondheid",
+    "HEALTHY_NODES": "Gezonde Nodes",
+    "RUNNING_PODS": "Actieve Pods",
+    "READY_DEPLOYMENTS": "Klaar Deployments",
+    "OPERATIONAL": "% Operationeel",
+    "RUNNING": "Actief",
+    "PENDING": "In Afwachting",
+    "NODES": "Nodes",
+    "READY": "Klaar",
+    "NOTREADY": "Niet Klaar",
+    "UPDATED": "Bijgewerkt",
+    "NODE_DETAILS": "Node Details",
+    "MEMORY": "Geheugen",
+    "CPU": "CPU",
+    "USED": "Gebruikt",
+    "CONDITIONS": "Voorwaarden",
+    "CREATED": "Aangemaakt",
+    "NODE_NAME": "Node Naam",
+    "STATUS": "Status",
+    "PREVIOUS": "Vorige",
+    "NEXT": "Volgende",
+    "PAGE": "Pagina"
   }
 }

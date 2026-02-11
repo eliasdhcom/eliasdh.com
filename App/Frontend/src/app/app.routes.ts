@@ -13,6 +13,7 @@ import { AccessDeniedComponent } from './accessdenied/accessdenied.component';
 import { NotFoundComponent } from './notfound/notfound.component';
 import { FuckYouComponent } from './fuckyou/fuckyou.component';
 import { MapComponent } from './map/map.component';
+import { StatusComponent } from './status/status.component';
 
 export const routes: Routes = [
     { 
@@ -49,6 +50,15 @@ export const routes: Routes = [
             title: 'EliasDH - Customer Map', 
             description: 'Explore our customer map to see where EliasDH clients are located. Discover businesses and individuals who trust our hosting and web development services.',
             canonical: 'https://eliasdh.com/map'
+        } 
+    },
+    { 
+        path: 'status', 
+        component: StatusComponent, 
+        data: { 
+            title: 'EliasDH - Infrastructure Status', 
+            description: 'Real-time monitoring of the EliasDH infrastructure status.',
+            canonical: 'https://eliasdh.com/status'
         } 
     },
     { 

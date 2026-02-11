@@ -227,5 +227,32 @@
     "ERROR_REQUIRED": "All fields are required.",
     "ERROR_EMAIL": "Please enter a valid email address.",
     "ERROR_GENERIC": "Something went wrong. Please try again."
+  },
+  "STATUS": {
+    "TITLE": "Infrastructure Status",
+    "BACK": "Back",
+    "LOADING": "Loading infrastructure data...",
+    "HEALTH": "Cluster Health",
+    "HEALTHY_NODES": "Healthy Nodes",
+    "RUNNING_PODS": "Running Pods",
+    "READY_DEPLOYMENTS": "Ready Deployments",
+    "OPERATIONAL": "% Operational",
+    "RUNNING": "Running",
+    "PENDING": "Pending",
+    "NODES": "Nodes",
+    "READY": "Ready",
+    "NOTREADY": "NotReady",
+    "UPDATED": "Updated",
+    "NODE_DETAILS": "Node Details",
+    "MEMORY": "Memory",
+    "CPU": "CPU",
+    "USED": "Used",
+    "CONDITIONS": "Conditions",
+    "CREATED": "Created",
+    "NODE_NAME": "Node Name",
+    "STATUS": "Status",
+    "PREVIOUS": "Previous",
+    "NEXT": "Next",
+    "PAGE": "Page"
   }
 }

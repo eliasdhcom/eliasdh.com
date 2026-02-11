@@ -227,5 +227,32 @@
     "ERROR_REQUIRED": "Alle Felder sind erforderlich.",
     "ERROR_EMAIL": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
     "ERROR_GENERIC": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
+  },
+  "STATUS": {
+    "TITLE": "Infrastrukturstatus",
+    "BACK": "Zurück",
+    "LOADING": "Infrastrukturdaten werden geladen...",
+    "HEALTH": "Cluster-Gesundheit",
+    "HEALTHY_NODES": "Gesunde Knoten",
+    "RUNNING_PODS": "Laufende Pods",
+    "READY_DEPLOYMENTS": "Bereite Bereitstellungen",
+    "OPERATIONAL": "% Betriebsbereit",
+    "RUNNING": "Laufen",
+    "PENDING": "Ausstehend",
+    "NODES": "Knoten",
+    "READY": "Bereit",
+    "NOTREADY": "Nicht bereit",
+    "UPDATED": "Aktualisiert",
+    "NODE_DETAILS": "Knotendetails",
+    "MEMORY": "Speicher",
+    "CPU": "CPU",
+    "USED": "Verwendet",
+    "CONDITIONS": "Bedingungen",
+    "CREATED": "Erstellt",
+    "NODE_NAME": "Knotenname",
+    "STATUS": "Status",
+    "PREVIOUS": "Zurück",
+    "NEXT": "Weiter",
+    "PAGE": "Seite"
   }
 }

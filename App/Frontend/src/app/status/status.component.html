@@ -1,0 +1,95 @@
+<!--Author EliasDH Team-->
+<div class="status-container">
+    <app-page-header titleKey="STATUS.TITLE" backLabelKey="STATUS.BACK" backRoute="/"></app-page-header>
+    <app-loading-spinner *ngIf="loading && !statusData" [overlay]="true" messageKey="STATUS.LOADING"></app-loading-spinner>
+    <app-error-box *ngIf="error && !statusData" [overlay]="true" [errorMessage]="error"></app-error-box>
+    <div class="status-content">
+        <ng-container *ngIf="statusData">
+            <section class="status-health-section">
+                <div class="status-health-card" [ngClass]="getClusterHealthClass()">
+                    <div class="status-health-header">
+                        <h2>{{ 'STATUS.HEALTH' | translate }}</h2>
+                    </div>
+                    <div class="status-metrics-grid">
+                        <div class="status-metric">
+                            <span class="status-metric-label">{{ 'STATUS.HEALTHY_NODES' | translate }}</span>
+                            <span class="status-metric-value">{{ statusData.data.overview.nodes.ready }} / {{ statusData.data.overview.nodes.total }}</span>
+                        </div>
+                        <div class="status-metric">
+                            <span class="status-metric-label">{{ 'STATUS.RUNNING_PODS' | translate }}</span>
+                            <span class="status-metric-value">{{ statusData.data.overview.pods.running }} / {{ statusData.data.overview.pods.total }}</span>
+                        </div>
+                        <div class="status-metric">
+                            <span class="status-metric-label">{{ 'STATUS.READY_DEPLOYMENTS' | translate }}</span>
+                            <span class="status-metric-value">{{ statusData.data.overview.deployments.readyReplicas }} / {{ statusData.data.overview.deployments.desiredReplicas }}</span>
+                        </div>
+                    </div>
+                    <div class="status-health-bar-container">
+                        <div class="status-health-bar">
+                            <div class="status-health-progress" [style.width.%]="getHealthPercentage()"></div>
+                        </div>
+                        <p class="status-health-percentage">{{ getHealthPercentage() | number: '1.0-0' }}% {{ 'STATUS.OPERATIONAL' | translate }}</p>
+                    </div>
+                </div>
+            </section>
+            <section class="status-nodes-section">
+                <div class="status-section-header">
+                    <h2 class="status-section-title">{{ 'STATUS.NODE_DETAILS' | translate }}</h2>
+                    <span class="status-nodes-count">{{ getTotalNodes() }} {{ 'STATUS.NODES' | translate }}</span>
+                </div>
+                <div class="status-table-wrapper" *ngIf="getTotalNodes() > 0">
+                    <table class="status-nodes-table">
+                        <thead>
+                            <tr>
+                                <th>{{ 'STATUS.NODE_NAME' | translate }}</th>
+                                <th>{{ 'STATUS.STATUS' | translate }}</th>
+                                <th>{{ 'STATUS.MEMORY' | translate }}</th>
+                                <th>{{ 'STATUS.CPU' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let node of getPaginatedNodes()" [ngClass]="getNodeStatusClass(node)">
+                                <td class="node-name-cell">
+                                    <span class="status-node-indicator" [ngClass]="getNodeStatusClass(node)"></span>
+                                    <strong>{{ node.name }}</strong>
+                                </td>
+                                <td class="node-status-cell">
+                                    <span class="status-badge" [ngClass]="getNodeStatusClass(node)">
+                                        {{ node.status === 'Ready' ? ('STATUS.READY' | translate) : ('STATUS.NOTREADY' | translate) }}
+                                    </span>
+                                </td>
+                                <td class="node-resource-cell">
+                                    <div class="resource-info">
+                                        <span class="resource-text">{{ getMemoryPercentage(node) | number: '1.0-0' }}%</span>
+                                        <div class="resource-bar-small" [ngClass]="getMemoryUsageClass(getMemoryPercentage(node))">
+                                            <div class="resource-fill" [style.width.%]="getMemoryPercentage(node)"></div>
+                                        </div>
+                                        <span class="resource-detail">{{ getMemoryUsed(node) }}</span>
+                                    </div>
+                                </td>
+                                <td class="node-resource-cell">
+                                    <div class="resource-info">
+                                        <span class="resource-text">{{ getCPUPercentage(node) | number: '1.0-0' }}%</span>
+                                        <div class="resource-bar-small" [ngClass]="getMemoryUsageClass(getCPUPercentage(node))">
+                                            <div class="resource-fill" [style.width.%]="getCPUPercentage(node)"></div>
+                                        </div>
+                                        <span class="resource-detail">{{ getCPUUsed(node) }}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="status-empty-state" *ngIf="getTotalNodes() === 0">
+                    <p>{{ 'STATUS.NO_NODES' | translate }}</p>
+                </div>
+                <div class="status-pagination" *ngIf="getTotalPages() > 1">
+                    <button class="status-btn-pagination" (click)="previousPage()" [disabled]="currentPage === 1">← {{ 'STATUS.PREVIOUS' | translate }}</button>
+                    <div class="status-page-info">{{ 'STATUS.PAGE' | translate }} {{ currentPage }} / {{ getTotalPages() }}</div>
+                    <button class="status-btn-pagination" (click)="nextPage()" [disabled]="currentPage === getTotalPages()">{{ 'STATUS.NEXT' | translate }} →</button>
+                </div>
+            </section>
+        </ng-container>
+    </div>
+</div>
+<app-footer></app-footer>
