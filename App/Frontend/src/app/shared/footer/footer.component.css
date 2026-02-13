@@ -121,4 +121,8 @@
 .footer-social-media-ul .footer-social-media-icon a[data-social="facebook"] .footer-social-media-icon-filled {
     background-color: var(--facebook-color);
 }
+
+.footer-social-media-ul .footer-social-media-icon a[data-social="whatsapp"] .footer-social-media-icon-filled {
+    background-color: var(--whatsapp-color);
+}
 /* Footer */
