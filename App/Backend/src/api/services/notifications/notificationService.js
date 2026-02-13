@@ -5,13 +5,11 @@
 **/
 
 const nodemailer = require('nodemailer');
-const axios = require('axios');
 const logger = require('../../../utils/logger');
 
 class NotificationService {
     constructor() {
         this.smtpConfigured = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
-        this.discordConfigured = !!process.env.DISCORD_WEBHOOK_URL;
         
         if (this.smtpConfigured) {
             this.transporter = nodemailer.createTransport({
@@ -29,22 +27,13 @@ class NotificationService {
             this.transporter = null;
         }
 
-        if (this.discordConfigured) {
-            this.discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL;
-            logger.info('Notification service: Discord webhook configured');
-        } else {
-            logger.warn('Notification service: Discord webhook not configured');
-            this.discordWebhookUrl = null;
-        }
-
         this.alertEmail = process.env.ALERT_EMAIL;
     }
 
     async sendNodeOfflineNotification(nodeName, nodeDetails = {}) {
         const timestamp = new Date().toISOString();
         const results = {
-            email: { sent: false, error: null },
-            discord: { sent: false, error: null }
+            email: { sent: false, error: null }
         };
 
         try {
@@ -54,15 +43,6 @@ class NotificationService {
         } catch (error) {
             results.email.error = error.message;
             logger.error(`Failed to send email alert for node ${nodeName}: ${error.message}`);
-        }
-
-        try {
-            await this.sendDiscordAlert(nodeName, nodeDetails, timestamp);
-            results.discord.sent = true;
-            logger.info(`Discord alert sent for offline node: ${nodeName}`);
-        } catch (error) {
-            results.discord.error = error.message;
-            logger.error(`Failed to send Discord alert for node ${nodeName}: ${error.message}`);
         }
 
         return results;
@@ -110,71 +90,10 @@ class NotificationService {
         await this.transporter.sendMail(mailOptions);
     }
 
-    async sendDiscordAlert(nodeName, nodeDetails, timestamp) {
-        if (!this.discordWebhookUrl) {
-            throw new Error('Discord webhook not configured');
-        }
-
-        const embed = {
-            title: '🚨 Node Offline Alert',
-            color: 0xdc3545,
-            fields: [
-                {
-                    name: '📛 Node Name',
-                    value: `\`${nodeName}\``,
-                    inline: true
-                },
-                {
-                    name: '📊 Status',
-                    value: '🔴 **OFFLINE**',
-                    inline: true
-                },
-                {
-                    name: '🕐 Detected At',
-                    value: new Date(timestamp).toLocaleString('en-GB', { timeZone: 'Europe/Brussels' }),
-                    inline: false
-                }
-            ],
-            footer: {
-                text: 'EliasDH Cluster Monitoring'
-            },
-            timestamp: timestamp
-        };
-
-        if (nodeDetails.reason) {
-            embed.fields.push({
-                name: '❓ Reason',
-                value: nodeDetails.reason,
-                inline: true
-            });
-        }
-
-        if (nodeDetails.message) {
-            embed.fields.push({
-                name: '💬 Message',
-                value: nodeDetails.message.substring(0, 1024),
-                inline: false
-            });
-        }
-
-        const payload = {
-            username: 'EliasDH Alerts',
-            avatar_url: 'https://eliasdh.com/assets/media/images/icon-96x96.png',
-            embeds: [embed]
-        };
-
-        await axios.post(this.discordWebhookUrl, payload, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-    }
-
     async sendNodeOnlineNotification(nodeName, nodeDetails = {}) {
         const timestamp = new Date().toISOString();
         const results = {
-            email: { sent: false, error: null },
-            discord: { sent: false, error: null }
+            email: { sent: false, error: null }
         };
 
         try {
@@ -184,15 +103,6 @@ class NotificationService {
         } catch (error) {
             results.email.error = error.message;
             logger.error(`Failed to send email recovery alert for node ${nodeName}: ${error.message}`);
-        }
-
-        try {
-            await this.sendDiscordRecoveryAlert(nodeName, nodeDetails, timestamp);
-            results.discord.sent = true;
-            logger.info(`Discord recovery alert sent for node: ${nodeName}`);
-        } catch (error) {
-            results.discord.error = error.message;
-            logger.error(`Failed to send Discord recovery alert for node ${nodeName}: ${error.message}`);
         }
 
         return results;
@@ -235,50 +145,6 @@ class NotificationService {
         };
 
         await this.transporter.sendMail(mailOptions);
-    }
-
-    async sendDiscordRecoveryAlert(nodeName, nodeDetails, timestamp) {
-        if (!this.discordWebhookUrl) {
-            throw new Error('Discord webhook not configured');
-        }
-
-        const embed = {
-            title: '✅ Node Recovery Alert',
-            color: 0x28a745,
-            fields: [
-                {
-                    name: '📛 Node Name',
-                    value: `\`${nodeName}\``,
-                    inline: true
-                },
-                {
-                    name: '📊 Status',
-                    value: '🟢 **ONLINE**',
-                    inline: true
-                },
-                {
-                    name: '🕐 Recovered At',
-                    value: new Date(timestamp).toLocaleString('en-GB', { timeZone: 'Europe/Brussels' }),
-                    inline: false
-                }
-            ],
-            footer: {
-                text: 'EliasDH Cluster Monitoring'
-            },
-            timestamp: timestamp
-        };
-
-        const payload = {
-            username: 'EliasDH Alerts',
-            avatar_url: 'https://eliasdh.com/assets/media/images/icon-96x96.png',
-            embeds: [embed]
-        };
-
-        await axios.post(this.discordWebhookUrl, payload, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
     }
 }
 

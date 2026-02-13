@@ -670,7 +670,7 @@ class ClusterService {
             
             const results = await notificationService.sendNodeOfflineNotification(nodeName, nodeDetails);
             
-            logger.info(`Offline notification results for ${nodeName}: Email=${results.email.sent}, Discord=${results.discord.sent}`);
+            logger.info(`Offline notification results for ${nodeName}: Email=${results.email.sent}`);
         } catch (error) {
             logger.error(`Failed to send offline notifications for ${nodeName}: ${error.message}`);
         }
@@ -687,7 +687,7 @@ class ClusterService {
             
             const results = await notificationService.sendNodeOnlineNotification(nodeName, nodeDetails);
             
-            logger.info(`Recovery notification results for ${nodeName}: Email=${results.email.sent}, Discord=${results.discord.sent}`);
+            logger.info(`Recovery notification results for ${nodeName}: Email=${results.email.sent}`);
         } catch (error) {
             logger.error(`Failed to send recovery notifications for ${nodeName}: ${error.message}`);
         }
