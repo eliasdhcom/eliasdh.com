@@ -137,6 +137,8 @@
     margin: 0;
     padding: 0;
     height: 100%;
+    overflow-x: hidden;
+    max-width: 100vw;
 }
 /* Global Body And HTML */
 
