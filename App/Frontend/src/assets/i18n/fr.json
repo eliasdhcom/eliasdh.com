@@ -256,5 +256,9 @@
     "TRANSLATE24": "Suivant",
     "TRANSLATE25": "Page",
     "TRANSLATE26": "Aucun nœud disponible"
+  },
+  "CONTACTBAR": {
+      "CALL": "Appelez-nous",
+      "EMAIL": "Envoyez-nous un e-mail"
   }
 }

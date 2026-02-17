@@ -256,5 +256,9 @@
     "TRANSLATE24": "Volgende",
     "TRANSLATE25": "Pagina",
     "TRANSLATE26": "Geen nodes beschikbaar"
+  },
+  "CONTACTBAR": {
+      "CALL": "Bel ons",
+      "EMAIL": "E-mail ons"
   }
 }

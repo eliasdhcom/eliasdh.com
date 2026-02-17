@@ -1,0 +1,81 @@
+/**
+    * @author EliasDH Team
+    * @see https://eliasdh.com
+    * @since 01/01/2025
+**/
+
+.contact-bar {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 1000;
+    background-color: var(--primary);
+    padding: 10px 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.contact-bar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--background);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.contact-bar-item:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+.contact-bar-whatsapp:hover {
+    background-color: var(--whatsapp-color);
+}
+
+.contact-bar-svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--background);
+}
+
+@media (max-width: 1200px) {
+    .contact-bar {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-end;
+        padding: 10px 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-bar {
+        top: 10px;
+        right: 10px;
+        gap: 6px;
+        padding: 8px 10px;
+        border-radius: 10px;
+    }
+
+    .contact-bar-item {
+        font-size: 12px;
+        padding: 6px 8px;
+    }
+
+    .contact-bar-item span {
+        display: none;
+    }
+
+    .contact-bar-svg {
+        width: 20px;
+        height: 20px;
+    }
+}

@@ -256,5 +256,9 @@
     "TRANSLATE24": "Next",
     "TRANSLATE25": "Page",
     "TRANSLATE26": "No nodes available"
+  },
+  "CONTACTBAR": {
+      "CALL": "Call us",
+      "EMAIL": "Email us"
   }
 }

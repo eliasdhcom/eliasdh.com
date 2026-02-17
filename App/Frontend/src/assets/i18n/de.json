@@ -256,5 +256,9 @@
     "TRANSLATE24": "Weiter",
     "TRANSLATE25": "Seite",
     "TRANSLATE26": "Keine Knoten verfügbar"
+  },
+  "CONTACTBAR": {
+      "CALL": "Rufen Sie uns an",
+      "EMAIL": "E-Mail senden"
   }
 }
