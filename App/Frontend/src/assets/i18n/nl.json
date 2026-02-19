@@ -27,6 +27,7 @@
     "TRANSLATE-APPLY": "Nu Aanmelden",
     "TRANSLATE-CU": "Contacteer Ons",
     "TRANSLATE-POPULAR": "Meest Populair",
+    "TRUSTED-CLIENTS-BUTTON": "Bekijk al onze klanten",
     "TRANSLATE1": "Hallo, welkom bij ons bedrijf",
     "TRANSLATE2": "ELIASDH",
     "TRANSLATE3": "Over",
@@ -267,5 +268,9 @@
   "CONTACTBAR": {
       "CALL": "Bel ons",
       "EMAIL": "E-mail ons"
+  },
+  "EXIT-POPUP": {
+    "TITLE": "Kunnen we je helpen?",
+    "TEXT": "We staan klaar om al je vragen te beantwoorden. Geen verplichtingen, gewoon een gesprek."
   }
 }

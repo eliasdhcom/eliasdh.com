@@ -8,6 +8,7 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { LanguageService } from '../services/language.service';
 import { SharedModule } from '../shared/shared.module';
 
@@ -53,7 +54,7 @@ type TeamMember = JoinCard | MemberCard;
     selector: 'app-index',
     templateUrl: './index.component.html',
     styleUrls: ['./index.component.css'],
-    imports: [TranslatePipe, CommonModule, SharedModule, FormsModule],
+    imports: [TranslatePipe, CommonModule, SharedModule, FormsModule, RouterLink],
     standalone: true,
     providers: []
 })

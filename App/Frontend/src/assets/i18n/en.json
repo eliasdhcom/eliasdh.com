@@ -27,6 +27,8 @@
     "TRANSLATE-APPLY": "Apply Now",
     "TRANSLATE-CU": "Contact Us",
     "TRANSLATE-POPULAR": "Most Popular",
+    "TRUSTED-CLIENTS-BUTTON": "View all our clients",
+
     "TRANSLATE1": "Hi there, welcome to our company",
     "TRANSLATE2": "ELIASDH",
     "TRANSLATE3": "About",
@@ -267,5 +269,9 @@
   "CONTACTBAR": {
       "CALL": "Call us",
       "EMAIL": "Email us"
+  },
+  "EXIT-POPUP": {
+    "TITLE": "Can we help you?",
+    "TEXT": "We're here to answer all your questions. No strings attached, just a conversation."
   }
 }

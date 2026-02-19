@@ -12,6 +12,7 @@ import { ContactBarComponent } from './contact-bar/contact-bar.component';
 import { PageHeaderComponent } from './page-header/page-header.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { ErrorBoxComponent } from './error-box/error-box.component';
+import { ExitIntentComponent } from './exit-intent/exit-intent.component';
 
 @NgModule({
     imports: [
@@ -21,7 +22,8 @@ import { ErrorBoxComponent } from './error-box/error-box.component';
         ContactBarComponent,
         PageHeaderComponent,
         LoadingSpinnerComponent,
-        ErrorBoxComponent
+        ErrorBoxComponent,
+        ExitIntentComponent
     ],
     exports: [
         ContextMenuComponent,
@@ -30,7 +32,8 @@ import { ErrorBoxComponent } from './error-box/error-box.component';
         ContactBarComponent,
         PageHeaderComponent,
         LoadingSpinnerComponent,
-        ErrorBoxComponent
+        ErrorBoxComponent,
+        ExitIntentComponent
     ]
 })
 

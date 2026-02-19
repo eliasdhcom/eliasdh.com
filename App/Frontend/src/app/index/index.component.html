@@ -326,6 +326,9 @@
                     </ng-container>
                 </section>
             </section>
+            <a routerLink="/map" class="index-trusted-clients-button cursor-pointer">
+                <span class="cursor-pointer">{{'INDEX.TRUSTED-CLIENTS-BUTTON' | translate}}</span>
+            </a>
         </article>
         <article class="index-reviews-container">
             <section class="index-title">
@@ -431,6 +434,7 @@
         </article>
     </main>
     <app-contact *ngIf="showContactModal" [defaultSubject]="contactSubject" (closeModal)="closeContactModal()"></app-contact>
+    <app-exit-intent></app-exit-intent>
     <app-footer></app-footer>
     <app-contextmenu></app-contextmenu>
 </body>
