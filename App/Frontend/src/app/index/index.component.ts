@@ -7,6 +7,7 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../services/language.service';
 import { SharedModule } from '../shared/shared.module';
 
@@ -52,7 +53,7 @@ type TeamMember = JoinCard | MemberCard;
     selector: 'app-index',
     templateUrl: './index.component.html',
     styleUrls: ['./index.component.css'],
-    imports: [TranslatePipe, CommonModule, SharedModule],
+    imports: [TranslatePipe, CommonModule, SharedModule, FormsModule],
     standalone: true,
     providers: []
 })
@@ -60,6 +61,7 @@ type TeamMember = JoinCard | MemberCard;
 export class IndexComponent implements OnInit, OnDestroy {
     dropdownOpen: boolean = false;
     currentLanguage: string = 'en';
+    isYearlyPricing: boolean = false;
     
     showContactModal: boolean = false;
     contactSubject: string = '';
