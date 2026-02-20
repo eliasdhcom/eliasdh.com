@@ -14,6 +14,10 @@ import { LanguageService } from '../services/language.service';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
 
+declare module 'leaflet' {
+    function markerClusterGroup(options?: any): L.MarkerClusterGroup;
+}
+
 @Component({
     selector: 'app-map',
     templateUrl: './map.component.html',
@@ -78,7 +82,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
             maxClusterRadius: 50,
             spiderfyOnMaxZoom: true,
             disableClusteringAtZoom: 16,
-            iconCreateFunction: (cluster) => {
+            iconCreateFunction: (cluster: L.MarkerCluster) => {
                 const count = cluster.getChildCount();
                 let size = 'small';
                 if (count >= 10) size = 'medium';
