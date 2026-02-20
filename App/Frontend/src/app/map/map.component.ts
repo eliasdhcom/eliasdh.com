@@ -11,8 +11,8 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
 import { CustomersService, Customer } from '../services/customers.service';
 import { LanguageService } from '../services/language.service';
-import * as L from 'leaflet';
-import 'leaflet.markercluster';
+
+declare const L: any;
 
 @Component({
     selector: 'app-map',
@@ -23,10 +23,10 @@ import 'leaflet.markercluster';
 })
 
 export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
-    private map!: L.Map;
-    private markers: L.Marker[] = [];
-    private markerClusterGroup!: L.MarkerClusterGroup;
-    private userLocationMarker: L.Marker | null = null;
+    private map: any;
+    private markers: any[] = [];
+    private markerClusterGroup: any;
+    private userLocationMarker: any = null;
     private refreshInterval: any;
     customers: Customer[] = [];
     selectedCustomer: Customer | null = null;
@@ -76,18 +76,17 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(this.map);
 
-        const markerClusterGroup = (L as any).markerClusterGroup;
-        if (!markerClusterGroup) {
+        if (!L.markerClusterGroup) {
             console.error('leaflet.markercluster not loaded');
             return;
         }
         
-        this.markerClusterGroup = markerClusterGroup({
+        this.markerClusterGroup = L.markerClusterGroup({
             showCoverageOnHover: false,
             maxClusterRadius: 50,
             spiderfyOnMaxZoom: true,
             disableClusteringAtZoom: 16,
-            iconCreateFunction: (cluster: L.MarkerCluster) => {
+            iconCreateFunction: (cluster: any) => {
                 const count = cluster.getChildCount();
                 let size = 'small';
                 if (count >= 10) size = 'medium';
