@@ -224,7 +224,11 @@
     "TRANSLATE17": "Location access denied",
     "TRANSLATE18": "Location unavailable",
     "TRANSLATE19": "Location request timed out",
-    "TRANSLATE20": "Unable to determine location"
+    "TRANSLATE20": "Unable to determine location",
+    "TRANSLATE21": "Directions",
+    "TRANSLATE22": "Car",
+    "TRANSLATE23": "Bicycle",
+    "TRANSLATE24": "On foot"
   },
   "CONTACT": {
     "TITLE": "Contact Us",

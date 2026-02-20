@@ -224,7 +224,11 @@
     "TRANSLATE17": "Accès à la localisation refusé",
     "TRANSLATE18": "Localisation non disponible",
     "TRANSLATE19": "Délai de localisation dépassé",
-    "TRANSLATE20": "Impossible de déterminer la localisation"
+    "TRANSLATE20": "Impossible de déterminer la localisation",
+    "TRANSLATE21": "Itinéraire",
+    "TRANSLATE22": "Voiture",
+    "TRANSLATE23": "Vélo",
+    "TRANSLATE24": "À pied"
   },
   "CONTACT": {
     "TITLE": "Contactez-nous",

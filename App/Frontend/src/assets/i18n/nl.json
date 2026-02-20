@@ -223,7 +223,11 @@
     "TRANSLATE17": "Locatietoegang geweigerd",
     "TRANSLATE18": "Locatie niet beschikbaar",
     "TRANSLATE19": "Locatieverzoek verlopen",
-    "TRANSLATE20": "Kon locatie niet bepalen"
+    "TRANSLATE20": "Kon locatie niet bepalen",
+    "TRANSLATE21": "Routebeschrijving",
+    "TRANSLATE22": "Auto",
+    "TRANSLATE23": "Fiets",
+    "TRANSLATE24": "Te voet"
   },
   "CONTACT": {
     "TITLE": "Contacteer Ons",

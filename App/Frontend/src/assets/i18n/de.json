@@ -223,7 +223,11 @@
     "TRANSLATE17": "Standortzugriff verweigert",
     "TRANSLATE18": "Standort nicht verfügbar",
     "TRANSLATE19": "Standortanfrage abgelaufen",
-    "TRANSLATE20": "Standort konnte nicht ermittelt werden"
+    "TRANSLATE20": "Standort konnte nicht ermittelt werden",
+    "TRANSLATE21": "Wegbeschreibung",
+    "TRANSLATE22": "Auto",
+    "TRANSLATE23": "Fahrrad",
+    "TRANSLATE24": "Zu Fuß"
   },
   "CONTACT": {
     "TITLE": "Kontaktieren Sie uns",

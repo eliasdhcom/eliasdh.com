@@ -38,6 +38,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     filteredCustomers: Customer[] = [];
     isSearchFocused: boolean = false;
 
+    userLocation: { lat: number; lng: number } | null = null;
+
     encodeURIComponent = encodeURIComponent;
 
     constructor(
@@ -259,6 +261,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
 
+                this.userLocation = { lat, lng };
+
                 if (this.userLocationMarker) {
                     this.map.removeLayer(this.userLocationMarker);
                 }
@@ -286,5 +290,16 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
                 maximumAge: 0
             }
         );
+    }
+
+    getDirections(mode: 'driving' | 'bicycling' | 'walking'): void {
+        if (!this.userLocation || !this.selectedCustomer?.latitude || !this.selectedCustomer?.longitude) {
+            return;
+        }
+
+        const origin = `${this.userLocation.lat},${this.userLocation.lng}`;
+        const destination = `${this.selectedCustomer.latitude},${this.selectedCustomer.longitude}`;
+        const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=${mode}`;
+        window.open(url, '_blank');
     }
 }

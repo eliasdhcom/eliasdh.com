@@ -275,6 +275,67 @@
     color: var(--primary);
 }
 
+.map-sidebar-directions {
+    margin-top: 24px;
+}
+
+.map-sidebar-directions h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+}
+
+.map-directions-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.map-direction-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 20px;
+    background-color: rgba(0, 0, 0, 0.03);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    flex: 1;
+    min-width: 80px;
+    transition: all 0.2s ease;
+}
+
+.map-direction-btn:hover {
+    background-color: rgba(var(--accent-rgb), 0.1);
+    border-color: var(--accent);
+}
+
+.map-direction-btn svg {
+    width: 28px;
+    height: 28px;
+    fill: var(--primary);
+    transition: fill 0.2s ease;
+}
+
+.map-direction-btn:hover svg {
+    fill: var(--accent);
+}
+
+.map-direction-btn span {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary);
+    transition: color 0.2s ease;
+}
+
+.map-direction-btn:hover span {
+    color: var(--accent);
+}
+
 .map-sidebar-websites {
     margin-top: 24px;
 }
