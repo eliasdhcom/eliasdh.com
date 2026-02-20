@@ -55,6 +55,9 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     ngAfterViewInit(): void {
         this.initMap();
         this.locateUser();
+        if (this.customers.length > 0) {
+            this.addMarkersToMap();
+        }
     }
 
     ngOnDestroy(): void {
@@ -120,6 +123,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private addMarkersToMap(): void {
+        if (!this.markerClusterGroup) return;
+        
         this.markerClusterGroup.clearLayers();
         this.markers = [];
 
