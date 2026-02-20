@@ -217,7 +217,13 @@
     "TRANSLATE11": "Bezoek",
     "TRANSLATE12": "Zoek naar bedrijven...",
     "TRANSLATE13": "Geen resultaten gevonden",
-    "TRANSLATE14": "Bezoeklogs worden verwijderd wanneer ze niet meer relevant zijn, niet op basis van tijd"
+    "TRANSLATE14": "Bezoeklogs worden verwijderd wanneer ze niet meer relevant zijn, niet op basis van tijd",
+    "TRANSLATE15": "Mijn locatie",
+    "TRANSLATE16": "Geolocatie wordt niet ondersteund door uw browser",
+    "TRANSLATE17": "Locatietoegang geweigerd",
+    "TRANSLATE18": "Locatie niet beschikbaar",
+    "TRANSLATE19": "Locatieverzoek verlopen",
+    "TRANSLATE20": "Kon locatie niet bepalen"
   },
   "CONTACT": {
     "TITLE": "Contacteer Ons",

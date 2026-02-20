@@ -218,7 +218,13 @@
     "TRANSLATE11": "Visit",
     "TRANSLATE12": "Search for companies...",
     "TRANSLATE13": "No results found",
-    "TRANSLATE14": "Visit logs are deleted when no longer relevant, not based on time"
+    "TRANSLATE14": "Visit logs are deleted when no longer relevant, not based on time",
+    "TRANSLATE15": "My location",
+    "TRANSLATE16": "Geolocation is not supported by your browser",
+    "TRANSLATE17": "Location access denied",
+    "TRANSLATE18": "Location unavailable",
+    "TRANSLATE19": "Location request timed out",
+    "TRANSLATE20": "Unable to determine location"
   },
   "CONTACT": {
     "TITLE": "Contact Us",

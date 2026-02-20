@@ -218,7 +218,13 @@
     "TRANSLATE11": "Visiter",
     "TRANSLATE12": "Rechercher des entreprises...",
     "TRANSLATE13": "Aucun résultat trouvé",
-    "TRANSLATE14": "Les journaux de visite sont supprimés lorsqu'ils ne sont plus pertinents, et non en fonction du temps"
+    "TRANSLATE14": "Les journaux de visite sont supprimés lorsqu'ils ne sont plus pertinents, et non en fonction du temps",
+    "TRANSLATE15": "Ma position",
+    "TRANSLATE16": "La géolocalisation n'est pas prise en charge par votre navigateur",
+    "TRANSLATE17": "Accès à la localisation refusé",
+    "TRANSLATE18": "Localisation non disponible",
+    "TRANSLATE19": "Délai de localisation dépassé",
+    "TRANSLATE20": "Impossible de déterminer la localisation"
   },
   "CONTACT": {
     "TITLE": "Contactez-nous",

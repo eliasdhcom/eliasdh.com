@@ -217,7 +217,13 @@
     "TRANSLATE11": "Besuchen",
     "TRANSLATE12": "Nach Unternehmen suchen...",
     "TRANSLATE13": "Keine Ergebnisse gefunden",
-    "TRANSLATE14": "Besuchsprotokolle werden gelöscht, wenn sie nicht mehr relevant sind, nicht zeitbasiert"
+    "TRANSLATE14": "Besuchsprotokolle werden gelöscht, wenn sie nicht mehr relevant sind, nicht zeitbasiert",
+    "TRANSLATE15": "Mein Standort",
+    "TRANSLATE16": "Geolokalisierung wird von Ihrem Browser nicht unterstützt",
+    "TRANSLATE17": "Standortzugriff verweigert",
+    "TRANSLATE18": "Standort nicht verfügbar",
+    "TRANSLATE19": "Standortanfrage abgelaufen",
+    "TRANSLATE20": "Standort konnte nicht ermittelt werden"
   },
   "CONTACT": {
     "TITLE": "Kontaktieren Sie uns",
