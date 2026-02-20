@@ -14,10 +14,6 @@ import { LanguageService } from '../services/language.service';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
 
-declare module 'leaflet' {
-    function markerClusterGroup(options?: any): L.MarkerClusterGroup;
-}
-
 @Component({
     selector: 'app-map',
     templateUrl: './map.component.html',
@@ -77,7 +73,13 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(this.map);
 
-        this.markerClusterGroup = L.markerClusterGroup({
+        const markerClusterGroup = (L as any).markerClusterGroup;
+        if (!markerClusterGroup) {
+            console.error('leaflet.markercluster not loaded');
+            return;
+        }
+        
+        this.markerClusterGroup = markerClusterGroup({
             showCoverageOnHover: false,
             maxClusterRadius: 50,
             spiderfyOnMaxZoom: true,
