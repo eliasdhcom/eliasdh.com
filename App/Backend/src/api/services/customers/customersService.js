@@ -131,7 +131,7 @@ const mockCustomers = [
         vat: 'BE0443920597',
         logo: 'bistrotheo-logo.png',
         websites: [
-            { subscriptionType: 'Startup', url: 'https://bistrotheo.be', name: 'Bistro Theo Website' }
+            { subscriptionType: 'Business', url: 'https://bistrotheo.be', name: 'Bistro Theo Website' }
         ],
         latitude: 51.2169627,
         longitude: 4.3998624
