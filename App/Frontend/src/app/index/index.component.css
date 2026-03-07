@@ -492,14 +492,18 @@
     height: 120px;
     width: auto;
     margin: 0 60px;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
     pointer-events: none;
     user-select: none;
     -webkit-user-drag: none;
+    filter: grayscale(100%) brightness(1.2);
+    opacity: 0.7;
 }
 
 .index-trusted-clients:not(.dragging) .index-trusted-clients-logos a:hover img {
     transform: scale(1.1);
+    filter: grayscale(0%) brightness(1);
+    opacity: 1;
 }
 
 .index-trusted-clients-button {

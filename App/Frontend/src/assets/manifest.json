@@ -6,6 +6,38 @@
     "display": "standalone",
     "background_color": "#6c757d",
     "theme_color": "#4f94f0",
+    "shortcuts": [
+        {
+            "name": "Home",
+            "short_name": "Home",
+            "description": "Welcome to EliasDH, a company that offers hosting services, web development, and tailored IT solutions for businesses and individuals.",
+            "url": "/"
+        },
+        {
+            "name": "Privacy Policy",
+            "short_name": "Privacy",
+            "description": "Read the Privacy Policy of EliasDH. Learn how we collect, use, and protect your personal data when using our hosting and web development services.",
+            "url": "/privacypolicy"
+        },
+        {
+            "name": "Legal Guidelines",
+            "short_name": "Legal",
+            "description": "Legal guidelines and terms of service for EliasDH. All content and materials showcased on this platform are subject to these guidelines.",
+            "url": "/legaldocuments"
+        },
+        {
+            "name": "Customer Map",
+            "short_name": "Map",
+            "description": "Explore our customer map to see where EliasDH clients are located. Discover businesses and individuals who trust our hosting and web development services.",
+            "url": "/customermap"
+        },
+        {
+            "name": "Infrastructure Status",
+            "short_name": "Status",
+            "description": "Real-time monitoring of the EliasDH infrastructure status.",
+            "url": "/status"
+        }
+    ],
     "icons": [
         {
             "src": "/assets/media/images/icon-48x48.png",

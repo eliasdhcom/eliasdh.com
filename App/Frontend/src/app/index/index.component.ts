@@ -94,10 +94,12 @@ export class IndexComponent implements OnInit, OnDestroy {
         { name: 'Level Up', logo: 'assets/media/images/trusted-clients/levelup-logo.png', url: 'https://www.levelup.be' },
         { name: 'Zizis', logo: 'assets/media/images/trusted-clients/zizis-logo.png', url: 'https://www.zizis.be' },
         { name: 'Bistro Theo', logo: 'assets/media/images/trusted-clients/bistrotheo-logo.png', url: 'https://www.bistrotheo.be' },
+        { name: 'Kinepraktijk Borsbeek Duynslaeger', logo: 'assets/media/images/trusted-clients/kinepraktijkborsbeekduynslaeger-logo.png', url: 'https://www.kinepraktijkborsbeek.be' },
         { name: 'Ter Eiken', logo: 'assets/media/images/trusted-clients/tereiken-logo.png', url: 'https://www.tereiken.be' },
         { name: 'Level Up', logo: 'assets/media/images/trusted-clients/levelup-logo.png', url: 'https://www.levelup.be' },
         { name: 'Zizis', logo: 'assets/media/images/trusted-clients/zizis-logo.png', url: 'https://www.zizis.be' },
-        { name: 'Bistro Theo', logo: 'assets/media/images/trusted-clients/bistrotheo-logo.png', url: 'https://www.bistrotheo.be' }
+        { name: 'Bistro Theo', logo: 'assets/media/images/trusted-clients/bistrotheo-logo.png', url: 'https://www.bistrotheo.be' },
+        { name: 'Kinepraktijk Borsbeek Duynslaeger', logo: 'assets/media/images/trusted-clients/kinepraktijkborsbeekduynslaeger-logo.png', url: 'https://www.kinepraktijkborsbeek.be' }
     ];
 
     clientsTranslateX: number = 0;
