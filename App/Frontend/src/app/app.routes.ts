@@ -14,6 +14,8 @@ import { NotFoundComponent } from './notfound/notfound.component';
 import { FuckYouComponent } from './fuckyou/fuckyou.component';
 import { MapComponent } from './map/map.component';
 import { StatusComponent } from './status/status.component';
+import { BlogComponent } from './blog/blog.component';
+import { BlogArticleComponent } from './blog-article/blog-article.component';
 
 export const routes: Routes = [
     { 
@@ -59,6 +61,24 @@ export const routes: Routes = [
             title: 'EliasDH - Infrastructure Status', 
             description: 'Real-time monitoring of the EliasDH infrastructure status.',
             canonical: 'https://eliasdh.com/status'
+        } 
+    },
+    { 
+        path: 'blog', 
+        component: BlogComponent, 
+        data: { 
+            title: 'EliasDH - Blog', 
+            description: 'Stay updated with the latest insights, tutorials, and news about web development, hosting, and technology from the EliasDH team.',
+            canonical: 'https://eliasdh.com/blog'
+        } 
+    },
+    { 
+        path: 'blog/:slug', 
+        component: BlogArticleComponent, 
+        data: { 
+            title: 'EliasDH - Blog Article', 
+            description: 'Read our latest blog article.',
+            canonical: 'https://eliasdh.com/blog'
         } 
     },
     { 

@@ -4,7 +4,7 @@
     * @since 01/01/2025
 **/
 
-/* SetUp Grid */
+/* Fuck You */
 .fuckyou-main { grid-area: main; }
 .footer { grid-area: footer; }
 
@@ -18,9 +18,7 @@
     min-height: 100vh;
     margin: 0;
 }
-/* SetUp Grid */
 
-/* Fuck You */
 .fuckyou-main {
     display: flex;
     justify-content: center;
@@ -40,7 +38,9 @@
     line-height: 1.2;
     max-width: 90vw;
 }
+/* Fuck You */
 
+/* Media Queries */
 @media (max-width: 768px) {
     .fuckyou-main h2 {
         font-size: 12vw;
@@ -54,4 +54,4 @@
         max-width: 95vw;
     }
 }
-/* Fuck You */
+/* Media Queries */

@@ -1,0 +1,235 @@
+{
+  "id": "3",
+  "slug": "http-vs-https-why-ssl-certificates-are-essential",
+  "title": "HTTP vs HTTPS: Why SSL Certificates Are Essential",
+  "excerpt": "Every website communicates through a protocol. Whether that communication is secure or not depends on two letters: the S in HTTPS. Here is why SSL certificates are no longer optional.",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Every time you visit a website, your browser and the server exchange data. That exchange happens through a protocol — a set of rules that defines how information travels across the internet. For decades, that protocol was HTTP. Today, its secure counterpart HTTPS has become the standard, and for good reason."
+    },
+    {
+      "type": "paragraph",
+      "text": "Whether you run a personal blog, an e-commerce store, or a large enterprise platform, understanding the difference between HTTP and HTTPS is fundamental to protecting your users and your business."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "What Is HTTP?"
+    },
+    {
+      "type": "paragraph",
+      "text": "HTTP stands for HyperText Transfer Protocol. It is the foundation of data communication on the World Wide Web and defines how messages are formatted and transmitted between a web browser and a server."
+    },
+    {
+      "type": "paragraph",
+      "text": "When you type a URL into your browser and press enter, your browser sends an HTTP request to the server hosting that website. The server responds with the requested content — an HTML page, an image, a file — and your browser renders it on screen."
+    },
+    {
+      "type": "paragraph",
+      "text": "The critical problem with HTTP is that all of this communication happens in plain text. Anyone with the right tools positioned between your browser and the server — on a public Wi-Fi network, for example — can intercept and read every packet of data being exchanged. This type of attack is known as a man-in-the-middle attack."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "What Is HTTPS?"
+    },
+    {
+      "type": "paragraph",
+      "text": "HTTPS stands for HyperText Transfer Protocol Secure. It is HTTP with an added layer of encryption, provided by a protocol called TLS — Transport Layer Security (the modern successor to SSL, Secure Sockets Layer)."
+    },
+    {
+      "type": "paragraph",
+      "text": "When a website uses HTTPS, the data exchanged between the browser and the server is encrypted. Even if an attacker intercepts that data, they cannot read it. What would have been a legible stream of text becomes indecipherable ciphertext without the correct decryption key."
+    },
+    {
+      "type": "paragraph",
+      "text": "HTTPS provides three layers of protection:"
+    },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "Encryption — the data exchanged is scrambled and unreadable to third parties.",
+        "Data integrity — data cannot be modified or corrupted during transfer without detection.",
+        "Authentication — proves that the website you are communicating with is the one it claims to be, not an impersonator."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "What Is an SSL Certificate?"
+    },
+    {
+      "type": "paragraph",
+      "text": "An SSL certificate is a digital certificate that authenticates the identity of a website and enables an encrypted connection. Despite the common use of the term SSL, modern certificates actually use TLS. The name SSL has simply stuck due to historical convention."
+    },
+    {
+      "type": "paragraph",
+      "text": "SSL certificates are issued by trusted entities called Certificate Authorities (CAs). These are organizations — such as Let's Encrypt, DigiCert, or Sectigo — that verify the legitimacy of a domain before issuing a certificate."
+    },
+    {
+      "type": "paragraph",
+      "text": "A certificate contains the following information:"
+    },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "The domain name the certificate is issued for.",
+        "The organization or individual it is issued to.",
+        "The Certificate Authority that issued it.",
+        "The certificate's issuance and expiration dates.",
+        "The public key used for encryption."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "When your browser connects to an HTTPS website, it checks the certificate to verify that the site is legitimate and that the connection can be trusted. This process happens invisibly in milliseconds every time you visit a secure website."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "How the HTTPS Handshake Works"
+    },
+    {
+      "type": "paragraph",
+      "text": "Before any encrypted data is exchanged, your browser and the server perform what is known as a TLS handshake. This process establishes a secure connection and happens in the following steps:"
+    },
+    {
+      "type": "list",
+      "style": "ordered",
+      "items": [
+        "Your browser contacts the server and announces which TLS versions and encryption methods it supports.",
+        "The server responds by selecting the encryption method and presenting its SSL certificate.",
+        "Your browser verifies the certificate against a list of trusted Certificate Authorities built into the operating system or browser.",
+        "If the certificate is valid, your browser and the server generate a shared session key using asymmetric encryption.",
+        "All subsequent communication during that session is encrypted using that session key."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "This entire process takes only a fraction of a second, and once complete, the connection is fully encrypted."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Why SSL Certificates Are No Longer Optional"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "text": "Google Uses HTTPS as a Ranking Signal"
+    },
+    {
+      "type": "paragraph",
+      "text": "Since 2014, Google has used HTTPS as a ranking factor in its search algorithm. Websites served over HTTPS receive a ranking boost compared to equivalent HTTP sites. For a business investing in SEO, running an HTTP website means actively handicapping your visibility in search results."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "text": "Browsers Flag HTTP Sites as Not Secure"
+    },
+    {
+      "type": "paragraph",
+      "text": "Modern browsers — Chrome, Firefox, Safari, Edge — actively warn users when they visit an HTTP website. In Chrome, a \"Not Secure\" warning appears in the address bar. For many users, this warning is enough to leave the site immediately. The damage to trust and conversion rates is significant and measurable."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "text": "User Data Protection Is a Legal Requirement"
+    },
+    {
+      "type": "paragraph",
+      "text": "Under regulations such as the GDPR in Europe, organizations are required to protect personal data during transmission. Operating a website without HTTPS — particularly one that collects names, email addresses, or payment information — is a compliance risk that can result in substantial fines."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "text": "HTTPS Protects More Than Passwords"
+    },
+    {
+      "type": "paragraph",
+      "text": "Many website owners assume HTTPS only matters if they collect sensitive data like credit card numbers. In reality, any unencrypted connection can expose browsing behavior, session cookies, form inputs, and authentication tokens — all of which can be exploited by attackers to hijack accounts or track user activity."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Types of SSL Certificates"
+    },
+    {
+      "type": "paragraph",
+      "text": "Not all SSL certificates are the same. There are three main validation levels, each suited to different use cases:"
+    },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "Domain Validation (DV) — the most basic level. The Certificate Authority verifies that the applicant controls the domain. Issued quickly and often for free. Suitable for personal websites and blogs.",
+        "Organization Validation (OV) — the Certificate Authority verifies both domain ownership and the existence of the organization. Provides a higher level of trust. Suitable for business websites.",
+        "Extended Validation (EV) — the most rigorous validation process, requiring extensive identity verification. Historically displayed a green address bar in browsers. Suitable for financial institutions and large enterprises handling sensitive transactions."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "For most websites, a Domain Validation certificate — such as those provided free of charge by Let's Encrypt — is fully sufficient. At EliasDH, SSL certificates are included by default with all hosting plans."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Common Misconceptions About HTTPS"
+    },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "\"HTTPS makes my website slower.\" Modern TLS is highly optimized. The performance overhead is negligible, and in many cases HTTPS enables HTTP/2, which actually improves load times.",
+        "\"SSL certificates are expensive.\" Free certificates from providers like Let's Encrypt are trusted by all major browsers and are suitable for the vast majority of websites.",
+        "\"My website doesn't collect data, so I don't need HTTPS.\" HTTPS protects all communication, not just form submissions. It also affects your search rankings and user trust regardless of what data you collect.",
+        "\"HTTPS means a website is safe.\" HTTPS means the connection between your browser and the server is encrypted. It does not mean the website itself is free of malware or that the organization behind it is trustworthy."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "How to Move from HTTP to HTTPS"
+    },
+    {
+      "type": "paragraph",
+      "text": "Migrating a website from HTTP to HTTPS involves several steps:"
+    },
+    {
+      "type": "list",
+      "style": "ordered",
+      "items": [
+        "Obtain an SSL certificate — through your hosting provider, a Certificate Authority, or a free service like Let's Encrypt.",
+        "Install the certificate on your server — most modern hosting control panels, including those at EliasDH, automate this process.",
+        "Update internal links and resources — ensure all URLs within your website use HTTPS to avoid mixed content warnings.",
+        "Set up 301 redirects — redirect all HTTP traffic to the HTTPS version of your site to preserve SEO rankings and prevent duplicate content.",
+        "Update your sitemap and Search Console — inform Google of the canonical HTTPS URLs to ensure proper indexing."
+      ]
+    },
+    {
+      "type": "quote",
+      "text": "The web is a more private and secure place when people use HTTPS.",
+      "author": "Google Security Blog"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Conclusion"
+    },
+    {
+      "type": "paragraph",
+      "text": "HTTPS is no longer a feature reserved for banks and online shops. It is the baseline expectation for any website that takes its users, its search rankings, and its legal obligations seriously. An SSL certificate is the most fundamental layer of web security you can implement — and today, there is no excuse not to have one."
+    },
+    {
+      "type": "paragraph",
+      "text": "At EliasDH, every hosting plan includes automatic SSL certificate provisioning and renewal, so your website is secured from day one without any technical configuration required."
+    }
+  ],
+  "author": "Elias De Hondt",
+  "publishedAt": "2026-03-08T10:00:00Z",
+  "updatedAt": "2026-03-08T10:00:00Z",
+  "readingTime": 8
+}

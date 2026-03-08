@@ -190,14 +190,32 @@
   "NOTFOUND": {
     "TRANSLATE1": "The page you are looking for might have been removed, had its name changed or is temporarily unavailable."
   },
+  "BLOG": {
+    "TRANSLATE1": "Blog",
+    "TRANSLATE2": "Back",
+    "TRANSLATE3": "Blog",
+    "TRANSLATE4": "Insights, tutorials, and updates from the EliasDH team about web development, hosting, and technology.",
+    "TRANSLATE5": "Read More",
+    "TRANSLATE6": "No blog posts found.",
+    "TRANSLATE7": "Article",
+    "TRANSLATE8": "Back to Blog",
+    "TRANSLATE9": "Back to all posts",
+    "TRANSLATE10": "Share:",
+    "TRANSLATE11": "Page",
+    "TRANSLATE12": "Previous",
+    "TRANSLATE13": "Next",
+    "TRANSLATE14": "EliasDH - Blog",
+    "TRANSLATE15": "Stay updated with the latest insights, tutorials, and news about web development, hosting, and technology from the EliasDH team."
+  },
   "FOOTER": {
     "TRANSLATE1": "Policy",
     "TRANSLATE2": "Map",
     "TRANSLATE3": "Status",
-    "TRANSLATE4": "Legal",
-    "TRANSLATE5": "Designed by the EliasDH Team",
-    "TRANSLATE6": " EliasDH. ",
-    "TRANSLATE7": "All rights reserved."
+    "TRANSLATE4": "Blog",
+    "TRANSLATE5": "Legal",
+    "TRANSLATE6": "Designed by the EliasDH Team",
+    "TRANSLATE7": " EliasDH. ",
+    "TRANSLATE8": "All rights reserved."
   },
   "CONTEXTMENU": {
     "TRANSLATE1": "Copy Link Address",

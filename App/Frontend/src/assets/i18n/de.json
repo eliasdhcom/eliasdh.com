@@ -189,14 +189,32 @@
   "NOTFOUND": {
     "TRANSLATE1": "Die Seite, die Sie suchen, wurde möglicherweise entfernt, hat ihren Namen geändert oder ist vorübergehend nicht verfügbar."
   },
+  "BLOG": {
+    "TRANSLATE1": "Blog",
+    "TRANSLATE2": "Zurück",
+    "TRANSLATE3": "Blog",
+    "TRANSLATE4": "Einblicke, Tutorials und Updates vom EliasDH-Team über Webentwicklung, Hosting und Technologie.",
+    "TRANSLATE5": "Mehr Lesen",
+    "TRANSLATE6": "Keine Blogbeiträge gefunden.",
+    "TRANSLATE7": "Artikel",
+    "TRANSLATE8": "Zurück zum Blog",
+    "TRANSLATE9": "Zurück zu allen Beiträgen",
+    "TRANSLATE10": "Teilen:",
+    "TRANSLATE11": "Seite",
+    "TRANSLATE12": "Vorherige",
+    "TRANSLATE13": "Nächste",
+    "TRANSLATE14": "EliasDH - Blog",
+    "TRANSLATE15": "Bleiben Sie auf dem Laufenden mit den neuesten Einblicken, Tutorials und Neuigkeiten über Webentwicklung, Hosting und Technologie vom EliasDH-Team."
+  },
   "FOOTER": {
     "TRANSLATE1": "Politik",
     "TRANSLATE2": "Karte",
     "TRANSLATE3": "Status",
-    "TRANSLATE4": "Recht",
-    "TRANSLATE5": "Entworfen vom EliasDH-Team",
-    "TRANSLATE6": " EliasDH. ",
-    "TRANSLATE7": "Alle Rechte vorbehalten."
+    "TRANSLATE4": "Kontakt",
+    "TRANSLATE5": "Recht",
+    "TRANSLATE6": "Entworfen vom EliasDH-Team",
+    "TRANSLATE7": " EliasDH. ",
+    "TRANSLATE8": "Alle Rechte vorbehalten."
   },
   "CONTEXTMENU": {
     "TRANSLATE1": "Linkadresse kopieren",

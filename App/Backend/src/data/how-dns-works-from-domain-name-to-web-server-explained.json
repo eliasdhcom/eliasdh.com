@@ -1,0 +1,197 @@
+{
+  "id": "4",
+  "slug": "how-dns-works-from-domain-name-to-web-server-explained",
+  "title": "How DNS Works — From Domain Name to Web Server Explained",
+  "excerpt": "You type a domain name and your website appears. But between those two events, an invisible system performs a precise chain of lookups across the internet. This is how DNS works.",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Every time you visit a website, something remarkable happens in the background. You type a human-readable address like eliasdh.com into your browser, and within milliseconds your browser connects to the correct server somewhere in the world. The system that makes this possible is called the Domain Name System — DNS."
+    },
+    {
+      "type": "paragraph",
+      "text": "DNS is one of the oldest and most fundamental building blocks of the internet. Without it, you would need to memorize the numeric IP address of every website you wanted to visit. Understanding how it works gives you genuine insight into how the internet functions — and why certain problems, like slow DNS propagation or misconfigured records, behave the way they do."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "The Problem DNS Solves"
+    },
+    {
+      "type": "paragraph",
+      "text": "Computers communicate using IP addresses — numeric identifiers such as 93.184.216.34 for IPv4 or 2606:2800:220:1:248:1893:25c8:1946 for IPv6. Every server on the internet has at least one IP address, and that address is what your browser ultimately uses to establish a connection."
+    },
+    {
+      "type": "paragraph",
+      "text": "The problem is that IP addresses are not designed for human memory. Domain names — eliasdh.com, google.com, wikipedia.org — are. DNS is the translation layer between these two worlds. It functions like the internet's phone book: you provide a name, it returns the corresponding number."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "The Structure of a Domain Name"
+    },
+    {
+      "type": "paragraph",
+      "text": "Before exploring how DNS resolves a domain, it helps to understand the anatomy of a domain name. Take the example: www.eliasdh.com."
+    },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "com — this is the Top-Level Domain (TLD). It sits at the top of the DNS hierarchy. Other examples include .org, .net, .be, and .io.",
+        "eliasdh — this is the Second-Level Domain (SLD). It is the name registered by the domain owner and is unique within the TLD.",
+        "www — this is a subdomain. It is a prefix added to the domain by the domain owner to organize content or point to different servers."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "DNS reads domain names from right to left in its resolution process. The rightmost part — the TLD — is resolved first, followed by the SLD, and then any subdomains."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "The Players in DNS Resolution"
+    },
+    {
+      "type": "paragraph",
+      "text": "DNS resolution involves several distinct actors, each with a specific role in the lookup process:"
+    },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "DNS Resolver — also called a recursive resolver. This is the server your device queries first. It is typically operated by your internet service provider (ISP) or a third-party provider such as Cloudflare (1.1.1.1) or Google (8.8.8.8). The resolver does the heavy lifting: it queries other DNS servers on your behalf and returns the final answer.",
+        "Root Name Servers — the top of the DNS hierarchy. There are 13 sets of root name servers distributed globally, operated by organizations such as ICANN, Verisign, and NASA. They do not know the IP address of every domain, but they know which servers are authoritative for each TLD.",
+        "TLD Name Servers — these servers are authoritative for a specific Top-Level Domain. The .com TLD name server knows which authoritative name server is responsible for eliasdh.com.",
+        "Authoritative Name Server — the final authority for a specific domain. This server holds the actual DNS records for the domain — including the IP address of the web server. It is typically managed by the domain registrar or hosting provider."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "DNS Record Types Explained"
+    },
+    {
+      "type": "paragraph",
+      "text": "The authoritative name server does not store just one piece of information per domain. It stores a collection of DNS records, each serving a different purpose. The most important record types are:"
+    },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "A record — maps a domain or subdomain to an IPv4 address. This is the most fundamental DNS record. Example: eliasdh.com → 93.184.216.34.",
+        "AAAA record — maps a domain or subdomain to an IPv6 address. The IPv6 equivalent of the A record.",
+        "CNAME record — Canonical Name record. Creates an alias that points one domain name to another. Example: www.eliasdh.com → eliasdh.com. Useful for subdomains that should resolve to the same location as the main domain.",
+        "MX record — Mail Exchange record. Specifies the mail server responsible for handling email for the domain. Without correct MX records, email sent to your domain will not be delivered.",
+        "TXT record — stores arbitrary text data. Commonly used for domain ownership verification, SPF records for email authentication, and DKIM signatures.",
+        "NS record — Name Server record. Specifies which name servers are authoritative for the domain. These records point to the servers that hold all other DNS records.",
+        "TTL — Time to Live. Not a record type itself, but a value attached to every DNS record that specifies how long resolvers and browsers should cache the record before checking again. Measured in seconds."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "What Is DNS Propagation?"
+    },
+    {
+      "type": "paragraph",
+      "text": "When you change a DNS record — for example, pointing your domain to a new server — the change does not take effect instantly across the internet. This delay is called DNS propagation."
+    },
+    {
+      "type": "paragraph",
+      "text": "The reason propagation takes time is caching. Every resolver that has previously cached your old DNS records will continue using them until the TTL expires. Once the TTL expires, the resolver discards the cached record and fetches a fresh one from the authoritative name server."
+    },
+    {
+      "type": "paragraph",
+      "text": "Propagation typically completes within a few hours, but can take up to 48 hours in some cases depending on the TTL values previously configured. A practical tip: if you are planning a server migration, lower your TTL values several days in advance. A TTL of 300 seconds (5 minutes) means changes will propagate much faster than a TTL of 86400 seconds (24 hours)."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "DNS and Performance"
+    },
+    {
+      "type": "paragraph",
+      "text": "DNS resolution adds latency to the first connection your browser makes to a server. While cached responses are nearly instantaneous, uncached DNS lookups introduce a measurable delay — typically between 20 and 120 milliseconds depending on the geographic distance to the resolver and name servers."
+    },
+    {
+      "type": "paragraph",
+      "text": "Several strategies can improve DNS performance:"
+    },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "Use a fast DNS resolver — public resolvers like Cloudflare's 1.1.1.1 or Google's 8.8.8.8 are geographically distributed and highly optimized for speed.",
+        "Use a DNS provider with Anycast routing — Anycast allows DNS queries to be automatically routed to the nearest server in a global network, reducing latency.",
+        "Set appropriate TTL values — longer TTLs mean more caching, which reduces lookup overhead for returning visitors.",
+        "Use DNS prefetching — modern browsers support the dns-prefetch HTML tag, which instructs the browser to resolve external domain names before they are actually needed."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "DNS and Security"
+    },
+    {
+      "type": "paragraph",
+      "text": "DNS was designed decades ago with a focus on functionality rather than security. Over time, several attack vectors have emerged that exploit weaknesses in the original protocol:"
+    },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "DNS spoofing (cache poisoning) — an attacker injects malicious DNS records into a resolver's cache, causing users to be redirected to fraudulent websites without their knowledge.",
+        "DNS hijacking — attackers compromise a DNS resolver or authoritative name server and modify records to redirect traffic maliciously.",
+        "DNS amplification attacks — a form of DDoS attack that exploits open DNS resolvers to flood a target with large volumes of traffic."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "To address these vulnerabilities, several security extensions and protocols have been developed:"
+    },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "DNSSEC — DNS Security Extensions. Adds cryptographic signatures to DNS records, allowing resolvers to verify that records have not been tampered with during transit.",
+        "DNS over HTTPS (DoH) — encrypts DNS queries using HTTPS, preventing third parties from intercepting or monitoring your DNS lookups.",
+        "DNS over TLS (DoT) — similar to DoH but uses a dedicated TLS connection rather than HTTPS."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "How Hosting Providers Fit Into DNS"
+    },
+    {
+      "type": "paragraph",
+      "text": "When you register a domain and purchase a hosting plan, you need to connect the two. This is done by updating the NS records at your domain registrar to point to your hosting provider's name servers."
+    },
+    {
+      "type": "paragraph",
+      "text": "Once the NS records are updated and propagated, your hosting provider's authoritative name servers become the source of truth for your domain. From that point forward, all DNS records — A records, MX records, CNAME records — are managed through your hosting provider's control panel."
+    },
+    {
+      "type": "paragraph",
+      "text": "At EliasDH, domain and DNS management are integrated into the hosting control panel, allowing you to manage all records, configure email routing, and monitor propagation status from a single interface."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Conclusion"
+    },
+    {
+      "type": "paragraph",
+      "text": "DNS is the invisible infrastructure that makes the internet navigable. Every domain lookup, every email delivery, every API call to an external service depends on DNS functioning correctly and quickly. Understanding how it works — from the recursive resolver to the authoritative name server — equips you to troubleshoot problems, optimize performance, and make informed decisions about your hosting and domain configuration."
+    },
+    {
+      "type": "paragraph",
+      "text": "The next time you type a domain name into your browser, you will know exactly what happens in those few milliseconds before the page appears."
+    }
+  ],
+  "author": "Elias De Hondt",
+  "publishedAt": "2026-03-08T10:00:00Z",
+  "updatedAt": "2026-03-08T10:00:00Z",
+  "readingTime": 9
+}

@@ -189,14 +189,32 @@
   "NOTFOUND": {
     "TRANSLATE1": "De pagina die je zoekt, is mogelijk verwijderd, van naam veranderd of tijdelijk niet beschikbaar."
   },
+  "BLOG": {
+    "TRANSLATE1": "Blog",
+    "TRANSLATE2": "Terug",
+    "TRANSLATE3": "Blog",
+    "TRANSLATE4": "Inzichten, tutorials en updates van het EliasDH team over webontwikkeling, hosting en technologie.",
+    "TRANSLATE5": "Lees Meer",
+    "TRANSLATE6": "Geen blogberichten gevonden.",
+    "TRANSLATE7": "Artikel",
+    "TRANSLATE8": "Terug naar Blog",
+    "TRANSLATE9": "Terug naar alle berichten",
+    "TRANSLATE10": "Delen:",
+    "TRANSLATE11": "Pagina",
+    "TRANSLATE12": "Vorige",
+    "TRANSLATE13": "Volgende",
+    "TRANSLATE14": "EliasDH - Blog",
+    "TRANSLATE15": "Blijf op de hoogte van de nieuwste inzichten, tutorials en nieuws over webontwikkeling, hosting en technologie van het EliasDH team."
+  },
   "FOOTER": {
     "TRANSLATE1": "Beleid",
     "TRANSLATE2": "Kaart",
     "TRANSLATE3": "Status",
-    "TRANSLATE4": "Juridisch",
-    "TRANSLATE5": "Ontworpen door het EliasDH Team",
-    "TRANSLATE6": " EliasDH. ",
-    "TRANSLATE7": "Alle rechten voorbehouden."
+    "TRANSLATE4": "Blog",
+    "TRANSLATE5": "Juridisch",
+    "TRANSLATE6": "Ontworpen door het EliasDH Team",
+    "TRANSLATE7": " EliasDH. ",
+    "TRANSLATE8": "Alle rechten voorbehouden."
   },
   "CONTEXTMENU": {
     "TRANSLATE1": "Kopieer linkadres",

@@ -1,0 +1,87 @@
+<!--Author EliasDH Team-->
+<body class="global-body">
+    <app-contact-bar></app-contact-bar>
+    <app-page-header 
+        [titleKey]="'BLOG.TRANSLATE1'" 
+        [backLabelKey]="'BLOG.TRANSLATE2'" 
+        [backRoute]="'/'">
+    </app-page-header>
+
+    <main class="blog-container">
+        <section class="blog-hero">
+            <h2 class="blog-hero-title">{{ 'BLOG.TRANSLATE3' | translate }}</h2>
+            <p class="blog-hero-subtitle">{{ 'BLOG.TRANSLATE4' | translate }}</p>
+        </section>
+
+        <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+        <app-error-box *ngIf="error" [errorMessage]="error"></app-error-box>
+
+        <section class="blog-posts" *ngIf="!loading && !error">
+            <article 
+                *ngFor="let post of blogPosts; trackBy: trackBySlug" 
+                class="blog-post-card cursor-pointer"
+                (click)="navigateToPost(post.slug)"
+                (keydown.enter)="navigateToPost(post.slug)"
+                tabindex="0"
+                role="article"
+                [attr.aria-label]="post.title">
+                
+                <header class="blog-post-header">
+                    <h3 class="blog-post-title">{{ post.title }}</h3>
+                    <div class="blog-post-meta">
+                        <span class="blog-post-author">{{ post.author }}</span>
+                        <span class="blog-post-separator">•</span>
+                        <time class="blog-post-date" [attr.datetime]="post.publishedAt">
+                            {{ formatDate(post.publishedAt) }}
+                        </time>
+                    </div>
+                </header>
+
+                <p class="blog-post-excerpt">{{ post.excerpt }}</p>
+
+                <footer class="blog-post-footer">
+                    <span class="blog-read-more">
+                        {{ 'BLOG.TRANSLATE5' | translate }}
+                        <svg viewBox="0 0 16 16" class="blog-arrow-icon">
+                            <path d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                        </svg>
+                    </span>
+                </footer>
+            </article>
+
+            <section class="blog-empty" *ngIf="blogPosts.length === 0">
+                <p>{{ 'BLOG.TRANSLATE6' | translate }}</p>
+            </section>
+        </section>
+
+        <nav class="blog-pagination" *ngIf="pagination && (pagination.hasPrevPage || pagination.hasNextPage)">
+            <button 
+                class="blog-pagination-btn cursor-pointer" 
+                *ngIf="pagination.hasPrevPage"
+                (click)="goToPrevPage()"
+                [attr.aria-label]="'BLOG.TRANSLATE12' | translate">
+                <svg viewBox="0 0 16 16" class="blog-pagination-icon">
+                    <path d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+                {{ 'BLOG.TRANSLATE12' | translate }}
+            </button>
+            <span class="blog-pagination-info">
+                {{ 'BLOG.TRANSLATE11' | translate }} {{ pagination.currentPage }} / {{ pagination.totalPages }}
+            </span>
+            <button 
+                class="blog-pagination-btn cursor-pointer" 
+                *ngIf="pagination.hasNextPage"
+                (click)="goToNextPage()"
+                [attr.aria-label]="'BLOG.TRANSLATE13' | translate">
+                {{ 'BLOG.TRANSLATE13' | translate }}
+                <svg viewBox="0 0 16 16" class="blog-pagination-icon">
+                    <path d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg>
+            </button>
+        </nav>
+    </main>
+
+    <app-footer></app-footer>
+    <app-contextmenu></app-contextmenu>
+</body>
