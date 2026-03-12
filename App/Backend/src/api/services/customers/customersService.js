@@ -35,7 +35,6 @@ const mockCustomers = [
         logo: 'levelup-logo.png',
         websites: [
             { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
-            { subscriptionType: 'Enterprise', url: 'https://app.levelup.be', name: 'Level Up App' },
             { subscriptionType: 'Enterprise', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
         latitude: 51.1507722,
@@ -99,7 +98,6 @@ const mockCustomers = [
         logo: 'levelup-logo.png',
         websites: [
             { subscriptionType: 'ToDo', url: 'https://levelup.be', name: 'Level Up Website' },
-            { subscriptionType: 'Enterprise', url: 'https://app.levelup.be', name: 'Level Up App' },
             { subscriptionType: 'Enterprise', url: 'https://display.levelup.be', name: 'Level Up Display App' }
         ],
         latitude: 50.9539187,
