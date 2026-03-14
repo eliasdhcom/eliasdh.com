@@ -24,7 +24,7 @@ export const routes: Routes = [
         data: { 
             title: 'EliasDH', 
             description: 'Welcome to EliasDH, a company that offers hosting services, web development, and tailored IT solutions for businesses and individuals.',
-            canonical: 'https://eliasdh.com/'
+            canonical: 'https://eliasdh.com'
         } 
     },
     { 
@@ -87,7 +87,8 @@ export const routes: Routes = [
         data: { 
             title: 'EliasDH - Domain Rented', 
             description: 'This domain is currently rented and managed by EliasDH. Contact us for more information about domain services.',
-            canonical: 'https://eliasdh.com/domainrented'
+            canonical: 'https://eliasdh.com/domainrented',
+            robots: 'noindex, nofollow'
         } 
     },
     { 
@@ -96,7 +97,8 @@ export const routes: Routes = [
         data: { 
             title: 'EliasDH - Access Denied', 
             description: 'Access denied. You do not have permission to view this page on EliasDH.',
-            canonical: 'https://eliasdh.com/403'
+            canonical: 'https://eliasdh.com/403',
+            robots: 'noindex, nofollow'
         } 
     },
     { 
@@ -105,7 +107,8 @@ export const routes: Routes = [
         data: { 
             title: 'EliasDH - Not Found', 
             description: 'Page not found. The page you are looking for does not exist on EliasDH.',
-            canonical: 'https://eliasdh.com/404'
+            canonical: 'https://eliasdh.com/404',
+            robots: 'noindex, nofollow'
         } 
     },
     { 
@@ -114,7 +117,8 @@ export const routes: Routes = [
         data: { 
             title: 'EliasDH - Fuck You', 
             description: 'EliasDH - Special page.',
-            canonical: 'https://eliasdh.com/fuckyou'
+            canonical: 'https://eliasdh.com/fuckyou',
+            robots: 'noindex, nofollow'
         } 
     },
     { 
@@ -122,7 +126,9 @@ export const routes: Routes = [
         component: NotFoundComponent, 
         data: { 
             title: 'EliasDH - Not Found', 
-            description: 'Page not found. The page you are looking for does not exist on EliasDH.'
+            description: 'Page not found. The page you are looking for does not exist on EliasDH.',
+            canonical: 'https://eliasdh.com/404',
+            robots: 'noindex, nofollow'
         } 
     }
 ];

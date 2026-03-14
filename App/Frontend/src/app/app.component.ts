@@ -4,11 +4,11 @@
     * @since 01/01/2025
 **/
 
-import { Component, inject } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { filter, map } from 'rxjs/operators';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 
 @Component({
     selector: 'app-root',
@@ -25,7 +25,7 @@ export class AppComponent {
 
     private defaultDescription = 'Welcome to EliasDH, a company that offers hosting services, web development, and tailored IT solutions for businesses and individuals.';
 
-    constructor() {
+    constructor(@Inject(DOCUMENT) private document: Document) {
         this.router.events.pipe(
             filter(event => event instanceof NavigationEnd),
             map(() => {
@@ -36,18 +36,30 @@ export class AppComponent {
                 return {
                     title: route.snapshot.data['title'] || 'EliasDH',
                     description: route.snapshot.data['description'] || this.defaultDescription,
-                    canonical: route.snapshot.data['canonical'] || 'https://eliasdh.com'
+                    canonical: route.snapshot.data['canonical'] || 'https://eliasdh.com',
+                    robots: route.snapshot.data['robots'] || 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
                 };
             })
-        ).subscribe(({ title, description, canonical }) => {
+        ).subscribe(({ title, description, canonical, robots }) => {
             this.titleService.setTitle(title);
             this.metaService.updateTag({ name: 'description', content: description });
             this.metaService.updateTag({ property: 'og:title', content: title });
             this.metaService.updateTag({ property: 'og:description', content: description });
             this.metaService.updateTag({ name: 'twitter:title', content: title });
             this.metaService.updateTag({ name: 'twitter:description', content: description });
-            this.metaService.updateTag({ rel: 'canonical', href: canonical });
+            this.metaService.updateTag({ name: 'robots', content: robots });
             this.metaService.updateTag({ property: 'og:url', content: canonical });
+            this.updateCanonicalUrl(canonical);
         });
+    }
+
+    private updateCanonicalUrl(url: string): void {
+        let link = this.document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+        if (!link) {
+            link = this.document.createElement('link');
+            link.setAttribute('rel', 'canonical');
+            this.document.head.appendChild(link);
+        }
+        link.setAttribute('href', url);
     }
 }

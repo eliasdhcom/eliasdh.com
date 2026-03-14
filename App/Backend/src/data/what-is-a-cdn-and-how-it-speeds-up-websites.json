@@ -1,0 +1,71 @@
+{
+  "id": "5",
+  "slug": "what-is-a-cdn-and-how-it-speeds-up-websites",
+  "title": "What Is a CDN — And How It Makes Websites Faster",
+  "excerpt": "A Content Delivery Network distributes your website across servers worldwide, dramatically improving speed and reliability for visitors.",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Website speed is one of the most important factors affecting user experience, SEO rankings, and conversion rates. One of the most effective technologies used to improve website performance is a Content Delivery Network, commonly known as a CDN."
+    },
+    {
+      "type": "paragraph",
+      "text": "A CDN is a distributed network of servers located in data centers around the world. Instead of loading content from a single origin server, visitors receive content from the server geographically closest to them."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "How a CDN Works"
+    },
+    {
+      "type": "paragraph",
+      "text": "When a website uses a CDN, static assets such as images, JavaScript files, and stylesheets are cached across multiple edge servers globally."
+    },
+    {
+      "type": "paragraph",
+      "text": "When a visitor opens the website, the CDN automatically serves the content from the nearest edge location. This reduces latency and dramatically improves loading speed."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Benefits of Using a CDN"
+    },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "Faster page load times",
+        "Reduced latency for international visitors",
+        "Lower load on origin servers",
+        "Improved website uptime",
+        "Built-in DDoS protection"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "CDNs and SEO"
+    },
+    {
+      "type": "paragraph",
+      "text": "Search engines consider page speed as a ranking factor. Faster websites generally rank higher and provide a better user experience."
+    },
+    {
+      "type": "paragraph",
+      "text": "By reducing load times and improving reliability, a CDN can contribute positively to your website's search engine performance."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Conclusion"
+    },
+    {
+      "type": "paragraph",
+      "text": "A CDN is one of the most powerful tools available for improving website performance and reliability. For businesses with international audiences or traffic spikes, it is an essential component of modern hosting infrastructure."
+    }
+  ],
+  "author": "Elias De Hondt",
+  "publishedAt": "2026-03-21T10:00:00Z",
+  "updatedAt": "2026-03-21T10:00:00Z",
+  "readingTime": 6
+}

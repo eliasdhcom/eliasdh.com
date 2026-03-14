@@ -1,5 +1,5 @@
 {
-  "id": "3",
+  "id": "2",
   "slug": "http-vs-https-why-ssl-certificates-are-essential",
   "title": "HTTP vs HTTPS: Why SSL Certificates Are Essential",
   "excerpt": "Every website communicates through a protocol. Whether that communication is secure or not depends on two letters: the S in HTTPS. Here is why SSL certificates are no longer optional.",

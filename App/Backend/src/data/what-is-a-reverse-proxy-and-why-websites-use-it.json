@@ -1,0 +1,79 @@
+{
+  "id": "6",
+  "slug": "what-is-a-reverse-proxy-and-why-websites-use-it",
+  "title": "What Is a Reverse Proxy — And Why Modern Websites Depend on It",
+  "excerpt": "A reverse proxy sits between visitors and your servers, improving security, performance, and scalability for modern web applications.",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Modern websites rarely expose their application servers directly to the internet. Instead, they place an additional layer in front of them called a reverse proxy."
+    },
+    {
+      "type": "paragraph",
+      "text": "A reverse proxy acts as an intermediary between users and backend servers. It receives incoming requests and forwards them to the appropriate application server."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "How a Reverse Proxy Works"
+    },
+    {
+      "type": "paragraph",
+      "text": "When a user visits a website, their request is first sent to the reverse proxy. The proxy then determines which backend server should handle the request."
+    },
+    {
+      "type": "paragraph",
+      "text": "The backend server processes the request and sends the response back through the proxy to the user."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Load Balancing"
+    },
+    {
+      "type": "paragraph",
+      "text": "One of the most common uses of a reverse proxy is load balancing. Instead of sending all traffic to one server, the proxy distributes requests across multiple servers."
+    },
+    {
+      "type": "list",
+      "style": "bullet",
+      "items": [
+        "Round-robin distribution",
+        "Least-connections routing",
+        "Geographic routing",
+        "Health-check based failover"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Security Benefits"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because backend servers are hidden behind the proxy, attackers cannot interact with them directly. Reverse proxies can also filter malicious traffic and enforce security rules."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Performance Improvements"
+    },
+    {
+      "type": "paragraph",
+      "text": "Reverse proxies can cache static content, compress responses, and manage TLS encryption. This reduces load on application servers and improves response times."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Conclusion"
+    },
+    {
+      "type": "paragraph",
+      "text": "Reverse proxies are a fundamental component of modern web infrastructure. By managing traffic, improving security, and optimizing performance, they enable hosting platforms to deliver fast and reliable web applications at scale."
+    }
+  ],
+  "author": "Elias De Hondt",
+  "publishedAt": "2026-04-08T10:00:00Z",
+  "updatedAt": "2026-04-08T10:00:00Z",
+  "readingTime": 6
+}

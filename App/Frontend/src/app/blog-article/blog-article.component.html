@@ -1,8 +1,7 @@
 <!--Author EliasDH Team-->
 <body class="global-body">
     <app-contact-bar></app-contact-bar>
-    <app-page-header [titleKey]="'BLOG.TRANSLATE7'" [backLabelKey]="'BLOG.TRANSLATE8'" [backRoute]="'/blog'">
-    </app-page-header>
+    <app-page-header [titleKey]="'BLOG.TRANSLATE7'" [backLabelKey]="'BLOG.TRANSLATE8'" [backRoute]="'/blog'"></app-page-header>
     <main class="blog-article-container">
         <app-loading-spinner *ngIf="loading"></app-loading-spinner>
         <app-error-box *ngIf="error" [errorMessage]="error"></app-error-box>

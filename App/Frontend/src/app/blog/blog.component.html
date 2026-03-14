@@ -1,32 +1,16 @@
 <!--Author EliasDH Team-->
 <body class="global-body">
     <app-contact-bar></app-contact-bar>
-    <app-page-header 
-        [titleKey]="'BLOG.TRANSLATE1'" 
-        [backLabelKey]="'BLOG.TRANSLATE2'" 
-        [backRoute]="'/'">
-    </app-page-header>
-
+    <app-page-header [titleKey]="'BLOG.TRANSLATE1'" [backLabelKey]="'BLOG.TRANSLATE2'" [backRoute]="'/'"></app-page-header>
     <main class="blog-container">
         <section class="blog-hero">
             <h2 class="blog-hero-title">{{ 'BLOG.TRANSLATE3' | translate }}</h2>
             <p class="blog-hero-subtitle">{{ 'BLOG.TRANSLATE4' | translate }}</p>
         </section>
-
         <app-loading-spinner *ngIf="loading"></app-loading-spinner>
-
         <app-error-box *ngIf="error" [errorMessage]="error"></app-error-box>
-
         <section class="blog-posts" *ngIf="!loading && !error">
-            <article 
-                *ngFor="let post of blogPosts; trackBy: trackBySlug" 
-                class="blog-post-card cursor-pointer"
-                (click)="navigateToPost(post.slug)"
-                (keydown.enter)="navigateToPost(post.slug)"
-                tabindex="0"
-                role="article"
-                [attr.aria-label]="post.title">
-                
+            <article *ngFor="let post of blogPosts; trackBy: trackBySlug" class="blog-post-card cursor-pointer" (click)="navigateToPost(post.slug)" (keydown.enter)="navigateToPost(post.slug)" tabindex="0" role="article" [attr.aria-label]="post.title">
                 <header class="blog-post-header">
                     <h3 class="blog-post-title">{{ post.title }}</h3>
                     <div class="blog-post-meta">
@@ -37,9 +21,7 @@
                         </time>
                     </div>
                 </header>
-
                 <p class="blog-post-excerpt">{{ post.excerpt }}</p>
-
                 <footer class="blog-post-footer">
                     <span class="blog-read-more">
                         {{ 'BLOG.TRANSLATE5' | translate }}
@@ -49,12 +31,10 @@
                     </span>
                 </footer>
             </article>
-
             <section class="blog-empty" *ngIf="blogPosts.length === 0">
                 <p>{{ 'BLOG.TRANSLATE6' | translate }}</p>
             </section>
         </section>
-
         <nav class="blog-pagination" *ngIf="pagination && (pagination.hasPrevPage || pagination.hasNextPage)">
             <button 
                 class="blog-pagination-btn cursor-pointer" 
@@ -81,7 +61,6 @@
             </button>
         </nav>
     </main>
-
     <app-footer></app-footer>
     <app-contextmenu></app-contextmenu>
 </body>

@@ -72,11 +72,11 @@ export class BlogComponent implements OnInit, OnDestroy {
                     if (response.success) {
                         this.blogPosts = response.data;
                         this.pagination = response.pagination;
-                    }
+                    } else this.error = 'Failed to load blog posts';
                     this.loading = false;
                 },
                 error: (err) => {
-                    this.error = err.message || 'Failed to load blog posts';
+                    this.error = this.error = 'Failed to load blog posts. Please try again later.';
                     this.loading = false;
                 }
             });
