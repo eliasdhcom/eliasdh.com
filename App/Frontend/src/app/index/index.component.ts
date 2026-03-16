@@ -63,6 +63,15 @@ export class IndexComponent implements OnInit, OnDestroy {
     dropdownOpen: boolean = false;
     currentLanguage: string = 'en';
     isYearlyPricing: boolean = false;
+    isVatIncludedPricing: boolean = false;
+
+    private readonly vatRate: number = 0.21;
+    private readonly hostingPrices = {
+        basic: { monthly: 20, yearly: 220 },
+        startup: { monthly: 80, yearly: 880 },
+        business: { monthly: 160, yearly: 1760 },
+        enterprise: { monthly: 320, yearly: 3520 }
+    };
     
     showContactModal: boolean = false;
     contactSubject: string = '';
@@ -169,6 +178,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.languageService.checkAndSetLanguage();
+        this.currentLanguage = this.translate.currentLang || localStorage.getItem('language') || 'en';
         this.initializeTeamCarousel();
         this.setupEmailIconClick();
         this.initializeClientsSlider();
@@ -349,6 +359,33 @@ export class IndexComponent implements OnInit, OnDestroy {
 
     toggleDropdown() {
         this.dropdownOpen = !this.dropdownOpen;
+    }
+
+    getHostingPlanPrice(plan: 'basic' | 'startup' | 'business' | 'enterprise'): string {
+        const selectedPrice = this.isYearlyPricing ? this.hostingPrices[plan].yearly : this.hostingPrices[plan].monthly;
+        const finalPrice = this.isVatIncludedPricing ? selectedPrice * (1 + this.vatRate) : selectedPrice;
+        const periodKey = this.isYearlyPricing ? 'INDEX.PRICING-PERIOD-YEAR' : 'INDEX.PRICING-PERIOD-MONTH';
+        const period = this.translate.instant(periodKey);
+        const locale = this.getLocaleForCurrentLanguage();
+        const formattedPrice = new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency: 'EUR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        }).format(finalPrice);
+
+        return `${formattedPrice}${period}`;
+    }
+
+    getPricingTaxHintKey(): string {
+        return this.isVatIncludedPricing ? 'INDEX.PRICING-VAT-INCL' : 'INDEX.PRICING-VAT-EXCL';
+    }
+
+    private getLocaleForCurrentLanguage(): string {
+        if (this.currentLanguage === 'nl') return 'nl-BE';
+        if (this.currentLanguage === 'fr') return 'fr-BE';
+        if (this.currentLanguage === 'de') return 'de-DE';
+        return 'en-IE';
     }
 
     openContactModal(subject: string = ''): void {

@@ -406,6 +406,37 @@
     visibility: visible;
 }
 
+.index-pricing-meta-toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 14px;
+    gap: 4px;
+}
+
+.index-pricing-meta-label {
+    color: var(--secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0.88;
+}
+
+.index-pricing-meta-label input {
+    accent-color: var(--primary);
+    width: 14px;
+    height: 14px;
+}
+
+.index-pricing-tax-hint {
+    margin: 0;
+    color: var(--secondary);
+    font-size: 12px;
+    opacity: 0.75;
+}
+
 /* Services */
 
 /* Trusted Clients */

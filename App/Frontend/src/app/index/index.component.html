@@ -85,12 +85,19 @@
                 </label>
                 <span [class.active]="isYearlyPricing">{{'INDEX.PRICING-YEARLY' | translate}}</span>
             </section>
+            <section class="index-pricing-meta-toggle">
+                <label class="index-pricing-meta-label cursor-pointer">
+                    <input type="checkbox" [(ngModel)]="isVatIncludedPricing">
+                    <span>{{'INDEX.PRICING-VAT-TOGGLE' | translate}}</span>
+                </label>
+                <p class="index-pricing-tax-hint">{{getPricingTaxHintKey() | translate}}</p>
+            </section>
             <span class="index-pricing-badge" [class.visible]="isYearlyPricing">{{'INDEX.PRICING-SAVE' | translate}}</span>
             <section class="index-services-container-item">
                 <section class="index-services-box hosting-services">
                     <section class="index-services-box-header">
                         <h4 class="index-services-plan-name">{{'INDEX.TRANSLATE16-1' | translate}}</h4>
-                        <p class="index-services-plan-price">{{isYearlyPricing ? ('INDEX.TRANSLATE16-2-YEAR' | translate) : ('INDEX.TRANSLATE16-2' | translate)}}</p>
+                        <p class="index-services-plan-price">{{getHostingPlanPrice('basic')}}</p>
                         <p class="index-services-plan-tagline">{{'INDEX.TRANSLATE16-DESC' | translate}}</p>
                     </section>
                     <section class="index-services-box-content">
@@ -128,7 +135,7 @@
                 <section class="index-services-box hosting-services">
                     <section class="index-services-box-header">
                         <h4 class="index-services-plan-name">{{'INDEX.TRANSLATE21-1' | translate}}</h4>
-                        <p class="index-services-plan-price">{{isYearlyPricing ? ('INDEX.TRANSLATE21-2-YEAR' | translate) : ('INDEX.TRANSLATE21-2' | translate)}}</p>
+                        <p class="index-services-plan-price">{{getHostingPlanPrice('startup')}}</p>
                         <p class="index-services-plan-tagline">{{'INDEX.TRANSLATE21-DESC' | translate}}</p>
                     </section>
                     <section class="index-services-box-content">
@@ -167,7 +174,7 @@
                     <span class="index-services-popular-badge">{{'INDEX.TRANSLATE-POPULAR' | translate}}</span>
                     <section class="index-services-box-header">
                         <h4 class="index-services-plan-name">{{'INDEX.TRANSLATE26-1' | translate}}</h4>
-                        <p class="index-services-plan-price">{{isYearlyPricing ? ('INDEX.TRANSLATE26-2-YEAR' | translate) : ('INDEX.TRANSLATE26-2' | translate)}}</p>
+                        <p class="index-services-plan-price">{{getHostingPlanPrice('business')}}</p>
                         <p class="index-services-plan-tagline">{{'INDEX.TRANSLATE26-DESC' | translate}}</p>
                     </section>
                     <section class="index-services-box-content">
@@ -205,7 +212,7 @@
                 <section class="index-services-box hosting-services">
                     <section class="index-services-box-header">
                         <h4 class="index-services-plan-name">{{'INDEX.TRANSLATE31-1' | translate}}</h4>
-                        <p class="index-services-plan-price">{{isYearlyPricing ? ('INDEX.TRANSLATE31-2-YEAR' | translate) : ('INDEX.TRANSLATE31-2' | translate)}}</p>
+                        <p class="index-services-plan-price">{{getHostingPlanPrice('enterprise')}}</p>
                         <p class="index-services-plan-tagline">{{'INDEX.TRANSLATE31-DESC' | translate}}</p>
                     </section>
                     <section class="index-services-box-content">
