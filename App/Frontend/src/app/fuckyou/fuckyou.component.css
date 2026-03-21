@@ -29,29 +29,4 @@
     box-sizing: border-box;
 }
 
-.fuckyou-main h2 {
-    color: var(--primary);
-    font-size: 10vw;
-    font-weight: 900;
-    text-align: center;
-    margin: 0;
-    line-height: 1.2;
-    max-width: 90vw;
-}
 /* Fuck You */
-
-/* Media Queries */
-@media (max-width: 768px) {
-    .fuckyou-main h2 {
-        font-size: 12vw;
-        max-width: 95vw;
-    }
-}
-
-@media (max-width: 480px) {
-    .fuckyou-main h2 {
-        font-size: 15vw;
-        max-width: 95vw;
-    }
-}
-/* Media Queries */

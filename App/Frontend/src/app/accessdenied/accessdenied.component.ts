@@ -5,7 +5,6 @@
 **/
 
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../services/language.service';
 import { SharedModule } from '../shared/shared.module';
 
@@ -13,7 +12,7 @@ import { SharedModule } from '../shared/shared.module';
     selector: 'app-accessdenied',
     templateUrl: './accessdenied.component.html',
     styleUrls: ['./accessdenied.component.css'],
-    imports: [TranslatePipe, SharedModule],
+    imports: [SharedModule],
     standalone: true
 })
 export class AccessDeniedComponent implements OnInit, AfterViewInit {

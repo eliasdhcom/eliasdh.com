@@ -42,7 +42,7 @@ export class BlogComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.languageService.checkAndSetLanguage();
-        this.currentLanguage = this.translateService.currentLang || 'en';
+        this.currentLanguage = this.translateService.currentLang || 'nl';
 
         this.translateService.onLangChange
             .pipe(takeUntil(this.destroy$))

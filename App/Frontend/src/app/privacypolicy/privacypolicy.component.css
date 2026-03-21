@@ -4,39 +4,11 @@
     * @since 01/01/2025
 **/
 
-/* Title */
-.privacypolicy-title {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 0px;
-    margin-right: 0px;
-}
-
-.privacypolicy-title-text {
-    color: var(--background);
-    font-size: 144px;
-    font-weight: 900;
-    line-height: 1.2;
-    margin: 5%;
-    text-transform: uppercase;
-    -webkit-text-stroke: 1px var(--primary);
-}
-/* Title */
-
 /* Privacy Policy */
 .privacypolicy-article {
     margin-bottom: 5%;
     margin-left: 10%;
     margin-right: 10%;
-}
-
-.privacypolicy-article h2 {
-    color: var(--primary);
-    font-size: 36px;
-    font-weight: 900;
-    margin-bottom: 20px;
 }
 
 .privacypolicy-article h3 {
@@ -92,12 +64,3 @@
 }
 /* Privacy Policy */
 
-/* Media Queries */
-@media (max-width: 768px) {
-    .privacypolicy-title-text {
-        font-size: 42px;
-        font-weight: 900;
-        line-height: 1.2;
-    }
-}
-/* Media Queries */

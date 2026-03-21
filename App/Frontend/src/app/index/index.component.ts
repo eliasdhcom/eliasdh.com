@@ -178,7 +178,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.languageService.checkAndSetLanguage();
-        this.currentLanguage = this.translate.currentLang || localStorage.getItem('language') || 'en';
+        this.currentLanguage = this.translate.currentLang || localStorage.getItem('language') || 'nl';
         this.initializeTeamCarousel();
         this.setupEmailIconClick();
         this.initializeClientsSlider();

@@ -4,39 +4,11 @@
     * @since 01/01/2025
 **/
 
-/* Title */
-.legalguidelines-title {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 0px;
-    margin-right: 0px;
-}
-
-.legalguidelines-title-text {
-    color: var(--background);
-    font-size: 144px;
-    font-weight: 900;
-    line-height: 1.2;
-    margin: 5%;
-    text-transform: uppercase;
-    -webkit-text-stroke: 1px var(--primary);
-}
-/* Title */
-
 /* Legal Guidelines */
 .legalguidelines-article {
     margin-bottom: 5%;
     margin-left: 10%;
     margin-right: 10%;
-}
-
-.legalguidelines-article h2 {
-    color: var(--primary);
-    font-size: 36px;
-    font-weight: 900;
-    margin-bottom: 20px;
 }
 
 .legalguidelines-article h3 {
@@ -72,12 +44,3 @@
 }
 /* Legal Guidelines */
 
-/* Media Queries */
-@media (max-width: 768px) {
-    .legalguidelines-title-text {
-        font-size: 42px;
-        font-weight: 900;
-        line-height: 1.2;
-    }
-}
-/* Media Queries */

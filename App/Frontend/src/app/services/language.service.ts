@@ -16,7 +16,7 @@ export class LanguageService {
 
     checkAndSetLanguage(): void {
         const storedLang = localStorage.getItem('language');
-        const languageToUse = storedLang || 'en';
+        const languageToUse = storedLang || 'nl';
 
         this.translate.setDefaultLang(languageToUse);
         this.translate.use(languageToUse);

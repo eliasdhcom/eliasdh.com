@@ -19,14 +19,6 @@
     margin-bottom: 40px;
 }
 
-.blog-hero-title {
-    color: var(--primary);
-    font-size: 48px;
-    font-weight: 900;
-    margin: 0 0 16px;
-    line-height: 1.2;
-}
-
 .blog-hero-subtitle {
     color: var(--secondary);
     font-size: 18px;
@@ -179,18 +171,6 @@
 @media (max-width: 768px) {
     .blog-container {
         padding: 0 4%;
-    }
-
-    .blog-hero {
-        padding: 40px 16px 30px;
-    }
-
-    .blog-hero-title {
-        font-size: 32px;
-    }
-
-    .blog-hero-subtitle {
-        font-size: 16px;
     }
 
     .blog-post-card {

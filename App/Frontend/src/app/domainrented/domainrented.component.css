@@ -26,13 +26,6 @@
     margin-right: 10%;
 }
 
-.domainrented-article h2 {
-    color: var(--primary);
-    font-size: 36px;
-    font-weight: 900;
-    margin-bottom: 20px;
-}
-
 .domainrented-article h3 {
     color: var(--primary);
     font-size: 24px;
