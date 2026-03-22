@@ -47,6 +47,63 @@
     fill: var(--background);
 }
 
+.contact-bar-language {
+    width: auto;
+    z-index: 1001;
+}
+
+.language-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.language-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+.language-btn .global-dropdown-svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--background);
+}
+
+.contact-bar-language .global-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background-color: var(--background);
+    border: 1px solid var(--primary);
+    border-radius: 12px;
+    padding: 5px 0;
+    margin: 0;
+    list-style: none;
+    z-index: 1002;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    min-width: 140px;
+}
+
+.contact-bar-language .global-dropdown-menu li {
+    color: var(--text);
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.contact-bar-language .global-dropdown-menu li:hover,
+.contact-bar-language .global-dropdown-menu li.active {
+    background-color: var(--primary);
+    color: var(--background);
+    border-radius: 8px;
+    margin: 2px 5px;
+}
+
 @media (max-width: 1200px) {
     .contact-bar {
         flex-direction: column;
@@ -77,5 +134,19 @@
     .contact-bar-svg {
         width: 20px;
         height: 20px;
+    }
+
+    .language-btn {
+        padding: 6px 8px;
+    }
+
+    .contact-bar-language .global-dropdown-menu {
+        top: calc(100% + 5px);
+        min-width: 120px;
+    }
+
+    .contact-bar-language .global-dropdown-menu li {
+        padding: 8px 12px;
+        font-size: 12px;
     }
 }

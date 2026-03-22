@@ -60,8 +60,6 @@ type TeamMember = JoinCard | MemberCard;
 })
 
 export class IndexComponent implements OnInit, OnDestroy {
-    dropdownOpen: boolean = false;
-    currentLanguage: string = 'en';
     isYearlyPricing: boolean = false;
     isVatIncludedPricing: boolean = false;
 
@@ -165,20 +163,10 @@ export class IndexComponent implements OnInit, OnDestroy {
         return this.teamMembers.length;
     }
 
-    settingsConfig = {
-        languages: [
-            { code: 'en', name: 'English' },
-            { code: 'nl', name: 'Nederlands' },
-            { code: 'fr', name: 'Français' },
-            { code: 'de', name: 'Deutsch' }
-        ]
-    };
-
     constructor(private languageService: LanguageService, private translate: TranslateService) { }
 
     ngOnInit(): void {
         this.languageService.checkAndSetLanguage();
-        this.currentLanguage = this.translate.currentLang || localStorage.getItem('language') || 'nl';
         this.initializeTeamCarousel();
         this.setupEmailIconClick();
         this.initializeClientsSlider();
@@ -350,17 +338,6 @@ export class IndexComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    changeLanguage(languageCode: string) {
-        this.translate.use(languageCode);
-        localStorage.setItem('language', languageCode);
-        this.currentLanguage = languageCode;
-        this.dropdownOpen = false;
-    }
-
-    toggleDropdown() {
-        this.dropdownOpen = !this.dropdownOpen;
-    }
-
     getHostingPlanPrice(plan: 'basic' | 'startup' | 'business' | 'enterprise'): string {
         const selectedPrice = this.isYearlyPricing ? this.hostingPrices[plan].yearly : this.hostingPrices[plan].monthly;
         const finalPrice = this.isVatIncludedPricing ? selectedPrice * (1 + this.vatRate) : selectedPrice;
@@ -382,9 +359,10 @@ export class IndexComponent implements OnInit, OnDestroy {
     }
 
     private getLocaleForCurrentLanguage(): string {
-        if (this.currentLanguage === 'nl') return 'nl-BE';
-        if (this.currentLanguage === 'fr') return 'fr-BE';
-        if (this.currentLanguage === 'de') return 'de-DE';
+        const currentLang = this.translate.currentLang || 'en';
+        if (currentLang === 'nl') return 'nl-BE';
+        if (currentLang === 'fr') return 'fr-BE';
+        if (currentLang === 'de') return 'de-DE';
         return 'en-IE';
     }
 
