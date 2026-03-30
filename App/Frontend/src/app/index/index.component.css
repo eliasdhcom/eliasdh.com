@@ -1153,32 +1153,22 @@
 /* FAQ */
 
 /* Media Queries */
-@media screen and (max-width: 1200px) {
-    .index-stats-grid {
-        grid-template-columns: repeat(2, 280px);
-        gap: 1.5rem;
-        padding: 0 2rem;
-    }
-}
-
-@media screen and (max-width: 900px) {
-    .index-stats-grid {
-        grid-template-columns: 1fr;
-        max-width: 320px;
-        margin: 0 auto;
-        gap: 1rem;
-        padding: 0 1.5rem;
+@media screen and (max-width: 1099px) {
+    .index-process-steps {
+        gap: 0.8rem;
     }
 
     .index-process-step {
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
+        min-width: 130px;
     }
 
     .index-process-step-circle {
-        margin-bottom: 1rem;
-        margin-right: 0;
+        width: 50px;
+        height: 50px;
+    }
+
+    .index-process-step-number {
+        font-size: 1.1rem;
     }
 
     .index-process-step-title {
@@ -1189,22 +1179,13 @@
         font-size: 0.75rem;
     }
 
-    .index-process-step-content {
-        min-height: auto;
+    .index-team-carousel-btn {
+        display: flex;
     }
-}
-
-@media screen and (max-width: 1100px) {
-    .index-process-step {
-        min-width: 120px;
-    }
-
-    .index-process-step-title {
-        font-size: 0.8rem;
-    }
-
-    .index-process-step-description {
-        font-size: 0.7rem;
+    
+    .index-team-carousel-viewport::before,
+    .index-team-carousel-viewport::after {
+        opacity: 1;
     }
 }
 
@@ -1256,7 +1237,7 @@
 
 @media (max-width: 768px) {
     .index-process-container {
-        padding: 2rem 1rem;
+        padding: 2rem 1.5rem;
     }
 
     .index-process-track {
@@ -1266,21 +1247,22 @@
     .index-process-steps {
         flex-direction: column;
         gap: 1.5rem;
-        align-items: center;
-        max-width: 100%;
-        width: 100%;
-        padding: 0;
+        align-items: flex-start;
+        padding: 0 1rem;
+        max-width: none;
     }
 
     .index-process-step {
-        width: 100%;
-        max-width: 330px;
+        width: calc(100% - 2rem);
+        max-width: none;
         flex-direction: row;
         text-align: left;
         align-items: flex-start;
+        margin-left: 1rem;
     }
 
     .index-process-step-circle {
+        min-width: 50px;
         width: 50px;
         height: 50px;
         margin-bottom: 0;
@@ -1289,25 +1271,21 @@
     }
 
     .index-process-step-number {
-        font-size: 0.95rem;
+        font-size: 1rem;
     }
 
     .index-process-step-content {
         min-height: auto;
-        width: 100%;
-        max-width: 250px;
+        max-width: 200px;
     }
 
     .index-process-step-title {
-        font-size: 0.85rem;
-        margin-bottom: 0.3rem;
+        font-size: 0.9rem;
     }
 
     .index-process-step-description {
-        font-size: 0.75rem;
-        line-height: 1.35;
+        font-size: 0.8rem;
         word-wrap: break-word;
-        overflow-wrap: break-word;
     }
 
     .index-stats-container {
@@ -1315,14 +1293,23 @@
     }
 
     .index-stats-grid {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
-        padding: 0 1rem;
-    }
+        padding: 0 0.5rem;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
     }
 
     .index-stats-item {
         max-width: 100%;
+    }
+
+    .index-stats-item:nth-child(3) {
+        grid-column: 1 / -1;
+        width: 140px;
+        margin: 0 auto;
     }
 
     .index-stats-item-content {
