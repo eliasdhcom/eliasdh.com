@@ -1153,22 +1153,32 @@
 /* FAQ */
 
 /* Media Queries */
-@media screen and (max-width: 1099px) {
-    .index-process-steps {
-        gap: 0.8rem;
+@media screen and (max-width: 1200px) {
+    .index-stats-grid {
+        grid-template-columns: repeat(2, 280px);
+        gap: 1.5rem;
+        padding: 0 2rem;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .index-stats-grid {
+        grid-template-columns: 1fr;
+        max-width: 320px;
+        margin: 0 auto;
+        gap: 1rem;
+        padding: 0 1.5rem;
     }
 
     .index-process-step {
-        min-width: 130px;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
     }
 
     .index-process-step-circle {
-        width: 50px;
-        height: 50px;
-    }
-
-    .index-process-step-number {
-        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        margin-right: 0;
     }
 
     .index-process-step-title {
@@ -1179,13 +1189,22 @@
         font-size: 0.75rem;
     }
 
-    .index-team-carousel-btn {
-        display: flex;
+    .index-process-step-content {
+        min-height: auto;
     }
-    
-    .index-team-carousel-viewport::before,
-    .index-team-carousel-viewport::after {
-        opacity: 1;
+}
+
+@media screen and (max-width: 1100px) {
+    .index-process-step {
+        min-width: 120px;
+    }
+
+    .index-process-step-title {
+        font-size: 0.8rem;
+    }
+
+    .index-process-step-description {
+        font-size: 0.7rem;
     }
 }
 
@@ -1237,7 +1256,7 @@
 
 @media (max-width: 768px) {
     .index-process-container {
-        padding: 2rem 1.5rem;
+        padding: 2rem 1rem;
     }
 
     .index-process-track {
@@ -1248,18 +1267,20 @@
         flex-direction: column;
         gap: 1.5rem;
         align-items: center;
+        max-width: 100%;
+        width: 100%;
+        padding: 0;
     }
 
     .index-process-step {
         width: 100%;
-        max-width: 280px;
+        max-width: 330px;
         flex-direction: row;
         text-align: left;
         align-items: flex-start;
     }
 
     .index-process-step-circle {
-        min-width: 50px;
         width: 50px;
         height: 50px;
         margin-bottom: 0;
@@ -1268,19 +1289,25 @@
     }
 
     .index-process-step-number {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
 
     .index-process-step-content {
         min-height: auto;
+        width: 100%;
+        max-width: 250px;
     }
 
     .index-process-step-title {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        margin-bottom: 0.3rem;
     }
 
     .index-process-step-description {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
+        line-height: 1.35;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .index-stats-container {
@@ -1288,9 +1315,10 @@
     }
 
     .index-stats-grid {
-        grid-template-columns: 280px;
+        grid-template-columns: 1fr;
         gap: 1rem;
-        padding: 0 2rem;
+        padding: 0 1rem;
+    }
     }
 
     .index-stats-item {
