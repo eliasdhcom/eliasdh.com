@@ -120,6 +120,14 @@ export class IndexComponent implements OnInit, OnDestroy {
         }
     ];
 
+    processSteps = [
+        { number: 1, title: 'INDEX.PROCESS.STEP1', description: 'INDEX.PROCESS.STEP1_DESC' },
+        { number: 2, title: 'INDEX.PROCESS.STEP2', description: 'INDEX.PROCESS.STEP2_DESC' },
+        { number: 3, title: 'INDEX.PROCESS.STEP3', description: 'INDEX.PROCESS.STEP3_DESC' },
+        { number: 4, title: 'INDEX.PROCESS.STEP4', description: 'INDEX.PROCESS.STEP4_DESC' },
+        { number: 5, title: 'INDEX.PROCESS.STEP5', description: 'INDEX.PROCESS.STEP5_DESC' }
+    ];
+
     private statsHasAnimated: boolean = false;
     private statsAnimationDuration: number = 2000;
     private statsObserver: IntersectionObserver | null = null;

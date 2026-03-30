@@ -98,6 +98,18 @@
       "PROJECTS": "Successful Projects",
       "UPTIME": "Service Uptime"
     },
+    "PROCESS": {
+      "STEP1": "Initial Consultation",
+      "STEP1_DESC": "We meet to understand your needs, goals, and vision for your project",
+      "STEP2": "Demo & Refinement",
+      "STEP2_DESC": "We create a prototype and refine it based on your feedback",
+      "STEP3": "Plan & Setup",
+      "STEP3_DESC": "You choose a plan and we migrate and configure everything for you",
+      "STEP4": "Free Trial",
+      "STEP4_DESC": "Test everything for 1 month free to ensure it's perfect",
+      "STEP5": "Go Live",
+      "STEP5_DESC": "Your project launches and subscription begins"
+    },
     "TRANSLATE45": "Join our team",
     "TRANSLATE46": "Are you passionate about making a difference? Do you thrive in a dynamic and collaborative environment? We're always on the lookout for talented individuals to join our team!",
     "TRANSLATE47": "If you're interested in becoming a part of our team, we'd love to hear from you. Please send us your resume and a motivation letter outlining why you'd be a great fit for our organization.",

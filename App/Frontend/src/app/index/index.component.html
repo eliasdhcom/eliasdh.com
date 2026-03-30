@@ -70,6 +70,22 @@
                 </div>
             </section>
         </article>
+        <article class="index-process-container">
+            <section class="index-process-timeline">
+                <div class="index-process-track"></div>
+                <div class="index-process-steps">
+                    <div class="index-process-step" *ngFor="let step of processSteps; let last = last">
+                        <div class="index-process-step-circle">
+                            <span class="index-process-step-number">{{ step.number }}</span>
+                        </div>
+                        <div class="index-process-step-content">
+                            <h4 class="index-process-step-title">{{ step.title | translate }}</h4>
+                            <p class="index-process-step-description">{{ step.description | translate }}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </article>
         <article class="index-services-container">
             <section class="index-title">
                 <h3 class="index-title-text">{{'INDEX.TRANSLATE13' | translate}}</h3>

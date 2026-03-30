@@ -97,6 +97,18 @@
       "PROJECTS": "Erfolgreiche Projekte",
       "UPTIME": "Service-Betriebszeit"
     },
+    "PROCESS": {
+      "STEP1": "Erstberatung",
+      "STEP1_DESC": "Wir sprechen über Ihre Bedürfnisse, Ziele und Vision für Ihr Projekt",
+      "STEP2": "Demo & Verfeinerung",
+      "STEP2_DESC": "Wir erstellen einen Prototyp und verfeinern ihn nach Ihrem Feedback",
+      "STEP3": "Plan & Einrichtung",
+      "STEP3_DESC": "Sie wählen einen Plan und wir migrieren und konfigurieren alles für Sie",
+      "STEP4": "Kostenlose Testversion",
+      "STEP4_DESC": "Testen Sie alles 1 Monat kostenlos, um sicherzustellen dass alles perfekt ist",
+      "STEP5": "Go Live",
+      "STEP5_DESC": "Ihr Projekt wird veröffentlicht und das Abonnement beginnt"
+    },
     "TRANSLATE45": "Werden Sie Teil unseres Teams",
     "TRANSLATE46": "Sind Sie leidenschaftlich daran interessiert, etwas zu bewirken? Fühlen Sie sich in einem dynamischen und kollaborativen Umfeld wohl? Wir sind stets auf der Suche nach talentierten Personen, die unser Team bereichern!",
     "TRANSLATE47": "Wenn Sie daran interessiert sind, Teil unseres Teams zu werden, würden wir uns freuen, von Ihnen zu hören. Bitte senden Sie uns Ihren Lebenslauf und ein Motivationsschreiben, in dem Sie darlegen, warum Sie gut zu unserer Organisation passen würden.",

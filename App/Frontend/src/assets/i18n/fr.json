@@ -98,6 +98,18 @@
       "PROJECTS": "Projets réussis",
       "UPTIME": "Disponibilité du service"
     },
+    "PROCESS": {
+      "STEP1": "Consultation initiale",
+      "STEP1_DESC": "Nous discutons de vos besoins, objectifs et vision pour votre projet",
+      "STEP2": "Démo & Raffinement",
+      "STEP2_DESC": "Nous créons un prototype et l'affinons selon vos commentaires",
+      "STEP3": "Plan & Configuration",
+      "STEP3_DESC": "Vous choisissez un plan et nous migrons et configurons tout pour vous",
+      "STEP4": "Essai gratuit",
+      "STEP4_DESC": "Testez tout gratuitement pendant 1 mois pour être sûr que c'est parfait",
+      "STEP5": "Mise en ligne",
+      "STEP5_DESC": "Votre projet est lancé et l'abonnement commence"
+    },
     "TRANSLATE45": "Rejoignez notre équipe",
     "TRANSLATE46": "Êtes-vous passionné par le fait de faire une différence ? Vous épanouissez-vous dans un environnement dynamique et collaboratif ? Nous sommes toujours à la recherche de personnes talentueuses pour rejoindre notre équipe !",
     "TRANSLATE47": "Si vous êtes intéressé à faire partie de notre équipe, nous serions ravis de vous entendre. Veuillez nous envoyer votre CV et une lettre de motivation expliquant pourquoi vous seriez un excellent ajout à notre organisation.",
