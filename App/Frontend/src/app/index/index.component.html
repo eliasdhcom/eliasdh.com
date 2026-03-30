@@ -57,6 +57,19 @@
                 </section>
             </section>
         </article>
+        <article class="index-stats-container">
+            <section class="index-stats-grid">
+                <div class="index-stats-item" *ngFor="let stat of stats">
+                    <div class="index-stats-item-content">
+                        <div class="index-stats-value">
+                            <span class="index-stats-number">{{ stat.currentValue }}</span>
+                            <span class="index-stats-suffix" *ngIf="stat.suffix">{{ stat.suffix }}</span>
+                        </div>
+                        <p class="index-stats-label">{{ stat.label | translate }}</p>
+                    </div>
+                </div>
+            </section>
+        </article>
         <article class="index-services-container">
             <section class="index-title">
                 <h3 class="index-title-text">{{'INDEX.TRANSLATE13' | translate}}</h3>

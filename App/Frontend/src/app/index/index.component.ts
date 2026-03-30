@@ -48,6 +48,13 @@ interface FaqItem {
     isOpen: boolean;
 }
 
+interface Stat {
+    value: number;
+    currentValue: number;
+    label: string;
+    suffix?: string;
+}
+
 type TeamMember = JoinCard | MemberCard;
 
 @Component({
@@ -91,6 +98,31 @@ export class IndexComponent implements OnInit, OnDestroy {
         { questionKey: 'INDEX.FAQ.QUESTION5', answerKey: 'INDEX.FAQ.ANSWER5', isOpen: false },
         { questionKey: 'INDEX.FAQ.QUESTION6', answerKey: 'INDEX.FAQ.ANSWER6', isOpen: false }
     ];
+
+    stats: Stat[] = [
+        {
+            value: 0,
+            currentValue: 0,
+            label: 'INDEX.STATS.YEARS',
+            suffix: '+'
+        },
+        {
+            value: 75,
+            currentValue: 0,
+            label: 'INDEX.STATS.CLIENTS',
+            suffix: '+'
+        },
+        {
+            value: 99.9,
+            currentValue: 0,
+            label: 'INDEX.STATS.UPTIME',
+            suffix: '%'
+        }
+    ];
+
+    private statsHasAnimated: boolean = false;
+    private statsAnimationDuration: number = 2000;
+    private statsObserver: IntersectionObserver | null = null;
 
     currentReviewIndex: number = 0;
     reviewsAutoRotateInterval: any = null;
@@ -172,6 +204,8 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.initializeClientsSlider();
         this.startReviewsAutoRotate();
         this.calculateReviewsVisible();
+        this.calculateYearsInBusiness();
+        this.setupStatsObserver();
     }
 
     ngOnDestroy(): void {
@@ -179,6 +213,9 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.stopReviewsAutoRotate();
         if (this.clientsResumeTimeout) {
             clearTimeout(this.clientsResumeTimeout);
+        }
+        if (this.statsObserver) {
+            this.statsObserver.disconnect();
         }
     }
 
@@ -521,5 +558,53 @@ export class IndexComponent implements OnInit, OnDestroy {
 
     toggleFaq(index: number): void {
         this.faqItems[index].isOpen = !this.faqItems[index].isOpen;
+    }
+
+    private calculateYearsInBusiness(): void {
+        const startYear = 2026;
+        const currentYear = new Date().getFullYear();
+        this.stats[0].value = currentYear - startYear + 1;
+    }
+
+    private setupStatsObserver(): void {
+        const element = document.querySelector('.index-stats-container');
+        if (!element) return;
+
+        this.statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !this.statsHasAnimated) {
+                    this.statsHasAnimated = true;
+                    this.animateStats();
+                }
+            });
+        }, { threshold: 0.3 });
+
+        this.statsObserver.observe(element);
+    }
+
+    private animateStats(): void {
+        const startTime = Date.now();
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / this.statsAnimationDuration, 1);
+
+            this.stats.forEach((stat, index) => {
+                if (index === 3) {
+                    stat.currentValue = parseFloat((stat.value * progress).toFixed(1));
+                } else {
+                    stat.currentValue = Math.floor(stat.value * progress);
+                }
+            });
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                this.stats.forEach(stat => {
+                    stat.currentValue = stat.value;
+                });
+            }
+        };
+
+        animate();
     }
 }
