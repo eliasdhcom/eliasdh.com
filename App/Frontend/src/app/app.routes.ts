@@ -14,9 +14,9 @@ import { NotFoundComponent } from './notfound/notfound.component';
 import { FuckYouComponent } from './fuckyou/fuckyou.component';
 import { MapComponent } from './map/map.component';
 import { StatusComponent } from './status/status.component';
-import { LoginComponent } from './login/login.component';
 import { BlogComponent } from './blog/blog.component';
 import { BlogArticleComponent } from './blog-article/blog-article.component';
+import { LoginComponent } from './login/login.component';
 
 export const routes: Routes = [
     { 
@@ -65,16 +65,6 @@ export const routes: Routes = [
         } 
     },
     { 
-        path: 'login', 
-        component: LoginComponent, 
-        data: { 
-            title: 'EliasDH - Login', 
-            description: 'Sign in to your EliasDH account. Access your hosting services, web development projects, and IT solutions dashboard.',
-            canonical: 'https://eliasdh.com/login',
-            robots: 'noindex, nofollow'
-        } 
-    },
-    { 
         path: 'blog', 
         component: BlogComponent, 
         data: { 
@@ -90,6 +80,16 @@ export const routes: Routes = [
             title: 'EliasDH - Blog Article', 
             description: 'Read our latest blog article.',
             canonical: 'https://eliasdh.com/blog'
+        } 
+    },
+    { 
+        path: 'login', 
+        component: LoginComponent, 
+        data: { 
+            title: 'EliasDH - Login', 
+            description: 'Sign in to your EliasDH account. Access your hosting services, web development projects, and IT solutions dashboard.',
+            canonical: 'https://eliasdh.com/login',
+            robots: 'noindex, nofollow'
         } 
     },
     { 
