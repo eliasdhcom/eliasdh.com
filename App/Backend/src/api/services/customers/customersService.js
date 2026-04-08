@@ -8,6 +8,25 @@ const logger = require('../../../utils/logger');
 
 const mockCustomers = [
     {
+        id: '0',
+        name: 'EliasDH BV HQ',
+        socialLinks: [
+            { type: "instagram", url: "https://www.instagram.com/eliasdhcom" },
+            { type: "github", url: "https://github.com/eliasdhcom" },
+            { type: "linkedin", url: "https://www.linkedin.com/company/eliasdh" },
+            { type: "facebook", url: "https://www.facebook.com/eliasdhcom" }
+        ],
+        address: 'Hulgenrodestraat 64, 2150 Antwerpen, Belgium',
+        vat: 'BE1034925266',
+        logo: 'eliasdh-logo.png',
+        websites: [
+            { subscriptionType: 'Free', url: 'https://eliasdh.com', name: 'EliasDH Website' }
+        ],
+        latitude: 51.1915943,
+        longitude: 4.4969435,
+        isHQ: true
+    },
+    {
         id: '1',
         name: 'Ter Eiken Edegem',
         socialLinks: [
@@ -105,21 +124,6 @@ const mockCustomers = [
     },
     {
         id: '7',
-        name: 'Zizis',
-        socialLinks: [
-            { type: "instagram", url: "https://www.instagram.com/hairfashionzizis" },
-        ],
-        address: 'Provinciesteenweg 557, 2530 Boechout, Belgium',
-        vat: 'BE0000000000',
-        logo: 'zizis-logo.png',
-        websites: [
-            { subscriptionType: 'Free', url: 'https://zizis.be', name: 'Zizis Website' }
-        ],
-        latitude: 51.1579064,
-        longitude: 4.5154518
-    },
-    {
-        id: '8',
         name: 'Bistro Theo',
         socialLinks: [
             { type: "instagram", url: "https://www.instagram.com/bistrotheo/" },
@@ -133,6 +137,21 @@ const mockCustomers = [
         ],
         latitude: 51.2169627,
         longitude: 4.3998624
+    },
+    {
+        id: '8',
+        name: 'Zizis',
+        socialLinks: [
+            { type: "instagram", url: "https://www.instagram.com/hairfashionzizis" },
+        ],
+        address: 'Provinciesteenweg 557, 2530 Boechout, Belgium',
+        vat: 'BE0000000000',
+        logo: 'zizis-logo.png',
+        websites: [
+            { subscriptionType: 'Basic', url: 'https://zizis.be', name: 'Zizis Website' }
+        ],
+        latitude: 51.1579064,
+        longitude: 4.5154518
     },
     {
         id: '9',

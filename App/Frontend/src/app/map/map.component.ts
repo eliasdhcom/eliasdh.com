@@ -68,6 +68,10 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private initMap(): void {
+        console.log('Initializing map...');
+        const mapElement = document.getElementById('map');
+        console.log('Map element:', mapElement);
+        
         this.map = L.map('map', {
             center: [50.8503, 4.3517],
             zoom: 8,
@@ -90,17 +94,26 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
             disableClusteringAtZoom: 16,
             iconCreateFunction: (cluster: any) => {
                 const count = cluster.getChildCount();
-                let size = 'small';
-                if (count >= 10) size = 'medium';
-                if (count >= 50) size = 'large';
+                let clusterSize = 36;
+                let fontSizeCluster = 13;
+                if (count >= 10) {
+                    clusterSize = 44;
+                    fontSizeCluster = 15;
+                }
+                if (count >= 50) {
+                    clusterSize = 52;
+                    fontSizeCluster = 17;
+                }
                 return L.divIcon({
-                    html: `<div class="cursor-pointer cluster-marker cluster-${size}"><span>${count}</span></div>`,
-                    className: 'custom-cluster-icon',
-                    iconSize: L.point(40, 40)
+                    html: `<div class="cursor-pointer" style="width: ${clusterSize}px; height: ${clusterSize}px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--primary); color: var(--background); box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3); font-size: ${fontSizeCluster}px; font-weight: 600;"><span>${count}</span></div>`,
+                    className: 'map-custom-cluster-icon',
+                    iconSize: L.point(clusterSize, clusterSize),
+                    iconAnchor: [clusterSize / 2, clusterSize / 2]
                 });
             }
         });
         this.map.addLayer(this.markerClusterGroup);
+        console.log('Map initialized successfully');
     }
 
     loadCustomers(): void {
@@ -109,8 +122,10 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.customersService.getAllCustomers().subscribe({
             next: (response) => {
+                console.log('API Response:', response);
                 if (response.success) {
                     this.customers = response.data;
+                    console.log('Customers loaded:', this.customers);
                     this.addMarkersToMap();
                 } else this.error = 'Failed to load customers';
                 this.isLoading = false;
@@ -124,21 +139,34 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private addMarkersToMap(): void {
-        if (!this.markerClusterGroup) return;
+        console.log('addMarkersToMap called with', this.customers.length, 'customers');
+        if (!this.markerClusterGroup) {
+            console.error('markerClusterGroup not initialized!');
+            return;
+        }
         
         this.markerClusterGroup.clearLayers();
         this.markers = [];
 
         const customIcon = L.divIcon({
-            className: 'custom-marker cursor-pointer',
-            html: `<div class="marker-pin cursor-pointer"></div>`,
+            className: 'map-custom-marker cursor-pointer',
+            html: `<div class="map-marker-pin cursor-pointer"></div>`,
             iconSize: [30, 42],
             iconAnchor: [15, 42]
         });
 
+        const hqIcon = L.divIcon({
+            className: 'map-hq-location-marker',
+            html: `<div class="cursor-pointer map-hq-home-marker"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7V3H2v18h20V7h-10zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg></div>`,
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+
         this.customers.forEach(customer => {
             if (customer.latitude && customer.longitude) {
-                const marker = L.marker([customer.latitude, customer.longitude], { icon: customIcon }).on('click', () => this.selectCustomer(customer));
+                console.log(`Adding marker for ${customer.name} (${customer.latitude}, ${customer.longitude})`);
+                const icon = (customer as any).isHQ ? hqIcon : customIcon;
+                const marker = L.marker([customer.latitude, customer.longitude], { icon: icon }).on('click', () => this.selectCustomer(customer));
 
                 marker.bindTooltip(customer.name, {
                     permanent: false,
@@ -147,10 +175,16 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
                 });
 
                 this.markers.push(marker);
-                this.markerClusterGroup.addLayer(marker);
+
+                if ((customer as any).isHQ) {
+                    this.map.addLayer(marker);
+                } else {
+                    this.markerClusterGroup.addLayer(marker);
+                }
             }
         });
 
+        console.log('Total markers added:', this.markers.length);
         if (this.markers.length > 0) {
             const group = L.featureGroup(this.markers);
             this.map.fitBounds(group.getBounds().pad(0.1));
@@ -268,8 +302,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
 
                 const userIcon = L.divIcon({
-                    className: 'user-location-marker',
-                    html: `<div class="user-person-marker"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>`,
+                    className: 'map-user-location-marker',
+                    html: `<div class="map-user-person-marker"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>`,
                     iconSize: [30, 30],
                     iconAnchor: [15, 15]
                 });

@@ -17,7 +17,7 @@ export interface CustomerWebsite {
 }
 
 export interface SocialLink {
-    type: 'facebook' | 'instagram' | 'linkedin' | 'twitter' | 'tiktok' | 'youtube';
+    type: 'facebook' | 'instagram' | 'linkedin' | 'twitter' | 'tiktok' | 'youtube' | 'github';
     url: string;
 }
 
@@ -31,6 +31,7 @@ export interface Customer {
     websites: CustomerWebsite[];
     latitude: number;
     longitude: number;
+    isHQ?: boolean;
 }
 
 export interface MetricsResponse {
