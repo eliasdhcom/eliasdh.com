@@ -27,7 +27,8 @@ export class ContactBarComponent implements OnInit {
             { code: 'en', name: 'English' },
             { code: 'nl', name: 'Nederlands' },
             { code: 'fr', name: 'Français' },
-            { code: 'de', name: 'Deutsch' }
+            { code: 'de', name: 'Deutsch' },
+            { code: 'es', name: 'Español' }
         ]
     };
 
