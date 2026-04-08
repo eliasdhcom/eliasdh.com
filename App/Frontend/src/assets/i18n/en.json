@@ -324,5 +324,28 @@
   "EXIT-POPUP": {
     "TITLE": "Can we help you?",
     "TEXT": "We're here to answer all your questions. No strings attached, just a conversation."
+  },
+  "LOGIN": {
+    "TRANSLATE1": "EliasDH Login",
+    "TRANSLATE2": "Enter your EliasDH account to access your dashboard",
+    "TRANSLATE3": "Email Address",
+    "TRANSLATE4": "Email address is required",
+    "TRANSLATE5": "Please enter a valid email address",
+    "TRANSLATE6": "Password",
+    "TRANSLATE7": "Password is required",
+    "TRANSLATE8": "Password must be at least 8 characters",
+    "TRANSLATE9": "At least one uppercase letter (A-Z)",
+    "TRANSLATE10": "At least one lowercase letter (a-z)",
+    "TRANSLATE11": "At least one number (0-9)",
+    "TRANSLATE12": "At least one special character (!@#$%^&*)",
+    "TRANSLATE13": "Sign In",
+    "TRANSLATE14": "Signing in...",
+    "TRANSLATE15": "Forgot your password?",
+    "TRANSLATE16": "Reset Your Password",
+    "TRANSLATE17": "Enter your email address below and we'll send you a link to reset your password",
+    "TRANSLATE18": "Send Reset Link",
+    "TRANSLATE19": "Back to Login",
+    "TRANSLATE20": "Welcome",
+    "TRANSLATE21": "Enter your email address and we will send you instructions to reset your password"
   }
 }

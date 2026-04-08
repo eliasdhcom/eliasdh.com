@@ -323,5 +323,28 @@
   "EXIT-POPUP": {
     "TITLE": "Kunnen we je helpen?",
     "TEXT": "We staan klaar om al je vragen te beantwoorden. Geen verplichtingen, gewoon een gesprek."
+  },
+  "LOGIN": {
+    "TRANSLATE1": "EliasDH Inloggen",
+    "TRANSLATE2": "Log in op je EliasDH account om je dashboard te openen",
+    "TRANSLATE3": "E-mailadres",
+    "TRANSLATE4": "E-mailadres is verplicht",
+    "TRANSLATE5": "Voer alstublieft een geldig e-mailadres in",
+    "TRANSLATE6": "Wachtwoord",
+    "TRANSLATE7": "Wachtwoord is verplicht",
+    "TRANSLATE8": "Wachtwoord moet minstens 8 karakters lang zijn",
+    "TRANSLATE9": "Minstens één hoofdletter (A-Z)",
+    "TRANSLATE10": "Minstens één kleine letter (a-z)",
+    "TRANSLATE11": "Minstens één getal (0-9)",
+    "TRANSLATE12": "Minstens één speciaal karakter (!@#$%^&*)",
+    "TRANSLATE13": "Inloggen",
+    "TRANSLATE14": "Even geduld...",
+    "TRANSLATE15": "Wachtwoord vergeten?",
+    "TRANSLATE16": "Reset Je Wachtwoord",
+    "TRANSLATE17": "Voer je e-mailadres hieronder in en we sturen je een link om je wachtwoord opnieuw in te stellen",
+    "TRANSLATE18": "Verzendt Resetlink",
+    "TRANSLATE19": "Terug naar Inloggen",
+    "TRANSLATE20": "Welkom",
+    "TRANSLATE21": "Voer je e-mailadres in en we sturen je instructies om je wachtwoord opnieuw in te stellen"
   }
 }

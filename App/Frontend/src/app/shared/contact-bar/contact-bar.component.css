@@ -67,6 +67,28 @@
     transform: translateY(-2px);
 }
 
+.contact-bar-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.contact-bar-login:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+.contact-bar-login .contact-bar-svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--background);
+}
+
 .language-btn .global-dropdown-svg {
     width: 18px;
     height: 18px;
@@ -132,6 +154,15 @@
     }
 
     .contact-bar-svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .contact-bar-login {
+        padding: 6px 8px;
+    }
+
+    .contact-bar-login .contact-bar-svg {
         width: 20px;
         height: 20px;
     }

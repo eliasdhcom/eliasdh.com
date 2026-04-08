@@ -1,0 +1,79 @@
+<!--Author EliasDH Team-->
+<app-contact-bar></app-contact-bar>
+<div class="login-container">
+    <div class="login-bg-shape login-bg-shape-1"></div>
+    <div class="login-bg-shape login-bg-shape-2"></div>
+    <div class="login-bg-shape login-bg-shape-3"></div>
+    <div class="login-bg-shape login-bg-shape-4"></div>
+    <main class="login-main">
+        <div class="login-content">
+            <div class="login-header">
+                <svg class="login-logo" viewBox="0 -1 17 32" aria-labelledby="logo-title">
+                    <title id="logo-title">EliasDH Logo</title>
+                    <defs>
+                        <filter id="glow">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="0.3" result="blur"/>
+                            <feMerge>
+                                <feMergeNode in="blur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <path d="M 4 16 L 4 16 L 13 11 A 5 5 90 0 0 4 16 M 5 19 L 17 12 A 1 1 0 0 0 0 18 L -5 21 C -13 4 16 -13 24 13 L 10 20 Z Z M -3 24 L 2 21 C 11 28 16 19 23 17 C 24 17 18 41 -3 24" filter="url(#glow)"/>
+                </svg>
+            </div>
+            <div class="login-form-wrapper" [class.login-form-hidden]="showForgotPassword">
+                <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
+                    <h2 class="login-form-title">{{'LOGIN.TRANSLATE20' | translate}}</h2>
+                    <div class="login-form-group">
+                        <label class="login-label" for="login-email">{{'LOGIN.TRANSLATE3' | translate}}</label>
+                        <input id="login-email" type="email" formControlName="email" class="cursor-text login-input" [class.login-input-error]="emailControl?.invalid && emailControl?.touched" [class.login-input-valid]="emailControl?.valid && emailControl?.touched" placeholder="example@eliasdh.com" autocomplete="email" (input)="onEmailChange()" required/>
+                        <div *ngIf="emailControl?.invalid && emailControl?.touched" class="login-error-message">
+                            <span *ngIf="emailControl?.errors?.['required']">{{'LOGIN.TRANSLATE4' | translate}}</span>
+                            <span *ngIf="emailControl?.errors?.['invalidEmail']">{{'LOGIN.TRANSLATE5' | translate}}</span>
+                        </div>
+                    </div>
+                    <div class="login-form-group">
+                        <label class="login-label" for="login-password">{{'LOGIN.TRANSLATE6' | translate}}</label>
+                        <input id="login-password" type="password" formControlName="password" class="cursor-text login-input" [class.login-input-error]="passwordControl?.invalid && passwordControl?.touched" [class.login-input-valid]="passwordControl?.valid && passwordControl?.touched" placeholder="••••••••" (input)="onPasswordChange()" autocomplete="current-password" required/>
+                        <div *ngIf="passwordControl?.invalid && passwordControl?.touched" class="login-error-message">
+                            <span *ngIf="passwordControl?.errors?.['required']">{{'LOGIN.TRANSLATE7' | translate}}</span>
+                            <span *ngIf="passwordControl?.errors?.['minlength']">{{'LOGIN.TRANSLATE8' | translate}}</span>
+                            <span *ngIf="passwordControl?.errors?.['missingDigit']">{{'LOGIN.TRANSLATE11' | translate}}</span>
+                            <span *ngIf="passwordControl?.errors?.['missingSpecial']">{{'LOGIN.TRANSLATE12' | translate}}</span>
+                        </div>
+                    </div>
+                    <button type="button" class="cursor-pointer login-link-inline" (click)="toggleForgotPassword()">
+                        {{'LOGIN.TRANSLATE15' | translate}}
+                    </button>
+                    <button type="submit" class="cursor-pointer login-button" [disabled]="submitting || loginForm.invalid">
+                        <span *ngIf="!submitting">{{'LOGIN.TRANSLATE13' | translate}}</span>
+                        <span *ngIf="submitting" class="login-button-loading">{{'LOGIN.TRANSLATE14' | translate}}</span>
+                    </button>
+                </form>
+            </div>
+            <div class="login-form-wrapper" [class.login-form-hidden]="!showForgotPassword">
+                <form [formGroup]="forgotPasswordForm" (ngSubmit)="onForgotPassword()" class="login-form">
+                    <h2 class="login-form-title">{{'LOGIN.TRANSLATE16' | translate}}</h2>
+                    <p class="login-form-description">{{'LOGIN.TRANSLATE21' | translate}}</p>
+                    <div class="login-form-group">
+                        <label class="login-label" for="forgot-email">{{'LOGIN.TRANSLATE3' | translate}}</label>
+                        <input id="forgot-email" type="email" formControlName="email" class="cursor-text login-input" [class.login-input-error]="forgotEmailControl?.invalid && forgotEmailControl?.touched" [class.login-input-valid]="forgotEmailControl?.valid && forgotEmailControl?.touched" placeholder="example@eliasdh.com" autocomplete="email" (input)="onForgotEmailChange()" required/>
+                        <div *ngIf="forgotEmailControl?.invalid && forgotEmailControl?.touched" class="login-error-message">
+                            <span *ngIf="forgotEmailControl?.errors?.['required']">{{'LOGIN.TRANSLATE4' | translate}}</span>
+                            <span *ngIf="forgotEmailControl?.errors?.['invalidEmail']">{{'LOGIN.TRANSLATE5' | translate}}</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="cursor-pointer login-button" [disabled]="submitting || forgotPasswordForm.invalid">
+                        <span *ngIf="!submitting">{{'LOGIN.TRANSLATE18' | translate}}</span>
+                        <span *ngIf="submitting" class="login-button-loading">{{'LOGIN.TRANSLATE14' | translate}}</span>
+                    </button>
+                    <button type="button" class="cursor-pointer login-link-bottom" (click)="toggleForgotPassword()">
+                        {{'LOGIN.TRANSLATE19' | translate}}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+<app-contextmenu></app-contextmenu>
