@@ -34,9 +34,33 @@ jobs:
       - name: Login to GHCR
         run: |
           echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u eliasdhcom --password-stdin
+      - name: Generate Frontend Metadata
+        id: meta-frontend
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/eliasdhcom/eliasdhcom-frontend
+          tags: |
+            type=sha,prefix=sha-,format=short
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+          labels: |
+            org.opencontainers.image.title=Frontend
+            org.opencontainers.image.vendor=EliasDH
+            org.opencontainers.image.url=https://eliasdh.com
+      - name: Generate Backend Metadata
+        id: meta-backend
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/eliasdhcom/eliasdhcom-backend
+          tags: |
+            type=sha,prefix=sha-,format=short
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+          labels: |
+            org.opencontainers.image.title=Backend
+            org.opencontainers.image.vendor=EliasDH
+            org.opencontainers.image.url=https://eliasdh.com
       - name: Build/Push Frontend Docker Image
         run: |
-          docker build --push -t ghcr.io/eliasdhcom/eliasdhcom-frontend:latest ./App/Frontend
+          docker build --push ${{ steps.meta-frontend.outputs.tags && format('$(echo "{0}" | sed "s/^/-t /;s/\n/ -t /g")', steps.meta-frontend.outputs.tags) }} --label "${{ steps.meta-frontend.outputs.labels }}" ./App/Frontend
       - name: Build/Push Backend Docker Image
         run: |
-            docker build --push -t ghcr.io/eliasdhcom/eliasdhcom-backend:latest ./App/Backend
+          docker build --push ${{ steps.meta-backend.outputs.tags && format('$(echo "{0}" | sed "s/^/-t /;s/\n/ -t /g")', steps.meta-backend.outputs.tags) }} --label "${{ steps.meta-backend.outputs.labels }}" ./App/Backend
