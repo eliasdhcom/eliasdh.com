@@ -7,8 +7,8 @@ FROM alpine:3.19
 
 LABEL maintainer="EliasDH"
 LABEL version="1.0"
-LABEL description="This is the microservice 1 image for the app."
-LABEL org.opencontainers.image.description="This is the microservice 1 image for the app."
+LABEL description="This is the service watcher image for the app."
+LABEL org.opencontainers.image.description="This is the service watcher image for the app."
 
 RUN apk add --no-cache curl jq kubectl
 
