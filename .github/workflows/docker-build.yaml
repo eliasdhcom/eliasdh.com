@@ -71,6 +71,19 @@ jobs:
             org.opencontainers.image.vendor=EliasDH
             org.opencontainers.image.url=https://eliasdh.com
 
+      - name: Generate Services Watcher Metadata
+        id: meta-services-watcher
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/eliasdhcom/eliasdhcom-services-watcher
+          tags: |
+            type=sha,prefix=sha-,format=short
+            type=raw,value=latest,enable={{is_default_branch}}
+          labels: |
+            org.opencontainers.image.title=Services Watcher
+            org.opencontainers.image.vendor=EliasDH
+            org.opencontainers.image.url=https://eliasdh.com
+
       - name: Build & Push Frontend Docker Image
         uses: docker/build-push-action@v5
         with:
@@ -86,3 +99,11 @@ jobs:
           push: true
           tags: ${{ steps.meta-backend.outputs.tags }}
           labels: ${{ steps.meta-backend.outputs.labels }}
+
+      - name: Build & Push Services Watcher Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./App/Services/Watcher
+          push: true
+          tags: ${{ steps.meta-services-watcher.outputs.tags }}
+          labels: ${{ steps.meta-services-watcher.outputs.labels }}
