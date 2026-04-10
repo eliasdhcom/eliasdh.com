@@ -3,11 +3,6 @@
 # @see https://eliasdh.com #
 # @since 01/01/2025        #
 ############################
-############################
-# @author EliasDH Team     #
-# @see https://eliasdh.com #
-# @since 01/01/2025        #
-############################
 name: Build and Push Docker Image to GHCR
 
 on:
@@ -19,7 +14,7 @@ on:
       - main
 
 jobs:
-  build-push:
+   build-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -28,71 +23,20 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-      - name: Install dependencies (Frontend)
+      - name: Install dependencies
         run: |
-          cd ./App/Frontend
-          npm install
+            cd ./App/Frontend
+            npm install
       - name: Build Angular Application
         run: |
           cd ./App/Frontend
-          npm run build -- --project Frontend --configuration production
+            npm run build -- --project Frontend --configuration production
       - name: Login to GHCR
         run: |
           echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u eliasdhcom --password-stdin
-      - name: Generate Frontend Metadata
-        id: meta-frontend
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/eliasdhcom/eliasdhcom-frontend
-          tags: |
-            type=sha,prefix=sha-,format=short
-            type=raw,value=latest,enable={{is_default_branch}}
-          labels: |
-            org.opencontainers.image.title=Frontend
-            org.opencontainers.image.vendor=EliasDH
-            org.opencontainers.image.url=https://eliasdh.com
-      - name: Generate Backend Metadata
-        id: meta-backend
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/eliasdhcom/eliasdhcom-backend
-          tags: |
-            type=sha,prefix=sha-,format=short
-            type=raw,value=latest,enable={{is_default_branch}}
-          labels: |
-            org.opencontainers.image.title=Backend
-            org.opencontainers.image.vendor=EliasDH
-            org.opencontainers.image.url=https://eliasdh.com
-      - name: Generate Services Watcher Metadata
-        id: meta-services-watcher
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/eliasdhcom/eliasdhcom-services-watcher
-          tags: |
-            type=sha,prefix=sha-,format=short
-            type=raw,value=latest,enable={{is_default_branch}}
-          labels: |
-            org.opencontainers.image.title=Services Watcher
-            org.opencontainers.image.vendor=EliasDH
-            org.opencontainers.image.url=https://eliasdh.com
-      - name: Build & Push Frontend Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./App/Frontend
-          push: true
-          tags: ${{ steps.meta-frontend.outputs.tags }}
-          labels: ${{ steps.meta-frontend.outputs.labels }}
-      - name: Build & Push Backend Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./App/Backend
-          push: true
-          tags: ${{ steps.meta-backend.outputs.tags }}
-          labels: ${{ steps.meta-backend.outputs.labels }}
-      - name: Build & Push Services Watcher Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./App/Services/Watcher
-          push: true
-          tags: ${{ steps.meta-services-watcher.outputs.tags }}
-          labels: ${{ steps.meta-services-watcher.outputs.labels }}
+      - name: Build/Push Frontend Docker Image
+        run: |
+          docker build --push -t ghcr.io/eliasdhcom/eliasdhcom-frontend:latest ./App/Frontend
+      - name: Build/Push Backend Docker Image
+        run: |
+            docker build --push -t ghcr.io/eliasdhcom/eliasdhcom-backend:latest ./App/Backend
