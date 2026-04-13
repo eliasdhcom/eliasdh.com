@@ -73,6 +73,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     private readonly vatRate: number = 0.21;
     private readonly hostingPrices = {
         basic: { monthly: 20, yearly: 220 },
+        growth: { monthly: 40, yearly: 440 },
         startup: { monthly: 80, yearly: 880 },
         business: { monthly: 160, yearly: 1760 },
         enterprise: { monthly: 320, yearly: 3520 }
@@ -383,7 +384,7 @@ export class IndexComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    getHostingPlanPrice(plan: 'basic' | 'startup' | 'business' | 'enterprise'): string {
+    getHostingPlanPrice(plan: 'basic' | 'growth' | 'startup' | 'business' | 'enterprise'): string {
         const selectedPrice = this.isYearlyPricing ? this.hostingPrices[plan].yearly : this.hostingPrices[plan].monthly;
         const finalPrice = this.isVatIncludedPricing ? selectedPrice * (1 + this.vatRate) : selectedPrice;
         const periodKey = this.isYearlyPricing ? 'INDEX.PRICING-PERIOD-YEAR' : 'INDEX.PRICING-PERIOD-MONTH';
