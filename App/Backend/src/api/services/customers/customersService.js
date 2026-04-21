@@ -152,19 +152,6 @@ const mockCustomers = [
         ],
         latitude: 51.1579064,
         longitude: 4.5154518
-    },
-    {
-        id: '9',
-        name: 'Kinepraktijk Borsbeek Duynslaeger',
-        socialLinks: [], // No social media links available.
-        address: 'de Robianostraat 63, 2150 Antwerpen, Belgium',
-        vat: 'BE0000000000',
-        logo: 'kinepraktijkborsbeekduynslaeger-logo.png',
-        websites: [
-            { subscriptionType: 'Basic', url: 'https://kinepraktijkborsbeek.be', name: 'Kinepraktijk Borsbeek Duynslaeger Website' }
-        ],
-        latitude: 51.1941335,
-        longitude: 4.4841747
     }
 ];
 
