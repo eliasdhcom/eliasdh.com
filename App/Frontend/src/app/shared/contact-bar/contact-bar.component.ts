@@ -4,7 +4,7 @@
     * @since 01/01/2025
 **/
 
-import { Component, OnInit, HostListener, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -21,7 +21,6 @@ import { LanguageService } from '../../services/language.service';
 export class ContactBarComponent implements OnInit {
     dropdownOpen: boolean = false;
     currentLanguage: string = 'en';
-    @ViewChild('languageDropdown') languageDropdown?: ElementRef;
 
     settingsConfig = {
         languages: [
@@ -51,17 +50,18 @@ export class ContactBarComponent implements OnInit {
         this.dropdownOpen = false;
     }
 
-    toggleDropdown() {
+    toggleDropdown(event: Event) {
+        event.stopPropagation();
         this.dropdownOpen = !this.dropdownOpen;
     }
 
     @HostListener('document:click', ['$event'])
-    onDocumentClick(event: MouseEvent): void {
-        if (this.dropdownOpen) {
-            const clickedInside = this.elementRef.nativeElement.contains(event.target);
-            if (!clickedInside) {
-                this.dropdownOpen = false;
-            }
+    onDocumentClick(event: Event): void {
+        const clickTarget = event.target as HTMLElement;
+        const isClickInsideDropdown = this.elementRef.nativeElement.contains(clickTarget);
+        
+        if (!isClickInsideDropdown && this.dropdownOpen) {
+            this.dropdownOpen = false;
         }
     }
 }
