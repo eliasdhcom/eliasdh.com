@@ -19,7 +19,7 @@ import es from '../assets/i18n/es.json';
 
 class ServerTranslateLoader implements TranslateLoader {
     getTranslation(lang: string): Observable<TranslationObject> {
-        const translations: Record<string, TranslationObject> = { nl, fr, en, de };
+        const translations: Record<string, TranslationObject> = { nl, fr, en, de, es };
         return of(translations[lang] ?? nl);
     }
 }
