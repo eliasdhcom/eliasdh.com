@@ -20,6 +20,18 @@ export function app(): express.Express {
 
     server.set('view engine', 'html');
     server.set('views', browserDistFolder);
+
+    server.use('/assets/includes/', (req, res, next) => {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+        res.header('Cache-Control', 'public, max-age=86400');
+        if (req.method === 'OPTIONS') {
+            return res.sendStatus(200);
+        }
+        return next();
+    });
+
     server.get('**', express.static(browserDistFolder, {
         maxAge: '1y',
         index: false,
