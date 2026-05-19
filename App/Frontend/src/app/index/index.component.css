@@ -809,7 +809,6 @@
     line-height: 1.6;
     flex: 1;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -1425,7 +1424,6 @@
 
     .index-reviews-quote {
         font-size: 12px;
-        -webkit-line-clamp: 4;
     }
 
     .index-services-container {
@@ -1615,7 +1613,6 @@
 
     .index-reviews-quote {
         font-size: 12px;
-        -webkit-line-clamp: 4;
     }
 
     .index-reviews-name {

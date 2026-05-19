@@ -3,21 +3,35 @@
 # @see https://eliasdh.com #
 # @since 01/01/2025        #
 ############################
-# Frontend build
-FROM nginx:alpine
+# Stage 1: build backend
+FROM node:20-alpine AS builder
 
 LABEL maintainer="EliasDH"
 LABEL version="1.0"
 LABEL description="This is the frontend image for the app."
 LABEL org.opencontainers.image.description="This is the frontend image for the app."
 
-COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY ./default.conf /etc/nginx/conf.d/default.conf
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
 
-COPY ./robots.txt /usr/share/nginx/html/robots.txt
-COPY ./sitemap.xml /usr/share/nginx/html/sitemap.xml
-COPY ./dist/frontend/browser /usr/share/nginx/html
+# Stage 2: Run backend
+FROM node:20-alpine
 
-EXPOSE 8080
+LABEL maintainer="EliasDH"
+LABEL version="1.0"
+LABEL description="This is the frontend image for the app."
+LABEL org.opencontainers.image.description="This is the frontend image for the app."
 
-CMD ["nginx", "-g", "daemon off;"]
+WORKDIR /app
+COPY --from=builder /app/dist /app/dist
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+ENV NODE_ENV=production
+ENV PORT=4000
+
+EXPOSE 4000
+CMD ["node", "dist/frontend/server/server.mjs"]

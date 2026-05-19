@@ -6,25 +6,26 @@
 
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { Title } from '@angular/platform-browser';
-import { importProvidersFrom } from "@angular/core";
-import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
-import { HttpLoaderFactory } from "../main";
+import { Title, Meta, provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { ApplicationConfig } from "@angular/core";
+import { HttpClient, provideHttpClient, withFetch } from "@angular/common/http";
+import { TranslateLoader, provideTranslateService } from "@ngx-translate/core";
+import { HttpLoaderFactory } from "../translate-loader";
 
-export const appConfig = {
+export const appConfig: ApplicationConfig = {
     providers: [
         provideRouter(routes),
-        importProvidersFrom(
-            HttpClientModule,
-            TranslateModule.forRoot({
-                loader: {
-                    provide: TranslateLoader,
-                    useFactory: HttpLoaderFactory,
-                    deps: [HttpClient]
-                }
-            })
-        ),
-        { provide: Title, useValue: 'EliasDH' }
+        provideHttpClient(withFetch()),
+        provideClientHydration(withEventReplay()),
+        provideTranslateService({
+            defaultLanguage: 'nl',
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        Title,
+        Meta
     ]
 };
