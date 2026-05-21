@@ -124,6 +124,21 @@ const mockCustomers = [
     },
     {
         id: '7',
+        name: 'Zizis',
+        socialLinks: [
+            { type: "instagram", url: "https://www.instagram.com/hairfashionzizis" },
+        ],
+        address: 'Provinciesteenweg 557, 2530 Boechout, Belgium',
+        vat: 'BE0000000000',
+        logo: 'zizis-logo.png',
+        websites: [
+            { subscriptionType: 'Basic', url: 'https://zizis.be', name: 'Zizis Website' }
+        ],
+        latitude: 51.1579064,
+        longitude: 4.5154518
+    },
+    {
+        id: '8',
         name: 'Bistro Theo',
         socialLinks: [
             { type: "instagram", url: "https://www.instagram.com/bistrotheo/" },
@@ -139,20 +154,21 @@ const mockCustomers = [
         longitude: 4.3998624
     },
     {
-        id: '8',
-        name: 'Zizis',
+        id: '9',
+        name: 'Slagerij Decruyenaere',
         socialLinks: [
-            { type: "instagram", url: "https://www.instagram.com/hairfashionzizis" },
+            { type: "instagram", url: "https://www.instagram.com/slagerijdc" },
+            { type: "facebook", url: "https://www.facebook.com/slagerijDC" }
         ],
-        address: 'Provinciesteenweg 557, 2530 Boechout, Belgium',
-        vat: 'BE0000000000',
-        logo: 'zizis-logo.png',
+        address: 'Antwerpsestraat 19, 2640 Mortsel, Belgium',
+        vat: 'BE0441729882',
+        logo: 'slagerijdecruyenaere-logo.png',
         websites: [
-            { subscriptionType: 'Basic', url: 'https://zizis.be', name: 'Zizis Website' }
+            { subscriptionType: 'Basic', url: 'https://slagerijdecruyenaere.be', name: 'Slagerij Decruyenaere Website' }
         ],
-        latitude: 51.1579064,
-        longitude: 4.5154518
-    }
+        latitude: 51.1710583,
+        longitude: 4.4480734
+    },
 ];
 
 class CustomersService {

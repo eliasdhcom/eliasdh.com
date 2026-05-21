@@ -142,10 +142,13 @@ export class IndexComponent implements OnInit, OnDestroy {
         { name: 'Level Up', logo: 'assets/media/images/trusted-clients/levelup-logo.png', url: 'https://www.levelup.be' },
         { name: 'Zizis', logo: 'assets/media/images/trusted-clients/zizis-logo.png', url: 'https://www.zizis.be' },
         { name: 'Bistro Theo', logo: 'assets/media/images/trusted-clients/bistrotheo-logo.png', url: 'https://www.bistrotheo.be' },
+        { name: 'Slagerij Decruyenaere', logo: 'assets/media/images/trusted-clients/slagerijdecruyenaere-logo.png', url: 'https://www.slagerijdecruyenaere.be' },
+
         { name: 'Ter Eiken', logo: 'assets/media/images/trusted-clients/tereiken-logo.png', url: 'https://www.tereiken.be' },
         { name: 'Level Up', logo: 'assets/media/images/trusted-clients/levelup-logo.png', url: 'https://www.levelup.be' },
         { name: 'Zizis', logo: 'assets/media/images/trusted-clients/zizis-logo.png', url: 'https://www.zizis.be' },
         { name: 'Bistro Theo', logo: 'assets/media/images/trusted-clients/bistrotheo-logo.png', url: 'https://www.bistrotheo.be' },
+        { name: 'Slagerij Decruyenaere', logo: 'assets/media/images/trusted-clients/slagerijdecruyenaere-logo.png', url: 'https://www.slagerijdecruyenaere.be' },
     ];
 
     clientsTranslateX: number = 0;
