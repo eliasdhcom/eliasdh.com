@@ -170,6 +170,10 @@
     "TRANSLATE44-1": "You can remove cookies stored on your computer via your browser settings. Alternatively, you can control some 3rd party cookies by using a privacy enhancement platform such as ",
     "TRANSLATE44-2": " or ",
     "TRANSLATE44-3": "For more information about cookies, visit",
+    "TRANSLATE47": "Data collection via Google Analytics",
+    "TRANSLATE48": "We use Google Analytics, a web analytics service provided by Google LLC. Google Analytics places cookies on your device to collect information about how you use our website.",
+    "TRANSLATE49": "Through Google Analytics, we collect, among other things, the following data: IP address (anonymized), pages visited, duration of visit, device and browser information, and geographic location (at country level).",
+    "TRANSLATE50": "You can prevent the use of Google Analytics by installing the Google Analytics Opt-out Browser Add-on or by adjusting your browser settings. For more information, see Google's privacy policy.",
     "TRANSLATE45": "Changes to this Privacy Policy",
     "TRANSLATE46": "We reserve the right to make changes to this Privacy Policy."
   },
