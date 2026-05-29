@@ -74,30 +74,10 @@
                             </span>
                         </div>
                     </div>
-                    <div class="subscriptions-price-block">
-                        <div class="subscriptions-price-row">
-                            <span class="subscriptions-price-label">Basisprijs</span>
-                            <span class="subscriptions-price-value">{{formatCurrency(getPeriodPayment(sub))}}</span>
-                        </div>
-                        <div class="subscriptions-price-row subscriptions-price-row--discount">
-                            <span class="subscriptions-price-label">Korting</span>
-                            <span class="subscriptions-price-value">−{{formatCurrency(getPeriodDiscount(sub))}}</span>
-                        </div>
-                        <div class="subscriptions-price-row">
-                            <span class="subscriptions-price-label">Subtotaal</span>
-                            <span class="subscriptions-price-value">{{formatCurrency(getSubtotal(sub))}}</span>
-                        </div>
-                        <div class="subscriptions-price-divider"></div>
-                        <div class="subscriptions-price-row subscriptions-price-row--vat">
-                            <span class="subscriptions-price-label">BTW (21%)</span>
-                            <span class="subscriptions-price-value">{{formatCurrency(getVat(sub))}}</span>
-                        </div>
-                        <div class="subscriptions-price-divider"></div>
-                        <div class="subscriptions-price-row subscriptions-price-row--total">
-                            <span class="subscriptions-price-label">Totaal</span>
-                            <span class="subscriptions-price-value">{{formatCurrency(getTotal(sub))}}</span>
-                        </div>
-                    </div>
+                    <span class="subscriptions-total-chip">
+                        {{formatCurrency(getTotal(sub))}}
+                        <span class="subscriptions-total-chip-freq">/{{getFrequencyShort(sub.frequency)}}</span>
+                    </span>
                 </div>
             </div>
         </div>

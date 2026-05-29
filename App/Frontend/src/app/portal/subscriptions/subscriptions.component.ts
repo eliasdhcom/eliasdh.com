@@ -135,25 +135,15 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
         this.filterLive = filter;
     }
 
-    getMultiplier(freq: string): number {
-        if (freq === 'yearly') return 12;
-        if (freq === 'quarterly') return 3;
-        return 1;
-    }
-
-    getPeriodPayment(s: FlatSubscription): number { return s.payment * this.getMultiplier(s.frequency); }
-    getPeriodDiscount(s: FlatSubscription): number { return s.discount * this.getMultiplier(s.frequency); }
-
-    getSubtotal(s: FlatSubscription): number {
-        return (s.subtotal ?? Math.max(0, s.payment - s.discount)) * this.getMultiplier(s.frequency);
-    }
-    getVat(s: FlatSubscription): number {
-        const monthlySub = s.subtotal ?? Math.max(0, s.payment - s.discount);
-        return (s.vat ?? monthlySub * VAT_RATE) * this.getMultiplier(s.frequency);
-    }
     getTotal(s: FlatSubscription): number {
-        const monthlySub = s.subtotal ?? Math.max(0, s.payment - s.discount);
-        return (s.total ?? monthlySub * (1 + VAT_RATE)) * this.getMultiplier(s.frequency);
+        const sub = s.subtotal ?? Math.max(0, s.payment - s.discount);
+        const multiplier = s.frequency === 'yearly' ? 12 : s.frequency === 'quarterly' ? 3 : 1;
+        return (s.total ?? sub * (1 + VAT_RATE)) * multiplier;
+    }
+
+    getFrequencyShort(freq: string): string {
+        const labels: Record<string, string> = { 'monthly': 'mnd', 'quarterly': 'kw', 'yearly': 'jaar', 'one-time': 'eenmalig' };
+        return labels[freq] ?? freq;
     }
 
     formatCurrency(amount: number): string {

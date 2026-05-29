@@ -304,16 +304,22 @@
     white-space: nowrap;
 }
 
-.subscriptions-price-block {
+.subscriptions-total-chip {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    min-width: 160px;
-    background: rgba(128, 128, 128, 0.04);
-    border: 1px solid rgba(128, 128, 128, 0.1);
-    border-radius: 8px;
-    padding: 10px 14px;
+    align-items: baseline;
+    gap: 2px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
     flex-shrink: 0;
+    align-self: center;
+}
+
+.subscriptions-total-chip-freq {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--secondary);
 }
 
 .subscriptions-card--highlighted {
@@ -386,46 +392,6 @@
     white-space: nowrap;
 }
 
-.subscriptions-price-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-}
-
-.subscriptions-price-label {
-    font-size: 11px;
-    color: var(--secondary);
-    white-space: nowrap;
-}
-
-.subscriptions-price-value {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text);
-    white-space: nowrap;
-}
-
-.subscriptions-price-row--discount .subscriptions-price-value {
-    color: #10b981;
-}
-
-.subscriptions-price-row--vat .subscriptions-price-value {
-    color: var(--secondary);
-}
-
-.subscriptions-price-row--total .subscriptions-price-label,
-.subscriptions-price-row--total .subscriptions-price-value {
-    font-weight: 700;
-    font-size: 13px;
-    color: var(--text);
-}
-
-.subscriptions-price-divider {
-    height: 1px;
-    background: rgba(128, 128, 128, 0.12);
-    margin: 2px 0;
-}
 /* Subscriptions */
 
 /* Media Queries */
@@ -445,17 +411,6 @@
         padding: 12px;
     }
 
-    .subscriptions-price-block {
-        flex: 1 1 100%;
-        max-width: 100%;
-        min-width: 0;
-        box-sizing: border-box;
-        padding: 10px 12px;
-    }
-
-    .subscriptions-price-row {
-        gap: 10px;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {
