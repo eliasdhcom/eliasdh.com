@@ -11,7 +11,6 @@ import { LegalGuidelinesComponent } from './legalguidelines/legalguidelines.comp
 import { DomainRentedComponent } from './domainrented/domainrented.component';
 import { AccessDeniedComponent } from './accessdenied/accessdenied.component';
 import { NotFoundComponent } from './notfound/notfound.component';
-import { FuckYouComponent } from './fuckyou/fuckyou.component';
 import { MapComponent } from './map/map.component';
 import { StatusComponent } from './status/status.component';
 import { BlogComponent } from './blog/blog.component';
@@ -119,16 +118,6 @@ export const routes: Routes = [
             title: 'EliasDH - Not Found', 
             description: 'Page not found. The page you are looking for does not exist on EliasDH.',
             canonical: 'https://eliasdh.com/404',
-            robots: 'noindex, nofollow'
-        } 
-    },
-    { 
-        path: 'fuckyou', 
-        component: FuckYouComponent, 
-        data: { 
-            title: 'EliasDH - Fuck You', 
-            description: 'EliasDH - Special page.',
-            canonical: 'https://eliasdh.com/fuckyou',
             robots: 'noindex, nofollow'
         } 
     },

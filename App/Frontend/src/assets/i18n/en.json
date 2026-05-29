@@ -219,12 +219,6 @@
     "TRANSLATE2": "This domain is owned and managed by the EliasDH Team.",
     "TRANSLATE3": "For more information, please contact us at "
   },
-  "ACCESSDENIED": {
-    "TRANSLATE1": "403 Page"
-  },
-  "NOTFOUND": {
-    "TRANSLATE1": "The page you are looking for might have been removed, had its name changed or is temporarily unavailable."
-  },
   "BLOG": {
     "TRANSLATE1": "Blog",
     "TRANSLATE2": "Back",

@@ -38,37 +38,4 @@
     overflow: visible;
     position: absolute;
 }
-
-.notfound-textbox {
-    fill:var(--accent);
-    width: 200px;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    text-align: center;
-}
-
-.notfound-text {
-    font-size: 16px;
-    font-weight: 900;
-    width: 200px;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    text-align: center;
-}
 /* Not Found */
-
-/* Media Queries */
-@media (max-width: 375px) {
-    .notfound-textbox {
-        top: 25%;
-    }
-
-    .notfound-text {
-        top: 20%;
-    }
-}
-/* Media Queries */

@@ -219,12 +219,6 @@
     "TRANSLATE2": "Ce domaine est détenu et géré par l'équipe EliasDH.",
     "TRANSLATE3": "Pour plus d'informations, veuillez nous contacter à "
   },
-  "ACCESSDENIED": {
-    "TRANSLATE1": "Page 403"
-  },
-  "NOTFOUND": {
-    "TRANSLATE1": "La page que vous recherchez a peut-être été supprimée, son nom a été modifié ou elle est temporairement indisponible."
-  },
   "BLOG": {
     "TRANSLATE1": "Blog",
     "TRANSLATE2": "Retour",

@@ -218,12 +218,6 @@
     "TRANSLATE2": "Diese Domain gehört und wird vom EliasDH-Team verwaltet.",
     "TRANSLATE3": "Für weitere Informationen kontaktieren Sie uns bitte unter "
   },
-  "ACCESSDENIED": {
-    "TRANSLATE1": "403 Seite"
-  },
-  "NOTFOUND": {
-    "TRANSLATE1": "Die Seite, die Sie suchen, wurde möglicherweise entfernt, hat ihren Namen geändert oder ist vorübergehend nicht verfügbar."
-  },
   "BLOG": {
     "TRANSLATE1": "Blog",
     "TRANSLATE2": "Zurück",
