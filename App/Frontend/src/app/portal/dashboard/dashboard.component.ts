@@ -13,12 +13,15 @@ import { PortalSubscriptionsComponent } from '../subscriptions/subscriptions.com
 import { PortalInvoicesComponent } from '../invoices/invoices.component';
 import { PortalOverviewComponent } from '../overview/overview.component';
 import { PortalAnalysisComponent } from '../analysis/analysis.component';
+import { PortalUsersComponent } from '../users/users.component';
+import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-    imports: [CommonModule, SharedModule, PortalOverviewComponent, PortalCustomersComponent, PortalSubscriptionsComponent, PortalInvoicesComponent, PortalAnalysisComponent],
+    imports: [CommonModule, SharedModule, PortalOverviewComponent, PortalCustomersComponent, PortalSubscriptionsComponent, PortalInvoicesComponent, PortalAnalysisComponent, PortalUsersComponent],
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css']
 })
@@ -30,12 +33,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
     highlightedSubscriptionId: string | null = null;
     private destroy$ = new Subject<void>();
 
-    user: AuthUser = { firstName: '', lastName: '', email: '', role: '', company: '', phone: '', street: '', houseNumber: '', postalCode: '', city: '', country: '', birthDate: '' };
+    user:       AuthUser = { firstName: '', lastName: '', email: '', role: '', company: '', phone: '', birthDate: '' };
+    userAvatar: string | null = null;
 
-    constructor(private authService: AuthService) {}
+    constructor(private authService: AuthService, private usersService: UsersService) {}
 
     ngOnInit(): void {
-        this.user = this.authService.getUser() ?? { firstName: 'Unknown', lastName: '', email: '', role: '', company: '', phone: '', street: '', houseNumber: '', postalCode: '', city: '', country: '', birthDate: '' };
+        this.user = this.authService.getUser() ?? { firstName: 'Unknown', lastName: '', email: '', role: '', company: '', phone: '', birthDate: '' };
+        if (this.user.id) {
+            this.usersService.getUserById(this.user.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({ next: r => {
+                    if (r.data) {
+                        this.userAvatar      = r.data.avatar    ?? null;
+                        this.user.role       = r.data.role      || this.user.role;
+                        this.user.firstName  = r.data.firstName || this.user.firstName;
+                        this.user.lastName   = r.data.lastName  || this.user.lastName;
+                        this.user.company    = r.data.company   || this.user.company;
+                        this.user.phone      = r.data.phone     || this.user.phone;
+                    }
+                }});
+        }
+        this.usersService.avatarUpdated$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(({ id, avatar }) => {
+                if (id === this.user.id) this.userAvatar = avatar;
+            });
     }
 
     ngOnDestroy(): void {
@@ -79,12 +102,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return ((this.user.firstName?.[0] ?? '') + (this.user.lastName?.[0] ?? '')).toUpperCase();
     }
 
+    getRoleClass(role: string): string {
+        const r = (role ?? '').toLowerCase();
+        if (r === 'admin')    return 'role--admin';
+        if (r === 'employee') return 'role--employee';
+        return 'role--customer';
+    }
+
     getViewTitle(): string {
         const titles: Record<string, string> = {
             overview:      'Overview',
             customers:     'Customers',
             subscriptions: 'Subscriptions',
             invoices:      'Invoices',
+            users:         'Users',
             analysis:      'Analysis',
             settings:      'Settings'
         };

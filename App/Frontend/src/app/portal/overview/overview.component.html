@@ -94,7 +94,7 @@
                         </svg>
                         Maandelijkse omzet {{currentYear}}
                     </h3>
-                    <span class="overview-card-sub">Incl. BTW · grijs = toekomst</span>
+                    <span class="overview-card-sub">Incl. BTW · grijs = toekomst · huidig: groen = betaald, rood = open</span>
                 </div>
                 <div class="overview-chart-wrap">
                     <div class="overview-chart-y-labels">
@@ -111,7 +111,11 @@
                         <div class="overview-chart-bars">
                             <div class="overview-bar-col" *ngFor="let bar of monthBars">
                                 <div class="overview-bar-track">
-                                    <div class="overview-bar" [class.overview-bar--past]="bar.isPast" [class.overview-bar--current]="bar.isCurrent" [class.overview-bar--future]="bar.isFuture" [style.height.%]="getBarHeight(bar.amount)" [title]="bar.label + ': ' + formatCurrencyFull(bar.amount)">
+                                    <div *ngIf="!bar.isCurrent" class="overview-bar" [class.overview-bar--past]="bar.isPast" [class.overview-bar--future]="bar.isFuture" [style.height.%]="getBarHeight(bar.amount)" [title]="bar.label + ': ' + formatCurrencyFull(bar.amount)">
+                                    </div>
+                                    <div *ngIf="bar.isCurrent" class="overview-bar overview-bar--stacked" [style.height.%]="getBarHeight(bar.amount)" [title]="bar.label + ' — Betaald: ' + formatCurrencyFull(bar.paidAmount) + ' · Openstaand: ' + formatCurrencyFull(bar.outstandingAmount)">
+                                        <div class="overview-bar-sub overview-bar-sub--outstanding" [style.flex]="bar.outstandingAmount"></div>
+                                        <div class="overview-bar-sub overview-bar-sub--paid" [style.flex]="bar.paidAmount"></div>
                                     </div>
                                 </div>
                                 <span class="overview-bar-label">{{bar.label}}</span>

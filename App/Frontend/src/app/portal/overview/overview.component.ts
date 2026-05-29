@@ -7,12 +7,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CustomersService, Customer, SubscriptionFrequency } from '../../services/customers.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { InvoicesService, InvoiceStatus } from '../../services/invoices.service';
+import { Subject, forkJoin, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
 
 interface MonthBar {
     label: string;
     amount: number;
+    paidAmount: number;
+    outstandingAmount: number;
     isPast: boolean;
     isCurrent: boolean;
     isFuture: boolean;
@@ -58,7 +61,10 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    constructor(private customersService: CustomersService) {}
+    constructor(
+        private customersService: CustomersService,
+        private invoicesService: InvoicesService
+    ) {}
 
     ngOnInit(): void  { this.loadData(); }
     ngOnDestroy(): void {
@@ -68,15 +74,23 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
 
     loadData(): void {
         this.loading = true;
-        this.customersService.getAllCustomers()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (r) => { this.computeStats(r.data ?? []); this.loading = false; },
-                error: ()  => { this.loading = false; }
-            });
+        forkJoin({
+            customers: this.customersService.getAllCustomers(),
+            statuses:  this.invoicesService.getAllStatuses().pipe(
+                catchError(() => of({ success: true, data: [] as InvoiceStatus[] }))
+            )
+        })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+            next: ({ customers, statuses }) => {
+                this.computeStats(customers.data ?? [], statuses.data ?? []);
+                this.loading = false;
+            },
+            error: () => { this.loading = false; }
+        });
     }
 
-    private computeStats(customers: Customer[]): void {
+    private computeStats(customers: Customer[], invoiceStatuses: InvoiceStatus[]): void {
         const now          = new Date();
         const currentYear  = now.getFullYear();
         const currentMonth = now.getMonth();
@@ -107,7 +121,7 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
                 if (website.frequency === 'one-time') continue;
                 const isFree = this.isFreeOrTodo(website.subscriptionType);
                 if (website.payment > 0 && !isFree) {
-                    const subtotal = website.subtotal ?? Math.max(0, website.payment - website.discount);
+                    const subtotal = Math.max(0, website.payment - website.discount);
                     mrrTotal += subtotal * (1 + VAT_RATE);
                 }
             }
@@ -115,16 +129,23 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         this.mrr = mrrTotal;
         this.arr = mrrTotal * 12;
 
-        const currentMonthStart = new Date(currentYear, currentMonth, 1);
-        const monthlyMap = new Map<string, number>();
+        const paidKeys = new Set(
+            invoiceStatuses
+                .filter(s => s.paid)
+                .map(s => `${s.customerId}_${s.subscriptionId}_${s.periodStart}_${s.invoiceType}`)
+        );
+
+        const monthlyMap     = new Map<string, number>();
+        const monthlyPaidMap = new Map<string, number>();
         let paid = 0, paidCnt = 0, outstanding = 0, outstandingCnt = 0;
 
-        const addInvoice = (start: Date, amount: number) => {
-            const key = `${start.getFullYear()}-${start.getMonth()}`;
-            monthlyMap.set(key, (monthlyMap.get(key) ?? 0) + amount);
-            if (start < currentMonthStart) {
+        const addInvoice = (invoiceKey: string, start: Date, amount: number) => {
+            const monthKey = `${start.getFullYear()}-${start.getMonth()}`;
+            monthlyMap.set(monthKey, (monthlyMap.get(monthKey) ?? 0) + amount);
+            if (paidKeys.has(invoiceKey)) {
                 paid += amount;
                 paidCnt++;
+                monthlyPaidMap.set(monthKey, (monthlyPaidMap.get(monthKey) ?? 0) + amount);
             } else {
                 outstanding += amount;
                 outstandingCnt++;
@@ -137,17 +158,19 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
                 const isFree = this.isFreeOrTodo(website.subscriptionType);
 
                 if (website.payment > 0 && !isFree) {
-                    const m   = this.getMultiplier(website.frequency);
-                    const ms  = website.subtotal ?? Math.max(0, website.payment - website.discount);
-                    const amt = (website.total ?? ms * (1 + VAT_RATE)) * m;
+                    const m       = this.getMultiplier(website.frequency);
+                    const subtotal = Math.max(0, website.payment - website.discount);
+                    const amt     = subtotal * (1 + VAT_RATE) * m;
                     for (const { start } of this.getBillingPeriods(website.startDate, website.frequency, endDate)) {
-                        addInvoice(start, amt);
+                        const k = `${customer.id}_${website.id}_${start.toISOString()}_subscription`;
+                        addInvoice(k, start, amt);
                     }
                 }
 
                 if (!isFree) {
                     for (const { start } of this.getBillingPeriods(website.startDate, 'yearly', endDate)) {
-                        addInvoice(start, DOMAIN_VAT);
+                        const k = `${customer.id}_${website.id}_${start.toISOString()}_domain`;
+                        addInvoice(k, start, DOMAIN_VAT);
                     }
                 }
             }
@@ -160,13 +183,19 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         this.totalInvoicedAmount = paid + outstanding;
         this.totalInvoiceCount   = paidCnt + outstandingCnt;
 
-        this.monthBars = MONTH_LABELS.map((label, m) => ({
-            label,
-            amount: monthlyMap.get(`${currentYear}-${m}`) ?? 0,
-            isPast:    m < currentMonth,
-            isCurrent: m === currentMonth,
-            isFuture:  m > currentMonth
-        }));
+        this.monthBars = MONTH_LABELS.map((label, m) => {
+            const total = monthlyMap.get(`${currentYear}-${m}`) ?? 0;
+            const paidM = monthlyPaidMap.get(`${currentYear}-${m}`) ?? 0;
+            return {
+                label,
+                amount:          total,
+                paidAmount:      paidM,
+                outstandingAmount: Math.max(0, total - paidM),
+                isPast:    m < currentMonth,
+                isCurrent: m === currentMonth,
+                isFuture:  m > currentMonth
+            };
+        });
         this.chartMax = Math.max(...this.monthBars.map(b => b.amount), 1);
 
         const typeMap     = new Map<string, number>();
@@ -177,13 +206,25 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
             if (w.isLive) typeLiveMap.set(t, (typeLiveMap.get(t) ?? 0) + 1);
         }
         this.typeStats = Array.from(typeMap.entries())
-            .sort((a, b) => b[1] - a[1])
             .map(([type, count]) => ({
                 type,
                 count,
                 liveCount: typeLiveMap.get(type) ?? 0,
                 cssClass: this.getTypeClass(type)
             }));
+
+        const coveredKeywords = new Set<string>();
+        for (const s of this.typeStats) {
+            for (const kw of this.STANDARD_TYPES.map(t => t.label.toLowerCase())) {
+                if (s.type.toLowerCase().includes(kw)) coveredKeywords.add(kw);
+            }
+        }
+        for (const { label, cssClass } of this.STANDARD_TYPES) {
+            if (!coveredKeywords.has(label.toLowerCase())) {
+                this.typeStats.push({ type: label, count: 0, liveCount: 0, cssClass });
+            }
+        }
+        this.typeStats.sort((a, b) => this.getTypeOrder(a.type) - this.getTypeOrder(b.type));
     }
 
     private isFreeOrTodo(type: string): boolean {
@@ -230,6 +271,26 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
             if (periodStart <= endDate) periods.push({ start: periodStart, end: periodEnd });
         }
         return periods;
+    }
+
+    private readonly STANDARD_TYPES: { label: string; cssClass: string }[] = [
+        { label: 'Free',       cssClass: 'overview-badge--free'        },
+        { label: 'Basic',      cssClass: 'overview-badge--basic'       },
+        { label: 'Startup',    cssClass: 'overview-badge--startup'     },
+        { label: 'Growth',     cssClass: 'overview-badge--growth'      },
+        { label: 'Business',   cssClass: 'overview-badge--business'   },
+        { label: 'Enterprise', cssClass: 'overview-badge--enterprise' },
+        { label: 'Todo',       cssClass: 'overview-badge--todo'        },
+    ];
+
+    private readonly TYPE_ORDER = ['free', 'basic', 'startup', 'growth', 'business', 'enterprise', 'todo'];
+
+    private getTypeOrder(type: string): number {
+        const t = type.toLowerCase();
+        for (let i = 0; i < this.TYPE_ORDER.length; i++) {
+            if (t.includes(this.TYPE_ORDER[i])) return i;
+        }
+        return this.TYPE_ORDER.length;
     }
 
     private getTypeClass(type: string): string {

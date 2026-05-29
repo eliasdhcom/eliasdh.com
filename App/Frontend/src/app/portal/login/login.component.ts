@@ -117,14 +117,14 @@ export class LoginComponent implements OnInit, OnDestroy {
         return emailRegex.test(email);
     }
 
-    onLogin(): void {
+    async onLogin(): Promise<void> {
         if (this.loginForm.invalid) return;
 
         this.submitting = true;
         this.loginError = '';
 
         const { email, password } = this.loginForm.value;
-        const success = this.authService.login(email, password);
+        const success = await this.authService.login(email, password);
 
         if (success) {
             this.router.navigate(['/dashboard']);

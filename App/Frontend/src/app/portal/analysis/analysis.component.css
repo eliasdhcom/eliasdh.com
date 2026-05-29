@@ -190,25 +190,11 @@
     gap: 4px;
 }
 
-.analysis-costs-header {
-    display: grid;
-    grid-template-columns: 1fr 90px 130px 110px 100px 36px;
-    gap: 8px;
-    padding: 0 8px 6px;
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    border-bottom: 1px solid rgba(128,128,128,.12);
-}
-
 .analysis-costs-row {
-    display: grid;
-    grid-template-columns: 1fr 90px 130px 110px 100px 36px;
-    gap: 8px;
-    align-items: center;
-    padding: 4px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px 8px;
     border-radius: 7px;
     transition: background .15s;
 }
@@ -216,6 +202,23 @@
 .analysis-costs-row:hover {
     background: rgba(128,128,128,.05);
 }
+
+.analysis-input--name {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.analysis-costs-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.analysis-costs-controls .analysis-select--type { flex: 0 0 100px; }
+.analysis-costs-controls .analysis-select--freq { flex: 0 0 130px; }
+.analysis-costs-controls .analysis-input--amount { flex: 0 0 100px; text-align: right; }
+.analysis-costs-controls .analysis-costs-annual  { flex: 1; text-align: right; white-space: nowrap; }
+.analysis-costs-controls .analysis-btn-remove    { flex-shrink: 0; }
 
 .analysis-input {
     background: rgba(128,128,128,.07);
@@ -249,7 +252,6 @@
     color: var(--text);
     font-family: inherit;
     outline: none;
-    cursor: pointer;
     width: 100%;
     transition: border-color .15s;
 }
@@ -436,28 +438,25 @@
     }
 }
 
-@media (max-width: 860px) {
-    .analysis-costs-header,
-    .analysis-costs-row {
-        grid-template-columns: 1fr 80px 110px 90px 90px 36px;
-    }
-}
-
 @media (max-width: 700px) {
     .analysis-period-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    .analysis-costs-header {
-        display: none;
+    .analysis-section-header {
+        flex-direction: column;
+        align-items: flex-start;
     }
-    .analysis-costs-row {
-        grid-template-columns: 1fr 80px 36px;
+    .analysis-costs-controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr 36px;
         grid-template-rows: auto auto;
+        gap: 5px 8px;
     }
-    .analysis-costs-row .analysis-input--amount,
-    .analysis-costs-row .analysis-costs-annual {
-        display: none;
-    }
+    .analysis-costs-controls .analysis-select--type  { grid-column: 1; grid-row: 1; flex: unset; }
+    .analysis-costs-controls .analysis-select--freq  { grid-column: 2; grid-row: 1; flex: unset; }
+    .analysis-costs-controls .analysis-input--amount { grid-column: 1 / 3; grid-row: 2; flex: unset; text-align: right; }
+    .analysis-costs-controls .analysis-costs-annual  { display: none; }
+    .analysis-costs-controls .analysis-btn-remove    { grid-column: 3; grid-row: 2; align-self: center; }
 }
 
 @media (max-width: 460px) {

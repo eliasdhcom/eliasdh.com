@@ -364,7 +364,7 @@
                     <ng-container *ngFor="let client of trustedClientsDisplay">
                         <span class="client-logo-wrapper">
                             <a [routerLink]="['/map']" [queryParams]="{customerId: client.id}" class="cursor-pointer">
-                                <img [src]="'assets/media/images/trusted-clients/' + client.logo" [alt]="client.name" draggable="false">
+                                <img [src]="client.logo" [alt]="client.name" draggable="false">
                             </a>
                         </span>
                     </ng-container>

@@ -6,83 +6,91 @@
 
 import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 
 export interface AuthUser {
-    firstName:   string;
-    lastName:    string;
-    email:       string;
-    role:        string;
-    company:     string;
-    phone:       string;
-    street:      string;
-    houseNumber: string;
-    postalCode:  string;
-    city:        string;
-    country:     string;
-    birthDate:   string;
+    id?:       number;
+    firstName: string;
+    lastName:  string;
+    email:     string;
+    role:      string;
+    company:   string;
+    phone:     string;
+    birthDate: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    private readonly SESSION_KEY = 'eliasdh_portal_auth';
+    private readonly TOKEN_KEY = 'eliasdh_portal_token';
     private readonly platformId = inject(PLATFORM_ID);
-    private readonly router = inject(Router);
+    private readonly router     = inject(Router);
+    private readonly http       = inject(HttpClient);
 
-    private readonly CREDENTIALS = {
-        email:       'elias.dehondt@outlook.com',
-        password:    'EliasDH@123',
-        firstName:   'Elias',
-        lastName:    'De Hondt',
-        role:        'Administrator',
-        company:     'EliasDH',
-        phone:       '+32495161542',
-        street:      'Pieter van Den Bemdenlaan',
-        houseNumber: '45',
-        postalCode:  '2650',
-        city:        'Edegem',
-        country:     'België',
-        birthDate:   '10/04/2001'
-    } as const;
-
-    login(email: string, password: string): boolean {
-        if (email === this.CREDENTIALS.email && password === this.CREDENTIALS.password) {
-            if (isPlatformBrowser(this.platformId)) {
-                sessionStorage.setItem(this.SESSION_KEY, 'authenticated');
+    async login(email: string, password: string): Promise<boolean> {
+        try {
+            const res = await firstValueFrom(
+                this.http.post<{ success: boolean; token: string; data: AuthUser }>(
+                    `${environment.eliasdhApiUrl}/api/v1/auth/login`,
+                    { email: email.trim(), password }
+                )
+            );
+            if (res?.success && res.token && isPlatformBrowser(this.platformId)) {
+                sessionStorage.setItem(this.TOKEN_KEY, res.token);
             }
-            return true;
+            return !!res?.success;
+        } catch {
+            return false;
         }
-        return false;
     }
 
     logout(): void {
         if (isPlatformBrowser(this.platformId)) {
-            sessionStorage.removeItem(this.SESSION_KEY);
+            sessionStorage.removeItem(this.TOKEN_KEY);
         }
         this.router.navigate(['/login']);
     }
 
     isAuthenticated(): boolean {
         if (!isPlatformBrowser(this.platformId)) return false;
-        return !!sessionStorage.getItem(this.SESSION_KEY);
+        const token = sessionStorage.getItem(this.TOKEN_KEY);
+        if (!token) return false;
+        const payload = this._decodePayload(token);
+        if (!payload) return false;
+        return payload.exp > Math.floor(Date.now() / 1000);
+    }
+
+    getToken(): string | null {
+        if (!isPlatformBrowser(this.platformId)) return null;
+        return sessionStorage.getItem(this.TOKEN_KEY);
     }
 
     getUser(): AuthUser | null {
         if (!isPlatformBrowser(this.platformId)) return null;
-        if (!sessionStorage.getItem(this.SESSION_KEY)) return null;
+        const token = sessionStorage.getItem(this.TOKEN_KEY);
+        if (!token) return null;
+        const payload = this._decodePayload(token);
+        if (!payload || payload.exp <= Math.floor(Date.now() / 1000)) return null;
         return {
-            firstName:   this.CREDENTIALS.firstName,
-            lastName:    this.CREDENTIALS.lastName,
-            email:       this.CREDENTIALS.email,
-            role:        this.CREDENTIALS.role,
-            company:     this.CREDENTIALS.company,
-            phone:       this.CREDENTIALS.phone,
-            street:      this.CREDENTIALS.street,
-            houseNumber: this.CREDENTIALS.houseNumber,
-            postalCode:  this.CREDENTIALS.postalCode,
-            city:        this.CREDENTIALS.city,
-            country:     this.CREDENTIALS.country,
-            birthDate:   this.CREDENTIALS.birthDate
+            id:        payload.id,
+            firstName: payload.firstName ?? '',
+            lastName:  payload.lastName  ?? '',
+            email:     payload.email     ?? '',
+            role:      payload.role      ?? '',
+            company:   payload.company   ?? '',
+            phone:     payload.phone     ?? '',
+            birthDate: payload.birthDate ?? ''
         };
+    }
+
+    private _decodePayload(token: string): any {
+        try {
+            const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+            return JSON.parse(atob(base64));
+        } catch {
+            return null;
+        }
     }
 }

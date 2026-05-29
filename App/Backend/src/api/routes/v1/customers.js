@@ -1,48 +1,77 @@
 /**
     * @author EliasDH Team
     * @see https://eliasdh.com
-    * @since 29/11/2025
+    * @since 29/05/2026
 **/
 
-const express = require('express');
+const express         = require('express');
+const { body, param, validationResult } = require('express-validator');
 const customerService = require('../../services/customers/customersService');
-const logger = require('../../../utils/logger');
-const router = express.Router();
+const { jwtAuth }     = require('../../../middleware/jwtAuth');
+const logger          = require('../../../utils/logger');
+const router          = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        logger.info('Fetching all customers');
         const customers = await customerService.getAllCustomers();
-        res.status(200).json({
-            success: true,
-            data: customers,
-            count: customers.length
-        });
-    } catch (error) {
-        logger.error(`Error fetching customers: ${error.message}`);
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
+        res.json({ success: true, data: customers, count: customers.length });
+    } catch (err) {
+        logger.error(`Error fetching customers: ${err.message}`);
+        res.status(500).json({ success: false, error: err.message });
     }
 });
 
 router.get('/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        logger.info(`Fetching customer with ID: ${id}`);
-        const customer = await customerService.getCustomerById(id);
-        res.status(200).json({
-            success: true,
-            data: customer
-        });
-    } catch (error) {
-        logger.error(`Error fetching customer: ${error.message}`);
-        res.status(404).json({
-            success: false,
-            error: error.message
-        });
+        const customer = await customerService.getCustomerById(req.params.id);
+        res.json({ success: true, data: customer });
+    } catch (err) {
+        res.status(404).json({ success: false, error: err.message });
     }
 });
+
+router.post('/',
+    jwtAuth,
+    body('name').notEmpty().isString().trim(),
+    async (req, res, next) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
+            const customer = await customerService.createCustomer(req.body);
+            res.status(201).json({ success: true, data: customer });
+        } catch (err) {
+            if (err.message?.includes('UNIQUE')) return res.status(409).json({ success: false, error: 'Een klant met dit ID bestaat al.' });
+            next(err);
+        }
+    }
+);
+
+router.put('/:id',
+    jwtAuth,
+    param('id').notEmpty(),
+    async (req, res, next) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
+            const customer = await customerService.updateCustomer(req.params.id, req.body);
+            res.json({ success: true, data: customer });
+        } catch (err) {
+            next(err);
+        }
+    }
+);
+
+router.delete('/:id',
+    jwtAuth,
+    param('id').notEmpty(),
+    async (req, res, next) => {
+        try {
+            await customerService.deleteCustomer(req.params.id);
+            res.json({ success: true });
+        } catch (err) {
+            next(err);
+        }
+    }
+);
 
 module.exports = router;

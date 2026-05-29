@@ -47,8 +47,8 @@
                         {{'LOGIN.TRANSLATE15' | translate}}
                     </button>
                     <button type="submit" class="cursor-pointer login-button" [disabled]="submitting || loginForm.invalid">
-                        <span *ngIf="!submitting">{{'LOGIN.TRANSLATE13' | translate}}</span>
-                        <span *ngIf="submitting" class="login-button-loading">{{'LOGIN.TRANSLATE14' | translate}}</span>
+                        <span class="cursor-pointer " *ngIf="!submitting">{{'LOGIN.TRANSLATE13' | translate}}</span>
+                        <span *ngIf="submitting" class="login-button-loading cursor-pointer">{{'LOGIN.TRANSLATE14' | translate}}</span>
                     </button>
                     <div class="login-auth-error" *ngIf="loginError">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -69,8 +69,8 @@
                         </div>
                     </div>
                     <button type="submit" class="cursor-pointer login-button" [disabled]="submitting || forgotPasswordForm.invalid">
-                        <span *ngIf="!submitting">{{'LOGIN.TRANSLATE18' | translate}}</span>
-                        <span *ngIf="submitting" class="login-button-loading">{{'LOGIN.TRANSLATE14' | translate}}</span>
+                        <span class="cursor-pointer" *ngIf="!submitting">{{'LOGIN.TRANSLATE18' | translate}}</span>
+                        <span *ngIf="submitting" class="login-button-loading cursor-pointer">{{'LOGIN.TRANSLATE14' | translate}}</span>
                     </button>
                     <button type="button" class="cursor-pointer login-link-bottom" (click)="toggleForgotPassword()">
                         {{'LOGIN.TRANSLATE19' | translate}}

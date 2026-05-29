@@ -51,7 +51,7 @@
             <div class="map-sidebar-section">
                 <div class="map-sidebar-logo-wrap">
                     <div class="map-sidebar-logo-icon" *ngIf="selectedCustomer.logo">
-                        <img [src]="'assets/media/images/trusted-clients/' + selectedCustomer.logo" [alt]="selectedCustomer.name + ' logo'">
+                        <img [src]="selectedCustomer.logo" [alt]="selectedCustomer.name + ' logo'">
                     </div>
                     <div class="map-sidebar-icon" *ngIf="!selectedCustomer.logo">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">

@@ -7,12 +7,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CustomersService, Customer, CustomerLocation, SubscriptionFrequency } from '../../services/customers.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { InvoicesService } from '../../services/invoices.service';
+import { Subject, forkJoin, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
 
 export interface Invoice {
     id: string;
     number: number;
+    paid: boolean;
     issueDate: Date;
     dueDate: Date;
     periodStart: Date;
@@ -71,6 +73,7 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
 
     constructor(
         private customersService: CustomersService,
+        private invoicesService: InvoicesService,
         private cdr: ChangeDetectorRef
     ) {}
 
@@ -86,19 +89,33 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
     loadInvoices(): void {
         this.loading = true;
         this.error = '';
-        this.customersService.getAllCustomers()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (response) => {
-                    this.invoices = this.generateInvoices(response.data ?? []);
-                    this.availableYears = [...new Set(this.invoices.map(i => i.issueDate.getFullYear()))].sort((a, b) => b - a);
-                    this.loading = false;
-                },
-                error: () => {
-                    this.error = 'Facturen konden niet worden geladen.';
-                    this.loading = false;
-                }
-            });
+        forkJoin({
+            customers: this.customersService.getAllCustomers(),
+            statuses:  this.invoicesService.getAllStatuses().pipe(
+                catchError(() => of({ success: true, data: [] as any[] }))
+            )
+        })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+            next: ({ customers, statuses }) => {
+                this.invoices = this.generateInvoices(customers.data ?? []);
+                const statusMap = new Map(
+                    (statuses.data ?? []).map((s: any) =>
+                        [`${s.customerId}_${s.subscriptionId}_${s.periodStart}_${s.invoiceType}`, s.paid]
+                    )
+                );
+                this.invoices.forEach(inv => {
+                    const key = `${inv.customerId}_${inv.subscriptionId}_${inv.periodStart.toISOString()}_${inv.invoiceType}`;
+                    inv.paid = statusMap.get(key) ?? false;
+                });
+                this.availableYears = [...new Set(this.invoices.map(i => i.issueDate.getFullYear()))].sort((a, b) => b - a);
+                this.loading = false;
+            },
+            error: () => {
+                this.error = 'Facturen konden niet worden geladen.';
+                this.loading = false;
+            }
+        });
     }
 
     private getMultiplier(freq: string): number {
@@ -158,7 +175,8 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
                             subtotal: periodicSubtotal,
                             vat: periodicVat,
                             total: periodicTotal,
-                            invoiceType: 'subscription'
+                            invoiceType: 'subscription',
+                            paid: false
                         });
                     }
                 }
@@ -181,7 +199,8 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
                             subtotal: DOMAIN_PRICE,
                             vat: DOMAIN_VAT,
                             total: DOMAIN_TOTAL,
-                            invoiceType: 'domain'
+                            invoiceType: 'domain',
+                            paid: false
                         });
                     }
                 }
@@ -302,6 +321,38 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         return base.filter(i => i.issueDate.getMonth() + 1 === month).length;
     }
 
+    get allAllPaid(): boolean {
+        return this.invoices.length > 0 && this.invoices.every(i => i.paid);
+    }
+
+    get allUnpaidCount(): number {
+        return this.invoices.filter(i => !i.paid).length;
+    }
+
+    isYearAllPaid(year: number): boolean {
+        const inv = this.invoices.filter(i => i.issueDate.getFullYear() === year);
+        return inv.length > 0 && inv.every(i => i.paid);
+    }
+
+    getYearUnpaidCount(year: number): number {
+        return this.invoices.filter(i => i.issueDate.getFullYear() === year && !i.paid).length;
+    }
+
+    isMonthAllPaid(month: number): boolean {
+        const base = this.filterYear === 'all'
+            ? this.invoices
+            : this.invoices.filter(i => i.issueDate.getFullYear() === this.filterYear);
+        const inv = base.filter(i => i.issueDate.getMonth() + 1 === month);
+        return inv.length > 0 && inv.every(i => i.paid);
+    }
+
+    getMonthUnpaidCount(month: number): number {
+        const base = this.filterYear === 'all'
+            ? this.invoices
+            : this.invoices.filter(i => i.issueDate.getFullYear() === this.filterYear);
+        return base.filter(i => i.issueDate.getMonth() + 1 === month && !i.paid).length;
+    }
+
     getMonthName(month: number): string {
         return MONTH_NAMES[month - 1] ?? '';
     }
@@ -344,6 +395,19 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
 
     formatCurrency(amount: number): string {
         return new Intl.NumberFormat('nl-BE', { style: 'currency', currency: 'EUR' }).format(amount);
+    }
+
+    togglePaid(id: string): void {
+        const inv = this.invoices.find(i => i.id === id);
+        if (!inv) return;
+        inv.paid = !inv.paid;
+        this.invoicesService.updateStatus({
+            customerId:     inv.customerId,
+            subscriptionId: inv.subscriptionId,
+            periodStart:    inv.periodStart.toISOString(),
+            invoiceType:    inv.invoiceType,
+            paid:           inv.paid
+        }).pipe(takeUntil(this.destroy$)).subscribe();
     }
 
     formatDate(date: Date): string {

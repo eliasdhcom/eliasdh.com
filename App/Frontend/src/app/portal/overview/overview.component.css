@@ -243,12 +243,27 @@
     background: var(--primary);
     transition: height .5s cubic-bezier(.4,0,.2,1);
     animation: overview-grow .5s cubic-bezier(.4,0,.2,1);
-    cursor: default;
 }
 
 .overview-bar--past    { opacity: .55; }
 .overview-bar--current { opacity: 1; box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 20%, transparent); }
 .overview-bar--future  { background: rgba(128,128,128,.25); opacity: .8; }
+
+.overview-bar--stacked {
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    overflow: hidden;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 20%, transparent);
+}
+
+.overview-bar-sub {
+    width: 100%;
+    min-height: 0;
+}
+
+.overview-bar-sub--outstanding { background: #ef4444; }
+.overview-bar-sub--paid        { background: #10b981; }
 
 .overview-bar-label {
     font-size: 10px;
@@ -320,7 +335,6 @@
     height: 100%;
     border-radius: 2px;
     transition: width .5s ease;
-    cursor: default;
 }
 
 .overview-stacked-segment.overview-badge--custom     { background: var(--type-custom-color); }

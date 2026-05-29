@@ -1,320 +1,232 @@
 /**
     * @author EliasDH Team
     * @see https://eliasdh.com
-    * @since 29/11/2025
+    * @since 29/05/2026
 **/
 
-const logger = require('../../../utils/logger');
-
-const mockCustomers = [
-    {
-        id: '000',
-        name: 'EliasDH BV',
-        isHQ: true,
-        firstName: 'Thomas',
-        lastName: 'Deweerdt',
-        email: 'info@eliasdh.com',
-        phone: '+32474110316',
-        mobile: '+32474110316',
-        vat: 'BE1034925266',
-        logo: 'eliasdh-logo.png',
-        websites: [
-            { id: '000', name: 'EliasDH Website', url: 'https://eliasdh.com', subscriptionType: 'Free', isLive: true, startDate: '2026-01-01', frequency: 'yearly', discount: 0 }
-        ],
-        locations: [
-            {
-                street: 'Hulgenrodestraat',
-                number: '64',
-                postalCode: '2150',
-                city: 'Antwerpen',
-                country: 'Belgium',
-                vat: 'BE1034925266',
-                latitude: 51.1915943,
-                longitude: 4.4969435,
-                socialLinks: [
-                    { type: 'instagram', url: 'https://www.instagram.com/eliasdhcom' },
-                    { type: 'github',    url: 'https://github.com/eliasdhcom' },
-                    { type: 'linkedin',  url: 'https://www.linkedin.com/company/eliasdh' },
-                    { type: 'facebook',  url: 'https://www.facebook.com/eliasdhcom' }
-                ]
-            }
-        ]
-    },
-    {
-        id: '001',
-        name: 'Zizis',
-        isHQ: false,
-        firstName: 'Anja',
-        lastName: 'Oliviers',
-        email: 'info@zizis.be',
-        phone: '+3232908885',
-        mobile: '+32477538692',
-        vat: 'BE0000000000',
-        logo: 'zizis-logo.png',
-        websites: [
-            { id: '001', name: 'Zizis Website', url: 'https://zizis.be', subscriptionType: 'Free', isLive: true, startDate: '2026-05-01', frequency: 'yearly', discount: 0 }
-        ],
-        locations: [
-            {
-                street: 'Provinciesteenweg',
-                number: '557',
-                postalCode: '2530',
-                city: 'Boechout',
-                country: 'Belgium',
-                vat: 'BE0000000000',
-                latitude: 51.1579064,
-                longitude: 4.5154518,
-                socialLinks: [
-                    { type: 'instagram', url: 'https://www.instagram.com/hairfashionzizis' }
-                ]
-            }
-        ]
-    },
-    {
-        id: '002',
-        name: 'Bistro Theo BV',
-        isHQ: false,
-        firstName: 'Bart',
-        lastName: 'Schauwvlieghe',
-        email: 'bistrotheo@telenet.be',
-        phone: '+3232267919',
-        mobile: '+32495502837',
-        vat: 'BE0443920597',
-        logo: 'bistrotheo-logo.png',
-        websites: [
-            { id: '002', name: 'Bistro Theo Website', url: 'https://bistrotheo.be', subscriptionType: 'Startup', isLive: true, startDate: '2026-05-01', frequency: 'monthly', discount: 0 }
-        ],
-        locations: [
-            {
-                street: 'Nationalestraat',
-                number: '33',
-                postalCode: '2000',
-                city: 'Antwerpen',
-                country: 'Belgium',
-                vat: 'BE0443920597',
-                latitude: 51.2169627,
-                longitude: 4.3998624,
-                socialLinks: [
-                    { type: 'instagram', url: 'https://www.instagram.com/bistrotheo/' },
-                    { type: 'facebook',  url: 'https://www.facebook.com/bistrotheo' }
-                ]
-            }
-        ]
-    },
-    {
-        id: '003',
-        name: 'Slagerij Decruyenaere BV',
-        isHQ: false,
-        firstName: 'Andreas',
-        lastName: 'Decruyenaere',
-        email: 'slagerijdecruyenaere@gmail.com',
-        phone: '+3234499367',
-        mobile: '+32473296840',
-        vat: 'BE0441729882',
-        logo: 'slagerijdecruyenaere-logo.png',
-        websites: [
-            { id: '003', name: 'Slagerij Decruyenaere Website', url: 'https://slagerijdecruyenaere.be', subscriptionType: 'Basic', isLive: true, startDate: '2026-06-01', frequency: 'yearly', discount: 0 }
-        ],
-        locations: [
-            {
-                street: 'Antwerpsestraat',
-                number: '19',
-                postalCode: '2640',
-                city: 'Mortsel',
-                country: 'Belgium',
-                vat: 'BE0441729882',
-                latitude: 51.1710583,
-                longitude: 4.4480734,
-                socialLinks: [
-                    { type: 'instagram', url: 'https://www.instagram.com/slagerijdc' },
-                    { type: 'facebook',  url: 'https://www.facebook.com/slagerijDC' }
-                ]
-            }
-        ]
-    },
-    {
-        id: '024',
-        name: 'Ter Eiken',
-        isHQ: false,
-        firstName: 'Roel',
-        lastName: 'De Cock',
-        email: 'invoice@tereiken.be',
-        phone: '+3234574247',
-        mobile: '+32477816519',
-        vat: 'BE0833830212',
-        logo: 'tereiken-logo.png',
-        websites: [
-            { id: '024', name: 'Ter Eiken Website', url: 'https://tereiken.be', subscriptionType: 'ToDo', isLive: false, startDate: '2027-01-01', frequency: 'yearly', discount: 0 }
-        ],
-        locations: [
-            {
-                street: 'Kattenbroek',
-                number: '33',
-                postalCode: '2650',
-                city: 'Edegem',
-                country: 'Belgium',
-                vat: 'BE0833830212',
-                latitude: 51.1508601,
-                longitude: 4.4251688,
-                socialLinks: [
-                    { type: 'instagram', url: 'https://www.instagram.com/tereikensport' },
-                    { type: 'facebook',  url: 'https://www.facebook.com/tereiken' }
-                ]
-            },
-            {
-                street: 'Olieslagerijstraat',
-                number: '19',
-                postalCode: '2530',
-                city: 'Boechout',
-                country: 'Belgium',
-                vat: 'BE0451910825',
-                latitude: 51.1803828,
-                longitude: 4.5049921,
-                socialLinks: []
-            },
-            {
-                street: 'Huybergsebaan',
-                number: '164',
-                postalCode: '2910',
-                city: 'Essen',
-                country: 'Belgium',
-                vat: 'BE0463353558',
-                latitude: 51.4274217,
-                longitude: 4.4309693,
-                socialLinks: [
-                    { type: 'instagram', url: 'https://www.instagram.com/tereikenessen' },
-                    { type: 'facebook',  url: 'https://www.facebook.com/TereikenEssen' }
-                ]
-            },
-            {
-                street: 'Grote Steenweg',
-                number: '304',
-                postalCode: '9340',
-                city: 'Lede',
-                country: 'Belgium',
-                vat: 'BE0833830212',
-                latitude: 50.9544048,
-                longitude: 3.9186899,
-                socialLinks: [
-                    { type: 'instagram', url: 'https://www.instagram.com/tereikenlede' },
-                    { type: 'facebook',  url: 'https://www.facebook.com/profile.php?id=61570368526149' }
-                ]
-            }
-        ]
-    },
-    {
-        id: '025',
-        name: 'Level Up',
-        isHQ: false,
-        firstName: 'Roel',
-        lastName: 'De Cock',
-        email: 'invoice@tereiken.be',
-        phone: '+3234574247',
-        mobile: '+32477816519',
-        vat: 'BE0833830212',
-        logo: 'levelup-logo.png',
-        websites: [
-            { id: '026', name: 'Level Up Website', url: 'https://levelup.be', subscriptionType: 'ToDo', isLive: false, startDate: '2027-01-01', frequency: 'yearly', discount: 0 },
-            { id: '027', name: 'Level Up App', url: 'https://app.levelup.be', subscriptionType: 'Enterprise', isLive: true,  startDate: '2027-01-01', frequency: 'yearly',  discount: 0 }
-        ],
-        locations: [
-            {
-                street: 'Kattenbroek',
-                number: '33',
-                postalCode: '2650',
-                city: 'Edegem',
-                country: 'Belgium',
-                vat: 'BE0833830212',
-                latitude: 51.1507722,
-                longitude: 4.4239241,
-                socialLinks: [
-                    { type: 'instagram', url: 'https://www.instagram.com/levelupedegem' },
-                    { type: 'facebook',  url: 'https://www.facebook.com/levelupleisureandsports' }
-                ]
-            },
-            {
-                street: 'Grote Steenweg',
-                number: '304',
-                postalCode: '9340',
-                city: 'Lede',
-                country: 'Belgium',
-                vat: 'BE0833830212',
-                latitude: 50.9539187,
-                longitude: 3.9194254,
-                socialLinks: []
-            }
-        ]
-    }
-];
-
-const SUBSCRIPTION_PRICES = {
-    'Free':       0,
-    'ToDo':       0,
-    'Basic':      20,
-    'Growth':     40,
-    'Startup':    80,
-    'Business':   160,
-    'Enterprise': 320
-};
+const { getDb } = require('../../../database/db');
+const logger    = require('../../../utils/logger');
 
 const VAT_RATE = 0.21;
 
-function getSubscriptionPayment(website) {
-    const predefined = SUBSCRIPTION_PRICES[website.subscriptionType];
-    return predefined !== undefined ? predefined : (website.payment ?? 0);
+function formatAddress(loc) {
+    return `${loc.street} ${loc.number}, ${loc.postal_code} ${loc.city}, ${loc.country}`;
 }
 
-function formatAddress(location) {
-    return `${location.street} ${location.number}, ${location.postalCode} ${location.city}, ${location.country}`;
+async function getNextCustomerId(db) {
+    const { rows } = await db.execute('SELECT id FROM customers');
+    const max = rows.reduce((m, r) => {
+        const n = parseInt(r.id, 10);
+        return isNaN(n) ? m : Math.max(m, n);
+    }, -1);
+    return String(max + 1).padStart(3, '0');
 }
 
-function withBackwardCompat(customer) {
-    const primaryLocation = customer.locations?.[0];
-    const allSocialLinks = customer.locations?.flatMap(l => l.socialLinks ?? []) ?? [];
+async function getNextWebsiteId(db) {
+    const { rows } = await db.execute('SELECT id FROM websites');
+    const max = rows.reduce((m, r) => {
+        const n = parseInt(r.id, 10);
+        return isNaN(n) ? m : Math.max(m, n);
+    }, -1);
+    return String(max + 1).padStart(3, '0');
+}
+
+async function fetchLocationsForCustomer(db, customerId) {
+    const { rows: locs } = await db.execute({
+        sql:  'SELECT * FROM customer_locations WHERE customer_id = ? ORDER BY id',
+        args: [customerId]
+    });
+    const result = [];
+    for (const loc of locs) {
+        const { rows: socials } = await db.execute({
+            sql:  'SELECT type, url FROM location_social_links WHERE location_id = ? ORDER BY id',
+            args: [loc.id]
+        });
+        result.push({
+            id:          Number(loc.id),
+            street:      loc.street,
+            number:      loc.number,
+            postalCode:  loc.postal_code,
+            city:        loc.city,
+            country:     loc.country,
+            vat:         loc.vat,
+            latitude:    loc.latitude,
+            longitude:   loc.longitude,
+            socialLinks: socials.map(s => ({ type: s.type, url: s.url }))
+        });
+    }
+    return result;
+}
+
+async function fetchWebsitesForCustomer(db, customerId) {
+    const { rows } = await db.execute({
+        sql:  'SELECT * FROM websites WHERE customer_id = ? ORDER BY id',
+        args: [customerId]
+    });
+    return rows;
+}
+
+function buildCustomer(row, locations, websiteRows) {
+    const primaryLoc = locations[0] ?? null;
+    const allSocialLinks = locations.flatMap(l => l.socialLinks ?? []);
     const uniqueSocialLinks = allSocialLinks.filter(
         (link, idx, arr) => arr.findIndex(l => l.url === link.url) === idx
     );
+    const websites = websiteRows.map(w => {
+        const subtotal = Math.max(0, Number(w.payment) - Number(w.discount));
+        return {
+            id:               w.id,
+            name:             w.name,
+            url:              w.url,
+            subscriptionType: w.subscription_type,
+            isLive:           w.is_live === 1 || w.is_live === 1n,
+            startDate:        w.start_date,
+            frequency:        w.frequency,
+            payment:          Number(w.payment),
+            discount:         Number(w.discount),
+            subtotal:         parseFloat(subtotal.toFixed(2)),
+            vat:              parseFloat((subtotal * VAT_RATE).toFixed(2)),
+            total:            parseFloat((subtotal * (1 + VAT_RATE)).toFixed(2)),
+            visitors:         Number(w.visitors ?? 0)
+        };
+    });
     return {
-        ...customer,
-        websites: (customer.websites ?? []).map(w => {
-            const payment = getSubscriptionPayment(w);
-            const subtotal = Math.max(0, payment - (w.discount ?? 0));
-            return {
-                ...w,
-                payment,
-                subtotal,
-                vat: parseFloat((subtotal * VAT_RATE).toFixed(2)),
-                total: parseFloat((subtotal * (1 + VAT_RATE)).toFixed(2))
-            };
-        }),
-        address: primaryLocation ? formatAddress(primaryLocation) : '',
-        latitude: primaryLocation?.latitude ?? null,
-        longitude: primaryLocation?.longitude ?? null,
-        socialLinks: uniqueSocialLinks
+        id:          row.id,
+        name:        row.name,
+        isHQ:        row.is_hq === 1 || row.is_hq === 1n,
+        firstName:   row.first_name ?? undefined,
+        lastName:    row.last_name  ?? undefined,
+        email:       row.email      ?? undefined,
+        phone:       row.phone      ?? undefined,
+        mobile:      row.mobile     ?? undefined,
+        logo:        row.logo       ?? undefined,
+        vat:         primaryLoc?.vat ?? null,
+        address:     primaryLoc ? formatAddress(primaryLoc) : '',
+        latitude:    primaryLoc?.latitude  ?? null,
+        longitude:   primaryLoc?.longitude ?? null,
+        socialLinks: uniqueSocialLinks,
+        locations,
+        websites
     };
+}
+
+async function insertLocations(db, customerId, locations) {
+    for (const loc of (locations ?? [])) {
+        const locRes = await db.execute({
+            sql:  `INSERT INTO customer_locations
+                       (customer_id, street, number, postal_code, city, country, vat, latitude, longitude)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            args: [
+                customerId,
+                loc.street      ?? '',
+                loc.number      ?? '',
+                loc.postalCode  ?? '',
+                loc.city        ?? '',
+                loc.country     || 'Belgium',
+                loc.vat         ?? null,
+                loc.latitude    != null ? Number(loc.latitude)  : null,
+                loc.longitude   != null ? Number(loc.longitude) : null
+            ]
+        });
+        const locId = Number(locRes.lastInsertRowid ?? 0);
+        for (const sl of (loc.socialLinks ?? [])) {
+            if (!sl.url) continue;
+            await db.execute({
+                sql:  'INSERT INTO location_social_links (location_id, type, url) VALUES (?, ?, ?)',
+                args: [locId, sl.type, sl.url]
+            });
+        }
+    }
+}
+
+async function insertWebsites(db, customerId, websites) {
+    for (const w of (websites ?? [])) {
+        const wId = w.id || await getNextWebsiteId(db);
+        await db.execute({
+            sql:  `INSERT OR IGNORE INTO websites
+                       (id, customer_id, name, url, subscription_type, is_live, start_date, frequency, payment, discount)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            args: [
+                wId, customerId,
+                w.name             ?? '',
+                w.url              ?? '',
+                w.subscriptionType ?? 'Free',
+                w.isLive           ? 1 : 0,
+                w.startDate        ?? null,
+                w.frequency        ?? 'monthly',
+                Number(w.payment   ?? 0),
+                Number(w.discount  ?? 0)
+            ]
+        });
+    }
 }
 
 class CustomersService {
     async getAllCustomers() {
-        try {
-            logger.info('Fetching all customers');
-            return mockCustomers.map(withBackwardCompat);
-        } catch (error) {
-            logger.error(`CustomersService getAllCustomers error: ${error.message}`);
-            throw new Error(`Error fetching customers: ${error.message}`);
+        const db = getDb();
+        const { rows } = await db.execute('SELECT * FROM customers ORDER BY id');
+        const customers = [];
+        for (const row of rows) {
+            const locations = await fetchLocationsForCustomer(db, row.id);
+            const websites  = await fetchWebsitesForCustomer(db, row.id);
+            customers.push(buildCustomer(row, locations, websites));
         }
+        return customers;
     }
 
     async getCustomerById(id) {
-        try {
-            logger.info(`Fetching customer with ID: ${id}`);
-            const customer = mockCustomers.find(c => c.id === id);
-            if (!customer) throw new Error(`Customer with ID ${id} not found`);
-            return withBackwardCompat(customer);
-        } catch (error) {
-            logger.error(`CustomersService getCustomerById error: ${error.message}`);
-            throw new Error(`Error fetching customer: ${error.message}`);
+        const db = getDb();
+        const { rows } = await db.execute({ sql: 'SELECT * FROM customers WHERE id = ?', args: [id] });
+        if (!rows.length) throw new Error(`Customer with ID ${id} not found`);
+        const locations = await fetchLocationsForCustomer(db, id);
+        const websites  = await fetchWebsitesForCustomer(db, id);
+        return buildCustomer(rows[0], locations, websites);
+    }
+
+    async createCustomer(data) {
+        const db  = getDb();
+        const id  = data.id || await getNextCustomerId(db);
+        await db.execute({
+            sql:  `INSERT INTO customers (id, name, is_hq, first_name, last_name, email, phone, mobile, logo)
+                   VALUES (?, ?, 0, ?, ?, ?, ?, ?, ?)`,
+            args: [id, data.name, data.firstName ?? null, data.lastName ?? null,
+                   data.email ?? null, data.phone ?? null, data.mobile ?? null, data.logo ?? null]
+        });
+        await insertLocations(db, id, data.locations);
+        await insertWebsites(db, id, data.websites);
+        logger.info(`Customer created: ${id}`);
+        return this.getCustomerById(id);
+    }
+
+    async updateCustomer(id, data) {
+        const db = getDb();
+        const fields = [], args = [];
+        if (data.name      !== undefined) { fields.push('name = ?');       args.push(data.name); }
+        if (data.firstName !== undefined) { fields.push('first_name = ?'); args.push(data.firstName); }
+        if (data.lastName  !== undefined) { fields.push('last_name = ?');  args.push(data.lastName); }
+        if (data.email     !== undefined) { fields.push('email = ?');      args.push(data.email); }
+        if (data.phone     !== undefined) { fields.push('phone = ?');      args.push(data.phone); }
+        if (data.mobile    !== undefined) { fields.push('mobile = ?');     args.push(data.mobile); }
+        if (data.logo      !== undefined) { fields.push('logo = ?');       args.push(data.logo); }
+        if (fields.length) {
+            args.push(id);
+            await db.execute({ sql: `UPDATE customers SET ${fields.join(', ')} WHERE id = ?`, args });
         }
+        if (data.locations !== undefined) {
+            await db.execute({ sql: 'DELETE FROM customer_locations WHERE customer_id = ?', args: [id] });
+            await insertLocations(db, id, data.locations);
+        }
+        if (data.websites !== undefined) {
+            await db.execute({ sql: 'DELETE FROM websites WHERE customer_id = ?', args: [id] });
+            await insertWebsites(db, id, data.websites);
+        }
+        logger.info(`Customer updated: ${id}`);
+        return this.getCustomerById(id);
+    }
+
+    async deleteCustomer(id) {
+        await getDb().execute({ sql: 'DELETE FROM customers WHERE id = ?', args: [id] });
+        logger.info(`Customer deleted: ${id}`);
     }
 }
 

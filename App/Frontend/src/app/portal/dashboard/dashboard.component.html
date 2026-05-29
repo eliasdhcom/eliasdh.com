@@ -61,6 +61,14 @@
                 </svg>
                 <span class="dashboard-nav-label cursor-pointer">Invoices</span>
             </button>
+            <!-- Users -->
+            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'users'" (click)="navigateTo('users')" title="Users">
+                <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path class="cursor-pointer" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle class="cursor-pointer" cx="12" cy="7" r="4"/>
+                </svg>
+                <span class="dashboard-nav-label cursor-pointer">Users</span>
+            </button>
             <!-- Analysis -->
             <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'analysis'" (click)="navigateTo('analysis')" title="Analysis">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -118,10 +126,13 @@
                 </button>
                 <div class="dashboard-header-divider"></div>
                 <button class="dashboard-header-user-info cursor-pointer" (click)="toggleUserPanel()" title="Gebruikersprofiel">
-                    <div class="dashboard-user-avatar">{{getUserInitials()}}</div>
-                    <div class="dashboard-user-details">
-                        <span class="dashboard-user-name">{{user.firstName}} {{user.lastName}}</span>
-                        <span class="dashboard-user-role">{{user.role}}</span>
+                    <div class="dashboard-user-avatar cursor-pointer">
+                        <img *ngIf="userAvatar" class="dashboard-user-avatar-img cursor-pointer" [src]="userAvatar" alt="Profielfoto"/>
+                        <span *ngIf="!userAvatar" class="cursor-pointer">{{getUserInitials()}}</span>
+                    </div>
+                    <div class="dashboard-user-details cursor-pointer">
+                        <span class="dashboard-user-name cursor-pointer">{{user.firstName}} {{user.lastName}}</span>
+                        <span class="dashboard-user-role cursor-pointer">{{user.role}}</span>
                     </div>
                 </button>
             </div>
@@ -133,38 +144,40 @@
             <div class="dashboard-content-view" *ngIf="currentView === 'customers'">
                 <app-portal-customers (navigateToSubscription)="onNavigateToSubscription($event)"></app-portal-customers>
             </div>
-            <!-- Subscriptions -->
             <div class="dashboard-content-view" *ngIf="currentView === 'subscriptions'">
                 <app-portal-subscriptions [highlightId]="highlightedSubscriptionId"></app-portal-subscriptions>
             </div>
-            <!-- Invoices -->
             <div class="dashboard-content-view" *ngIf="currentView === 'invoices'">
                 <app-portal-invoices></app-portal-invoices>
             </div>
-            <!-- Analysis -->
+            <div class="dashboard-content-view" *ngIf="currentView === 'users'">
+                <app-portal-users></app-portal-users>
+            </div>
             <div class="dashboard-content-view" *ngIf="currentView === 'analysis'">
                 <app-portal-analysis></app-portal-analysis>
             </div>
             <div class="dashboard-content-view" *ngIf="currentView === 'settings'">
-
             </div>
         </main>
     </div>
 </div>
-<!-- User panel overlay -->
 <div class="dashboard-user-panel-overlay" [class.dashboard-user-panel-overlay--open]="userPanelOpen" (click)="closeUserPanel()"></div>
 <aside class="dashboard-user-panel" [class.dashboard-user-panel--open]="userPanelOpen" role="dialog" aria-label="Gebruikersprofiel">
     <div class="dashboard-user-panel-header">
         <span class="dashboard-user-panel-title">Gebruikersprofiel</span>
         <button class="dashboard-user-panel-close cursor-pointer" (click)="closeUserPanel()" title="Sluiten">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
+                <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
             </svg>
         </button>
     </div>
     <div class="dashboard-user-panel-body">
         <div class="dashboard-user-panel-avatar-wrap">
-            <div class="dashboard-user-panel-avatar">{{getUserInitials()}}</div>
+            <div class="dashboard-user-panel-avatar">
+                <img *ngIf="userAvatar" class="dashboard-user-avatar-img" [src]="userAvatar" alt="Profielfoto"/>
+                <span *ngIf="!userAvatar">{{getUserInitials()}}</span>
+            </div>
             <div class="dashboard-user-panel-identity">
                 <span class="dashboard-user-panel-fullname">{{user.firstName}}&nbsp;{{user.lastName}}</span>
                 <span class="dashboard-user-panel-company">{{user.company}}</span>
@@ -221,16 +234,6 @@
                 </span>
                 <span class="dashboard-user-panel-detail-label">E-mailadres</span>
                 <span class="dashboard-user-panel-detail-value">{{user.email}}</span>
-            </li>
-            <li class="dashboard-user-panel-detail-row">
-                <span class="dashboard-user-panel-detail-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                        <circle cx="12" cy="10" r="3"/>
-                    </svg>
-                </span>
-                <span class="dashboard-user-panel-detail-label">Adres</span>
-                <span class="dashboard-user-panel-detail-value">{{user.street}} {{user.houseNumber}}, {{user.postalCode}} {{user.city}}, {{user.country}}</span>
             </li>
             <li class="dashboard-user-panel-detail-row">
                 <span class="dashboard-user-panel-detail-icon">

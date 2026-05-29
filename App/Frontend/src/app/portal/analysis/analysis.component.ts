@@ -15,7 +15,7 @@ export interface CostItem {
     id: number;
     name: string;
     amount: number;
-    frequency: 'monthly' | 'yearly';
+    frequency: 'monthly' | 'quarterly' | 'yearly';
     type: 'fixed' | 'variable';
 }
 
@@ -76,7 +76,7 @@ export class PortalAnalysisComponent implements OnInit, OnDestroy {
                 const isFree = website.subscriptionType.toLowerCase().includes('free') || website.subscriptionType.toLowerCase().includes('todo');
 
                 if (website.payment > 0 && !isFree && website.frequency !== 'one-time') {
-                    const sub = website.subtotal ?? Math.max(0, website.payment - website.discount);
+                    const sub = Math.max(0, website.payment - website.discount);
                     annualExcl += sub * 12;
                 }
 
@@ -101,7 +101,9 @@ export class PortalAnalysisComponent implements OnInit, OnDestroy {
     }
 
     annualCost(c: CostItem): number {
-        return c.frequency === 'monthly' ? c.amount * 12 : c.amount;
+        if (c.frequency === 'monthly')   return c.amount * 12;
+        if (c.frequency === 'quarterly') return c.amount * 4;
+        return c.amount;
     }
 
     addCost(): void {

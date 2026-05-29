@@ -136,9 +136,9 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
     }
 
     getTotal(s: FlatSubscription): number {
-        const sub = s.subtotal ?? Math.max(0, s.payment - s.discount);
+        const subtotal = Math.max(0, s.payment - s.discount);
         const multiplier = s.frequency === 'yearly' ? 12 : s.frequency === 'quarterly' ? 3 : 1;
-        return (s.total ?? sub * (1 + VAT_RATE)) * multiplier;
+        return subtotal * (1 + VAT_RATE) * multiplier;
     }
 
     getFrequencyShort(freq: string): string {

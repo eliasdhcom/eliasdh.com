@@ -1,0 +1,115 @@
+/**
+    * @author EliasDH Team
+    * @see https://eliasdh.com
+    * @since 29/05/2026
+**/
+
+const { createClient } = require('@libsql/client');
+const path = require('path');
+const fs   = require('fs');
+const logger = require('../utils/logger');
+
+const DB_PATH = path.join(__dirname, '../../eliasdh.db');
+
+let _client = null;
+
+function getDb() {
+    if (_client) return _client;
+    _client = createClient({ url: `file:${DB_PATH.replace(/\\/g, '/')}` });
+    logger.info(`Database: ${DB_PATH}`);
+    return _client;
+}
+
+async function initSchema() {
+    const db = getDb();
+    const stmts = [
+        `CREATE TABLE IF NOT EXISTS customers (
+            id         TEXT PRIMARY KEY,
+            name       TEXT NOT NULL,
+            is_hq      INTEGER NOT NULL DEFAULT 0,
+            first_name TEXT,
+            last_name  TEXT,
+            email      TEXT,
+            phone      TEXT,
+            mobile     TEXT,
+            logo       TEXT,
+            created_at TEXT DEFAULT (datetime('now'))
+        )`,
+        `CREATE TABLE IF NOT EXISTS customer_locations (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            customer_id TEXT NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
+            street      TEXT,
+            number      TEXT,
+            postal_code TEXT,
+            city        TEXT,
+            country     TEXT NOT NULL DEFAULT 'Belgium',
+            vat         TEXT,
+            latitude    REAL,
+            longitude   REAL
+        )`,
+        `CREATE TABLE IF NOT EXISTS location_social_links (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            location_id INTEGER NOT NULL REFERENCES customer_locations(id) ON DELETE CASCADE,
+            type        TEXT NOT NULL,
+            url         TEXT NOT NULL
+        )`,
+        `CREATE TABLE IF NOT EXISTS websites (
+            id                TEXT PRIMARY KEY,
+            customer_id       TEXT NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
+            name              TEXT NOT NULL,
+            url               TEXT NOT NULL,
+            subscription_type TEXT NOT NULL DEFAULT 'Free',
+            is_live           INTEGER NOT NULL DEFAULT 0,
+            start_date        TEXT,
+            frequency         TEXT NOT NULL DEFAULT 'monthly',
+            payment           REAL NOT NULL DEFAULT 0,
+            discount          REAL NOT NULL DEFAULT 0,
+            visitors          INTEGER DEFAULT 0
+        )`,
+        `CREATE TABLE IF NOT EXISTS pricing_plans (
+            id            INTEGER PRIMARY KEY AUTOINCREMENT,
+            name          TEXT UNIQUE NOT NULL,
+            monthly_price REAL NOT NULL DEFAULT 0
+        )`,
+        `CREATE TABLE IF NOT EXISTS blog_posts (
+            id           INTEGER PRIMARY KEY AUTOINCREMENT,
+            slug         TEXT UNIQUE NOT NULL,
+            title        TEXT NOT NULL,
+            excerpt      TEXT,
+            content      TEXT NOT NULL,
+            author       TEXT,
+            published_at TEXT,
+            reading_time INTEGER
+        )`,
+        `CREATE TABLE IF NOT EXISTS users (
+            id            INTEGER PRIMARY KEY AUTOINCREMENT,
+            email         TEXT UNIQUE NOT NULL,
+            password_hash TEXT NOT NULL,
+            first_name    TEXT,
+            last_name     TEXT,
+            role          TEXT NOT NULL DEFAULT 'user',
+            company       TEXT,
+            phone         TEXT,
+            birth_date    TEXT,
+            avatar        TEXT,
+            active        INTEGER NOT NULL DEFAULT 1,
+            created_at    TEXT DEFAULT (datetime('now'))
+        )`,
+        `CREATE TABLE IF NOT EXISTS invoice_status (
+            id              INTEGER PRIMARY KEY AUTOINCREMENT,
+            customer_id     TEXT NOT NULL,
+            subscription_id TEXT NOT NULL,
+            period_start    TEXT NOT NULL,
+            invoice_type    TEXT NOT NULL DEFAULT 'subscription',
+            paid            INTEGER NOT NULL DEFAULT 0,
+            paid_at         TEXT,
+            UNIQUE(customer_id, subscription_id, period_start, invoice_type)
+        )`
+    ];
+
+    for (const sql of stmts) {
+        await db.execute(sql);
+    }
+}
+
+module.exports = { getDb, initSchema };

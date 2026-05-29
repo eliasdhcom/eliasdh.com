@@ -39,7 +39,7 @@
         <div class="subscriptions-group" *ngFor="let group of groupedFilteredSubscriptions">
             <div class="subscriptions-group-header">
                 <div class="subscriptions-group-logo">
-                    <img *ngIf="showGroupLogo(group)" class="subscriptions-group-logo-img" [src]="'assets/media/images/trusted-clients/' + group.customerLogo" [alt]="group.customerName" (error)="handleGroupLogoError(group.customerId)"/>
+                    <img *ngIf="showGroupLogo(group)" class="subscriptions-group-logo-img" [src]="group.customerLogo" [alt]="group.customerName" (error)="handleGroupLogoError(group.customerId)"/>
                     <span *ngIf="!showGroupLogo(group)" class="subscriptions-group-initials">{{getGroupInitials(group.customerName)}}</span>
                 </div>
                 <span class="subscriptions-group-name">{{group.customerName}}</span>
@@ -72,6 +72,20 @@
                                 </svg>
                                 {{formatDate(sub.startDate)}}
                             </span>
+                        </div>
+                        <div class="subscriptions-card-row-mobile">
+                            <div class="subscriptions-mobile-top">
+                                <span class="subscriptions-meta-item subscriptions-meta-id">#{{sub.id}}</span>
+                                <span class="subscriptions-badge" [ngClass]="getSubscriptionClass(sub.subscriptionType)">{{sub.subscriptionType}}</span>
+                                <span class="subscriptions-frequency-badge cursor-default">{{getFrequencyLabel(sub.frequency)}}</span>
+                            </div>
+                            <span class="subscriptions-meta-item subscriptions-mobile-date" *ngIf="sub.startDate">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                                {{formatDate(sub.startDate)}}
+                            </span>
+                            <a class="subscriptions-meta-item subscriptions-meta-url cursor-pointer" [href]="sub.url" target="_blank" rel="noopener noreferrer">{{sub.url}}</a>
                         </div>
                     </div>
                     <span class="subscriptions-total-chip">

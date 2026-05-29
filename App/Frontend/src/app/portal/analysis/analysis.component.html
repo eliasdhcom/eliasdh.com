@@ -4,8 +4,6 @@
         <div class="analysis-skeleton" *ngFor="let i of [1,2,3,4,5]"></div>
     </div>
     <ng-container *ngIf="!loading">
-
-        <!-- Omzet per periode -->
         <div class="analysis-section">
             <div class="analysis-section-header">
                 <h2 class="analysis-section-title">
@@ -34,8 +32,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Winst per periode -->
         <div class="analysis-section">
             <div class="analysis-section-header">
                 <h2 class="analysis-section-title">
@@ -54,9 +50,7 @@
                     <div class="analysis-period-values">
                         <div class="analysis-period-row">
                             <span class="analysis-period-tag analysis-tag--gross">Brutowinst</span>
-                            <span class="analysis-period-amount"
-                                  [class.analysis-amount--positive]="grossFor(p.divisor) >= 0"
-                                  [class.analysis-amount--negative]="grossFor(p.divisor) < 0">
+                            <span class="analysis-period-amount" [class.analysis-amount--positive]="grossFor(p.divisor) >= 0" [class.analysis-amount--negative]="grossFor(p.divisor) < 0">
                                 {{fmt(grossFor(p.divisor))}}
                             </span>
                         </div>
@@ -66,9 +60,7 @@
                         </div>
                         <div class="analysis-period-row analysis-period-row--net">
                             <span class="analysis-period-tag analysis-tag--net">Nettowinst</span>
-                            <span class="analysis-period-amount analysis-amount--net"
-                                  [class.analysis-amount--positive]="netFor(p.divisor) >= 0"
-                                  [class.analysis-amount--negative]="netFor(p.divisor) < 0">
+                            <span class="analysis-period-amount analysis-amount--net" [class.analysis-amount--positive]="netFor(p.divisor) >= 0" [class.analysis-amount--negative]="netFor(p.divisor) < 0">
                                 {{fmt(netFor(p.divisor))}}
                             </span>
                         </div>
@@ -76,8 +68,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Kosten -->
         <div class="analysis-section">
             <div class="analysis-section-header">
                 <h2 class="analysis-section-title">
@@ -97,65 +87,41 @@
                 </div>
             </div>
             <div class="analysis-costs-table">
-                <div class="analysis-costs-header">
-                    <span>Naam</span>
-                    <span>Type</span>
-                    <span>Frequentie</span>
-                    <span>Bedrag</span>
-                    <span>Per jaar</span>
-                    <span></span>
-                </div>
                 <div class="analysis-costs-row" *ngFor="let c of costs; trackBy: trackById">
-                    <input class="analysis-input" [(ngModel)]="c.name" placeholder="Naam kost"/>
-                    <select class="analysis-select analysis-select--type" [(ngModel)]="c.type"
-                            [class.analysis-select--fixed]="c.type === 'fixed'"
-                            [class.analysis-select--variable]="c.type === 'variable'">
-                        <option value="fixed">Vast</option>
-                        <option value="variable">Variabel</option>
-                    </select>
-                    <select class="analysis-select" [(ngModel)]="c.frequency">
-                        <option value="monthly">Maandelijks</option>
-                        <option value="yearly">Jaarlijks</option>
-                    </select>
-                    <input class="analysis-input analysis-input--amount" type="number" min="0" step="0.01" [(ngModel)]="c.amount"/>
-                    <span class="analysis-costs-annual">{{fmt(annualCost(c))}}</span>
-                    <button class="analysis-btn-remove cursor-pointer" (click)="removeCost(c.id)" title="Verwijder">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <polyline points="3 6 5 6 21 6"/>
-                            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                            <path d="M10 11v6"/><path d="M14 11v6"/>
-                            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
-                        </svg>
-                    </button>
+                    <input class="analysis-input analysis-input--name cursor-text" [(ngModel)]="c.name" placeholder="Naam kost"/>
+                    <div class="analysis-costs-controls">
+                        <select class="analysis-select analysis-select--type cursor-pointer" [(ngModel)]="c.type" [class.analysis-select--fixed]="c.type === 'fixed'" [class.analysis-select--variable]="c.type === 'variable'">
+                            <option class="cursor-pointer" value="fixed">Vast</option>
+                            <option class="cursor-pointer" value="variable">Variabel</option>
+                        </select>
+                        <select class="analysis-select analysis-select--freq cursor-pointer" [(ngModel)]="c.frequency">
+                            <option class="cursor-pointer" value="monthly">Maandelijks</option>
+                            <option class="cursor-pointer" value="quarterly">Kwartaal</option>
+                            <option class="cursor-pointer" value="yearly">Jaarlijks</option>
+                        </select>
+                        <input class="analysis-input analysis-input--amount cursor-text" type="number" min="0" step="0.01" [(ngModel)]="c.amount"/>
+                        <span class="analysis-costs-annual">{{fmt(annualCost(c))}}</span>
+                        <button class="analysis-btn-remove cursor-pointer" (click)="removeCost(c.id)" title="Verwijder">
+                            <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polyline class="cursor-pointer" points="3 6 5 6 21 6"/>
+                                <path class="cursor-pointer" d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                                <path class="cursor-pointer" d="M10 11v6"/><path d="M14 11v6"/>
+                                <path class="cursor-pointer" d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <div class="analysis-costs-footer">
                     <button class="analysis-btn-add cursor-pointer" (click)="addCost()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                        <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line class="cursor-pointer" x1="12" y1="5" x2="12" y2="19"/>
+                            <line class="cursor-pointer" x1="5" y1="12" x2="19" y2="12"/>
                         </svg>
                         Kost toevoegen
                     </button>
-                    <div class="analysis-costs-totals">
-                        <div class="analysis-costs-total-item">
-                            <span class="analysis-costs-total-label">Vast/jaar</span>
-                            <span class="analysis-costs-total-value">{{fmt(totalAnnualFixedCosts)}}</span>
-                        </div>
-                        <div class="analysis-costs-total-sep">+</div>
-                        <div class="analysis-costs-total-item">
-                            <span class="analysis-costs-total-label">Variabel/jaar</span>
-                            <span class="analysis-costs-total-value">{{fmt(totalAnnualVariableCosts)}}</span>
-                        </div>
-                        <div class="analysis-costs-total-sep">=</div>
-                        <div class="analysis-costs-total-item">
-                            <span class="analysis-costs-total-label">Totaal/jaar</span>
-                            <span class="analysis-costs-total-value analysis-costs-total-value--main">{{fmt(totalAnnualCosts)}}</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-
-        <!-- Jaarlijkse samenvatting -->
         <div class="analysis-section">
             <div class="analysis-section-header">
                 <h2 class="analysis-section-title">
@@ -179,9 +145,7 @@
                 </div>
                 <div class="analysis-summary-card analysis-summary-card--gross">
                     <span class="analysis-summary-label">Brutowinst</span>
-                    <span class="analysis-summary-value"
-                          [class.analysis-amount--positive]="grossProfitYear >= 0"
-                          [class.analysis-amount--negative]="grossProfitYear < 0">
+                    <span class="analysis-summary-value" [class.analysis-amount--positive]="grossProfitYear >= 0" [class.analysis-amount--negative]="grossProfitYear < 0">
                         {{fmt(grossProfitYear)}}
                     </span>
                 </div>
@@ -191,14 +155,11 @@
                 </div>
                 <div class="analysis-summary-card analysis-summary-card--net">
                     <span class="analysis-summary-label">Nettowinst na belastingen</span>
-                    <span class="analysis-summary-value analysis-summary-value--large"
-                          [class.analysis-amount--positive]="netProfitYear >= 0"
-                          [class.analysis-amount--negative]="netProfitYear < 0">
+                    <span class="analysis-summary-value analysis-summary-value--large" [class.analysis-amount--positive]="netProfitYear >= 0" [class.analysis-amount--negative]="netProfitYear < 0">
                         {{fmt(netProfitYear)}}
                     </span>
                 </div>
             </div>
         </div>
-
     </ng-container>
 </div>

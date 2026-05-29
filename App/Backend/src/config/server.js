@@ -14,13 +14,14 @@ const { apiKeyAuth } = require('../middleware/auth');
 const { server: config } = require('./env');
 const logger = require('../utils/logger');
 const clusterService = require('../api/services/cluster/clusterService');
+const { getDb, initSchema } = require('../database/db');
 const app = express();
 
 app.set('trust proxy', 1);
 
 const corsOptions = {
     origin: ['http://localhost:4200', 'https://eliasdh.com', 'https://www.eliasdh.com'],
-    methods: ['GET', 'POST', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['X-API-Key', 'Content-Type', 'Authorization'],
     credentials: true,
     optionsSuccessStatus: 204,
@@ -44,10 +45,10 @@ const contactLimiter = rateLimit({
 app.use(limiter);
 app.use(express.json());
 
+const PUBLIC_PATHS = ['/api/v1/contact', '/api/v1/auth', '/api/v1/users'];
+
 app.use((req, res, next) => {
-    if (req.path.startsWith('/api/v1/contact')) {
-        return next();
-    }
+    if (PUBLIC_PATHS.some(p => req.path.startsWith(p))) return next();
     apiKeyAuth(req, res, next);
 });
 
@@ -56,7 +57,15 @@ app.use('/api/v1/contact', contactLimiter);
 app.use('/api', routes);
 app.use(errorHandler);
 
-const startServer = () => {
+async function runSeed() {
+    logger.info('Running seed (idempotent)…');
+    await require('../database/seed').seedFn();
+}
+
+const startServer = async () => {
+    await initSchema();
+    await runSeed();
+
     app.listen(config.port, () => {
         logger.info(`Server running on port ${config.port} (HTTP)`);
         logger.info(process.env.NODE_ENV === 'production' ? 'Production mode!' : 'Development mode!');
