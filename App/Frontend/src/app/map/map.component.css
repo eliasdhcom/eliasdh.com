@@ -209,6 +209,23 @@
     overflow-y: auto;
 }
 
+.map-sidebar-logo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.map-sidebar-customer-id {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--secondary);
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+    opacity: 0.8;
+}
+
 .map-sidebar-logo-icon {
     width: 48px;
     height: 48px;

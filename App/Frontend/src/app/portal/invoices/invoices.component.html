@@ -1,0 +1,127 @@
+<!--Author EliasDH Team-->
+<div class="invoices-container">
+    <div class="invoices-top-bar">
+        <div class="invoices-filter-rows">
+            <div class="invoices-filters">
+                <button class="invoices-filter-btn cursor-pointer" [class.invoices-filter-btn--active]="filterYear === 'all'" (click)="setYearFilter('all')">
+                    Alle <span class="invoices-filter-count cursor-pointer">{{invoices.length}}</span>
+                </button>
+                <button class="invoices-filter-btn cursor-pointer" *ngFor="let year of availableYears" [class.invoices-filter-btn--active]="filterYear === year" (click)="setYearFilter(year)">
+                    {{year}} <span class="invoices-filter-count cursor-pointer">{{getYearCount(year)}}</span>
+                </button>
+            </div>
+            <div class="invoices-filters invoices-filters--months" *ngIf="filterYear !== 'all' && availableMonths.length > 1">
+                <button class="invoices-filter-btn cursor-pointer" [class.invoices-filter-btn--active]="filterMonth === 'all'" (click)="setMonthFilter('all')">
+                    Alle maanden
+                </button>
+                <button class="invoices-filter-btn cursor-pointer" *ngFor="let m of availableMonths" [class.invoices-filter-btn--active]="filterMonth === m" (click)="setMonthFilter(m)">
+                    {{getMonthName(m)}} <span class="invoices-filter-count cursor-pointer">{{getMonthCount(m)}}</span>
+                </button>
+            </div>
+        </div>
+        <div class="invoices-top-right">
+            <div class="invoices-revenue-badge" *ngIf="!loading && filteredInvoices.length > 0">
+                {{formatCurrency(totalRevenue)}}
+            </div>
+            <div class="invoices-search-wrap">
+                <svg class="invoices-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input class="invoices-search cursor-text" type="text" placeholder="Zoek op factuurnr, klant, subscriptie of ID..." [value]="searchQuery" (input)="onSearch($event)"/>
+            </div>
+        </div>
+    </div>
+    <div class="invoices-loading" *ngIf="loading">
+        <div class="invoices-skeleton" *ngFor="let i of [1,2,3,4,5]"></div>
+    </div>
+    <div class="invoices-error-state" *ngIf="!loading && error">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <p>{{error}}</p>
+        <button class="invoices-retry-btn cursor-pointer" (click)="loadInvoices()">Opnieuw proberen</button>
+    </div>
+    <div class="invoices-empty-state" *ngIf="!loading && !error && filteredInvoices.length === 0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+        </svg>
+        <p>Geen facturen gevonden.</p>
+    </div>
+    <div class="invoices-list" *ngIf="!loading && !error && filteredInvoices.length > 0">
+        <div class="invoices-group" *ngFor="let group of groupedInvoices">
+            <div class="invoices-group-header">
+                <div class="invoices-group-logo">
+                    <img *ngIf="showGroupLogo(group)" class="invoices-group-logo-img" [src]="'assets/media/images/trusted-clients/' + group.customerLogo" [alt]="group.customerName" (error)="handleGroupLogoError(group.customerId)"/>
+                    <span *ngIf="!showGroupLogo(group)" class="invoices-group-initials">{{getGroupInitials(group.customerName)}}</span>
+                </div>
+                <span class="invoices-group-name">{{group.customerName}}</span>
+                <span class="invoices-group-id">#{{group.customerId}}</span>
+                <span class="invoices-group-count">{{group.items.length}} factuur{{group.items.length !== 1 ? 'en' : ''}}</span>
+            </div>
+            <div class="invoices-card" *ngFor="let inv of group.items">
+                <div class="invoices-card-header">
+                    <div class="invoices-card-info">
+                        <div class="invoices-card-row-top">
+                            <span class="invoices-card-id">{{inv.id}}</span>
+                            <span class="invoices-badge" [ngClass]="getSubscriptionClass(inv.subscriptionType)">
+                                {{inv.subscriptionType}}
+                            </span>
+                            <span class="invoices-frequency-badge cursor-default">
+                                {{getFrequencyLabel(inv.frequency)}}
+                            </span>
+                        </div>
+                        <div class="invoices-card-row-meta">
+                            <span class="invoices-meta-item invoices-meta-sub-id">#{{inv.subscriptionId}}</span>
+                            <span class="invoices-meta-sep">·</span>
+                            <span class="invoices-meta-item">{{inv.subscriptionName}}</span>
+                            <span class="invoices-meta-sep">·</span>
+                            <span class="invoices-meta-item invoices-meta-period">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                                {{formatPeriod(inv.periodStart, inv.periodEnd, inv.frequency)}}
+                            </span>
+                            <span class="invoices-meta-sep">·</span>
+                            <span class="invoices-meta-item invoices-meta-due">Vervalt: {{formatDate(inv.dueDate)}}</span>
+                        </div>
+                    </div>
+                    <div class="invoices-price-block">
+                        <div class="invoices-price-row">
+                            <span class="invoices-price-label">Basisprijs</span>
+                            <span class="invoices-price-value">{{formatCurrency(inv.payment)}}</span>
+                        </div>
+                        <div class="invoices-price-row invoices-price-row--discount">
+                            <span class="invoices-price-label">Korting</span>
+                            <span class="invoices-price-value">−{{formatCurrency(inv.discount)}}</span>
+                        </div>
+                        <div class="invoices-price-row">
+                            <span class="invoices-price-label">Subtotaal</span>
+                            <span class="invoices-price-value">{{formatCurrency(inv.subtotal)}}</span>
+                        </div>
+                        <div class="invoices-price-divider"></div>
+                        <div class="invoices-price-row invoices-price-row--vat">
+                            <span class="invoices-price-label">BTW (21%)</span>
+                            <span class="invoices-price-value">{{formatCurrency(inv.vat)}}</span>
+                        </div>
+                        <div class="invoices-price-divider"></div>
+                        <div class="invoices-price-row invoices-price-row--total">
+                            <span class="invoices-price-label">Totaal</span>
+                            <span class="invoices-price-value">{{formatCurrency(inv.total)}}</span>
+                        </div>
+                    </div>
+                    <button class="invoices-pdf-btn cursor-pointer" (click)="downloadPdf(inv)" [disabled]="generatingPdfId === inv.id" title="Download PDF">
+                        <svg class="cursor-pointer" *ngIf="generatingPdfId !== inv.id" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path class="cursor-pointer" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline class="cursor-pointer" points="14 2 14 8 20 8"/>
+                            <line class="cursor-pointer" x1="12" y1="18" x2="12" y2="12"/>
+                            <polyline class="cursor-pointer" points="9 15 12 18 15 15"/>
+                        </svg>
+                        <svg *ngIf="generatingPdfId === inv.id" class="invoices-pdf-spinner cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                            <path class="cursor-pointer" d="M12 2a10 10 0 0 1 10 10"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,148 @@
+<!--Author EliasDH Team-->
+<div class="overview-container">
+    <div class="overview-loading" *ngIf="loading">
+        <div class="overview-skeleton" *ngFor="let i of [1,2,3,4,5,6]"></div>
+    </div>
+    <ng-container *ngIf="!loading">
+        <div class="overview-kpi-grid">
+            <div class="overview-kpi-card">
+                <div class="overview-kpi-icon overview-kpi-icon--customers">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 1-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </div>
+                <div class="overview-kpi-body">
+                    <span class="overview-kpi-value">{{customerCount}}</span>
+                    <span class="overview-kpi-label">Klanten</span>
+                </div>
+            </div>
+            <div class="overview-kpi-card">
+                <div class="overview-kpi-icon overview-kpi-icon--live">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                        <line x1="1" y1="10" x2="23" y2="10"/>
+                    </svg>
+                </div>
+                <div class="overview-kpi-body">
+                    <span class="overview-kpi-value overview-kpi-value--live">{{liveCount}}</span>
+                    <span class="overview-kpi-label">Live subscriptions</span>
+                    <span class="overview-kpi-sub">{{inactiveCount}} inactief</span>
+                </div>
+            </div>
+            <div class="overview-kpi-card">
+                <div class="overview-kpi-icon overview-kpi-icon--mrr">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                </div>
+                <div class="overview-kpi-body">
+                    <span class="overview-kpi-value">{{formatCurrency(mrr)}}</span>
+                    <span class="overview-kpi-label">MRR</span>
+                    <span class="overview-kpi-sub">ARR {{formatCurrency(arr)}}</span>
+                </div>
+            </div>
+            <div class="overview-kpi-card">
+                <div class="overview-kpi-icon overview-kpi-icon--paid">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
+                <div class="overview-kpi-body">
+                    <span class="overview-kpi-value overview-kpi-value--paid">{{formatCurrency(paidAmount)}}</span>
+                    <span class="overview-kpi-label">Betaald</span>
+                    <span class="overview-kpi-sub">{{paidCount}} facturen</span>
+                </div>
+            </div>
+            <div class="overview-kpi-card">
+                <div class="overview-kpi-icon overview-kpi-icon--open">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+                <div class="overview-kpi-body">
+                    <span class="overview-kpi-value overview-kpi-value--open">{{formatCurrency(outstandingAmount)}}</span>
+                    <span class="overview-kpi-label">Openstaand</span>
+                    <span class="overview-kpi-sub">{{outstandingCount}} facturen</span>
+                </div>
+            </div>
+            <div class="overview-kpi-card">
+                <div class="overview-kpi-icon overview-kpi-icon--year">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                </div>
+                <div class="overview-kpi-body">
+                    <span class="overview-kpi-value">{{formatCurrency(totalInvoicedAmount)}}</span>
+                    <span class="overview-kpi-label">Totaal gefactureerd</span>
+                    <span class="overview-kpi-sub">{{totalInvoiceCount}} facturen</span>
+                </div>
+            </div>
+        </div>
+        <div class="overview-middle-row">
+            <div class="overview-card overview-card--chart">
+                <div class="overview-card-header">
+                    <h3 class="overview-card-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
+                            <line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/>
+                        </svg>
+                        Maandelijkse omzet {{currentYear}}
+                    </h3>
+                    <span class="overview-card-sub">Incl. BTW · grijs = toekomst</span>
+                </div>
+                <div class="overview-chart-wrap">
+                    <div class="overview-chart-y-labels">
+                        <span>{{formatCurrency(chartMax)}}</span>
+                        <span>{{formatCurrency(chartMax * 0.5)}}</span>
+                        <span>€0</span>
+                    </div>
+                    <div class="overview-chart-area">
+                        <div class="overview-chart-grid">
+                            <div class="overview-chart-gridline"></div>
+                            <div class="overview-chart-gridline"></div>
+                            <div class="overview-chart-gridline"></div>
+                        </div>
+                        <div class="overview-chart-bars">
+                            <div class="overview-bar-col" *ngFor="let bar of monthBars">
+                                <div class="overview-bar-track">
+                                    <div class="overview-bar" [class.overview-bar--past]="bar.isPast" [class.overview-bar--current]="bar.isCurrent" [class.overview-bar--future]="bar.isFuture" [style.height.%]="getBarHeight(bar.amount)" [title]="bar.label + ': ' + formatCurrencyFull(bar.amount)">
+                                    </div>
+                                </div>
+                                <span class="overview-bar-label">{{bar.label}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="overview-card overview-card--types">
+                <div class="overview-card-header">
+                    <h3 class="overview-card-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        </svg>
+                        Subscriptie types
+                    </h3>
+                    <span class="overview-card-sub">{{totalWebsites}} totaal</span>
+                </div>
+                <div class="overview-type-list">
+                    <div class="overview-type-row" *ngFor="let stat of typeStats">
+                        <span class="overview-type-badge" [ngClass]="stat.cssClass">{{stat.type}}</span>
+                        <span class="overview-type-count">{{stat.count}}</span>
+                        <span class="overview-type-pct">{{getTypeBarWidth(stat.count) | number:'1.0-0'}}%</span>
+                    </div>
+                    <p class="overview-type-empty" *ngIf="typeStats.length === 0">Geen data beschikbaar.</p>
+                </div>
+                <div class="overview-stacked-bar" *ngIf="typeStats.length > 0">
+                    <div class="overview-stacked-segment" *ngFor="let stat of typeStats" [ngClass]="stat.cssClass" [style.width.%]="getTypeBarWidth(stat.count)" [title]="stat.type + ': ' + stat.count + ' (' + (getTypeBarWidth(stat.count) | number:'1.0-0') + '%)'">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

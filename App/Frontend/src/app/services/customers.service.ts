@@ -9,10 +9,33 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 
+export interface CustomerLocation {
+    street: string;
+    number: string;
+    postalCode: string;
+    city: string;
+    country: string;
+    vat?: string;
+    latitude: number;
+    longitude: number;
+    socialLinks?: SocialLink[];
+}
+
+export type SubscriptionFrequency = 'monthly' | 'quarterly' | 'yearly' | 'one-time';
+
 export interface CustomerWebsite {
-    subscriptionType: string;
-    url: string;
+    id: string;
     name: string;
+    url: string;
+    subscriptionType: string;
+    isLive: boolean;
+    startDate: string;
+    frequency: SubscriptionFrequency;
+    payment: number;
+    discount: number;
+    subtotal: number;
+    vat: number;
+    total: number;
     visitors?: number;
 }
 
@@ -24,14 +47,20 @@ export interface SocialLink {
 export interface Customer {
     id: string;
     name: string;
-    address: string;
+    isHQ?: boolean;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+    mobile?: string;
     vat: string;
     logo?: string;
     socialLinks?: SocialLink[];
     websites: CustomerWebsite[];
+    locations: CustomerLocation[];
+    address: string;
     latitude: number;
     longitude: number;
-    isHQ?: boolean;
 }
 
 export interface MetricsResponse {
@@ -50,7 +79,6 @@ export interface CustomersResponse {
 @Injectable({
     providedIn: 'root'
 })
-
 export class CustomersService {
     private apiUrl = `${environment.eliasdhApiUrl}/api/v1/customers`;
     private metricsUrl = `${environment.eliasdhApiUrl}/api/v1/metrics`;

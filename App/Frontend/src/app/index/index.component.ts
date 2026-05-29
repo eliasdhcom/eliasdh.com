@@ -11,6 +11,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { LanguageService } from '../services/language.service';
 import { SharedModule } from '../shared/shared.module';
+import { CustomersService, Customer } from '../services/customers.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 interface JoinCard {
     type: 'join';
@@ -30,11 +33,6 @@ interface MemberCard {
     roleAbbreviation: string;
 }
 
-interface TrustedClient {
-    name: string;
-    logo: string;
-    url: string;
-}
 
 interface Review {
     rating: number;
@@ -137,15 +135,11 @@ export class IndexComponent implements OnInit, OnDestroy {
     reviewsAutoRotateInterval: any = null;
     reviewsVisible: number = 3;
 
-    trustedClients: TrustedClient[] = [
-        { name: 'Ter Eiken', logo: 'assets/media/images/trusted-clients/tereiken-logo.png', url: 'https://www.tereiken.be' },
-        { name: 'Level Up', logo: 'assets/media/images/trusted-clients/levelup-logo.png', url: 'https://www.levelup.be' },
-        { name: 'Zizis', logo: 'assets/media/images/trusted-clients/zizis-logo.png', url: 'https://www.zizis.be' },
-        { name: 'Bistro Theo', logo: 'assets/media/images/trusted-clients/bistrotheo-logo.png', url: 'https://www.bistrotheo.be' },
-        { name: 'Slagerij Decruyenaere', logo: 'assets/media/images/trusted-clients/slagerijdecruyenaere-logo.png', url: 'https://www.slagerijdecruyenaere.be' },
-    ];
+    trustedClients: Customer[] = [];
+    private destroy$ = new Subject<void>();
 
-    get trustedClientsDisplay(): TrustedClient[] {
+    get trustedClientsDisplay(): Customer[] {
+        if (!this.trustedClients.length) return [];
         return [...this.trustedClients, ...this.trustedClients, ...this.trustedClients, ...this.trustedClients];
     }
 
@@ -194,7 +188,11 @@ export class IndexComponent implements OnInit, OnDestroy {
         return this.teamMembers.length;
     }
 
-    constructor(private languageService: LanguageService, private translate: TranslateService) { }
+    constructor(
+        private languageService: LanguageService,
+        private translate: TranslateService,
+        private customersService: CustomersService
+    ) { }
 
     ngOnInit(): void {
         this.languageService.checkAndSetLanguage();
@@ -204,13 +202,27 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.calculateReviewsVisible();
         this.calculateYearsInBusiness();
         this.setupStatsObserver();
+        this.loadTrustedClients();
     }
 
     ngOnDestroy(): void {
         this.stopReviewsAutoRotate();
-        if (this.statsObserver) {
-            this.statsObserver.disconnect();
-        }
+        if (this.statsObserver) this.statsObserver.disconnect();
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
+    private loadTrustedClients(): void {
+        this.customersService.getAllCustomers()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (response) => {
+                    this.trustedClients = (response.data ?? [])
+                        .filter(c => !c.isHQ)
+                        .sort((a, b) => a.id.localeCompare(b.id));
+                },
+                error: () => {}
+            });
     }
 
     @HostListener('window:resize')

@@ -363,8 +363,8 @@
                 <section class="index-trusted-clients-logos">
                     <ng-container *ngFor="let client of trustedClientsDisplay">
                         <span class="client-logo-wrapper">
-                            <a [href]="client.url" [attr.target]="'_blank'" rel="noopener noreferrer">
-                                <img [src]="client.logo" [alt]="client.name" draggable="false">
+                            <a [routerLink]="['/map']" [queryParams]="{customerId: client.id}" class="cursor-pointer">
+                                <img [src]="'assets/media/images/trusted-clients/' + client.logo" [alt]="client.name" draggable="false">
                             </a>
                         </span>
                     </ng-container>

@@ -7,8 +7,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
+import { AuthService } from '../../services/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -19,12 +21,12 @@ import { takeUntil } from 'rxjs/operators';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css']
 })
-
 export class LoginComponent implements OnInit, OnDestroy {
     loginForm!: FormGroup;
     forgotPasswordForm!: FormGroup;
     showForgotPassword = false;
     submitting = false;
+    loginError = '';
     private destroy$ = new Subject<void>();
 
     passwordMinLength = 8;
@@ -33,7 +35,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     passwordHasNumbers = false;
     passwordHasSpecial = false;
 
-    constructor(private fb: FormBuilder, private translateService: TranslateService) {
+    constructor(
+        private fb: FormBuilder,
+        private translateService: TranslateService,
+        private authService: AuthService,
+        private router: Router
+    ) {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, this.emailValidator]],
             password: ['', [Validators.required, this.passwordValidator]]
@@ -74,6 +81,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.showForgotPassword = !this.showForgotPassword;
         this.loginForm.reset();
         this.forgotPasswordForm.reset();
+        this.loginError = '';
     }
 
     validatePassword(password: string): void {
@@ -113,7 +121,17 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (this.loginForm.invalid) return;
 
         this.submitting = true;
-        console.log('Login credentials:', this.loginForm.value);
+        this.loginError = '';
+
+        const { email, password } = this.loginForm.value;
+        const success = this.authService.login(email, password);
+
+        if (success) {
+            this.router.navigate(['/dashboard']);
+        } else {
+            this.submitting = false;
+            this.loginError = 'Ongeldig e-mailadres of wachtwoord.';
+        }
     }
 
     onForgotPassword(): void {
@@ -129,6 +147,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             emailControl.markAsTouched();
             emailControl.updateValueAndValidity({ emitEvent: false });
         }
+        if (this.loginError) this.loginError = '';
     }
 
     onPasswordChange(): void {
@@ -139,6 +158,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             passwordControl.markAsTouched();
             passwordControl.updateValueAndValidity({ emitEvent: false });
         }
+        if (this.loginError) this.loginError = '';
     }
 
     onForgotEmailChange(): void {

@@ -358,6 +358,26 @@
     transform: scale(1.2);
 }
 
+.login-auth-error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(252, 165, 165, 0.35);
+    color: #fca5a5;
+    font-size: 13px;
+    animation: slideInSuccess 0.25s ease-out;
+}
+
+.login-auth-error svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
 .login-password-strength {
     display: none;
 }

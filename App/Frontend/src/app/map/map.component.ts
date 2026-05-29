@@ -8,6 +8,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { CustomersService, Customer } from '../services/customers.service';
 import { LanguageService } from '../services/language.service';
@@ -30,6 +31,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     private refreshInterval: any;
     customers: Customer[] = [];
     selectedCustomer: Customer | null = null;
+    selectedLat: number | null = null;
+    selectedLng: number | null = null;
     isLoading: boolean = true;
     error: string | null = null;
     isSidebarOpen: boolean = false;
@@ -45,7 +48,9 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     constructor(
         private customersService: CustomersService,
         private languageService: LanguageService,
-        private translateService: TranslateService
+        private translateService: TranslateService,
+        private route: ActivatedRoute,
+        private router: Router
     ) { }
 
     ngOnInit(): void {
@@ -127,6 +132,11 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.customers = response.data;
                     console.log('Customers loaded:', this.customers);
                     this.addMarkersToMap();
+                    const customerId = this.route.snapshot.queryParamMap.get('customerId');
+                    if (customerId) {
+                        const customer = this.customers.find(c => c.id === customerId);
+                        if (customer) this.selectCustomer(customer);
+                    }
                 } else this.error = 'Failed to load customers';
                 this.isLoading = false;
             },
@@ -163,10 +173,16 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         this.customers.forEach(customer => {
-            if (customer.latitude && customer.longitude) {
-                console.log(`Adding marker for ${customer.name} (${customer.latitude}, ${customer.longitude})`);
-                const icon = (customer as any).isHQ ? hqIcon : customIcon;
-                const marker = L.marker([customer.latitude, customer.longitude], { icon: icon }).on('click', () => this.selectCustomer(customer));
+            const locs = customer.locations?.length
+                ? customer.locations
+                : (customer.latitude && customer.longitude ? [{ latitude: customer.latitude, longitude: customer.longitude }] : []);
+
+            locs.forEach((loc, index) => {
+                if (!loc.latitude || !loc.longitude) return;
+                console.log(`Adding marker for ${customer.name} at (${loc.latitude}, ${loc.longitude})`);
+                const icon = (customer.isHQ && index === 0) ? hqIcon : customIcon;
+                const marker = L.marker([loc.latitude, loc.longitude], { icon })
+                    .on('click', () => this.selectCustomer(customer, loc.latitude, loc.longitude));
 
                 marker.bindTooltip(customer.name, {
                     permanent: false,
@@ -176,12 +192,12 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
                 this.markers.push(marker);
 
-                if ((customer as any).isHQ) {
+                if (customer.isHQ && index === 0) {
                     this.map.addLayer(marker);
                 } else {
                     this.markerClusterGroup.addLayer(marker);
                 }
-            }
+            });
         });
 
         console.log('Total markers added:', this.markers.length);
@@ -191,9 +207,12 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    selectCustomer(customer: Customer): void {
+    selectCustomer(customer: Customer, lat?: number, lng?: number): void {
         this.selectedCustomer = customer;
+        this.selectedLat = lat ?? customer.latitude ?? null;
+        this.selectedLng = lng ?? customer.longitude ?? null;
         this.isSidebarOpen = true;
+        this.router.navigate([], { queryParams: { customerId: customer.id }, replaceUrl: true });
 
         if (customer.websites && customer.websites.length > 0) {
             customer.websites.forEach(website => {
@@ -209,16 +228,15 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
             });
         }
 
-        if (customer.latitude && customer.longitude) {
-            this.map.setView([customer.latitude, customer.longitude], 14, {
-                animate: true
-            });
+        if (this.selectedLat && this.selectedLng) {
+            this.map.setView([this.selectedLat, this.selectedLng], 14, { animate: true });
         }
     }
 
     closeSidebar(): void {
         this.isSidebarOpen = false;
         this.selectedCustomer = null;
+        this.router.navigate([], { queryParams: {}, replaceUrl: true });
     }
 
     openWebsite(url: string): void {
@@ -327,12 +345,12 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     getDirections(mode: 'driving' | 'bicycling' | 'walking'): void {
-        if (!this.userLocation || !this.selectedCustomer?.latitude || !this.selectedCustomer?.longitude) {
+        if (!this.userLocation || !this.selectedLat || !this.selectedLng) {
             return;
         }
 
         const origin = `${this.userLocation.lat},${this.userLocation.lng}`;
-        const destination = `${this.selectedCustomer.latitude},${this.selectedCustomer.longitude}`;
+        const destination = `${this.selectedLat},${this.selectedLng}`;
         const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=${mode}`;
         window.open(url, '_blank');
     }
