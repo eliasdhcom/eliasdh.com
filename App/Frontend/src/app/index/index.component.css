@@ -671,8 +671,10 @@
 
 .index-trusted-clients-logos {
     display: flex;
+    width: max-content;
     padding: 15px 0;
-    animation: clients-scroll 25s linear infinite;
+    will-change: transform;
+    animation: clients-scroll 60s linear infinite;
 }
 
 @keyframes clients-scroll {
@@ -1716,18 +1718,6 @@
 
     .index-stats-label {
         font-size: 0.7rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .index-trusted-clients-logos {
-        animation-duration: 15s;
-    }
-}
-
-@media (max-width: 480px) {
-    .index-trusted-clients-logos {
-        animation-duration: 10s;
     }
 }
 
