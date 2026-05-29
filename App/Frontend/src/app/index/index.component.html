@@ -358,28 +358,19 @@
                 </section>
             </section>
         </article>
-        <article class="index-trusted-clients"
-            (mousedown)="onClientsDragStart($event)"
-            (mousemove)="onClientsDragMove($event)"
-            (mouseup)="onClientsDragEnd()"
-            (mouseleave)="onClientsDragEnd()"
-            (touchstart)="onClientsTouchStart($event)"
-            (touchmove)="onClientsTouchMove($event)"
-            (touchend)="onClientsDragEnd()"
-            [class.dragging]="isClientsDragging">
+        <article class="index-trusted-clients">
             <section class="index-trusted-clients-logo-slider">
-                <section class="index-trusted-clients-logos" 
-                    [style.transform]="'translateX(' + clientsTranslateX + 'px)'">
+                <section class="index-trusted-clients-logos">
                     <ng-container *ngFor="let client of trustedClients">
-                        <span class="client-logo-wrapper" [class.no-click]="clientsHasDragged">
-                            <a [href]="client.url" [attr.target]="'_blank'" rel="noopener noreferrer" (click)="onLogoClick($event)">
+                        <span class="client-logo-wrapper">
+                            <a [href]="client.url" [attr.target]="'_blank'" rel="noopener noreferrer">
                                 <img [src]="client.logo" [alt]="client.name" draggable="false">
                             </a>
                         </span>
                     </ng-container>
                     <ng-container *ngFor="let client of trustedClients">
-                        <span class="client-logo-wrapper" [class.no-click]="clientsHasDragged">
-                            <a [href]="client.url" [attr.target]="'_blank'" rel="noopener noreferrer" (click)="onLogoClick($event)">
+                        <span class="client-logo-wrapper">
+                            <a [href]="client.url" [attr.target]="'_blank'" rel="noopener noreferrer">
                                 <img [src]="client.logo" [alt]="client.name" draggable="false">
                             </a>
                         </span>

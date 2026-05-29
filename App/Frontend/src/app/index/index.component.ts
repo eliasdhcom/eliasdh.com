@@ -151,15 +151,6 @@ export class IndexComponent implements OnInit, OnDestroy {
         { name: 'Slagerij Decruyenaere', logo: 'assets/media/images/trusted-clients/slagerijdecruyenaere-logo.png', url: 'https://www.slagerijdecruyenaere.be' },
     ];
 
-    clientsTranslateX: number = 0;
-    isClientsDragging: boolean = false;
-    clientsDragStartX: number = 0;
-    clientsStartTranslateX: number = 0;
-    clientsAutoScrollInterval: any = null;
-    clientsResumeTimeout: any = null;
-    clientsScrollSpeed: number = 0.5;
-    clientsSingleSetWidth: number = 0;
-    clientsHasDragged: boolean = false;
 
     teamMembers: TeamMember[] = [
         {
@@ -211,7 +202,6 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.languageService.checkAndSetLanguage();
         this.initializeTeamCarousel();
         this.setupEmailIconClick();
-        this.initializeClientsSlider();
         this.startReviewsAutoRotate();
         this.calculateReviewsVisible();
         this.calculateYearsInBusiness();
@@ -219,11 +209,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.stopClientsAutoScroll();
         this.stopReviewsAutoRotate();
-        if (this.clientsResumeTimeout) {
-            clearTimeout(this.clientsResumeTimeout);
-        }
         if (this.statsObserver) {
             this.statsObserver.disconnect();
         }
@@ -421,121 +407,6 @@ export class IndexComponent implements OnInit, OnDestroy {
     closeContactModal(): void {
         this.showContactModal = false;
         this.contactSubject = '';
-    }
-
-    private initializeClientsSlider(): void {
-        setTimeout(() => {
-            this.calculateClientsSingleSetWidth();
-            this.clientsTranslateX = 0;
-            this.startClientsAutoScroll();
-        }, 100);
-    }
-
-    private calculateClientsSingleSetWidth(): void {
-        const logos = document.querySelector('.index-trusted-clients-logos');
-        if (logos) {
-            const items = logos.querySelectorAll('.client-logo-wrapper');
-            const numClients = this.trustedClients.length;
-            if (items.length > 0 && numClients > 0) {
-                let totalWidth = 0;
-                for (let i = 0; i < numClients; i++) {
-                    const item = items[i] as HTMLElement;
-                    totalWidth += item.offsetWidth;
-                }
-                this.clientsSingleSetWidth = totalWidth;
-            }
-        }
-    }
-
-    private startClientsAutoScroll(): void {
-        if (this.clientsAutoScrollInterval) return;
-
-        const animate = () => {
-            this.clientsTranslateX -= this.clientsScrollSpeed;
-            if (this.clientsTranslateX <= -this.clientsSingleSetWidth) this.clientsTranslateX += this.clientsSingleSetWidth;
-            this.clientsAutoScrollInterval = requestAnimationFrame(animate);
-        };
-
-        this.clientsAutoScrollInterval = requestAnimationFrame(animate);
-    }
-
-    private normalizeClientsPosition(): void {
-        if (this.clientsSingleSetWidth <= 0) return;
-        while (this.clientsTranslateX <= -this.clientsSingleSetWidth) this.clientsTranslateX += this.clientsSingleSetWidth;
-        while (this.clientsTranslateX > 0) this.clientsTranslateX -= this.clientsSingleSetWidth;
-    }
-
-    private stopClientsAutoScroll(): void {
-        if (this.clientsAutoScrollInterval) {
-            cancelAnimationFrame(this.clientsAutoScrollInterval);
-            this.clientsAutoScrollInterval = null;
-        }
-    }
-
-    private resumeClientsAutoScroll(): void {
-        if (this.clientsResumeTimeout) clearTimeout(this.clientsResumeTimeout);
-
-        this.clientsResumeTimeout = setTimeout(() => {
-            this.startClientsAutoScroll();
-        }, 2000);
-    }
-
-    onClientsDragStart(event: MouseEvent): void {
-        this.isClientsDragging = true;
-        this.clientsHasDragged = false;
-        this.clientsDragStartX = event.clientX;
-        this.clientsStartTranslateX = this.clientsTranslateX;
-        this.stopClientsAutoScroll();
-    }
-
-    onClientsDragMove(event: MouseEvent): void {
-        if (!this.isClientsDragging) return;
-
-        const diff = event.clientX - this.clientsDragStartX;
-        if (Math.abs(diff) > 5) {
-            this.clientsHasDragged = true;
-            event.preventDefault();
-        }
-
-        if (this.clientsHasDragged) {
-            this.clientsTranslateX = this.clientsStartTranslateX + diff;
-            this.normalizeClientsPosition();
-        }
-    }
-
-    onClientsDragEnd(): void {
-        if (!this.isClientsDragging) return;
-
-        setTimeout(() => {
-            this.isClientsDragging = false;
-            this.clientsHasDragged = false;
-        }, 50);
-
-        this.resumeClientsAutoScroll();
-    }
-
-    onLogoClick(event: MouseEvent): void {
-        if (this.clientsHasDragged) {
-            event.preventDefault();
-        }
-    }
-
-    onClientsTouchStart(event: TouchEvent): void {
-        this.isClientsDragging = true;
-        this.clientsHasDragged = false;
-        this.clientsDragStartX = event.touches[0].clientX;
-        this.clientsStartTranslateX = this.clientsTranslateX;
-        this.stopClientsAutoScroll();
-    }
-
-    onClientsTouchMove(event: TouchEvent): void {
-        if (!this.isClientsDragging) return;
-
-        const diff = event.touches[0].clientX - this.clientsDragStartX;
-        if (Math.abs(diff) > 5) this.clientsHasDragged = true;
-
-        this.clientsTranslateX = this.clientsStartTranslateX + diff;
-        this.normalizeClientsPosition();
     }
 
     private startReviewsAutoRotate(): void {
