@@ -1,0 +1,44 @@
+{
+    "id":        "000",
+    "name":      "EliasDH BV",
+    "firstName": "Thomas",
+    "lastName":  "Deweerdt",
+    "email":     "info@eliasdh.com",
+    "phone":     "+32474110316",
+    "location": {
+        "street":  "Hulgenrodestraat",
+        "number":  "64",
+        "postal":  "2150",
+        "city":    "Antwerpen",
+        "country": "Belgium",
+        "vat":     "BE1034925266",
+        "lat":     51.1915943,
+        "lng":     4.4969435,
+        "socials": [
+            { "type": "instagram", "url": "https://www.instagram.com/eliasdhcom" },
+            { "type": "facebook",  "url": "https://www.facebook.com/eliasdhcom" },
+            { "type": "linkedin",  "url": "https://www.linkedin.com/company/eliasdh" },
+            { "type": "github",    "url": "https://github.com/eliasdhcom" }
+        ]
+    },
+    "websites": [
+        {
+            "id":               "000",
+            "name":             "EliasDH Website",
+            "url":              "https://eliasdh.com",
+            "subscriptionType": "Free",
+            "isLive":           true,
+            "startDate":        "2026-01-01",
+            "frequency":        "yearly",
+            "payment":          0,
+            "discount":         0
+        }
+    ],
+    "domains": [
+        {
+            "name":        "eliasdh.com",
+            "renewalDate": "2027-01-01",
+            "annualPrice": 0
+        }
+    ]
+}

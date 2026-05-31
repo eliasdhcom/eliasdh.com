@@ -11,4 +11,3 @@ node_modules
 *.db-shm
 *.db-wal
 src/database/seed.js
-hq.json
