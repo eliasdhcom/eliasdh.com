@@ -13,6 +13,8 @@ const blogRoutes      = require('./blog');
 const authRoutes      = require('./auth');
 const invoicesRoutes  = require('./invoices');
 const usersRoutes     = require('./users');
+const pricingRoutes   = require('./pricing');
+const costsRoutes     = require('./costs');
 
 const router = express.Router();
 
@@ -24,5 +26,7 @@ router.use('/blog',      blogRoutes);
 router.use('/auth',      authRoutes);
 router.use('/invoices',  invoicesRoutes);
 router.use('/users',     usersRoutes);
+router.use('/pricing',   pricingRoutes);
+router.use('/costs',     costsRoutes);
 
 module.exports = router;

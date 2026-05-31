@@ -43,7 +43,7 @@ const contactLimiter = rateLimit({
 });
 
 app.use(limiter);
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
 const PUBLIC_PATHS = ['/api/v1/contact', '/api/v1/auth', '/api/v1/users'];
 

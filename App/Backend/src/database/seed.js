@@ -249,6 +249,25 @@ async function seed() {
         }
     }
 
+    const { rows: [{ n: costsCount }] } = await db.execute('SELECT COUNT(*) AS n FROM analysis_costs');
+    if (Number(costsCount) === 0) {
+        const initialCosts = [
+            { name: 'KBC-Business Pro Zichtrekening', amount: 4.25,    frequency: 'monthly', type: 'fixed',    sort_order: 1 },
+            { name: 'KBC-Business Pro Debetkaart',    amount: 0.75,    frequency: 'monthly', type: 'fixed',    sort_order: 2 },
+            { name: 'Aansprakelijkheidsverzekering',  amount: 382.40,  frequency: 'yearly',  type: 'fixed',    sort_order: 3 },
+            { name: 'Domain name (eliasdh.com)',      amount: 20.00,   frequency: 'yearly',  type: 'fixed',    sort_order: 4 },
+            { name: 'Accountant',                     amount: 2200.00, frequency: 'yearly',  type: 'fixed',    sort_order: 5 },
+            { name: 'Billit',                         amount: 25.00,   frequency: 'monthly', type: 'fixed',    sort_order: 6 },
+        ];
+        for (const c of initialCosts) {
+            await db.execute({
+                sql:  'INSERT INTO analysis_costs (name, amount, frequency, type, sort_order) VALUES (?, ?, ?, ?, ?)',
+                args: [c.name, c.amount, c.frequency, c.type, c.sort_order]
+            });
+        }
+        console.log('Analysis costs seeded.');
+    }
+
     const passwordHash = await bcrypt.hash('EliasDH@123', 12);
     await db.execute({
         sql:  `INSERT INTO users (email, password_hash, first_name, last_name, role, company, phone, birth_date)

@@ -574,14 +574,21 @@
     align-items: center;
     justify-content: center;
     color: var(--primary);
-    text-decoration: none;
-    padding: 4px;
-    border-radius: 4px;
-    transition: background 0.15s;
+    padding: 5px;
+    border-radius: 6px;
+    border: none;
+    background: color-mix(in srgb, var(--primary) 10%, transparent);
+    transition: background 0.15s, transform 0.1s;
 }
 
 .customers-location-map:hover {
-    background: rgba(128, 128, 128, 0.1);
+    background: color-mix(in srgb, var(--primary) 20%, transparent);
+    transform: translateY(-1px);
+}
+
+.customers-location-map:disabled {
+    opacity: 0.35;
+    pointer-events: none;
 }
 
 .customers-location-map svg {

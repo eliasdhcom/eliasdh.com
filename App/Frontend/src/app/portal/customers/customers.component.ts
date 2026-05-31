@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CustomersService, Customer, CustomerLocation, CustomerWebsite, CustomerDomain, SocialLink } from '../../services/customers.service';
+import { PricingPlansService, PricingPlan } from '../../services/pricing-plans.service';
 import { AuthService } from '../../services/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -86,12 +87,11 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     deleteConfirmId: string | null = null;
     form: CustomerForm = this.emptyForm();
 
-    readonly subscriptionTypes  = ['Free', 'Basic', 'Growth', 'Startup', 'Business', 'Enterprise', 'Custom'];
-    readonly frequencies        = ['monthly', 'quarterly', 'yearly', 'one-time'];
-    readonly socialTypes        = ['facebook', 'instagram', 'linkedin', 'twitter', 'tiktok', 'youtube', 'github'];
-    readonly subscriptionPrices: Record<string, number> = {
-        Free: 0, Basic: 20, Growth: 40, Startup: 80, Business: 160, Enterprise: 320, Custom: 0
-    };
+    subscriptionTypes: string[]            = ['Free', 'Basic', 'Growth', 'Startup', 'Business', 'Enterprise', 'Custom'];
+    readonly frequencies                   = ['monthly', 'quarterly', 'yearly', 'one-time'];
+    readonly socialTypes                   = ['facebook', 'instagram', 'linkedin', 'twitter', 'tiktok', 'youtube', 'github'];
+    subscriptionPrices: Record<string, number> = { Free: 0, Custom: 0 };
+    private pricingPlans: PricingPlan[]    = [];
 
     geocodingLoading: boolean[] = [];
 
@@ -99,12 +99,25 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
 
     constructor(
         private customersService: CustomersService,
+        private pricingPlansService: PricingPlansService,
         private authService: AuthService,
         private translate: TranslateService,
         private router: Router
     ) {}
 
-    ngOnInit(): void { this.loadCustomers(); }
+    ngOnInit(): void {
+        this.loadCustomers();
+        this.pricingPlansService.getAll()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({ next: (r) => {
+                this.pricingPlans = r.data ?? [];
+                const prices: Record<string, number> = { Custom: 0 };
+                const types: string[] = [];
+                for (const p of this.pricingPlans) { prices[p.name] = p.monthlyPrice; types.push(p.name); }
+                this.subscriptionPrices = prices;
+                this.subscriptionTypes  = [...types, 'Custom'];
+            }});
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();
@@ -152,10 +165,13 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     getInitials(name: string): string { return name.split(/\s+/).map(w => w[0] ?? '').join('').toUpperCase().slice(0, 2); }
     formatAddress(loc: Customer['locations'][0]): string { return `${loc.street} ${loc.number}, ${loc.postalCode} ${loc.city}`; }
 
-    openInMap(loc: Customer['locations'][0], event: Event): void {
+    openInMap(customer: Customer, loc: Customer['locations'][0], event: Event): void {
         event.stopPropagation();
         if (loc.latitude && loc.longitude) {
-            this.router.navigate(['/map'], { queryParams: { lat: loc.latitude, lng: loc.longitude } });
+            const url = this.router.serializeUrl(
+                this.router.createUrlTree(['/map'], { queryParams: { lat: loc.latitude, lng: loc.longitude, customerId: customer.id } })
+            );
+            window.open(url, '_blank');
         }
     }
 

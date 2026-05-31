@@ -54,8 +54,9 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         private router: Router
     ) { }
 
-    private focusLat: number | null = null;
-    private focusLng: number | null = null;
+    private focusLat:        number | null = null;
+    private focusLng:        number | null = null;
+    private focusCustomerId: string | null = null;
 
     ngOnInit(): void {
         this.languageService.checkAndSetLanguage();
@@ -66,6 +67,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.focusLat = lat;
                 this.focusLng = lng;
             }
+            this.focusCustomerId = params['customerId'] ?? null;
         });
         this.loadCustomers();
         this.startAutoRefresh();
@@ -74,12 +76,6 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     ngAfterViewInit(): void {
         this.initMap();
         this.locateUser();
-        if (this.customers.length > 0) {
-            this.addMarkersToMap();
-        }
-        if (this.focusLat !== null && this.focusLng !== null) {
-            this.map.flyTo([this.focusLat, this.focusLng], 16, { animate: true, duration: 1.2 });
-        }
     }
 
     ngOnDestroy(): void {
@@ -147,10 +143,21 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.customers = response.data;
                     console.log('Customers loaded:', this.customers);
                     this.addMarkersToMap();
-                    const customerId = this.route.snapshot.queryParamMap.get('customerId');
-                    if (customerId) {
-                        const customer = this.customers.find(c => c.id === customerId);
-                        if (customer) this.selectCustomer(customer);
+
+                    if (this.focusLat !== null && this.focusLng !== null) {
+                        this.map.flyTo([this.focusLat, this.focusLng], 16, { animate: true, duration: 1.2 });
+
+                        const targetCustomer = this.focusCustomerId ? this.customers.find(c => c.id === this.focusCustomerId) : this.customers.find(c => c.locations?.some(l => l.latitude === this.focusLat && l.longitude === this.focusLng));
+
+                        if (targetCustomer) {
+                            this.selectCustomer(targetCustomer, this.focusLat, this.focusLng);
+                        }
+                    } else {
+                        const customerId = this.route.snapshot.queryParamMap.get('customerId');
+                        if (customerId) {
+                            const customer = this.customers.find(c => c.id === customerId);
+                            if (customer) this.selectCustomer(customer);
+                        }
                     }
                 } else this.error = 'Failed to load customers';
                 this.isLoading = false;
@@ -215,8 +222,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
             });
         });
 
-        console.log('Total markers added:', this.markers.length);
-        if (this.markers.length > 0) {
+        if (this.markers.length > 0 && this.focusLat === null) {
             const group = L.featureGroup(this.markers);
             this.map.fitBounds(group.getBounds().pad(0.1));
         }
@@ -361,6 +367,20 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
                 maximumAge: 0
             }
         );
+    }
+
+    get displayAddress(): string {
+        if (this.selectedLocation) {
+            const l = this.selectedLocation;
+            return `${l.street} ${l.number}, ${l.postalCode} ${l.city}`;
+        }
+        return this.selectedCustomer?.address ?? '';
+    }
+
+    get displayCoords(): string {
+        const lat = this.selectedLat ?? this.selectedCustomer?.latitude;
+        const lng = this.selectedLng ?? this.selectedCustomer?.longitude;
+        return (lat != null && lng != null) ? `${lat}, ${lng}` : '';
     }
 
     getDirections(mode: 'driving' | 'bicycling' | 'walking'): void {

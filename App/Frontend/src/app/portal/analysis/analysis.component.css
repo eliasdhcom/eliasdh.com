@@ -302,6 +302,25 @@
     color: #dc2626;
 }
 
+.analysis-costs-row--saving { opacity: 0.75; }
+
+.analysis-saving-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--primary);
+    animation: analysis-pulse 1s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+@keyframes analysis-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.75); }
+}
+
+.analysis-btn-add:disabled { opacity: 0.5; cursor: not-allowed; }
+
 .analysis-costs-footer {
     display: flex;
     align-items: center;

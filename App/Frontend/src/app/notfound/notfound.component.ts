@@ -5,7 +5,6 @@
 **/
 
 import { Component, OnInit } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../services/language.service';
 import { SharedModule } from '../shared/shared.module';
 
@@ -13,7 +12,7 @@ import { SharedModule } from '../shared/shared.module';
     selector: 'app-notfound',
     templateUrl: './notfound.component.html',
     styleUrls: ['./notfound.component.css'],
-    imports: [TranslatePipe, SharedModule],
+    imports: [SharedModule],
     standalone: true
 })
 

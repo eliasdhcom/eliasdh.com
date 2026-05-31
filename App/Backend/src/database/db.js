@@ -123,15 +123,28 @@ async function initSchema() {
             paid            INTEGER NOT NULL DEFAULT 0,
             paid_at         TEXT,
             UNIQUE(customer_id, subscription_id, period_start, invoice_type)
-        )`
+        )`,
+        `CREATE TABLE IF NOT EXISTS analysis_costs (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            name       TEXT    NOT NULL DEFAULT '',
+            amount     REAL    NOT NULL DEFAULT 0,
+            frequency  TEXT    NOT NULL DEFAULT 'yearly',
+            type       TEXT    NOT NULL DEFAULT 'fixed',
+            sort_order INTEGER NOT NULL DEFAULT 0
+        )`,
+        // Indexes for foreign key lookups (prevent full table scans)
+        `CREATE INDEX IF NOT EXISTS idx_customer_locations_customer_id  ON customer_locations(customer_id)`,
+        `CREATE INDEX IF NOT EXISTS idx_location_social_links_location_id ON location_social_links(location_id)`,
+        `CREATE INDEX IF NOT EXISTS idx_websites_customer_id            ON websites(customer_id)`,
+        `CREATE INDEX IF NOT EXISTS idx_domain_names_customer_id        ON domain_names(customer_id)`,
+        `CREATE INDEX IF NOT EXISTS idx_invoice_status_lookup           ON invoice_status(customer_id, subscription_id, period_start, invoice_type)`,
+        `CREATE INDEX IF NOT EXISTS idx_analysis_costs_sort             ON analysis_costs(sort_order)`,
+        `CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_user_id   ON password_reset_tokens(user_id)`,
     ];
 
     for (const sql of stmts) {
         await db.execute(sql);
     }
-
-    await db.execute(`UPDATE websites      SET subscription_type = 'Free' WHERE subscription_type = 'ToDo'`);
-    await db.execute(`DELETE FROM pricing_plans WHERE name = 'ToDo'`);
 }
 
 module.exports = { getDb, initSchema };

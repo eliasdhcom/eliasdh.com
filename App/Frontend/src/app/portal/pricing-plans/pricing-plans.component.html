@@ -1,0 +1,118 @@
+<!--Author EliasDH Team-->
+<div class="pricing-container">
+    <div class="pricing-top-bar">
+        <span class="pricing-total">{{'PORTAL.PRICING.TOTAL'|translate:{count: plans.length} }}</span>
+        <button *ngIf="isAuthenticated" class="pricing-add-btn cursor-pointer" (click)="openCreateForm()">
+            <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line class="cursor-pointer" x1="12" y1="5" x2="12" y2="19"/>
+                <line class="cursor-pointer" x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            {{'PORTAL.PRICING.ADD'|translate}}
+        </button>
+    </div>
+    <div class="pricing-loading" *ngIf="loading">
+        <div class="pricing-skeleton" *ngFor="let i of [1,2,3,4,5,6]"></div>
+    </div>
+    <div class="pricing-error-state" *ngIf="!loading && error">
+        <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle class="cursor-pointer" cx="12" cy="12" r="10"/>
+            <line class="cursor-pointer" x1="12" y1="8" x2="12" y2="12"/>
+            <line class="cursor-pointer" x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <p>{{error}}</p>
+        <button class="pricing-retry-btn cursor-pointer" (click)="loadPlans()">{{'PORTAL.COMMON.RETRY'|translate}}</button>
+    </div>
+    <div class="pricing-empty-state" *ngIf="!loading && !error && plans.length === 0">
+        <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line class="cursor-pointer" x1="12" y1="1" x2="12" y2="23"/>
+            <path class="cursor-pointer" d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+        <p>{{'PORTAL.PRICING.EMPTY'|translate}}</p>
+    </div>
+    <div class="pricing-grid" *ngIf="!loading && !error && plans.length > 0">
+        <div class="pricing-card" *ngFor="let plan of plans">
+            <div class="pricing-card-body">
+                <div class="pricing-card-name">{{plan.name}}</div>
+                <div class="pricing-card-price">
+                    <span class="pricing-card-amount">{{formatCurrency(plan.monthlyPrice)}}</span>
+                    <span class="pricing-card-period">{{'PORTAL.PRICING.PER_MONTH'|translate}}</span>
+                </div>
+                <div class="pricing-card-year">
+                    {{formatCurrency(plan.monthlyPrice * 12)}} {{'PORTAL.PRICING.PER_YEAR'|translate}}
+                </div>
+            </div>
+            <div class="pricing-card-actions" *ngIf="isAuthenticated">
+                <button class="pricing-action-btn pricing-action-btn--edit cursor-pointer" (click)="openEditForm(plan)" [title]="'PORTAL.COMMON.EDIT'|translate">
+                    <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path class="cursor-pointer" d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                        <path class="cursor-pointer" d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    </svg>
+                </button>
+                <button class="pricing-action-btn pricing-action-btn--delete cursor-pointer" (click)="confirmDelete(plan.id)" [title]="'PORTAL.COMMON.DELETE'|translate">
+                    <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline class="cursor-pointer" points="3 6 5 6 21 6"/>
+                        <path class="cursor-pointer" d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                        <path class="cursor-pointer" d="M10 11v6"/>
+                        <path class="cursor-pointer" d="M14 11v6"/>
+                        <path class="cursor-pointer" d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pricing-modal-overlay" *ngIf="showForm" (click)="onOverlayClick($event)">
+    <div class="pricing-modal">
+        <div class="pricing-modal-header">
+            <h2 class="pricing-modal-title">
+                {{(isEditing ? 'PORTAL.PRICING.FORM.TITLE_EDIT' : 'PORTAL.PRICING.FORM.TITLE_CREATE')|translate}}
+            </h2>
+            <button class="pricing-modal-close cursor-pointer" (click)="closeForm()" [title]="'PORTAL.COMMON.CLOSE'|translate">
+                <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
+                    <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div class="pricing-modal-body">
+            <div class="pricing-form-group">
+                <label class="pricing-form-label">{{'PORTAL.PRICING.FORM.NAME'|translate}}</label>
+                <input class="pricing-form-input cursor-text" type="text" [(ngModel)]="form.name" [placeholder]="'PORTAL.PRICING.FORM.NAME_PLACEHOLDER'|translate" maxlength="64"/>
+            </div>
+            <div class="pricing-form-group">
+                <label class="pricing-form-label">{{'PORTAL.PRICING.FORM.PRICE'|translate}}</label>
+                <div class="pricing-form-input-wrap">
+                    <span class="pricing-form-prefix">€</span>
+                    <input class="pricing-form-input pricing-form-input--price cursor-text" type="number" [(ngModel)]="form.monthlyPrice" min="0" step="1" [placeholder]="'0'"/>
+                </div>
+            </div>
+            <div class="pricing-form-error" *ngIf="formError">{{formError}}</div>
+        </div>
+        <div class="pricing-modal-footer">
+            <button class="pricing-btn pricing-btn--cancel cursor-pointer" (click)="closeForm()" [disabled]="formSaving">{{'PORTAL.COMMON.CANCEL'|translate}}</button>
+            <button class="pricing-btn pricing-btn--save cursor-pointer" (click)="submitForm()" [disabled]="formSaving">
+                {{formSaving ? ('PORTAL.COMMON.SAVING'|translate) : ('PORTAL.COMMON.SAVE'|translate)}}
+            </button>
+        </div>
+    </div>
+</div>
+<div class="pricing-modal-overlay" *ngIf="deleteConfirmId !== null" (click)="onDeleteOverlayClick($event)">
+    <div class="pricing-modal pricing-modal--delete">
+        <div class="pricing-modal-header">
+            <h2 class="pricing-modal-title">{{'PORTAL.PRICING.DELETE.TITLE'|translate}}</h2>
+            <button class="pricing-modal-close cursor-pointer" (click)="cancelDelete()" [title]="'PORTAL.COMMON.CLOSE'|translate">
+                <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
+                    <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div class="pricing-modal-body">
+            <p class="pricing-delete-msg">{{'PORTAL.PRICING.DELETE.CONFIRM'|translate}}</p>
+        </div>
+        <div class="pricing-modal-footer">
+            <button class="pricing-btn pricing-btn--cancel cursor-pointer" (click)="cancelDelete()">{{'PORTAL.COMMON.CANCEL'|translate}}</button>
+            <button class="pricing-btn pricing-btn--delete cursor-pointer" (click)="executeDelete()">{{'PORTAL.COMMON.DELETE'|translate}}</button>
+        </div>
+    </div>
+</div>

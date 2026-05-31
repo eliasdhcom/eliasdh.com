@@ -13,106 +13,85 @@ function formatAddress(loc) {
     return `${loc.street} ${loc.number}, ${loc.postal_code} ${loc.city}, ${loc.country}`;
 }
 
+function inClause(n) {
+    return Array(n).fill('?').join(', ');
+}
+
 async function getNextCustomerId(db) {
-    const { rows } = await db.execute('SELECT id FROM customers');
-    const max = rows.reduce((m, r) => {
-        const n = parseInt(r.id, 10);
-        return isNaN(n) ? m : Math.max(m, n);
-    }, -1);
+    const { rows: [row] } = await db.execute(
+        `SELECT MAX(CAST(id AS INTEGER)) AS max FROM customers`
+    );
+    const max = row?.max != null ? Number(row.max) : -1;
     return String(max + 1).padStart(3, '0');
 }
 
 async function getNextWebsiteId(db) {
-    const { rows } = await db.execute('SELECT id FROM websites');
-    const max = rows.reduce((m, r) => {
-        const n = parseInt(r.id, 10);
-        return isNaN(n) ? m : Math.max(m, n);
-    }, -1);
+    const { rows: [row] } = await db.execute(
+        `SELECT MAX(CAST(id AS INTEGER)) AS max FROM websites`
+    );
+    const max = row?.max != null ? Number(row.max) : -1;
     return String(max + 1).padStart(3, '0');
 }
 
-async function fetchLocationsForCustomer(db, customerId) {
-    const { rows: locs } = await db.execute({
-        sql:  'SELECT * FROM customer_locations WHERE customer_id = ? ORDER BY id',
-        args: [customerId]
-    });
-    const result = [];
-    for (const loc of locs) {
-        const { rows: socials } = await db.execute({
-            sql:  'SELECT type, url FROM location_social_links WHERE location_id = ? ORDER BY id',
-            args: [loc.id]
-        });
-        result.push({
-            id:          Number(loc.id),
-            street:      loc.street,
-            number:      loc.number,
-            postalCode:  loc.postal_code,
-            city:        loc.city,
-            country:     loc.country,
-            vat:         loc.vat,
-            latitude:    loc.latitude,
-            longitude:   loc.longitude,
-            socialLinks: socials.map(s => ({ type: s.type, url: s.url }))
-        });
-    }
-    return result;
+function mapLocation(loc, socialLinks) {
+    return {
+        id:         Number(loc.id),
+        street:     loc.street,
+        number:     loc.number,
+        postalCode: loc.postal_code,
+        city:       loc.city,
+        country:    loc.country,
+        vat:        loc.vat,
+        latitude:   loc.latitude,
+        longitude:  loc.longitude,
+        socialLinks
+    };
 }
 
-async function fetchWebsitesForCustomer(db, customerId) {
-    const { rows } = await db.execute({
-        sql:  'SELECT * FROM websites WHERE customer_id = ? ORDER BY id',
-        args: [customerId]
-    });
-    return rows;
+function mapWebsite(w) {
+    const subtotal = Math.max(0, Number(w.payment) - Number(w.discount));
+    return {
+        id:               w.id,
+        name:             w.name,
+        url:              w.url,
+        subscriptionType: w.subscription_type,
+        isLive:           w.is_live === 1 || w.is_live === 1n,
+        startDate:        w.start_date,
+        frequency:        w.frequency,
+        payment:          Number(w.payment),
+        discount:         Number(w.discount),
+        subtotal:         parseFloat(subtotal.toFixed(2)),
+        vat:              parseFloat((subtotal * VAT_RATE).toFixed(2)),
+        total:            parseFloat((subtotal * (1 + VAT_RATE)).toFixed(2)),
+        visitors:         Number(w.visitors ?? 0)
+    };
 }
 
-async function fetchDomainsForCustomer(db, customerId) {
-    const { rows } = await db.execute({
-        sql:  'SELECT * FROM domain_names WHERE customer_id = ? ORDER BY id',
-        args: [customerId]
-    });
-    return rows.map(d => ({
+function mapDomain(d) {
+    return {
         id:          Number(d.id),
         name:        d.name,
         renewalDate: d.renewal_date,
         annualPrice: Number(d.annual_price)
-    }));
+    };
 }
 
-function buildCustomer(row, locations, websiteRows, domains) {
+function buildCustomer(row, locations, websites, domains) {
     const primaryLoc = locations[0] ?? null;
     const allSocialLinks = locations.flatMap(l => l.socialLinks ?? []);
     const uniqueSocialLinks = allSocialLinks.filter(
         (link, idx, arr) => arr.findIndex(l => l.url === link.url) === idx
     );
-    const websites = websiteRows.map(w => {
-        const subtotal = Math.max(0, Number(w.payment) - Number(w.discount));
-        return {
-            id:               w.id,
-            name:             w.name,
-            url:              w.url,
-            subscriptionType: w.subscription_type,
-            isLive:           w.is_live === 1 || w.is_live === 1n,
-            startDate:        w.start_date,
-            frequency:        w.frequency,
-            payment:          Number(w.payment),
-            discount:         Number(w.discount),
-            subtotal:         parseFloat(subtotal.toFixed(2)),
-            vat:              parseFloat((subtotal * VAT_RATE).toFixed(2)),
-            total:            parseFloat((subtotal * (1 + VAT_RATE)).toFixed(2)),
-            visitors:         Number(w.visitors ?? 0)
-        };
-    });
     return {
         id:          row.id,
         name:        row.name,
         isHQ:        row.is_hq === 1 || row.is_hq === 1n,
-        firstName:   row.first_name ?? undefined,
-        lastName:    row.last_name  ?? undefined,
-        email:       row.email      ?? undefined,
-        phone:       row.phone      ?? undefined,
-        mobile:      row.mobile     ?? undefined,
-        logo:        row.logo       ?? undefined,
+        firstName:   row.first_name  ?? undefined,
+        lastName:    row.last_name   ?? undefined,
+        email:       row.email       ?? undefined,
+        phone:       row.phone       ?? undefined,
+        mobile:      row.mobile      ?? undefined,
+        logo:        row.logo        ?? undefined,
         vat:         primaryLoc?.vat ?? null,
         address:     primaryLoc ? formatAddress(primaryLoc) : '',
         latitude:    primaryLoc?.latitude  ?? null,
@@ -120,16 +99,97 @@ function buildCustomer(row, locations, websiteRows, domains) {
         socialLinks: uniqueSocialLinks,
         locations,
         websites,
-        domains: domains ?? []
+        domains
     };
+}
+
+async function batchFetchForCustomers(db, customerIds) {
+    if (!customerIds.length) return { locationsByCustomer: new Map(), websitesByCustomer: new Map(), domainsByCustomer: new Map() };
+
+    const ph = inClause(customerIds.length);
+
+    const [{ rows: locRows }, { rows: websiteRows }, { rows: domainRows }] = await Promise.all([
+        db.execute({ sql: `SELECT * FROM customer_locations WHERE customer_id IN (${ph}) ORDER BY id`, args: customerIds }),
+        db.execute({ sql: `SELECT * FROM websites           WHERE customer_id IN (${ph}) ORDER BY id`, args: customerIds }),
+        db.execute({ sql: `SELECT * FROM domain_names       WHERE customer_id IN (${ph}) ORDER BY id`, args: customerIds }),
+    ]);
+
+    const locIds = locRows.map(l => Number(l.id));
+    let socialRows = [];
+    if (locIds.length) {
+        const { rows } = await db.execute({
+            sql:  `SELECT * FROM location_social_links WHERE location_id IN (${inClause(locIds.length)}) ORDER BY id`,
+            args: locIds
+        });
+        socialRows = rows;
+    }
+
+    const socialsByLocId = new Map();
+    for (const s of socialRows) {
+        const lid = Number(s.location_id);
+        if (!socialsByLocId.has(lid)) socialsByLocId.set(lid, []);
+        socialsByLocId.get(lid).push({ type: s.type, url: s.url });
+    }
+
+    const locationsByCustomer = new Map();
+    for (const loc of locRows) {
+        const cid = loc.customer_id;
+        if (!locationsByCustomer.has(cid)) locationsByCustomer.set(cid, []);
+        locationsByCustomer.get(cid).push(mapLocation(loc, socialsByLocId.get(Number(loc.id)) ?? []));
+    }
+
+    const websitesByCustomer = new Map();
+    for (const w of websiteRows) {
+        const cid = w.customer_id;
+        if (!websitesByCustomer.has(cid)) websitesByCustomer.set(cid, []);
+        websitesByCustomer.get(cid).push(mapWebsite(w));
+    }
+
+    const domainsByCustomer = new Map();
+    for (const d of domainRows) {
+        const cid = d.customer_id;
+        if (!domainsByCustomer.has(cid)) domainsByCustomer.set(cid, []);
+        domainsByCustomer.get(cid).push(mapDomain(d));
+    }
+
+    return { locationsByCustomer, websitesByCustomer, domainsByCustomer };
+}
+
+async function fetchSingleCustomerData(db, customerId) {
+    const [{ rows: locRows }, { rows: websiteRows }, { rows: domainRows }] = await Promise.all([
+        db.execute({ sql: 'SELECT * FROM customer_locations WHERE customer_id = ? ORDER BY id', args: [customerId] }),
+        db.execute({ sql: 'SELECT * FROM websites           WHERE customer_id = ? ORDER BY id', args: [customerId] }),
+        db.execute({ sql: 'SELECT * FROM domain_names       WHERE customer_id = ? ORDER BY id', args: [customerId] }),
+    ]);
+
+    const locIds = locRows.map(l => Number(l.id));
+    let socialRows = [];
+    if (locIds.length) {
+        const { rows } = await db.execute({
+            sql:  `SELECT * FROM location_social_links WHERE location_id IN (${inClause(locIds.length)}) ORDER BY id`,
+            args: locIds
+        });
+        socialRows = rows;
+    }
+
+    const socialsByLocId = new Map();
+    for (const s of socialRows) {
+        const lid = Number(s.location_id);
+        if (!socialsByLocId.has(lid)) socialsByLocId.set(lid, []);
+        socialsByLocId.get(lid).push({ type: s.type, url: s.url });
+    }
+
+    const locations = locRows.map(loc => mapLocation(loc, socialsByLocId.get(Number(loc.id)) ?? []));
+    const websites  = websiteRows.map(mapWebsite);
+    const domains   = domainRows.map(mapDomain);
+
+    return { locations, websites, domains };
 }
 
 async function insertLocations(db, customerId, locations) {
     for (const loc of (locations ?? [])) {
         const locRes = await db.execute({
-            sql:  `INSERT INTO customer_locations
-                       (customer_id, street, number, postal_code, city, country, vat, latitude, longitude)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            sql:  `INSERT INTO customer_locations (customer_id, street, number, postal_code, city, country, vat, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             args: [
                 customerId,
                 loc.street      ?? '',
@@ -156,7 +216,7 @@ async function insertLocations(db, customerId, locations) {
 async function insertDomains(db, customerId, domains) {
     for (const d of (domains ?? [])) {
         await db.execute({
-            sql:  `INSERT INTO domain_names (customer_id, name, renewal_date, annual_price) VALUES (?, ?, ?, ?)`,
+            sql:  'INSERT INTO domain_names (customer_id, name, renewal_date, annual_price) VALUES (?, ?, ?, ?)',
             args: [customerId, d.name ?? '', d.renewalDate ?? '', Number(d.annualPrice ?? 0)]
         });
     }
@@ -166,9 +226,7 @@ async function insertWebsites(db, customerId, websites) {
     for (const w of (websites ?? [])) {
         const wId = w.id || await getNextWebsiteId(db);
         await db.execute({
-            sql:  `INSERT OR IGNORE INTO websites
-                       (id, customer_id, name, url, subscription_type, is_live, start_date, frequency, payment, discount)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            sql:  `INSERT OR IGNORE INTO websites (id, customer_id, name, url, subscription_type, is_live, start_date, frequency, payment, discount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             args: [
                 wId, customerId,
                 w.name             ?? '',
@@ -188,34 +246,35 @@ class CustomersService {
     async getAllCustomers() {
         const db = getDb();
         const { rows } = await db.execute('SELECT * FROM customers ORDER BY id');
-        const customers = [];
-        for (const row of rows) {
-            const locations = await fetchLocationsForCustomer(db, row.id);
-            const websites  = await fetchWebsitesForCustomer(db, row.id);
-            const domains   = await fetchDomainsForCustomer(db, row.id);
-            customers.push(buildCustomer(row, locations, websites, domains));
-        }
-        return customers;
+        if (!rows.length) return [];
+
+        const ids = rows.map(r => r.id);
+        const { locationsByCustomer, websitesByCustomer, domainsByCustomer } =
+            await batchFetchForCustomers(db, ids);
+
+        return rows.map(row => buildCustomer(
+            row,
+            locationsByCustomer.get(row.id)  ?? [],
+            websitesByCustomer.get(row.id)   ?? [],
+            domainsByCustomer.get(row.id)    ?? []
+        ));
     }
 
     async getCustomerById(id) {
         const db = getDb();
         const { rows } = await db.execute({ sql: 'SELECT * FROM customers WHERE id = ?', args: [id] });
         if (!rows.length) throw new Error(`Customer with ID ${id} not found`);
-        const locations = await fetchLocationsForCustomer(db, id);
-        const websites  = await fetchWebsitesForCustomer(db, id);
-        const domains   = await fetchDomainsForCustomer(db, id);
+
+        const { locations, websites, domains } = await fetchSingleCustomerData(db, id);
         return buildCustomer(rows[0], locations, websites, domains);
     }
 
     async createCustomer(data) {
-        const db  = getDb();
-        const id  = data.id || await getNextCustomerId(db);
+        const db = getDb();
+        const id = data.id || await getNextCustomerId(db);
         await db.execute({
-            sql:  `INSERT INTO customers (id, name, is_hq, first_name, last_name, email, phone, mobile, logo)
-                   VALUES (?, ?, 0, ?, ?, ?, ?, ?, ?)`,
-            args: [id, data.name, data.firstName ?? null, data.lastName ?? null,
-                   data.email ?? null, data.phone ?? null, data.mobile ?? null, data.logo ?? null]
+            sql:  `INSERT INTO customers (id, name, is_hq, first_name, last_name, email, phone, mobile, logo) VALUES (?, ?, 0, ?, ?, ?, ?, ?, ?)`,
+            args: [id, data.name, data.firstName ?? null, data.lastName ?? null, data.email ?? null, data.phone ?? null, data.mobile ?? null, data.logo ?? null]
         });
         await insertLocations(db, id, data.locations);
         await insertWebsites(db, id, data.websites);

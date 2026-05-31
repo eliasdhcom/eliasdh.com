@@ -15,6 +15,7 @@ import { PortalInvoicesComponent } from '../invoices/invoices.component';
 import { PortalOverviewComponent } from '../overview/overview.component';
 import { PortalAnalysisComponent } from '../analysis/analysis.component';
 import { PortalUsersComponent } from '../users/users.component';
+import { PortalPricingPlansComponent } from '../pricing-plans/pricing-plans.component';
 import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -22,7 +23,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-    imports: [CommonModule, SharedModule, TranslatePipe, PortalOverviewComponent, PortalCustomersComponent, PortalSubscriptionsComponent, PortalInvoicesComponent, PortalAnalysisComponent, PortalUsersComponent],
+    imports: [CommonModule, SharedModule, TranslatePipe, PortalOverviewComponent, PortalCustomersComponent, PortalSubscriptionsComponent, PortalInvoicesComponent, PortalAnalysisComponent, PortalUsersComponent, PortalPricingPlansComponent],
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css']
 })
@@ -132,7 +133,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             subscriptions: 'PORTAL.NAV.SUBSCRIPTIONS',
             invoices:      'PORTAL.NAV.INVOICES',
             users:         'PORTAL.NAV.USERS',
-            analysis:      'PORTAL.NAV.ANALYSIS'
+            analysis:      'PORTAL.NAV.ANALYSIS',
+            pricing:       'PORTAL.NAV.PRICING'
         };
         return this.translate.instant(keys[this.currentView] ?? 'PORTAL.NAV.OVERVIEW');
     }

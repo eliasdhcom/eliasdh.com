@@ -218,7 +218,7 @@
                                 </div>
                                 <div class="customers-location-meta">
                                     <span class="customers-location-vat" *ngIf="loc.vat">{{loc.vat}}</span>
-                                    <button class="customers-location-map cursor-pointer" (click)="openInMap(loc, $event)" [title]="'PORTAL.CUSTOMERS.OPEN_MAPS'|translate" [disabled]="!loc.latitude || !loc.longitude">
+                                    <button class="customers-location-map cursor-pointer" (click)="openInMap(customer, loc, $event)" [title]="'PORTAL.CUSTOMERS.OPEN_MAPS'|translate" [disabled]="!loc.latitude || !loc.longitude">
                                         <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                             <path class="cursor-pointer" d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                                             <circle class="cursor-pointer" cx="12" cy="10" r="3"/>

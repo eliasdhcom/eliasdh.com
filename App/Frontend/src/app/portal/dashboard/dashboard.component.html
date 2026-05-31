@@ -75,6 +75,13 @@
                 </svg>
                 <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.ANALYSIS'|translate}}</span>
             </button>
+            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'pricing'" (click)="navigateTo('pricing')" [title]="'PORTAL.NAV.PRICING'|translate">
+                <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line class="cursor-pointer" x1="12" y1="1" x2="12" y2="23"/>
+                    <path class="cursor-pointer" d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+                <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.PRICING'|translate}}</span>
+            </button>
         </nav>
         <div class="dashboard-sidebar-footer">
             <button class="dashboard-nav-item dashboard-nav-item-logout cursor-pointer" (click)="logout()" [title]="'PORTAL.NAV.LOGOUT'|translate">
@@ -148,6 +155,9 @@
             </div>
             <div class="dashboard-content-view" *ngIf="currentView === 'analysis'">
                 <app-portal-analysis></app-portal-analysis>
+            </div>
+            <div class="dashboard-content-view" *ngIf="currentView === 'pricing'">
+                <app-portal-pricing-plans></app-portal-pricing-plans>
             </div>
         </main>
     </div>

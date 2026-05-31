@@ -112,7 +112,7 @@
                 </div>
                 <div class="map-sidebar-info">
                     <span class="map-sidebar-label">{{ 'MAP.TRANSLATE7' | translate }}</span>
-                    <a [href]="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(selectedCustomer.address)" target="_blank" rel="noopener noreferrer" class="map-sidebar-value map-address-link cursor-pointer">{{ selectedCustomer.address }}</a>
+                    <a [href]="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(displayAddress)" target="_blank" rel="noopener noreferrer" class="map-sidebar-value map-address-link cursor-pointer">{{ displayAddress }}</a>
                 </div>
             </div>
             <div class="map-sidebar-section">
@@ -134,7 +134,7 @@
                 </div>
                 <div class="map-sidebar-info">
                     <span class="map-sidebar-label">{{ 'MAP.TRANSLATE9' | translate }}</span>
-                    <span class="map-sidebar-value">{{ selectedCustomer.latitude }}, {{ selectedCustomer.longitude }}</span>
+                    <span class="map-sidebar-value">{{ displayCoords }}</span>
                 </div>
             </div>
             <div class="map-sidebar-directions" *ngIf="userLocation && selectedCustomer.latitude && selectedCustomer.longitude">

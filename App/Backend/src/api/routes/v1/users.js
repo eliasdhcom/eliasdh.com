@@ -51,8 +51,7 @@ router.post('/',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             const id = await usersService.createUser(req.body);
-            const users = await usersService.getAllUsers();
-            const created = users.find(u => u.id === id) ?? null;
+            const created = await usersService.getUserById(id);
             res.status(201).json({ success: true, data: created });
         } catch (err) {
             if (err.message?.includes('UNIQUE')) {
