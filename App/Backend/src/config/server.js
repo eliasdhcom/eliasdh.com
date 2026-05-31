@@ -80,6 +80,75 @@ async function initAdminUser() {
     logger.info(`Admin user created: ${email}`);
 }
 
+async function initHQCustomer() {
+    const configPath = require('path').join(__dirname, '../../hq.json');
+    if (!require('fs').existsSync(configPath)) {
+        logger.info('hq.json not found — skipping HQ customer init.');
+        return;
+    }
+    const hq = JSON.parse(require('fs').readFileSync(configPath, 'utf8'));
+    if (!hq.name) return;
+
+    const db = getDb();
+    const { rows: [{ n }] } = await db.execute('SELECT COUNT(*) AS n FROM customers WHERE is_hq = 1');
+    if (Number(n) > 0) return;
+
+    const id = hq.id ?? '000';
+    await db.execute({
+        sql:  `INSERT INTO customers (id, name, is_hq, first_name, last_name, email, phone, mobile)
+               VALUES (?, ?, 1, ?, ?, ?, ?, ?)`,
+        args: [id, hq.name, hq.firstName ?? '', hq.lastName ?? '', hq.email ?? '', hq.phone ?? '', hq.phone ?? '']
+    });
+
+    const loc = hq.location;
+    if (loc) {
+        const locRes = await db.execute({
+            sql:  `INSERT INTO customer_locations
+                       (customer_id, street, number, postal_code, city, country, vat, latitude, longitude)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            args: [id, loc.street ?? '', loc.number ?? '', loc.postal ?? '', loc.city ?? '',
+                   loc.country || 'Belgium', loc.vat ?? null, loc.lat ?? null, loc.lng ?? null]
+        });
+        const locId = Number(locRes.lastInsertRowid);
+        for (const s of (loc.socials ?? [])) {
+            if (s.url) await db.execute({
+                sql:  'INSERT INTO location_social_links (location_id, type, url) VALUES (?, ?, ?)',
+                args: [locId, s.type, s.url]
+            });
+        }
+    }
+
+    for (const w of (hq.websites ?? [])) {
+        if (!w.url) continue;
+        await db.execute({
+            sql:  `INSERT OR IGNORE INTO websites
+                       (id, customer_id, name, url, subscription_type, is_live, start_date, frequency, payment, discount)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            args: [
+                w.id ?? id, id,
+                w.name             ?? hq.name,
+                w.url,
+                w.subscriptionType ?? 'Free',
+                w.isLive           ? 1 : 0,
+                w.startDate        ?? null,
+                w.frequency        ?? 'yearly',
+                Number(w.payment   ?? 0),
+                Number(w.discount  ?? 0)
+            ]
+        });
+    }
+
+    for (const d of (hq.domains ?? [])) {
+        if (!d.name) continue;
+        await db.execute({
+            sql:  `INSERT INTO domain_names (customer_id, name, renewal_date, annual_price) VALUES (?, ?, ?, ?)`,
+            args: [id, d.name, d.renewalDate ?? '', Number(d.annualPrice ?? 0)]
+        });
+    }
+
+    logger.info(`HQ customer created: ${hq.name} (${id})`);
+}
+
 async function runSeed() {
     try {
         const { seedFn } = require('../database/seed');
@@ -97,6 +166,7 @@ async function runSeed() {
 const startServer = async () => {
     await initSchema();
     await initAdminUser();
+    await initHQCustomer();
     if (process.env.NODE_ENV !== 'production') {
         await runSeed();
     }
