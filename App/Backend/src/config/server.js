@@ -15,6 +15,7 @@ const { server: config } = require('./env');
 const logger = require('../utils/logger');
 const clusterService = require('../api/services/cluster/clusterService');
 const { getDb, initSchema } = require('../database/db');
+const bcrypt = require('bcryptjs');
 const app = express();
 
 app.set('trust proxy', 1);
@@ -57,6 +58,28 @@ app.use('/api/v1/contact', contactLimiter);
 app.use('/api', routes);
 app.use(errorHandler);
 
+async function initAdminUser() {
+    const email    = process.env.ADMIN_EMAIL;
+    const password = process.env.ADMIN_PASSWORD;
+    if (!email || !password) {
+        logger.warn('ADMIN_EMAIL or ADMIN_PASSWORD not set — skipping admin user init.');
+        return;
+    }
+    const { rows: [{ n }] } = await getDb().execute('SELECT COUNT(*) AS n FROM users');
+    if (Number(n) > 0) return;
+    const hash = await bcrypt.hash(password, 12);
+    await getDb().execute({
+        sql:  `INSERT INTO users (email, password_hash, first_name, last_name, role, company) VALUES (?, ?, ?, ?, 'Admin', ?)`,
+        args: [
+            email, hash,
+            process.env.ADMIN_FIRST_NAME ?? '',
+            process.env.ADMIN_LAST_NAME  ?? '',
+            process.env.ADMIN_COMPANY    ?? ''
+        ]
+    });
+    logger.info(`Admin user created: ${email}`);
+}
+
 async function runSeed() {
     try {
         const { seedFn } = require('../database/seed');
@@ -73,6 +96,7 @@ async function runSeed() {
 
 const startServer = async () => {
     await initSchema();
+    await initAdminUser();
     if (process.env.NODE_ENV !== 'production') {
         await runSeed();
     }

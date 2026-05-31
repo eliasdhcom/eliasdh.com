@@ -4,9 +4,8 @@
     * @since 29/05/2026
 **/
 
-const path    = require('path');
-const fs      = require('fs');
-const bcrypt  = require('bcryptjs');
+const path = require('path');
+const fs   = require('fs');
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 const { getDb, initSchema } = require('./db');
@@ -129,7 +128,10 @@ const CUSTOMERS = [
             {
                 street: 'Olieslagerijstraat', number: '19', postal_code: '2530', city: 'Boechout', country: 'Belgium',
                 vat: 'BE0451910825', latitude: 51.1803828, longitude: 4.5049921,
-                social_links: []
+                social_links: [
+                    { type: 'instagram', url: 'https://www.instagram.com/tereikensport' },
+                    { type: 'facebook',  url: 'https://www.facebook.com/tereiken' }
+                ]
             },
             {
                 street: 'Huybergsebaan', number: '164', postal_code: '2910', city: 'Essen', country: 'Belgium',
@@ -267,26 +269,6 @@ async function seed() {
         }
         console.log('Analysis costs seeded.');
     }
-
-    const passwordHash = await bcrypt.hash('EliasDH@123', 12);
-    await db.execute({
-        sql:  `INSERT INTO users (email, password_hash, first_name, last_name, role, company, phone, birth_date)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-               ON CONFLICT(email) DO UPDATE SET
-                   password_hash = excluded.password_hash,
-                   first_name    = excluded.first_name,
-                   last_name     = excluded.last_name,
-                   role          = excluded.role,
-                   company       = excluded.company,
-                   phone         = excluded.phone,
-                   birth_date    = excluded.birth_date`,
-        args: [
-            'elias.dehondt@outlook.com', passwordHash,
-            'Elias', 'De Hondt', 'Admin', 'EliasDH BV',
-            '+32495161542', '2001-04-10'
-        ]
-    });
-    console.log('Admin user seeded.');
 
     console.log('Seed complete.');
 }
