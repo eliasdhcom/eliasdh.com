@@ -75,6 +75,62 @@
     color: #10b981;
 }
 
+.subscriptions-type-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.subscriptions-type-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    border: 1.5px solid transparent;
+    transition: opacity .15s, border-color .15s, box-shadow .15s;
+    opacity: 0.6;
+    color: var(--secondary);
+    background: rgba(128, 128, 128, 0.08);
+}
+
+.subscriptions-type-chip.subscriptions-badge--enterprise { background: var(--type-enterprise-color); color: #1a1a1a; }
+.subscriptions-type-chip.subscriptions-badge--business   { background: var(--type-business-color);   color: #1a1a1a; }
+.subscriptions-type-chip.subscriptions-badge--startup    { background: var(--type-startup-color);    color: #1a1a1a; }
+.subscriptions-type-chip.subscriptions-badge--growth     { background: var(--type-growth-color);     color: #1a1a1a; }
+.subscriptions-type-chip.subscriptions-badge--basic      { background: var(--type-basic-color);      color: #1a1a1a; }
+.subscriptions-type-chip.subscriptions-badge--free       { background: var(--type-free-color);       color: #1a1a1a; }
+.subscriptions-type-chip.subscriptions-badge--custom     { background: var(--type-custom-color);     color: #1a1a1a; }
+.subscriptions-type-chip.subscriptions-badge--todo       { background: var(--type-todo-color);       color: white; }
+
+.subscriptions-type-chip:hover { opacity: 0.85; }
+
+.subscriptions-type-chip--active {
+    opacity: 1;
+    border-color: rgba(0, 0, 0, 0.18);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+}
+
+.subscriptions-type-chip--active:not([class*="subscriptions-badge--"]) {
+    color: var(--text);
+    background: rgba(128, 128, 128, 0.14);
+    border-color: rgba(128, 128, 128, 0.3);
+}
+
+.subscriptions-type-count {
+    font-size: 10px;
+    font-weight: 700;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 1px 5px;
+    min-width: 16px;
+    text-align: center;
+}
+
 .subscriptions-search-wrap {
     display: flex;
     align-items: center;

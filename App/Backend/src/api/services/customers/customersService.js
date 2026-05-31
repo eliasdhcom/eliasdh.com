@@ -4,10 +4,75 @@
     * @since 29/05/2026
 **/
 
-const { getDb } = require('../../../database/db');
-const logger    = require('../../../utils/logger');
+const { getDb }        = require('../../../database/db');
+const logger           = require('../../../utils/logger');
+const invoicesService  = require('../invoices/invoicesService');
 
 const VAT_RATE = 0.21;
+
+// ── Billing helpers for invoice snapshotting ─────────────────────────────────
+
+function getBillingPeriods(startDateStr, frequency, endDate) {
+    const periods = [];
+    const startDate = new Date(startDateStr);
+    if (isNaN(startDate.getTime())) return periods;
+    if (frequency === 'one-time') {
+        const end = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+        if (startDate <= endDate) periods.push({ start: startDate, end });
+        return periods;
+    }
+    let cursor = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+    while (cursor <= endDate) {
+        const periodStart = new Date(cursor);
+        let periodEnd;
+        switch (frequency) {
+            case 'monthly':
+                periodEnd = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0);
+                cursor    = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
+                break;
+            case 'quarterly':
+                periodEnd = new Date(cursor.getFullYear(), cursor.getMonth() + 3, 0);
+                cursor    = new Date(cursor.getFullYear(), cursor.getMonth() + 3, 1);
+                break;
+            case 'yearly':
+                periodEnd = new Date(cursor.getFullYear() + 1, cursor.getMonth(), 0);
+                cursor    = new Date(cursor.getFullYear() + 1, cursor.getMonth(), 1);
+                break;
+            default: return periods;
+        }
+        if (periodStart <= endDate) periods.push({ start: periodStart, end: periodEnd });
+    }
+    return periods;
+}
+
+function getPeriodAmount(payment, discount, frequency) {
+    const m        = frequency === 'yearly' ? 12 : frequency === 'quarterly' ? 3 : 1;
+    const subtotal = Math.max(0, Number(payment) - Number(discount));
+    return parseFloat((subtotal * (1 + VAT_RATE) * m).toFixed(2));
+}
+
+async function snapshotWebsiteHistory(customerId, websiteRow) {
+    if (!websiteRow.start_date || Number(websiteRow.payment) <= 0) return;
+    if ((websiteRow.subscription_type ?? '').toLowerCase().includes('free')) return;
+
+    const now          = new Date();
+    const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
+    const periods      = getBillingPeriods(websiteRow.start_date, websiteRow.frequency, endOfLastMonth);
+    const amount       = getPeriodAmount(websiteRow.payment, websiteRow.discount, websiteRow.frequency);
+
+    const snapshots = periods.map(({ start }) => ({
+        customerId,
+        subscriptionId: websiteRow.id,
+        periodStart:    start.toISOString(),
+        invoiceType:    'subscription',
+        amount,
+        frequency:      websiteRow.frequency
+    }));
+
+    await invoicesService.snapshotPastPeriods(snapshots);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 function formatAddress(loc) {
     return `${loc.street} ${loc.number}, ${loc.postal_code} ${loc.city}, ${loc.country}`;
@@ -302,6 +367,33 @@ class CustomersService {
             await insertLocations(db, id, data.locations);
         }
         if (data.websites !== undefined) {
+            // Fetch current websites to snapshot billing history before changes take effect
+            const { rows: currentRows } = await db.execute({
+                sql: 'SELECT * FROM websites WHERE customer_id = ? ORDER BY id', args: [id]
+            });
+            const currentById = new Map(currentRows.map(w => [w.id, w]));
+
+            for (const newW of (data.websites ?? [])) {
+                if (!newW.id) continue;
+                const oldW = currentById.get(newW.id);
+                if (!oldW) continue;
+
+                const billingChanged =
+                    Number(oldW.payment)  !== Number(newW.payment  ?? 0) ||
+                    Number(oldW.discount) !== Number(newW.discount ?? 0) ||
+                    oldW.frequency !== (newW.frequency ?? oldW.frequency);
+
+                if (billingChanged) {
+                    await snapshotWebsiteHistory(id, oldW);
+                    // If frequency changed, reset startDate to first day of current month
+                    // so new billing structure doesn't overlap with historical snapshots
+                    if (oldW.frequency !== (newW.frequency ?? oldW.frequency)) {
+                        const now = new Date();
+                        newW.startDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
+                    }
+                }
+            }
+
             await db.execute({ sql: 'DELETE FROM websites WHERE customer_id = ?', args: [id] });
             await insertWebsites(db, id, data.websites);
         }

@@ -139,7 +139,7 @@
         </header>
         <main class="dashboard-content">
             <div class="dashboard-content-view" *ngIf="currentView === 'overview'">
-                <app-portal-overview></app-portal-overview>
+                <app-portal-overview (navigateTo)="navigateTo($event)"></app-portal-overview>
             </div>
             <div class="dashboard-content-view" *ngIf="currentView === 'customers'">
                 <app-portal-customers (navigateToSubscription)="onNavigateToSubscription($event)"></app-portal-customers>

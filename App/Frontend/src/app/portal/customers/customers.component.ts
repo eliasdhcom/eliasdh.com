@@ -33,6 +33,7 @@ interface LocationForm {
 }
 
 interface WebsiteForm {
+    id:               string;
     name:             string;
     url:              string;
     subscriptionType: string;
@@ -79,11 +80,14 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     encodeURIComponent = encodeURIComponent;
     private destroy$ = new Subject<void>();
 
-    showForm    = false;
-    isEditing   = false;
-    editingId   = '';
-    formSaving  = false;
-    formError   = '';
+    showForm           = false;
+    isEditing          = false;
+    editingId          = '';
+    formSaving         = false;
+    formError          = '';
+    formTouched        = false;
+    showDiscardConfirm = false;
+    overlayMousedownIsBackdrop = false;
     deleteConfirmId: string | null = null;
     form: CustomerForm = this.emptyForm();
 
@@ -111,6 +115,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({ next: (r) => {
                 this.pricingPlans = r.data ?? [];
+                this.pricingPlansService.setPlanColors(this.pricingPlans);
                 const prices: Record<string, number> = { Custom: 0 };
                 const types: string[] = [];
                 for (const p of this.pricingPlans) { prices[p.name] = p.monthlyPrice; types.push(p.name); }
@@ -137,7 +142,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
                     this.loading   = false;
                 },
                 error: () => {
-                    this.error   = 'Klanten konden niet worden geladen.';
+                    this.error   = this.translate.instant('PORTAL.CUSTOMERS.LOAD_ERROR');
                     this.loading = false;
                 }
             });
@@ -175,17 +180,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         }
     }
 
-    getSubscriptionClass(type: string): string {
-        const t = type.toLowerCase();
-        if (t.includes('enterprise')) return 'customers-badge--enterprise';
-        if (t.includes('business'))   return 'customers-badge--business';
-        if (t.includes('startup'))    return 'customers-badge--startup';
-        if (t.includes('growth'))     return 'customers-badge--growth';
-        if (t.includes('basic'))      return 'customers-badge--basic';
-        if (t.includes('free'))       return 'customers-badge--free';
-        if (t.includes('todo'))       return 'customers-badge--todo';
-        return 'customers-badge--custom';
-    }
+    getBadgeStyle(type: string) { return this.pricingPlansService.getBadgeStyle(type); }
 
     getVisibleBadges(customer: Customer) { return customer.websites?.slice(0, 3) ?? []; }
     getExtraBadgeCount(customer: Customer): number { return Math.max(0, (customer.websites?.length ?? 0) - 3); }
@@ -206,22 +201,28 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     }
 
     private emptyWebsite(): WebsiteForm {
-        return { name: '', url: '', subscriptionType: 'Free', isLive: false, startDate: '', frequency: 'monthly', payment: String(this.subscriptionPrices['Free']), discount: '0' };
+        return { id: '', name: '', url: '', subscriptionType: 'Free', isLive: false, startDate: '', frequency: 'monthly', payment: String(this.subscriptionPrices['Free']), discount: '0' };
     }
 
+    markTouched(): void { this.formTouched = true; }
+
     openCreateForm(): void {
-        this.isEditing  = false;
-        this.editingId  = '';
-        this.form       = this.emptyForm();
-        this.formError  = '';
-        this.showForm   = true;
+        this.isEditing          = false;
+        this.editingId          = '';
+        this.form               = this.emptyForm();
+        this.formError          = '';
+        this.formTouched        = false;
+        this.showDiscardConfirm = false;
+        this.showForm           = true;
     }
 
     openEditForm(customer: Customer, event: Event): void {
         event.stopPropagation();
-        this.isEditing  = true;
-        this.editingId  = customer.id;
-        this.formError  = '';
+        this.isEditing          = true;
+        this.editingId          = customer.id;
+        this.formError          = '';
+        this.formTouched        = false;
+        this.showDiscardConfirm = false;
         this.form = {
             name:      customer.name,
             firstName: customer.firstName ?? '',
@@ -242,6 +243,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
                 socialLinks: (l.socialLinks ?? []).map(s => ({ type: s.type, url: s.url }))
             })),
             websites: customer.websites.map(w => ({
+                id:               w.id,
                 name:             w.name,
                 url:              w.url,
                 subscriptionType: w.subscriptionType,
@@ -262,9 +264,25 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         this.showForm = true;
     }
 
+    requestClose(): void {
+        if (this.formTouched) { this.showDiscardConfirm = true; return; }
+        this.closeForm();
+    }
+
+    confirmDiscard(): void {
+        this.showDiscardConfirm = false;
+        this.closeForm();
+    }
+
+    cancelDiscard(): void {
+        this.showDiscardConfirm = false;
+    }
+
     closeForm(): void {
-        this.showForm  = false;
-        this.formError = '';
+        this.showForm           = false;
+        this.formError          = '';
+        this.formTouched        = false;
+        this.showDiscardConfirm = false;
     }
 
     submitForm(): void {
@@ -325,6 +343,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
                 socialLinks: l.socialLinks.filter(s => s.url.trim()) as SocialLink[]
             }) as CustomerLocation),
             websites: this.form.websites.map(w => ({
+                id:               w.id || '',
                 name:             w.name.trim(),
                 url:              w.url.trim(),
                 subscriptionType: w.subscriptionType,
@@ -333,7 +352,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
                 frequency:        w.frequency as any,
                 payment:          Number(w.payment) || 0,
                 discount:         Number(w.discount) || 0,
-                subtotal: 0, vat: 0, total: 0, id: ''
+                subtotal: 0, vat: 0, total: 0
             }) as CustomerWebsite),
             domains: this.form.domains.map(d => ({
                 name:        d.name.trim(),
@@ -404,12 +423,17 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         return next.toLocaleDateString('nl-BE', { day: 'numeric', month: 'short', year: 'numeric' });
     }
 
+    onOverlayMousedown(event: MouseEvent): void {
+        this.overlayMousedownIsBackdrop = event.target === event.currentTarget;
+    }
+
     onOverlayClick(event: MouseEvent): void {
-        if ((event.target as HTMLElement).classList.contains('customers-modal-overlay')) this.closeForm();
+        if (this.overlayMousedownIsBackdrop && event.target === event.currentTarget) this.requestClose();
+        this.overlayMousedownIsBackdrop = false;
     }
 
     onDeleteOverlayClick(event: MouseEvent): void {
-        if ((event.target as HTMLElement).classList.contains('customers-modal-overlay')) this.cancelDelete();
+        if (event.target === event.currentTarget) this.cancelDelete();
     }
 
     onLogoFileChange(event: Event): void {

@@ -366,7 +366,7 @@
   },
   "PORTAL": {
     "LANG": { "TITLE": "Sprache" },
-    "COMMON": { "SAVE": "Speichern", "SAVING": "Wird gespeichert...", "CANCEL": "Abbrechen", "DELETE": "Löschen", "DELETING": "Verarbeitung...", "CLOSE": "Schließen", "RETRY": "Erneut versuchen", "EDIT": "Bearbeiten", "ACTIVE": "Aktiv", "INACTIVE": "Inaktiv", "ALL": "Alle" },
+    "COMMON": { "SAVE": "Speichern", "SAVING": "Wird gespeichert...", "CANCEL": "Abbrechen", "DELETE": "Löschen", "DELETING": "Verarbeitung...", "CLOSE": "Schließen", "RETRY": "Erneut versuchen", "EDIT": "Bearbeiten", "ACTIVE": "Aktiv", "INACTIVE": "Inaktiv", "ALL": "Alle", "DISCARD": { "QUESTION": "Änderungen verwerfen?", "KEEP": "Weiter bearbeiten", "DISCARD": "Verwerfen" } },
     "NAV": { "OVERVIEW": "Übersicht", "CUSTOMERS": "Kunden", "SUBSCRIPTIONS": "Abonnements", "INVOICES": "Rechnungen", "USERS": "Benutzer", "ANALYSIS": "Analyse", "PRICING": "Preispläne", "SETTINGS": "Einstellungen", "LOGOUT": "Abmelden" },
     "DASHBOARD": { "USER_PROFILE": "Benutzerprofil", "FIRST_NAME": "Vorname", "LAST_NAME": "Nachname", "COMPANY": "Unternehmen", "PHONE": "Telefon", "EMAIL": "E-Mail-Adresse", "BIRTH_DATE": "Geburtsdatum", "ROLE": "Rolle", "EXPAND_SIDEBAR": "Seitenleiste ausklappen", "COLLAPSE_SIDEBAR": "Seitenleiste einklappen", "TOGGLE_MENU": "Menü ein-/ausblenden" },
     "OVERVIEW": { "CUSTOMERS": "Kunden", "LIVE_SUBS": "Live-Abonnements", "INACTIVE": "inaktiv", "PAID": "Bezahlt", "OUTSTANDING": "Ausstehend", "TOTAL_INVOICED": "Insgesamt fakturiert", "INVOICES": "Rechnungen", "MONTHLY_REVENUE": "Monatsumsatz", "CHART_SUB": "Inkl. MwSt. · grau = Zukunft · aktuell: grün = bezahlt, rot = offen", "TYPES_TITLE": "Abonnementtypen", "TOTAL": "gesamt", "NO_DATA": "Keine Daten verfügbar." },

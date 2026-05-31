@@ -31,6 +31,7 @@
     </div>
     <div class="pricing-grid" *ngIf="!loading && !error && plans.length > 0">
         <div class="pricing-card" *ngFor="let plan of plans">
+            <div class="pricing-card-color-bar" [style.background]="plan.color"></div>
             <div class="pricing-card-body">
                 <div class="pricing-card-name">{{plan.name}}</div>
                 <div class="pricing-card-price">
@@ -61,13 +62,13 @@
         </div>
     </div>
 </div>
-<div class="pricing-modal-overlay" *ngIf="showForm" (click)="onOverlayClick($event)">
-    <div class="pricing-modal">
+<div class="pricing-modal-overlay" *ngIf="showForm" (mousedown)="onOverlayMousedown($event)" (click)="onOverlayClick($event)">
+    <div class="pricing-modal" (mousedown)="$event.stopPropagation()">
         <div class="pricing-modal-header">
             <h2 class="pricing-modal-title">
                 {{(isEditing ? 'PORTAL.PRICING.FORM.TITLE_EDIT' : 'PORTAL.PRICING.FORM.TITLE_CREATE')|translate}}
             </h2>
-            <button class="pricing-modal-close cursor-pointer" (click)="closeForm()" [title]="'PORTAL.COMMON.CLOSE'|translate">
+            <button class="pricing-modal-close cursor-pointer" (click)="requestClose()" [title]="'PORTAL.COMMON.CLOSE'|translate">
                 <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
                     <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
@@ -77,22 +78,38 @@
         <div class="pricing-modal-body">
             <div class="pricing-form-group">
                 <label class="pricing-form-label">{{'PORTAL.PRICING.FORM.NAME'|translate}}</label>
-                <input class="pricing-form-input cursor-text" type="text" [(ngModel)]="form.name" [placeholder]="'PORTAL.PRICING.FORM.NAME_PLACEHOLDER'|translate" maxlength="64"/>
+                <input class="pricing-form-input cursor-text" type="text" [(ngModel)]="form.name" (input)="markTouched()" [placeholder]="'PORTAL.PRICING.FORM.NAME_PLACEHOLDER'|translate" maxlength="64"/>
+            </div>
+            <div class="pricing-form-group">
+                <label class="pricing-form-label">{{'PORTAL.PRICING.FORM.COLOR'|translate}}</label>
+                <div class="pricing-color-wrap">
+                    <input class="pricing-color-input cursor-pointer" type="color" [(ngModel)]="form.color" (input)="markTouched()"/>
+                    <span class="pricing-color-preview" [style.background]="form.color" [style.color]="pricingService.getPlanTextColor(form.color)">{{form.name || 'Voorbeeld'}}</span>
+                </div>
             </div>
             <div class="pricing-form-group">
                 <label class="pricing-form-label">{{'PORTAL.PRICING.FORM.PRICE'|translate}}</label>
                 <div class="pricing-form-input-wrap">
                     <span class="pricing-form-prefix">€</span>
-                    <input class="pricing-form-input pricing-form-input--price cursor-text" type="number" [(ngModel)]="form.monthlyPrice" min="0" step="1" [placeholder]="'0'"/>
+                    <input class="pricing-form-input pricing-form-input--price cursor-text" type="number" [(ngModel)]="form.monthlyPrice" (input)="markTouched()" min="0" step="1" [placeholder]="'0'"/>
                 </div>
             </div>
-            <div class="pricing-form-error" *ngIf="formError">{{formError}}</div>
+            <div class="pricing-form-error" *ngIf="formError && !showDiscardConfirm">{{formError}}</div>
         </div>
         <div class="pricing-modal-footer">
-            <button class="pricing-btn pricing-btn--cancel cursor-pointer" (click)="closeForm()" [disabled]="formSaving">{{'PORTAL.COMMON.CANCEL'|translate}}</button>
-            <button class="pricing-btn pricing-btn--save cursor-pointer" (click)="submitForm()" [disabled]="formSaving">
-                {{formSaving ? ('PORTAL.COMMON.SAVING'|translate) : ('PORTAL.COMMON.SAVE'|translate)}}
-            </button>
+            <div class="pricing-discard-confirm" *ngIf="showDiscardConfirm">
+                <span class="pricing-discard-question">{{'PORTAL.COMMON.DISCARD.QUESTION'|translate}}</span>
+                <div class="pricing-discard-actions">
+                    <button class="pricing-btn pricing-btn--cancel cursor-pointer" (click)="cancelDiscard()">{{'PORTAL.COMMON.DISCARD.KEEP'|translate}}</button>
+                    <button class="pricing-btn pricing-btn--delete cursor-pointer" (click)="confirmDiscard()">{{'PORTAL.COMMON.DISCARD.DISCARD'|translate}}</button>
+                </div>
+            </div>
+            <ng-container *ngIf="!showDiscardConfirm">
+                <button class="pricing-btn pricing-btn--cancel cursor-pointer" (click)="requestClose()" [disabled]="formSaving">{{'PORTAL.COMMON.CANCEL'|translate}}</button>
+                <button class="pricing-btn pricing-btn--save cursor-pointer" (click)="submitForm()" [disabled]="formSaving">
+                    {{formSaving ? ('PORTAL.COMMON.SAVING'|translate) : ('PORTAL.COMMON.SAVE'|translate)}}
+                </button>
+            </ng-container>
         </div>
     </div>
 </div>

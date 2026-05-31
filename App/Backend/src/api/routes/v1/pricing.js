@@ -25,6 +25,7 @@ router.post('/',
     jwtAuth,
     body('name').notEmpty().isString().trim(),
     body('monthlyPrice').isNumeric(),
+    body('color').optional().isString().matches(/^#[0-9a-fA-F]{6}$/),
     async (req, res, next) => {
         try {
             const errors = validationResult(req);

@@ -275,7 +275,6 @@
 }
 
 .users-role--admin,
-.users-role--employee,
 .users-role--customer { background: rgba(128, 128, 128, 0.12); color: var(--secondary); }
 
 .users-email {
@@ -706,6 +705,27 @@
     gap: 8px;
     margin-top: 4px;
 }
+
+.users-discard-confirm {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    margin: 0 16px 12px;
+    background: color-mix(in srgb, #ef4444 8%, transparent);
+    border: 1px solid color-mix(in srgb, #ef4444 30%, transparent);
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+
+.users-discard-question {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+}
+
+.users-discard-actions { display: flex; gap: 8px; }
 
 .users-confirm-btn {
     display: inline-flex;

@@ -19,6 +19,14 @@
             <input class="subscriptions-search cursor-text" type="text" [placeholder]="'PORTAL.SUBSCRIPTIONS.SEARCH'|translate" [value]="searchQuery" (input)="onSearch($event)"/>
         </div>
     </div>
+    <div class="subscriptions-type-bar" *ngIf="!loading && availableTypes.length > 1">
+        <button class="subscriptions-type-chip cursor-pointer" [class.subscriptions-type-chip--active]="filterType === null" (click)="setTypeFilter(null)">
+            Alle <span class="subscriptions-type-count cursor-pointer">{{availableTypeTotal}}</span>
+        </button>
+        <button *ngFor="let t of availableTypes" class="subscriptions-type-chip cursor-pointer" [style.background]="getBadgeStyle(t.type).background" [style.color]="getBadgeStyle(t.type).color" [class.subscriptions-type-chip--active]="filterType === t.type" (click)="setTypeFilter(filterType === t.type ? null : t.type)">
+            {{t.type}} <span class="subscriptions-type-count cursor-pointer">{{t.count}}</span>
+        </button>
+    </div>
     <div class="subscriptions-loading" *ngIf="loading">
         <div class="subscriptions-skeleton" *ngFor="let i of [1,2,3,4,5]"></div>
     </div>
@@ -52,7 +60,7 @@
                     <div class="subscriptions-card-info">
                         <div class="subscriptions-card-row-top">
                             <span class="subscriptions-card-name">{{sub.name}}</span>
-                            <span class="subscriptions-badge" [ngClass]="getSubscriptionClass(sub.subscriptionType)">
+                            <span class="subscriptions-badge" [style.background]="getBadgeStyle(sub.subscriptionType).background" [style.color]="getBadgeStyle(sub.subscriptionType).color">
                                 {{sub.subscriptionType}}
                             </span>
                             <span class="subscriptions-frequency-badge cursor-default">
@@ -76,7 +84,7 @@
                         <div class="subscriptions-card-row-mobile">
                             <div class="subscriptions-mobile-top">
                                 <span class="subscriptions-meta-item subscriptions-meta-id">#{{sub.id}}</span>
-                                <span class="subscriptions-badge" [ngClass]="getSubscriptionClass(sub.subscriptionType)">{{sub.subscriptionType}}</span>
+                                <span class="subscriptions-badge" [style.background]="getBadgeStyle(sub.subscriptionType).background" [style.color]="getBadgeStyle(sub.subscriptionType).color">{{sub.subscriptionType}}</span>
                                 <span class="subscriptions-frequency-badge cursor-default">{{getFrequencyLabel(sub.frequency)}}</span>
                             </div>
                             <span class="subscriptions-meta-item subscriptions-mobile-date" *ngIf="sub.startDate">

@@ -9,9 +9,7 @@ const path = require('path');
 const fs   = require('fs');
 const logger = require('../utils/logger');
 
-const DB_PATH = process.env.NODE_ENV === 'production'
-    ? '/app/data/eliasdh.db'
-    : path.join(__dirname, '../../eliasdh.db');
+const DB_PATH = process.env.NODE_ENV === 'production' ? '/app/data/eliasdh.db' : path.join(__dirname, '../../eliasdh.db');
 
 let _client = null;
 
@@ -134,7 +132,6 @@ async function initSchema() {
             type       TEXT    NOT NULL DEFAULT 'fixed',
             sort_order INTEGER NOT NULL DEFAULT 0
         )`,
-        // Indexes for foreign key lookups (prevent full table scans)
         `CREATE INDEX IF NOT EXISTS idx_customer_locations_customer_id  ON customer_locations(customer_id)`,
         `CREATE INDEX IF NOT EXISTS idx_location_social_links_location_id ON location_social_links(location_id)`,
         `CREATE INDEX IF NOT EXISTS idx_websites_customer_id            ON websites(customer_id)`,
@@ -147,6 +144,11 @@ async function initSchema() {
     for (const sql of stmts) {
         await db.execute(sql);
     }
+
+    // Migrations: add columns if they don't exist yet (added in later versions, so we don't want to break existing installations)
+    try { await db.execute(`ALTER TABLE invoice_status ADD COLUMN amount    REAL`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE invoice_status ADD COLUMN frequency TEXT`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE pricing_plans  ADD COLUMN color     TEXT NOT NULL DEFAULT '#cccccc'`); } catch (_) {}
 }
 
 module.exports = { getDb, initSchema };

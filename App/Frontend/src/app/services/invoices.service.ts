@@ -16,6 +16,8 @@ export interface InvoiceStatus {
     invoiceType:    'subscription' | 'domain';
     paid:           boolean;
     paidAt:         string | null;
+    amount:         number | null;
+    frequency:      string | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -38,7 +40,7 @@ export class InvoicesService {
         );
     }
 
-    updateStatus(status: Omit<InvoiceStatus, 'paidAt'>): Observable<{ success: boolean }> {
+    updateStatus(status: Omit<InvoiceStatus, 'paidAt' | 'frequency'>): Observable<{ success: boolean }> {
         return this.http.patch<{ success: boolean }>(
             `${this.apiUrl}/status`,
             status,

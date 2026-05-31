@@ -63,7 +63,7 @@
                     <div class="invoices-card-info">
                         <div class="invoices-card-row-top">
                             <span class="invoices-card-id">{{inv.id}}</span>
-                            <span class="invoices-badge" [ngClass]="getSubscriptionClass(inv.subscriptionType)">
+                            <span class="invoices-badge" [style.background]="getBadgeStyle(inv.subscriptionType).background" [style.color]="getBadgeStyle(inv.subscriptionType).color">
                                 {{inv.subscriptionType}}
                             </span>
                             <span class="invoices-frequency-badge cursor-default">

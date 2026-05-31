@@ -13,7 +13,8 @@ const errorHandler = require('../middleware/errorHandler');
 const { apiKeyAuth } = require('../middleware/auth');
 const { server: config } = require('./env');
 const logger = require('../utils/logger');
-const clusterService = require('../api/services/cluster/clusterService');
+const clusterService  = require('../api/services/cluster/clusterService');
+const { startBirthdayScheduler } = require('../api/services/birthday/birthdayService');
 const { getDb, initSchema } = require('../database/db');
 const bcrypt = require('bcryptjs');
 const app = express();
@@ -69,12 +70,15 @@ async function initAdminUser() {
     if (Number(n) > 0) return;
     const hash = await bcrypt.hash(password, 12);
     await getDb().execute({
-        sql:  `INSERT INTO users (email, password_hash, first_name, last_name, role, company) VALUES (?, ?, ?, ?, 'Admin', ?)`,
+        sql:  `INSERT INTO users (email, password_hash, first_name, last_name, role, company, phone, birth_date)
+               VALUES (?, ?, ?, ?, 'Admin', ?, ?, ?)`,
         args: [
             email, hash,
-            process.env.ADMIN_FIRST_NAME ?? '',
-            process.env.ADMIN_LAST_NAME  ?? '',
-            process.env.ADMIN_COMPANY    ?? ''
+            process.env.ADMIN_FIRST_NAME  ?? '',
+            process.env.ADMIN_LAST_NAME   ?? '',
+            process.env.ADMIN_COMPANY     ?? '',
+            process.env.ADMIN_PHONE       ?? null,
+            process.env.ADMIN_BIRTH_DATE  ?? null
         ]
     });
     logger.info(`Admin user created: ${email}`);
@@ -95,19 +99,15 @@ async function initHQCustomer() {
 
     const id = hq.id ?? '000';
     await db.execute({
-        sql:  `INSERT INTO customers (id, name, is_hq, first_name, last_name, email, phone, mobile)
-               VALUES (?, ?, 1, ?, ?, ?, ?, ?)`,
+        sql:  `INSERT INTO customers (id, name, is_hq, first_name, last_name, email, phone, mobile) VALUES (?, ?, 1, ?, ?, ?, ?, ?)`,
         args: [id, hq.name, hq.firstName ?? '', hq.lastName ?? '', hq.email ?? '', hq.phone ?? '', hq.phone ?? '']
     });
 
     const loc = hq.location;
     if (loc) {
         const locRes = await db.execute({
-            sql:  `INSERT INTO customer_locations
-                       (customer_id, street, number, postal_code, city, country, vat, latitude, longitude)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            args: [id, loc.street ?? '', loc.number ?? '', loc.postal ?? '', loc.city ?? '',
-                   loc.country || 'Belgium', loc.vat ?? null, loc.lat ?? null, loc.lng ?? null]
+            sql:  `INSERT INTO customer_locations (customer_id, street, number, postal_code, city, country, vat, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            args: [id, loc.street ?? '', loc.number ?? '', loc.postal ?? '', loc.city ?? '', loc.country || 'Belgium', loc.vat ?? null, loc.lat ?? null, loc.lng ?? null]
         });
         const locId = Number(locRes.lastInsertRowid);
         for (const s of (loc.socials ?? [])) {
@@ -121,9 +121,7 @@ async function initHQCustomer() {
     for (const w of (hq.websites ?? [])) {
         if (!w.url) continue;
         await db.execute({
-            sql:  `INSERT OR IGNORE INTO websites
-                       (id, customer_id, name, url, subscription_type, is_live, start_date, frequency, payment, discount)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            sql:  `INSERT OR IGNORE INTO websites (id, customer_id, name, url, subscription_type, is_live, start_date, frequency, payment, discount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             args: [
                 w.id ?? id, id,
                 w.name             ?? hq.name,
@@ -176,6 +174,7 @@ const startServer = async () => {
         logger.info(process.env.NODE_ENV === 'production' ? 'Production mode!' : 'Development mode!');
 
         clusterService.startNodeMonitoring();
+        startBirthdayScheduler();
     });
 };
 

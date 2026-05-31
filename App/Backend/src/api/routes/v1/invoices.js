@@ -25,6 +25,7 @@ router.patch('/status',
     body('periodStart').notEmpty(),
     body('invoiceType').isIn(['subscription', 'domain']),
     body('paid').isBoolean(),
+    body('amount').optional({ nullable: true }).isFloat(),
     async (req, res, next) => {
         try {
             const errors = validationResult(req);

@@ -366,7 +366,7 @@
   },
   "PORTAL": {
     "LANG": { "TITLE": "Taal" },
-    "COMMON": { "SAVE": "Opslaan", "SAVING": "Opslaan...", "CANCEL": "Annuleren", "DELETE": "Verwijderen", "DELETING": "Bezig...", "CLOSE": "Sluiten", "RETRY": "Opnieuw proberen", "EDIT": "Bewerken", "ACTIVE": "Actief", "INACTIVE": "Inactief", "ALL": "Alle" },
+    "COMMON": { "SAVE": "Opslaan", "SAVING": "Opslaan...", "CANCEL": "Annuleren", "DELETE": "Verwijderen", "DELETING": "Bezig...", "CLOSE": "Sluiten", "RETRY": "Opnieuw proberen", "EDIT": "Bewerken", "ACTIVE": "Actief", "INACTIVE": "Inactief", "ALL": "Alle", "DISCARD": { "QUESTION": "Wil je de wijzigingen verwerpen?", "KEEP": "Bewaren", "DISCARD": "Verwerpen" } },
     "NAV": { "OVERVIEW": "Overzicht", "CUSTOMERS": "Klanten", "SUBSCRIPTIONS": "Abonnementen", "INVOICES": "Facturen", "USERS": "Gebruikers", "ANALYSIS": "Analyse", "PRICING": "Tariefplannen", "SETTINGS": "Instellingen", "LOGOUT": "Afmelden" },
     "DASHBOARD": { "USER_PROFILE": "Gebruikersprofiel", "FIRST_NAME": "Voornaam", "LAST_NAME": "Achternaam", "COMPANY": "Bedrijf", "PHONE": "Telefoon", "EMAIL": "E-mailadres", "BIRTH_DATE": "Geboortedatum", "ROLE": "Rol", "EXPAND_SIDEBAR": "Zijbalk uitklappen", "COLLAPSE_SIDEBAR": "Zijbalk inklappen", "TOGGLE_MENU": "Menu openen/sluiten" },
     "OVERVIEW": { "CUSTOMERS": "Klanten", "LIVE_SUBS": "Live subscriptions", "INACTIVE": "inactief", "PAID": "Betaald", "OUTSTANDING": "Openstaand", "TOTAL_INVOICED": "Totaal gefactureerd", "INVOICES": "facturen", "MONTHLY_REVENUE": "Maandelijkse omzet", "CHART_SUB": "Incl. BTW · grijs = toekomst · huidig: groen = betaald, rood = open", "TYPES_TITLE": "Subscriptie types", "TOTAL": "totaal", "NO_DATA": "Geen data beschikbaar." },

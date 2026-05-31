@@ -56,7 +56,7 @@
                         <div class="customers-card-row-top cursor-pointer">
                             <span class="customers-card-company-name cursor-pointer">{{customer.name}}</span>
                             <div class="customers-card-badges cursor-pointer">
-                                <span class="customers-badge cursor-pointer" [ngClass]="getSubscriptionClass(w.subscriptionType)" *ngFor="let w of getVisibleBadges(customer)">{{w.subscriptionType}}</span>
+                                <span class="customers-badge cursor-pointer" [style.background]="getBadgeStyle(w.subscriptionType).background" [style.color]="getBadgeStyle(w.subscriptionType).color" *ngFor="let w of getVisibleBadges(customer)">{{w.subscriptionType}}</span>
                                 <span class="customers-badge customers-badge--more cursor-pointer" *ngIf="getExtraBadgeCount(customer) > 0">+{{getExtraBadgeCount(customer)}}</span>
                             </div>
                         </div>
@@ -146,7 +146,7 @@
                         </h4>
                         <div class="customers-sub-list">
                             <div class="customers-sub-item customers-sub-item--clickable cursor-pointer" *ngFor="let w of customer.websites" (click)="onSubscriptionItemClick(w.id); $event.stopPropagation()">
-                                <span class="customers-badge cursor-pointer" [ngClass]="getSubscriptionClass(w.subscriptionType)">{{w.subscriptionType}}</span>
+                                <span class="customers-badge cursor-pointer" [style.background]="getBadgeStyle(w.subscriptionType).background" [style.color]="getBadgeStyle(w.subscriptionType).color">{{w.subscriptionType}}</span>
                                 <div class="customers-sub-info cursor-pointer">
                                     <span class="customers-sub-name cursor-pointer">{{w.name}}</span>
                                     <div class="customers-sub-url-wrap cursor-pointer">
@@ -233,8 +233,8 @@
         </div>
     </div>
 </div>
-<div class="customers-modal-overlay" *ngIf="showForm" (click)="onOverlayClick($event)">
-    <div class="customers-modal">
+<div class="customers-modal-overlay" *ngIf="showForm" (mousedown)="onOverlayMousedown($event)" (click)="onOverlayClick($event)">
+    <div class="customers-modal" (mousedown)="$event.stopPropagation()">
         <div class="customers-modal-header">
             <h2 class="customers-modal-title">
                 <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -247,7 +247,7 @@
                 </svg>
                 {{isEditing ? ('PORTAL.CUSTOMERS.FORM.EDIT_TITLE'|translate) : ('PORTAL.CUSTOMERS.FORM.CREATE_TITLE'|translate)}}
             </h2>
-            <button class="customers-modal-close cursor-pointer" (click)="closeForm()" [attr.aria-label]="'PORTAL.COMMON.CLOSE'|translate">
+            <button class="customers-modal-close cursor-pointer" (click)="requestClose()" [attr.aria-label]="'PORTAL.COMMON.CLOSE'|translate">
                 <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
                     <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
@@ -267,7 +267,7 @@
                     <div class="cform-field">
                         <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.LOGO'|translate}} <span class="cform-required">*</span></label>
                         <label class="cform-logo-clickable cursor-pointer" [title]="'PORTAL.CUSTOMERS.FORM.UPLOAD_LOGO'|translate">
-                            <input class="cursor-pointer" type="file" accept="image/*" (change)="onLogoFileChange($event)" style="display:none"/>
+                            <input class="cursor-pointer" type="file" accept="image/*" (change)="onLogoFileChange($event); markTouched()" style="display:none"/>
                             <img class="cursor-pointer" *ngIf="form.logo" [src]="form.logo" alt="Logo preview" class="cform-logo-preview-img"/>
                             <div *ngIf="!form.logo" class="cform-logo-placeholder cursor-pointer">
                                 <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -280,7 +280,7 @@
                     </div>
                     <div class="cform-field cform-field--grow">
                         <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.COMPANY_NAME'|translate}} <span class="cform-required">*</span></label>
-                        <input class="cform-input cursor-text" type="text" placeholder="bv. EliasDH BV" [(ngModel)]="form.name"/>
+                        <input class="cform-input cursor-text" type="text" placeholder="bv. EliasDH BV" [(ngModel)]="form.name" (input)="markTouched()"/>
                     </div>
                 </div>
                 <h4 class="cform-subsection-title">{{'PORTAL.CUSTOMERS.FORM.CONTACT'|translate}}</h4>
@@ -519,9 +519,16 @@
             </section>
         </div>
         <div class="customers-modal-footer">
-            <p class="cform-error" *ngIf="formError">{{formError}}</p>
-            <div class="customers-modal-footer-actions">
-                <button class="customers-modal-btn customers-modal-btn--cancel cursor-pointer" type="button" (click)="closeForm()" [disabled]="formSaving">{{'PORTAL.CUSTOMERS.FORM.CANCEL'|translate}}</button>
+            <div class="customers-discard-confirm" *ngIf="showDiscardConfirm">
+                <span class="customers-discard-question">{{'PORTAL.COMMON.DISCARD.QUESTION'|translate}}</span>
+                <div class="customers-discard-actions">
+                    <button class="customers-modal-btn customers-modal-btn--cancel cursor-pointer" type="button" (click)="cancelDiscard()">{{'PORTAL.COMMON.DISCARD.KEEP'|translate}}</button>
+                    <button class="customers-modal-btn customers-modal-btn--discard cursor-pointer" type="button" (click)="confirmDiscard()">{{'PORTAL.COMMON.DISCARD.DISCARD'|translate}}</button>
+                </div>
+            </div>
+            <p class="cform-error" *ngIf="formError && !showDiscardConfirm">{{formError}}</p>
+            <div class="customers-modal-footer-actions" *ngIf="!showDiscardConfirm">
+                <button class="customers-modal-btn customers-modal-btn--cancel cursor-pointer" type="button" (click)="requestClose()" [disabled]="formSaving">{{'PORTAL.CUSTOMERS.FORM.CANCEL'|translate}}</button>
                 <button class="customers-modal-btn customers-modal-btn--save cursor-pointer" type="button" (click)="submitForm()" [disabled]="formSaving">
                     <svg *ngIf="formSaving" class="cform-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-opacity="0.3"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
                     {{formSaving ? ('PORTAL.CUSTOMERS.FORM.SAVING'|translate) : (isEditing ? ('PORTAL.CUSTOMERS.FORM.SAVE'|translate) : ('PORTAL.CUSTOMERS.FORM.CREATE'|translate))}}

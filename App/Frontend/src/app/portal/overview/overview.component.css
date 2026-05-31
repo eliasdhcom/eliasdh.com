@@ -62,6 +62,13 @@
     box-shadow: 0 2px 12px rgba(0,0,0,.06);
 }
 
+.overview-kpi-card--clickable:hover {
+    border-color: var(--primary, rgba(99,102,241,.6));
+    box-shadow: 0 4px 16px rgba(0,0,0,.09);
+    transform: translateY(-1px);
+    transition: border-color .18s, box-shadow .18s, transform .18s;
+}
+
 .overview-kpi-icon {
     width: 42px;
     height: 42px;
@@ -361,7 +368,80 @@
     }
 }
 
+@media (max-width: 600px) {
+    .overview-chart-wrap {
+        height: 120px;
+    }
+
+    .overview-chart-y-labels {
+        display: none;
+    }
+
+    .overview-bar-col:nth-child(even) .overview-bar-label {
+        visibility: hidden;
+    }
+
+    .overview-bar-label {
+        font-size: 9px;
+    }
+
+    .overview-type-badge {
+        width: auto;
+        min-width: 54px;
+        font-size: 9px;
+        padding: 2px 6px;
+    }
+
+    .overview-type-count {
+        font-size: 13px;
+    }
+
+    .overview-type-pct {
+        font-size: 11px;
+        min-width: 28px;
+    }
+
+    .overview-card {
+        padding: 14px;
+    }
+
+    .overview-card-header {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .overview-card-sub {
+        white-space: normal;
+        font-size: 10px;
+    }
+}
+
 @media (max-width: 540px) {
+    .overview-kpi-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .overview-kpi-card {
+        padding: 14px 12px;
+        gap: 10px;
+    }
+
+    .overview-kpi-value {
+        font-size: 18px;
+    }
+
+    .overview-kpi-icon {
+        width: 34px;
+        height: 34px;
+    }
+
+    .overview-kpi-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (max-width: 360px) {
     .overview-kpi-grid {
         grid-template-columns: 1fr;
     }

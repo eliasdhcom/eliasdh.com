@@ -20,12 +20,12 @@ function logoToDataUrl(filename) {
 }
 
 const PRICING_PLANS = [
-    { name: 'Free',       monthly_price: 0   },
-    { name: 'Basic',      monthly_price: 20  },
-    { name: 'Growth',     monthly_price: 40  },
-    { name: 'Startup',    monthly_price: 80  },
-    { name: 'Business',   monthly_price: 160 },
-    { name: 'Enterprise', monthly_price: 320 },
+    { name: 'Free',       monthly_price: 0,   color: '#ffcfc9' },
+    { name: 'Basic',      monthly_price: 20,  color: '#ffc8aa' },
+    { name: 'Growth',     monthly_price: 40,  color: '#7edbd2' },
+    { name: 'Startup',    monthly_price: 80,  color: '#ffe5a0' },
+    { name: 'Business',   monthly_price: 160, color: '#e6cff2' },
+    { name: 'Enterprise', monthly_price: 320, color: '#d4edbc' },
 ];
 
 const SUBSCRIPTION_PRICES = Object.fromEntries(PRICING_PLANS.map(p => [p.name, p.monthly_price]));
@@ -194,19 +194,22 @@ async function seed() {
     await initSchema();
     const db = getDb();
 
-    const { rows: [{ n: customerCount }] } = await db.execute('SELECT COUNT(*) AS n FROM customers');
+    const { rows: [{ n: customerCount }] } = await db.execute('SELECT COUNT(*) AS n FROM customers WHERE is_hq = 0');
 
     if (Number(customerCount) === 0) {
         for (const plan of PRICING_PLANS) {
             await db.execute({
-                sql:  'INSERT OR IGNORE INTO pricing_plans (name, monthly_price) VALUES (?, ?)',
-                args: [plan.name, plan.monthly_price]
+                sql:  'INSERT OR IGNORE INTO pricing_plans (name, monthly_price, color) VALUES (?, ?, ?)',
+                args: [plan.name, plan.monthly_price, plan.color]
             });
         }
 
         for (const c of CUSTOMERS) {
+            const { rows: [existing] } = await db.execute({ sql: 'SELECT id FROM customers WHERE id = ?', args: [c.id] });
+            if (existing) continue;
+
             await db.execute({
-                sql:  'INSERT OR IGNORE INTO customers (id, name, is_hq, first_name, last_name, email, phone, mobile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                sql:  'INSERT INTO customers (id, name, is_hq, first_name, last_name, email, phone, mobile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
                 args: [c.id, c.name, c.is_hq, c.first_name, c.last_name, c.email, c.phone, c.mobile]
             });
 

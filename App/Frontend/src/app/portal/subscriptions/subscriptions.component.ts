@@ -8,8 +8,9 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CustomersService, Customer, CustomerWebsite } from '../../services/customers.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { PricingPlansService, PricingPlan } from '../../services/pricing-plans.service';
+import { Subject, forkJoin, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
 
 export interface FlatSubscription extends CustomerWebsite {
     customerId: string;
@@ -35,10 +36,12 @@ const VAT_RATE = 0.21;
 })
 export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
     subscriptions: FlatSubscription[] = [];
+    pricingPlanNames: string[] = [];
     loading = true;
     error = '';
     searchQuery = '';
     filterLive: 'all' | 'live' | 'inactive' = 'all';
+    filterType: string | null = null;
     _highlightId: string | null = null;
     failedGroupLogos = new Set<string>();
     private pendingHighlightId: string | null = null;
@@ -50,7 +53,10 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
         if (val && !this.loading) this.doHighlight(val);
     }
 
-    constructor(private customersService: CustomersService) {}
+    constructor(
+        private customersService: CustomersService,
+        private pricingPlansService: PricingPlansService
+    ) {}
 
     ngOnInit(): void {
         this.loadSubscriptions();
@@ -64,38 +70,46 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
     loadSubscriptions(): void {
         this.loading = true;
         this.error = '';
-        this.customersService.getAllCustomers()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (response) => {
-                    this.subscriptions = (response.data ?? [])
-                        .filter((c: Customer) => !c.isHQ)
-                        .flatMap((c: Customer) =>
-                            (c.websites ?? []).map(w => ({
-                                ...w,
-                                customerId: c.id,
-                                customerName: c.name,
-                                customerLogo: c.logo
-                            }))
-                        )
-                        .sort((a, b) => a.id.localeCompare(b.id));
-                    this.loading = false;
-                    if (this.pendingHighlightId) {
-                        this.doHighlight(this.pendingHighlightId);
-                        this.pendingHighlightId = null;
-                    }
-                },
-                error: () => {
-                    this.error = 'Subscriptions konden niet worden geladen.';
-                    this.loading = false;
+        forkJoin({
+            customers: this.customersService.getAllCustomers(),
+            plans:     this.pricingPlansService.getAll().pipe(
+                catchError(() => of({ success: true, data: [] as PricingPlan[] }))
+            )
+        })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+            next: ({ customers, plans }) => {
+                this.pricingPlanNames = (plans.data ?? []).map(p => p.name);
+                this.pricingPlansService.setPlanColors(plans.data ?? []);
+                this.subscriptions = (customers.data ?? [])
+                    .filter((c: Customer) => !c.isHQ)
+                    .flatMap((c: Customer) =>
+                        (c.websites ?? []).map(w => ({
+                            ...w,
+                            customerId: c.id,
+                            customerName: c.name,
+                            customerLogo: c.logo
+                        }))
+                    )
+                    .sort((a, b) => a.id.localeCompare(b.id));
+                this.loading = false;
+                if (this.pendingHighlightId) {
+                    this.doHighlight(this.pendingHighlightId);
+                    this.pendingHighlightId = null;
                 }
-            });
+            },
+            error: () => {
+                this.error = 'Subscriptions konden niet worden geladen.';
+                this.loading = false;
+            }
+        });
     }
 
     get filteredSubscriptions(): FlatSubscription[] {
         return this.subscriptions.filter(s => {
             if (this.filterLive === 'live' && !s.isLive) return false;
             if (this.filterLive === 'inactive' && s.isLive) return false;
+            if (this.filterType !== null && s.subscriptionType !== this.filterType) return false;
             if (!this.searchQuery.trim()) return true;
             const q = this.searchQuery.toLowerCase();
             return (
@@ -107,6 +121,29 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
                 s.subscriptionType.toLowerCase().includes(q)
             );
         });
+    }
+
+    get availableTypes(): { type: string; count: number }[] {
+        const typeMap = new Map<string, number>();
+        for (const s of this.subscriptions) {
+            if (this.filterLive === 'live' && !s.isLive) continue;
+            if (this.filterLive === 'inactive' && s.isLive) continue;
+            typeMap.set(s.subscriptionType, (typeMap.get(s.subscriptionType) ?? 0) + 1);
+        }
+        return Array.from(typeMap.entries())
+            .map(([type, count]) => ({ type, count }))
+            .sort((a, b) => {
+                const ia = this.pricingPlanNames.findIndex(n => n.toLowerCase() === a.type.toLowerCase());
+                const ib = this.pricingPlanNames.findIndex(n => n.toLowerCase() === b.type.toLowerCase());
+                if (ia !== -1 && ib !== -1) return ia - ib;
+                if (ia !== -1) return -1;
+                if (ib !== -1) return 1;
+                return a.type.localeCompare(b.type);
+            });
+    }
+
+    get availableTypeTotal(): number {
+        return this.availableTypes.reduce((sum, t) => sum + t.count, 0);
     }
 
     get groupedFilteredSubscriptions(): SubscriptionGroup[] {
@@ -134,6 +171,11 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
 
     setFilter(filter: 'all' | 'live' | 'inactive'): void {
         this.filterLive = filter;
+        this.filterType = null;
+    }
+
+    setTypeFilter(type: string | null): void {
+        this.filterType = type;
     }
 
     getTotal(s: FlatSubscription): number {
@@ -167,17 +209,7 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
         return labels[freq] ?? freq;
     }
 
-    getSubscriptionClass(type: string): string {
-        const t = type.toLowerCase();
-        if (t.includes('enterprise')) return 'subscriptions-badge--enterprise';
-        if (t.includes('business'))   return 'subscriptions-badge--business';
-        if (t.includes('startup'))    return 'subscriptions-badge--startup';
-        if (t.includes('growth'))     return 'subscriptions-badge--growth';
-        if (t.includes('basic'))      return 'subscriptions-badge--basic';
-        if (t.includes('free'))       return 'subscriptions-badge--free';
-        if (t.includes('todo'))       return 'subscriptions-badge--todo';
-        return 'subscriptions-badge--custom';
-    }
+    getBadgeStyle(type: string) { return this.pricingPlansService.getBadgeStyle(type); }
 
     getGroupInitials(name: string): string {
         return name.split(/\s+/).map(w => w[0] ?? '').join('').toUpperCase().slice(0, 2);

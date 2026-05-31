@@ -27,18 +27,20 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
     error        = '';
     searchQuery  = '';
 
-    panelOpen      = false;
-    isCreating     = false;
-    selectedUser:  PortalUser | null = null;
-    editedUser:    PortalUser = this.emptyUser();
-    newPassword    = '';
-    avatarPreview: string | null = null;
-    saving            = false;
-    deleting          = false;
-    deleteConfirmOpen = false;
-    saveError         = '';
+    panelOpen          = false;
+    isCreating         = false;
+    selectedUser:      PortalUser | null = null;
+    editedUser:        PortalUser = this.emptyUser();
+    newPassword        = '';
+    avatarPreview:     string | null = null;
+    saving             = false;
+    deleting           = false;
+    deleteConfirmOpen  = false;
+    saveError          = '';
+    formTouched        = false;
+    showDiscardConfirm = false;
 
-    readonly ROLES = ['Admin', 'Employee', 'Customer'];
+    readonly ROLES = ['Admin', 'Customer'];
 
     private destroy$ = new Subject<void>();
 
@@ -89,14 +91,16 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
         const file = (event.target as HTMLInputElement).files?.[0];
         if (!file) return;
         this.resizeImage(file, 200).then(dataUrl => {
-            this.avatarPreview      = dataUrl;
-            this.editedUser.avatar  = dataUrl;
+            this.avatarPreview     = dataUrl;
+            this.editedUser.avatar = dataUrl;
+            this.markTouched();
         });
     }
 
     removeAvatar(): void {
         this.avatarPreview     = null;
         this.editedUser.avatar = null;
+        this.markTouched();
     }
 
     private resizeImage(file: File, maxPx: number): Promise<string> {
@@ -119,33 +123,49 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
         });
     }
 
+    markTouched(): void { this.formTouched = true; }
+
     openCreatePanel(): void {
-        this.isCreating    = true;
-        this.selectedUser  = null;
-        this.editedUser    = this.emptyUser();
-        this.newPassword   = '';
-        this.avatarPreview = null;
-        this.saveError     = '';
-        this.panelOpen     = true;
+        this.isCreating         = true;
+        this.selectedUser       = null;
+        this.editedUser         = this.emptyUser();
+        this.newPassword        = '';
+        this.avatarPreview      = null;
+        this.saveError          = '';
+        this.formTouched        = false;
+        this.showDiscardConfirm = false;
+        this.panelOpen          = true;
     }
 
     openPanel(user: PortalUser): void {
-        this.isCreating    = false;
-        this.selectedUser  = user;
-        this.editedUser    = { ...user };
-        this.newPassword   = '';
-        this.avatarPreview = user.avatar;
-        this.saveError     = '';
-        this.panelOpen     = true;
+        this.isCreating         = false;
+        this.selectedUser       = user;
+        this.editedUser         = { ...user };
+        this.newPassword        = '';
+        this.avatarPreview      = user.avatar;
+        this.saveError          = '';
+        this.formTouched        = false;
+        this.showDiscardConfirm = false;
+        this.panelOpen          = true;
     }
 
+    requestClose(): void {
+        if (this.formTouched) { this.showDiscardConfirm = true; return; }
+        this.closePanel();
+    }
+
+    confirmDiscard(): void { this.showDiscardConfirm = false; this.closePanel(); }
+    cancelDiscard(): void  { this.showDiscardConfirm = false; }
+
     closePanel(): void {
-        this.panelOpen         = false;
-        this.isCreating        = false;
-        this.selectedUser      = null;
-        this.saveError         = '';
-        this.deleting          = false;
-        this.deleteConfirmOpen = false;
+        this.panelOpen          = false;
+        this.isCreating         = false;
+        this.selectedUser       = null;
+        this.saveError          = '';
+        this.deleting           = false;
+        this.deleteConfirmOpen  = false;
+        this.formTouched        = false;
+        this.showDiscardConfirm = false;
     }
 
     openDeleteConfirm(): void  { this.deleteConfirmOpen = true; }
@@ -269,8 +289,7 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
 
     getRoleClass(role: string): string {
         const r = (role ?? '').toLowerCase();
-        if (r === 'admin')    return 'users-role--admin';
-        if (r === 'employee') return 'users-role--employee';
+        if (r === 'admin') return 'users-role--admin';
         return 'users-role--customer';
     }
 

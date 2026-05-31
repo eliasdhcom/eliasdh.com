@@ -367,7 +367,7 @@
   },
   "PORTAL": {
     "LANG": { "TITLE": "Language" },
-    "COMMON": { "SAVE": "Save", "SAVING": "Saving...", "CANCEL": "Cancel", "DELETE": "Delete", "DELETING": "Processing...", "CLOSE": "Close", "RETRY": "Try again", "EDIT": "Edit", "ACTIVE": "Active", "INACTIVE": "Inactive", "ALL": "All" },
+    "COMMON": { "SAVE": "Save", "SAVING": "Saving...", "CANCEL": "Cancel", "DELETE": "Delete", "DELETING": "Processing...", "CLOSE": "Close", "RETRY": "Try again", "EDIT": "Edit", "ACTIVE": "Active", "INACTIVE": "Inactive", "ALL": "All", "DISCARD": { "QUESTION": "Discard unsaved changes?", "KEEP": "Keep editing", "DISCARD": "Discard" } },
     "NAV": { "OVERVIEW": "Overview", "CUSTOMERS": "Customers", "SUBSCRIPTIONS": "Subscriptions", "INVOICES": "Invoices", "USERS": "Users", "ANALYSIS": "Analysis", "PRICING": "Pricing Plans", "SETTINGS": "Settings", "LOGOUT": "Logout" },
     "DASHBOARD": { "USER_PROFILE": "User Profile", "FIRST_NAME": "First name", "LAST_NAME": "Last name", "COMPANY": "Company", "PHONE": "Phone", "EMAIL": "Email address", "BIRTH_DATE": "Date of birth", "ROLE": "Role", "EXPAND_SIDEBAR": "Expand sidebar", "COLLAPSE_SIDEBAR": "Collapse sidebar", "TOGGLE_MENU": "Toggle menu" },
     "OVERVIEW": { "CUSTOMERS": "Customers", "LIVE_SUBS": "Live subscriptions", "INACTIVE": "inactive", "PAID": "Paid", "OUTSTANDING": "Outstanding", "TOTAL_INVOICED": "Total invoiced", "INVOICES": "invoices", "MONTHLY_REVENUE": "Monthly revenue", "CHART_SUB": "Incl. VAT · grey = future · current: green = paid, red = outstanding", "TYPES_TITLE": "Subscription types", "TOTAL": "total", "NO_DATA": "No data available." },

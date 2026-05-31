@@ -84,7 +84,7 @@
         </div>
     </div>
 </div>
-<div class="users-panel-overlay" [class.users-panel-overlay--open]="panelOpen" (click)="closePanel()"></div>
+<div class="users-panel-overlay" [class.users-panel-overlay--open]="panelOpen" (click)="requestClose()"></div>
 <aside class="users-panel" [class.users-panel--open]="panelOpen" role="dialog" [attr.aria-label]="isCreating ? ('PORTAL.USERS.NEW_TITLE'|translate) : ('PORTAL.USERS.EDIT_DATA'|translate)">
     <div class="users-panel-header" *ngIf="isCreating">
         <label class="users-panel-avatar-lg users-panel-avatar-clickable cursor-pointer" [title]="'PORTAL.USERS.PHOTO_ADD'|translate">
@@ -103,7 +103,7 @@
         <div class="users-panel-identity">
             <span class="users-panel-title">{{'PORTAL.USERS.NEW_TITLE'|translate}}</span>
         </div>
-        <button class="users-panel-close cursor-pointer" (click)="closePanel()" [title]="'PORTAL.COMMON.CLOSE'|translate">
+        <button class="users-panel-close cursor-pointer" (click)="requestClose()" [title]="'PORTAL.COMMON.CLOSE'|translate">
             <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/><line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
             </svg>
@@ -125,7 +125,7 @@
             <span class="users-panel-title">{{editedUser.firstName}} {{editedUser.lastName}}</span>
             <span class="users-role-badge">{{selectedUser.role}}</span>
         </div>
-        <button class="users-panel-close cursor-pointer" (click)="closePanel()" [title]="'PORTAL.COMMON.CLOSE'|translate">
+        <button class="users-panel-close cursor-pointer" (click)="requestClose()" [title]="'PORTAL.COMMON.CLOSE'|translate">
             <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
@@ -137,41 +137,41 @@
         <div class="users-panel-field-grid">
             <div class="users-panel-field">
                 <label class="users-panel-label">{{'PORTAL.USERS.FIRST_NAME'|translate}} <span class="users-panel-required" *ngIf="isCreating">*</span></label>
-                <input class="users-panel-input cursor-text" type="text" name="upf-firstname" autocomplete="given-name" [(ngModel)]="editedUser.firstName" [placeholder]="'PORTAL.USERS.FIRST_NAME'|translate"/>
+                <input class="users-panel-input cursor-text" type="text" name="upf-firstname" autocomplete="given-name" [(ngModel)]="editedUser.firstName" (ngModelChange)="markTouched()" [placeholder]="'PORTAL.USERS.FIRST_NAME'|translate"/>
             </div>
             <div class="users-panel-field">
                 <label class="users-panel-label">{{'PORTAL.USERS.LAST_NAME'|translate}} <span class="users-panel-required" *ngIf="isCreating">*</span></label>
-                <input class="users-panel-input cursor-text" type="text" name="upf-lastname" autocomplete="family-name" [(ngModel)]="editedUser.lastName" [placeholder]="'PORTAL.USERS.LAST_NAME'|translate"/>
+                <input class="users-panel-input cursor-text" type="text" name="upf-lastname" autocomplete="family-name" [(ngModel)]="editedUser.lastName" (ngModelChange)="markTouched()" [placeholder]="'PORTAL.USERS.LAST_NAME'|translate"/>
             </div>
             <div class="users-panel-field users-panel-field--full">
                 <label class="users-panel-label">{{'PORTAL.USERS.EMAIL'|translate}} <span class="users-panel-required" *ngIf="isCreating">*</span></label>
-                <input class="users-panel-input cursor-text" type="email" name="upf-email" autocomplete="off" [(ngModel)]="editedUser.email" [placeholder]="'PORTAL.USERS.EMAIL'|translate"/>
+                <input class="users-panel-input cursor-text" type="email" name="upf-email" autocomplete="off" [(ngModel)]="editedUser.email" (ngModelChange)="markTouched()" [placeholder]="'PORTAL.USERS.EMAIL'|translate"/>
             </div>
             <div class="users-panel-field users-panel-field--full" *ngIf="isCreating">
                 <label class="users-panel-label">{{'PORTAL.USERS.PASSWORD'|translate}} <span class="users-panel-required">*</span></label>
-                <input class="users-panel-input cursor-text" type="password" name="upf-password" autocomplete="new-password" [(ngModel)]="newPassword" [placeholder]="'PORTAL.USERS.PASSWORD_HINT'|translate"/>
+                <input class="users-panel-input cursor-text" type="password" name="upf-password" autocomplete="new-password" [(ngModel)]="newPassword" (ngModelChange)="markTouched()" [placeholder]="'PORTAL.USERS.PASSWORD_HINT'|translate"/>
             </div>
             <div class="users-panel-field">
                 <label class="users-panel-label">{{'PORTAL.USERS.ROLE'|translate}} <span class="users-panel-required" *ngIf="isCreating">*</span></label>
-                <select class="users-panel-input users-panel-select cursor-pointer" name="upf-role" [(ngModel)]="editedUser.role">
+                <select class="users-panel-input users-panel-select cursor-pointer" name="upf-role" [(ngModel)]="editedUser.role" (ngModelChange)="markTouched()">
                     <option value="">{{'PORTAL.USERS.CHOOSE_ROLE'|translate}}</option>
                     <option class="cursor-pointer" *ngFor="let r of ROLES" [value]="r">{{r}}</option>
                 </select>
             </div>
             <div class="users-panel-field">
                 <label class="users-panel-label">{{'PORTAL.USERS.PHONE'|translate}} <span class="users-panel-required" *ngIf="isCreating">*</span></label>
-                <input class="users-panel-input cursor-text" type="tel" name="upf-phone" autocomplete="tel" [(ngModel)]="editedUser.phone" [placeholder]="'PORTAL.USERS.PHONE_HINT'|translate"/>
+                <input class="users-panel-input cursor-text" type="tel" name="upf-phone" autocomplete="tel" [(ngModel)]="editedUser.phone" (ngModelChange)="markTouched()" [placeholder]="'PORTAL.USERS.PHONE_HINT'|translate"/>
             </div>
             <div class="users-panel-field">
                 <label class="users-panel-label">{{'PORTAL.USERS.COMPANY'|translate}} <span class="users-panel-required" *ngIf="isCreating">*</span></label>
-                <select class="users-panel-input users-panel-select cursor-pointer" name="upf-company" [(ngModel)]="editedUser.company">
+                <select class="users-panel-input users-panel-select cursor-pointer" name="upf-company" [(ngModel)]="editedUser.company" (ngModelChange)="markTouched()">
                     <option value="">{{'PORTAL.USERS.CHOOSE_COMPANY'|translate}}</option>
                     <option class="cursor-pointer" *ngFor="let c of customers" [value]="c.name">{{c.name}}</option>
                 </select>
             </div>
             <div class="users-panel-field">
                 <label class="users-panel-label">{{'PORTAL.USERS.BIRTH_DATE'|translate}} <span class="users-panel-required" *ngIf="isCreating">*</span></label>
-                <input class="users-panel-input cursor-text" type="date" name="upf-birthdate" autocomplete="bday" [(ngModel)]="editedUser.birthDate"/>
+                <input class="users-panel-input cursor-text" type="date" name="upf-birthdate" autocomplete="bday" [(ngModel)]="editedUser.birthDate" (ngModelChange)="markTouched()"/>
             </div>
         </div>
         </form>
@@ -219,9 +219,16 @@
                 </svg>
                 {{saving ? ('PORTAL.USERS.SAVING'|translate) : ('PORTAL.USERS.SAVE'|translate)}}
             </button>
-            <button class="users-panel-btn users-panel-btn--cancel cursor-pointer" (click)="closePanel()" [disabled]="saving || deleting">
+            <button class="users-panel-btn users-panel-btn--cancel cursor-pointer" (click)="requestClose()" [disabled]="saving || deleting">
                 {{'PORTAL.COMMON.CANCEL'|translate}}
             </button>
+        </div>
+        <div class="users-discard-confirm" *ngIf="showDiscardConfirm">
+            <span class="users-discard-question">{{'PORTAL.COMMON.DISCARD.QUESTION'|translate}}</span>
+            <div class="users-discard-actions">
+                <button class="users-confirm-btn users-confirm-btn--cancel cursor-pointer" (click)="cancelDiscard()">{{'PORTAL.COMMON.DISCARD.KEEP'|translate}}</button>
+                <button class="users-confirm-btn users-confirm-btn--delete cursor-pointer" (click)="confirmDiscard()">{{'PORTAL.COMMON.DISCARD.DISCARD'|translate}}</button>
+            </div>
         </div>
     </div>
 </aside>

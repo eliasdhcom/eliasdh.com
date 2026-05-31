@@ -100,19 +100,26 @@
     background: var(--background);
     border: 1px solid rgba(128,128,128,0.15);
     border-radius: 12px;
-    padding: 20px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 0;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
+
+.pricing-card-color-bar {
+    height: 6px;
+    width: 100%;
+    flex-shrink: 0;
+}
+
 
 .pricing-card:hover {
     border-color: color-mix(in srgb, var(--primary) 40%, transparent);
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
 
-.pricing-card-body { display: flex; flex-direction: column; gap: 6px; }
+.pricing-card-body { display: flex; flex-direction: column; gap: 6px; padding: 20px; padding-bottom: 0; }
 
 .pricing-card-name {
     font-size: 16px;
@@ -146,6 +153,7 @@
     display: flex;
     gap: 8px;
     justify-content: flex-end;
+    padding: 0 20px 20px;
 }
 
 .pricing-action-btn {
@@ -279,6 +287,34 @@
 
 .pricing-form-input--price:focus { box-shadow: none; }
 
+.pricing-color-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pricing-color-input {
+    width: 42px;
+    height: 36px;
+    border: 1px solid rgba(128,128,128,0.25);
+    border-radius: 8px;
+    padding: 2px;
+    background: none;
+    flex-shrink: 0;
+}
+
+.pricing-color-preview {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
 .pricing-form-error {
     font-size: 13px;
     color: #ef4444;
@@ -295,9 +331,38 @@
 
 .pricing-modal-footer {
     display: flex;
+    flex-direction: column;
     gap: 10px;
-    justify-content: flex-end;
     padding: 0 24px 20px;
+}
+
+.pricing-modal-footer > ng-container,
+.pricing-modal-footer:not(:has(.pricing-discard-confirm)) {
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.pricing-discard-confirm {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    background: color-mix(in srgb, #ef4444 8%, transparent);
+    border: 1px solid color-mix(in srgb, #ef4444 30%, transparent);
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+
+.pricing-discard-question {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+}
+
+.pricing-discard-actions {
+    display: flex;
+    gap: 8px;
 }
 
 .pricing-btn {

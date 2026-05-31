@@ -16,6 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 interface PlanForm {
     name:         string;
     monthlyPrice: string;
+    color:        string;
 }
 
 @Component({
@@ -30,11 +31,14 @@ export class PortalPricingPlansComponent implements OnInit, OnDestroy {
     loading  = true;
     error    = '';
 
-    showForm    = false;
-    isEditing   = false;
-    editingId   = 0;
-    formSaving  = false;
-    formError   = '';
+    showForm           = false;
+    isEditing          = false;
+    editingId          = 0;
+    formSaving         = false;
+    formError          = '';
+    formTouched        = false;
+    showDiscardConfirm = false;
+    overlayMousedownIsBackdrop = false;
     form: PlanForm = this.emptyForm();
 
     deleteConfirmId: number | null = null;
@@ -42,7 +46,7 @@ export class PortalPricingPlansComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private pricingService: PricingPlansService,
+        readonly pricingService: PricingPlansService,
         private authService: AuthService
     ) {}
 
@@ -61,30 +65,53 @@ export class PortalPricingPlansComponent implements OnInit, OnDestroy {
         this.pricingService.getAll()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (r) => { this.plans = r.data ?? []; this.loading = false; },
+                next: (r) => {
+                    this.plans = r.data ?? [];
+                    this.pricingService.setPlanColors(this.plans);
+                    this.loading = false;
+                },
                 error: () => { this.error = 'Tariefplannen konden niet worden geladen.'; this.loading = false; }
             });
     }
 
-    private emptyForm(): PlanForm { return { name: '', monthlyPrice: '0' }; }
+    private emptyForm(): PlanForm { return { name: '', monthlyPrice: '0', color: '#cccccc' }; }
+
+    markTouched(): void { this.formTouched = true; }
 
     openCreateForm(): void {
-        this.isEditing = false;
-        this.editingId = 0;
-        this.form      = this.emptyForm();
-        this.formError = '';
-        this.showForm  = true;
+        this.isEditing          = false;
+        this.editingId          = 0;
+        this.form               = this.emptyForm();
+        this.formError          = '';
+        this.formTouched        = false;
+        this.showDiscardConfirm = false;
+        this.showForm           = true;
     }
 
     openEditForm(plan: PricingPlan): void {
-        this.isEditing = true;
-        this.editingId = plan.id;
-        this.form      = { name: plan.name, monthlyPrice: String(plan.monthlyPrice) };
-        this.formError = '';
-        this.showForm  = true;
+        this.isEditing          = true;
+        this.editingId          = plan.id;
+        this.form               = { name: plan.name, monthlyPrice: String(plan.monthlyPrice), color: plan.color ?? '#cccccc' };
+        this.formError          = '';
+        this.formTouched        = false;
+        this.showDiscardConfirm = false;
+        this.showForm           = true;
     }
 
-    closeForm(): void { this.showForm = false; this.formError = ''; }
+    requestClose(): void {
+        if (this.formTouched) { this.showDiscardConfirm = true; return; }
+        this.closeForm();
+    }
+
+    confirmDiscard(): void { this.showDiscardConfirm = false; this.closeForm(); }
+    cancelDiscard(): void  { this.showDiscardConfirm = false; }
+
+    closeForm(): void {
+        this.showForm           = false;
+        this.formError          = '';
+        this.formTouched        = false;
+        this.showDiscardConfirm = false;
+    }
 
     submitForm(): void {
         if (!this.form.name.trim()) { this.formError = 'Naam is verplicht.'; return; }
@@ -94,7 +121,7 @@ export class PortalPricingPlansComponent implements OnInit, OnDestroy {
         this.formSaving = true;
         this.formError  = '';
 
-        const payload = { name: this.form.name.trim(), monthlyPrice: price };
+        const payload = { name: this.form.name.trim(), monthlyPrice: price, color: this.form.color || '#cccccc' };
         const req = this.isEditing
             ? this.pricingService.update(this.editingId, payload)
             : this.pricingService.create(payload);
@@ -121,11 +148,16 @@ export class PortalPricingPlansComponent implements OnInit, OnDestroy {
         return new Intl.NumberFormat('nl-BE', { style: 'currency', currency: 'EUR' }).format(amount);
     }
 
+    onOverlayMousedown(event: MouseEvent): void {
+        this.overlayMousedownIsBackdrop = event.target === event.currentTarget;
+    }
+
     onOverlayClick(event: MouseEvent): void {
-        if ((event.target as HTMLElement).classList.contains('pricing-modal-overlay')) this.closeForm();
+        if (this.overlayMousedownIsBackdrop && event.target === event.currentTarget) this.requestClose();
+        this.overlayMousedownIsBackdrop = false;
     }
 
     onDeleteOverlayClick(event: MouseEvent): void {
-        if ((event.target as HTMLElement).classList.contains('pricing-modal-overlay')) this.cancelDelete();
+        if (event.target === event.currentTarget) this.cancelDelete();
     }
 }

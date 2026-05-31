@@ -62,12 +62,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({ next: r => {
                     if (r.data) {
-                        this.userAvatar      = r.data.avatar    ?? null;
-                        this.user.role       = r.data.role      || this.user.role;
-                        this.user.firstName  = r.data.firstName || this.user.firstName;
-                        this.user.lastName   = r.data.lastName  || this.user.lastName;
-                        this.user.company    = r.data.company   || this.user.company;
-                        this.user.phone      = r.data.phone     || this.user.phone;
+                        this.userAvatar       = r.data.avatar    ?? null;
+                        this.user.role        = r.data.role      || this.user.role;
+                        this.user.firstName   = r.data.firstName || this.user.firstName;
+                        this.user.lastName    = r.data.lastName  || this.user.lastName;
+                        this.user.company     = r.data.company   || this.user.company;
+                        this.user.phone       = r.data.phone     || this.user.phone;
+                        this.user.birthDate   = r.data.birthDate || this.user.birthDate;
                     }
                 }});
         }
@@ -121,8 +122,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     getRoleClass(role: string): string {
         const r = (role ?? '').toLowerCase();
-        if (r === 'admin')    return 'role--admin';
-        if (r === 'employee') return 'role--employee';
+        if (r === 'admin') return 'role--admin';
         return 'role--customer';
     }
 

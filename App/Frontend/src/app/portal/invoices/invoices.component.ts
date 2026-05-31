@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CustomersService, Customer, CustomerDomain, CustomerLocation, SubscriptionFrequency } from '../../services/customers.service';
 import { InvoicesService } from '../../services/invoices.service';
+import { PricingPlansService } from '../../services/pricing-plans.service';
 import { Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 
@@ -72,7 +73,8 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
     constructor(
         private customersService: CustomersService,
         private invoicesService: InvoicesService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        readonly pricingPlansService: PricingPlansService
     ) {}
 
     ngOnInit(): void {
@@ -91,21 +93,113 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
             customers: this.customersService.getAllCustomers(),
             statuses:  this.invoicesService.getAllStatuses().pipe(
                 catchError(() => of({ success: true, data: [] as any[] }))
+            ),
+            plans: this.pricingPlansService.getAll().pipe(
+                catchError(() => of({ success: true, data: [] as any[] }))
             )
         })
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-            next: ({ customers, statuses }) => {
-                this.invoices = this.generateInvoices(customers.data ?? []);
-                const statusMap = new Map(
-                    (statuses.data ?? []).map((s: any) =>
-                        [`${s.customerId}_${s.subscriptionId}_${s.periodStart}_${s.invoiceType}`, s.paid]
-                    )
+            next: ({ customers, statuses, plans }) => {
+                this.pricingPlansService.setPlanColors(plans.data ?? []);
+                const allStatuses: any[] = statuses.data ?? [];
+                const statusMap = new Map<string, { paid: boolean; amount: number | null; frequency: string | null }>(
+                    allStatuses.map((s: any) => [
+                        `${s.customerId}_${s.subscriptionId}_${s.periodStart}_${s.invoiceType}`,
+                        { paid: s.paid, amount: s.amount ?? null, frequency: s.frequency ?? null }
+                    ])
                 );
+
+                // First day of current month — periods before this are frozen
+                const firstOfMonth = new Date();
+                firstOfMonth.setDate(1);
+                firstOfMonth.setHours(0, 0, 0, 0);
+
+                this.invoices = this.generateInvoices(customers.data ?? []);
+
+                // Apply statuses and override amounts for past periods
+                const generatedKeys = new Set<string>();
                 this.invoices.forEach(inv => {
                     const key = `${inv.customerId}_${inv.subscriptionId}_${inv.periodStart.toISOString()}_${inv.invoiceType}`;
-                    inv.paid = statusMap.get(key) ?? false;
+                    generatedKeys.add(key);
+                    const stored = statusMap.get(key);
+                    if (stored) {
+                        inv.paid = stored.paid;
+                        // Use stored amount for past periods (billing freeze)
+                        if (stored.amount !== null && inv.periodStart < firstOfMonth) {
+                            const storedTotal   = stored.amount;
+                            const storedVat     = parseFloat((storedTotal * 0.21 / 1.21).toFixed(2));
+                            const storedSubtotal = parseFloat((storedTotal - storedVat).toFixed(2));
+                            inv.total    = storedTotal;
+                            inv.vat      = storedVat;
+                            inv.subtotal = storedSubtotal;
+                            inv.payment  = storedSubtotal;
+                            inv.discount = 0;
+                        }
+                    }
                 });
+
+                // Add orphaned historical snapshots (old billing structure, e.g. after frequency change)
+                const customerMap = new Map((customers.data ?? []).map((c: Customer) => [c.id, c]));
+                for (const s of allStatuses) {
+                    const key = `${s.customerId}_${s.subscriptionId}_${s.periodStart}_${s.invoiceType}`;
+                    if (generatedKeys.has(key)) continue;           // already shown
+                    if (s.amount === null && !s.paid) continue;     // no useful data
+                    const periodStart = new Date(s.periodStart);
+                    if (isNaN(periodStart.getTime())) continue;
+                    if (periodStart >= firstOfMonth) continue;      // only show past periods
+
+                    const customer = customerMap.get(s.customerId);
+                    if (!customer) continue;
+                    const website = (customer.websites ?? []).find((w: any) => w.id === s.subscriptionId);
+
+                    const storedTotal    = s.amount ?? 0;
+                    const storedVat      = parseFloat((storedTotal * 0.21 / 1.21).toFixed(2));
+                    const storedSubtotal = parseFloat((storedTotal - storedVat).toFixed(2));
+                    const freq           = s.frequency ?? 'monthly';
+                    const periodEnd      = this.periodEndFromFreq(periodStart, freq);
+                    const due            = new Date(periodStart);
+                    due.setDate(due.getDate() + 30);
+
+                    this.invoices.push({
+                        id: '',
+                        number: 0,
+                        paid: s.paid,
+                        issueDate: new Date(periodStart),
+                        dueDate: due,
+                        periodStart,
+                        periodEnd,
+                        customerId:        customer.id,
+                        customerName:      customer.name,
+                        customerLogo:      customer.logo,
+                        customerVat:       customer.vat ?? '',
+                        customerAddress:   customer.address ?? '',
+                        customerLocations: customer.locations ?? [],
+                        subscriptionId:    s.subscriptionId,
+                        subscriptionName:  website?.name ?? s.subscriptionId,
+                        subscriptionType:  website?.subscriptionType ?? '',
+                        subscriptionUrl:   website?.url ?? '',
+                        frequency:         freq as any,
+                        payment:           storedSubtotal,
+                        discount:          0,
+                        subtotal:          storedSubtotal,
+                        vat:               storedVat,
+                        total:             storedTotal,
+                        invoiceType:       s.invoiceType
+                    });
+                }
+
+                // Re-sort and re-number after adding orphans
+                this.invoices.sort((a, b) => {
+                    const byDate = a.issueDate.getTime() - b.issueDate.getTime();
+                    if (byDate !== 0) return byDate;
+                    const byCustomer = a.customerId.localeCompare(b.customerId);
+                    if (byCustomer !== 0) return byCustomer;
+                    if (a.invoiceType !== b.invoiceType) return a.invoiceType === 'subscription' ? -1 : 1;
+                    return a.subscriptionId.localeCompare(b.subscriptionId);
+                });
+                this.invoices.forEach((inv, i) => { inv.id = String(i + 1).padStart(8, '0'); inv.number = i + 1; });
+
                 this.availableYears = [...new Set(this.invoices.map(i => i.issueDate.getFullYear()))].sort((a, b) => b - a);
                 this.loading = false;
             },
@@ -114,6 +208,12 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
                 this.loading = false;
             }
         });
+    }
+
+    private periodEndFromFreq(start: Date, freq: string): Date {
+        if (freq === 'yearly')    return new Date(start.getFullYear() + 1, start.getMonth(), 0);
+        if (freq === 'quarterly') return new Date(start.getFullYear(), start.getMonth() + 3, 0);
+        return new Date(start.getFullYear(), start.getMonth() + 1, 0);
     }
 
     private getMultiplier(freq: string): number {
@@ -384,16 +484,7 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         return name.split(/\s+/).map(w => w[0] ?? '').join('').toUpperCase().slice(0, 2);
     }
 
-    getSubscriptionClass(type: string): string {
-        const t = type.toLowerCase();
-        if (t === 'domain')           return 'invoices-badge--domain';
-        if (t.includes('enterprise')) return 'invoices-badge--enterprise';
-        if (t.includes('business'))   return 'invoices-badge--business';
-        if (t.includes('startup'))    return 'invoices-badge--startup';
-        if (t.includes('growth'))     return 'invoices-badge--growth';
-        if (t.includes('basic'))      return 'invoices-badge--basic';
-        return 'invoices-badge--custom';
-    }
+    getBadgeStyle(type: string) { return this.pricingPlansService.getBadgeStyle(type); }
 
     formatSubscriptionId(id: string): string {
         return id.startsWith('domain:') ? id.slice('domain:'.length) : id;
@@ -412,7 +503,8 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
             subscriptionId: inv.subscriptionId,
             periodStart:    inv.periodStart.toISOString(),
             invoiceType:    inv.invoiceType,
-            paid:           inv.paid
+            paid:           inv.paid,
+            amount:         inv.total
         }).pipe(takeUntil(this.destroy$)).subscribe();
     }
 

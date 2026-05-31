@@ -4,11 +4,12 @@
     * @since 29/05/2026
 **/
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CustomersService, Customer, SubscriptionFrequency } from '../../services/customers.service';
 import { InvoicesService, InvoiceStatus } from '../../services/invoices.service';
+import { PricingPlansService } from '../../services/pricing-plans.service';
 import { Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 
@@ -26,7 +27,7 @@ interface TypeStat {
     type: string;
     count: number;
     liveCount: number;
-    cssClass: string;
+    color: string;
 }
 
 const VAT_RATE = 0.21;
@@ -40,6 +41,8 @@ const MONTH_LABELS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct
     styleUrls: ['./overview.component.css']
 })
 export class PortalOverviewComponent implements OnInit, OnDestroy {
+    @Output() navigateTo = new EventEmitter<string>();
+
     loading = true;
 
     customerCount       = 0;
@@ -63,7 +66,8 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
 
     constructor(
         private customersService: CustomersService,
-        private invoicesService: InvoicesService
+        private invoicesService: InvoicesService,
+        readonly pricingPlansService: PricingPlansService
     ) {}
 
     ngOnInit(): void  { this.loadData(); }
@@ -78,11 +82,15 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
             customers: this.customersService.getAllCustomers(),
             statuses:  this.invoicesService.getAllStatuses().pipe(
                 catchError(() => of({ success: true, data: [] as InvoiceStatus[] }))
+            ),
+            plans: this.pricingPlansService.getAll().pipe(
+                catchError(() => of({ success: true, data: [] as any[] }))
             )
         })
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-            next: ({ customers, statuses }) => {
+            next: ({ customers, statuses, plans }) => {
+                this.pricingPlansService.setPlanColors(plans.data ?? []);
                 this.computeStats(customers.data ?? [], statuses.data ?? []);
                 this.loading = false;
             },
@@ -212,7 +220,7 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
                 type,
                 count,
                 liveCount: typeLiveMap.get(type) ?? 0,
-                cssClass: this.getTypeClass(type)
+                color: this.pricingPlansService.getPlanColor(type)
             }));
 
         const coveredKeywords = new Set<string>();
@@ -221,9 +229,9 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
                 if (s.type.toLowerCase().includes(kw)) coveredKeywords.add(kw);
             }
         }
-        for (const { label, cssClass } of this.STANDARD_TYPES) {
+        for (const { label } of this.STANDARD_TYPES) {
             if (!coveredKeywords.has(label.toLowerCase())) {
-                this.typeStats.push({ type: label, count: 0, liveCount: 0, cssClass });
+                this.typeStats.push({ type: label, count: 0, liveCount: 0, color: this.pricingPlansService.getPlanColor(label) });
             }
         }
         this.typeStats.sort((a, b) => this.getTypeOrder(a.type) - this.getTypeOrder(b.type));
@@ -274,13 +282,13 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         return periods;
     }
 
-    private readonly STANDARD_TYPES: { label: string; cssClass: string }[] = [
-        { label: 'Free',       cssClass: 'overview-badge--free'       },
-        { label: 'Basic',      cssClass: 'overview-badge--basic'      },
-        { label: 'Startup',    cssClass: 'overview-badge--startup'    },
-        { label: 'Growth',     cssClass: 'overview-badge--growth'     },
-        { label: 'Business',   cssClass: 'overview-badge--business'   },
-        { label: 'Enterprise', cssClass: 'overview-badge--enterprise' },
+    private readonly STANDARD_TYPES: { label: string }[] = [
+        { label: 'Free'       },
+        { label: 'Basic'      },
+        { label: 'Startup'    },
+        { label: 'Growth'     },
+        { label: 'Business'   },
+        { label: 'Enterprise' },
     ];
 
     private readonly TYPE_ORDER = ['free', 'basic', 'startup', 'growth', 'business', 'enterprise'];
@@ -291,18 +299,6 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
             if (t.includes(this.TYPE_ORDER[i])) return i;
         }
         return this.TYPE_ORDER.length;
-    }
-
-    private getTypeClass(type: string): string {
-        const t = type.toLowerCase();
-        if (t.includes('enterprise')) return 'overview-badge--enterprise';
-        if (t.includes('business'))   return 'overview-badge--business';
-        if (t.includes('startup'))    return 'overview-badge--startup';
-        if (t.includes('growth'))     return 'overview-badge--growth';
-        if (t.includes('basic'))      return 'overview-badge--basic';
-        if (t.includes('free'))       return 'overview-badge--free';
-        if (t.includes('todo'))       return 'overview-badge--todo';
-        return 'overview-badge--custom';
     }
 
     formatCurrency(amount: number): string {
