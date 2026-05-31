@@ -58,13 +58,24 @@ app.use('/api', routes);
 app.use(errorHandler);
 
 async function runSeed() {
-    logger.info('Running seed (idempotent)…');
-    await require('../database/seed').seedFn();
+    try {
+        const { seedFn } = require('../database/seed');
+        logger.info('Running seed (development only)…');
+        await seedFn();
+    } catch (err) {
+        if (err.code === 'MODULE_NOT_FOUND') {
+            logger.info('Seed file not present — skipping (production).');
+        } else {
+            throw err;
+        }
+    }
 }
 
 const startServer = async () => {
     await initSchema();
-    await runSeed();
+    if (process.env.NODE_ENV !== 'production') {
+        await runSeed();
+    }
 
     app.listen(config.port, () => {
         logger.info(`Server running on port ${config.port} (HTTP)`);

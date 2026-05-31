@@ -13,6 +13,7 @@ App/Backend/dist
 App/Backend/eliasdh.db
 App/Backend/eliasdh.db-shm
 App/Backend/eliasdh.db-wal
+App/Backend/src/database/seed.js
 
 App/Frontend/package-lock.json
 App/Frontend/node_modules

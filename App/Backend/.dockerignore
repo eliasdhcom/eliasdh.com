@@ -4,3 +4,12 @@
 # @since 01/01/2025        #
 ############################
 # Docker ignore file
+
+node_modules
+.env
+*.db
+*.db-shm
+*.db-wal
+
+# Seed data is development-only — never include in production image
+src/database/seed.js
