@@ -15,14 +15,8 @@ export class LanguageService {
     constructor(private translate: TranslateService) { }
 
     checkAndSetLanguage(): void {
-        const storedLang = localStorage.getItem('language');
-        const languageToUse = storedLang || 'nl';
-
-        this.translate.setDefaultLang(languageToUse);
-        this.translate.use(languageToUse);
-
-        this.translate.onLangChange.subscribe((event) => {
-            localStorage.setItem('language', event.lang);
-        });
+        const lang = localStorage.getItem('language') || 'nl';
+        this.translate.setDefaultLang(lang);
+        this.translate.use(lang);
     }
 }

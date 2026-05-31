@@ -9,6 +9,7 @@ import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { filter, map } from 'rxjs/operators';
 import { CommonModule, DOCUMENT } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-root',
@@ -22,10 +23,15 @@ export class AppComponent {
     private router = inject(Router);
     private titleService = inject(Title);
     private metaService = inject(Meta);
+    private translate = inject(TranslateService);
 
     private defaultDescription = 'Welcome to EliasDH, a company that offers hosting services, web development, and tailored IT solutions for businesses and individuals.';
 
     constructor(@Inject(DOCUMENT) private document: Document) {
+        const lang = localStorage.getItem('language') || 'nl';
+        this.translate.setDefaultLang(lang);
+        this.translate.use(lang);
+        this.translate.onLangChange.subscribe(e => localStorage.setItem('language', e.lang));
         this.router.events.pipe(
             filter(event => event instanceof NavigationEnd),
             map(() => {

@@ -55,9 +55,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.currentLanguage = this.translate.currentLang || localStorage.getItem('language') || 'nl';
+        this.currentLanguage = this.translate.currentLang ?? localStorage.getItem('language') ?? 'nl';
         this.user = this.authService.getUser() ?? { firstName: 'Unknown', lastName: '', email: '', role: '', company: '', phone: '', birthDate: '' };
-        if (this.user.id) {
+        if (this.user.id && Number.isInteger(this.user.id) && this.user.id > 0) {
             this.usersService.getUserById(this.user.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({ next: r => {

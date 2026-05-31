@@ -22,20 +22,19 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.get('/:id',
-    param('id').isInt({ min: 1 }),
-    async (req, res, next) => {
-        try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
-            const user = await usersService.getUserById(Number(req.params.id));
-            if (!user) return res.status(404).json({ success: false, error: 'Gebruiker niet gevonden.' });
-            res.json({ success: true, data: user });
-        } catch (err) {
-            next(err);
+router.get('/:id', async (req, res, next) => {
+    try {
+        const id = Number(req.params.id);
+        if (!Number.isInteger(id) || id < 1) {
+            return res.status(400).json({ success: false, error: 'Ongeldig gebruikers-ID.' });
         }
+        const user = await usersService.getUserById(id);
+        if (!user) return res.status(404).json({ success: false, error: 'Gebruiker niet gevonden.' });
+        res.json({ success: true, data: user });
+    } catch (err) {
+        next(err);
     }
-);
+});
 
 router.post('/',
     body('email').isEmail().trim(),
