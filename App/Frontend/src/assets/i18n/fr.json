@@ -391,7 +391,8 @@
         "TITLE_EDIT": "Modifier le plan tarifaire",
         "NAME": "Nom",
         "NAME_PLACEHOLDER": "ex. Basic",
-        "PRICE": "Prix mensuel (HT)"
+        "PRICE": "Prix mensuel (HT)",
+        "COLOR": "Couleur"
       },
       "DELETE": {
         "TITLE": "Supprimer le plan tarifaire",

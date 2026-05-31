@@ -390,7 +390,8 @@
         "TITLE_EDIT": "Tariefplan bewerken",
         "NAME": "Naam",
         "NAME_PLACEHOLDER": "bv. Basic",
-        "PRICE": "Maandprijs (excl. BTW)"
+        "PRICE": "Maandprijs (excl. BTW)",
+        "COLOR": "Kleur"
       },
       "DELETE": {
         "TITLE": "Tariefplan verwijderen",

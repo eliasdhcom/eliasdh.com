@@ -390,7 +390,8 @@
         "TITLE_EDIT": "Preisplan bearbeiten",
         "NAME": "Name",
         "NAME_PLACEHOLDER": "z.B. Basic",
-        "PRICE": "Monatspreis (ohne MwSt.)"
+        "PRICE": "Monatspreis (ohne MwSt.)",
+        "COLOR": "Farbe"
       },
       "DELETE": {
         "TITLE": "Preisplan löschen",

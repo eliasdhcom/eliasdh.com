@@ -391,7 +391,8 @@
         "TITLE_EDIT": "Edit pricing plan",
         "NAME": "Name",
         "NAME_PLACEHOLDER": "e.g. Basic",
-        "PRICE": "Monthly price (excl. VAT)"
+        "PRICE": "Monthly price (excl. VAT)",
+        "COLOR": "Color"
       },
       "DELETE": {
         "TITLE": "Delete pricing plan",

@@ -391,7 +391,8 @@
         "TITLE_EDIT": "Editar plan de precios",
         "NAME": "Nombre",
         "NAME_PLACEHOLDER": "ej. Basic",
-        "PRICE": "Precio mensual (sin IVA)"
+        "PRICE": "Precio mensual (sin IVA)",
+        "COLOR": "Color"
       },
       "DELETE": {
         "TITLE": "Eliminar plan de precios",
