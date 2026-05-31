@@ -9,7 +9,9 @@ const path = require('path');
 const fs   = require('fs');
 const logger = require('../utils/logger');
 
-const DB_PATH = path.join(__dirname, '../../eliasdh.db');
+const DB_PATH = process.env.NODE_ENV === 'production'
+    ? '/app/data/eliasdh.db'
+    : path.join(__dirname, '../../eliasdh.db');
 
 let _client = null;
 
