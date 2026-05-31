@@ -235,7 +235,7 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
             company:   this.editedUser.company,
             phone:     this.editedUser.phone,
             birthDate: this.editedUser.birthDate,
-            avatar:    this.editedUser.avatar
+            ...(this.editedUser.avatar !== null ? { avatar: this.editedUser.avatar } : {})
         })
         .pipe(takeUntil(this.destroy$))
         .subscribe({

@@ -85,7 +85,7 @@ router.patch('/:id',
     body('company').optional().isString().trim(),
     body('phone').optional().isString().trim(),
     body('birthDate').optional().isString().trim(),
-    body('avatar').optional().isString(),
+    body('avatar').optional({ nullable: true }).isString(),
     async (req, res, next) => {
         try {
             const errors = validationResult(req);
