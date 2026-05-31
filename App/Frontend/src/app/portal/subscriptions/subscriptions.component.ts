@@ -6,6 +6,7 @@
 
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 import { CustomersService, Customer, CustomerWebsite } from '../../services/customers.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -28,7 +29,7 @@ const VAT_RATE = 0.21;
 @Component({
     selector: 'app-portal-subscriptions',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, TranslatePipe],
     templateUrl: './subscriptions.component.html',
     styleUrls: ['./subscriptions.component.css']
 })

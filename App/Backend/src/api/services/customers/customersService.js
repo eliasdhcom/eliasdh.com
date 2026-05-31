@@ -66,7 +66,20 @@ async function fetchWebsitesForCustomer(db, customerId) {
     return rows;
 }
 
-function buildCustomer(row, locations, websiteRows) {
+async function fetchDomainsForCustomer(db, customerId) {
+    const { rows } = await db.execute({
+        sql:  'SELECT * FROM domain_names WHERE customer_id = ? ORDER BY id',
+        args: [customerId]
+    });
+    return rows.map(d => ({
+        id:          Number(d.id),
+        name:        d.name,
+        renewalDate: d.renewal_date,
+        annualPrice: Number(d.annual_price)
+    }));
+}
+
+function buildCustomer(row, locations, websiteRows, domains) {
     const primaryLoc = locations[0] ?? null;
     const allSocialLinks = locations.flatMap(l => l.socialLinks ?? []);
     const uniqueSocialLinks = allSocialLinks.filter(
@@ -106,7 +119,8 @@ function buildCustomer(row, locations, websiteRows) {
         longitude:   primaryLoc?.longitude ?? null,
         socialLinks: uniqueSocialLinks,
         locations,
-        websites
+        websites,
+        domains: domains ?? []
     };
 }
 
@@ -136,6 +150,15 @@ async function insertLocations(db, customerId, locations) {
                 args: [locId, sl.type, sl.url]
             });
         }
+    }
+}
+
+async function insertDomains(db, customerId, domains) {
+    for (const d of (domains ?? [])) {
+        await db.execute({
+            sql:  `INSERT INTO domain_names (customer_id, name, renewal_date, annual_price) VALUES (?, ?, ?, ?)`,
+            args: [customerId, d.name ?? '', d.renewalDate ?? '', Number(d.annualPrice ?? 0)]
+        });
     }
 }
 
@@ -169,7 +192,8 @@ class CustomersService {
         for (const row of rows) {
             const locations = await fetchLocationsForCustomer(db, row.id);
             const websites  = await fetchWebsitesForCustomer(db, row.id);
-            customers.push(buildCustomer(row, locations, websites));
+            const domains   = await fetchDomainsForCustomer(db, row.id);
+            customers.push(buildCustomer(row, locations, websites, domains));
         }
         return customers;
     }
@@ -180,7 +204,8 @@ class CustomersService {
         if (!rows.length) throw new Error(`Customer with ID ${id} not found`);
         const locations = await fetchLocationsForCustomer(db, id);
         const websites  = await fetchWebsitesForCustomer(db, id);
-        return buildCustomer(rows[0], locations, websites);
+        const domains   = await fetchDomainsForCustomer(db, id);
+        return buildCustomer(rows[0], locations, websites, domains);
     }
 
     async createCustomer(data) {
@@ -194,6 +219,7 @@ class CustomersService {
         });
         await insertLocations(db, id, data.locations);
         await insertWebsites(db, id, data.websites);
+        await insertDomains(db, id, data.domains);
         logger.info(`Customer created: ${id}`);
         return this.getCustomerById(id);
     }
@@ -219,6 +245,10 @@ class CustomersService {
         if (data.websites !== undefined) {
             await db.execute({ sql: 'DELETE FROM websites WHERE customer_id = ?', args: [id] });
             await insertWebsites(db, id, data.websites);
+        }
+        if (data.domains !== undefined) {
+            await db.execute({ sql: 'DELETE FROM domain_names WHERE customer_id = ?', args: [id] });
+            await insertDomains(db, id, data.domains);
         }
         logger.info(`Customer updated: ${id}`);
         return this.getCustomerById(id);

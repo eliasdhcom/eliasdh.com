@@ -524,6 +524,40 @@
     color: white;
     text-decoration: underline;
 }
+
+.login-input-code {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 10px;
+    text-align: center;
+}
+
+.login-reset-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 32px 0;
+    color: #fff;
+    text-align: center;
+}
+
+.login-reset-success svg {
+    width: 52px;
+    height: 52px;
+    stroke: #4ade80;
+    stroke-width: 2.5;
+    background: rgba(74, 222, 128, 0.12);
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.login-reset-success p {
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+}
 /* Login */
 
 /* Media Queries */

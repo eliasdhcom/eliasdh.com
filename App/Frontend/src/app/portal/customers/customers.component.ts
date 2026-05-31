@@ -7,7 +7,9 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CustomersService, Customer, CustomerLocation, CustomerWebsite, SocialLink } from '../../services/customers.service';
+import { Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { CustomersService, Customer, CustomerLocation, CustomerWebsite, CustomerDomain, SocialLink } from '../../services/customers.service';
 import { AuthService } from '../../services/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -40,6 +42,12 @@ interface WebsiteForm {
     discount:         string;
 }
 
+interface DomainForm {
+    name:        string;
+    renewalDate: string;
+    annualPrice: string;
+}
+
 interface CustomerForm {
     name:      string;
     firstName: string;
@@ -50,12 +58,13 @@ interface CustomerForm {
     logo:      string;
     locations: LocationForm[];
     websites:  WebsiteForm[];
+    domains:   DomainForm[];
 }
 
 @Component({
     selector: 'app-portal-customers',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, TranslatePipe],
     templateUrl: './customers.component.html',
     styleUrls: ['./customers.component.css']
 })
@@ -69,7 +78,6 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     encodeURIComponent = encodeURIComponent;
     private destroy$ = new Subject<void>();
 
-    // Form state
     showForm    = false;
     isEditing   = false;
     editingId   = '';
@@ -78,15 +86,22 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     deleteConfirmId: string | null = null;
     form: CustomerForm = this.emptyForm();
 
-    readonly subscriptionTypes = ['Free', 'Basic', 'Growth', 'Startup', 'Business', 'Enterprise', 'ToDo'];
-    readonly frequencies       = ['monthly', 'quarterly', 'yearly', 'one-time'];
-    readonly socialTypes       = ['facebook', 'instagram', 'linkedin', 'twitter', 'tiktok', 'youtube', 'github'];
+    readonly subscriptionTypes  = ['Free', 'Basic', 'Growth', 'Startup', 'Business', 'Enterprise', 'Custom'];
+    readonly frequencies        = ['monthly', 'quarterly', 'yearly', 'one-time'];
+    readonly socialTypes        = ['facebook', 'instagram', 'linkedin', 'twitter', 'tiktok', 'youtube', 'github'];
+    readonly subscriptionPrices: Record<string, number> = {
+        Free: 0, Basic: 20, Growth: 40, Startup: 80, Business: 160, Enterprise: 320, Custom: 0
+    };
+
+    geocodingLoading: boolean[] = [];
 
     @Output() navigateToSubscription = new EventEmitter<string>();
 
     constructor(
         private customersService: CustomersService,
-        private authService: AuthService
+        private authService: AuthService,
+        private translate: TranslateService,
+        private router: Router
     ) {}
 
     ngOnInit(): void { this.loadCustomers(); }
@@ -137,6 +152,13 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     getInitials(name: string): string { return name.split(/\s+/).map(w => w[0] ?? '').join('').toUpperCase().slice(0, 2); }
     formatAddress(loc: Customer['locations'][0]): string { return `${loc.street} ${loc.number}, ${loc.postalCode} ${loc.city}`; }
 
+    openInMap(loc: Customer['locations'][0], event: Event): void {
+        event.stopPropagation();
+        if (loc.latitude && loc.longitude) {
+            this.router.navigate(['/map'], { queryParams: { lat: loc.latitude, lng: loc.longitude } });
+        }
+    }
+
     getSubscriptionClass(type: string): string {
         const t = type.toLowerCase();
         if (t.includes('enterprise')) return 'customers-badge--enterprise';
@@ -155,10 +177,12 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         return !!(customer.firstName || customer.lastName || customer.email || customer.phone || customer.mobile);
     }
 
-    // ── Form helpers ──────────────────────────────────────────────────────────
-
     private emptyForm(): CustomerForm {
-        return { name: '', firstName: '', lastName: '', email: '', phone: '', mobile: '', logo: '', locations: [], websites: [] };
+        return { name: '', firstName: '', lastName: '', email: '', phone: '', mobile: '', logo: '', locations: [], websites: [], domains: [] };
+    }
+
+    private emptyDomain(): DomainForm {
+        return { name: '', renewalDate: '', annualPrice: '0' };
     }
 
     private emptyLocation(): LocationForm {
@@ -166,7 +190,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     }
 
     private emptyWebsite(): WebsiteForm {
-        return { name: '', url: '', subscriptionType: 'Free', isLive: false, startDate: '', frequency: 'monthly', payment: '0', discount: '0' };
+        return { name: '', url: '', subscriptionType: 'Free', isLive: false, startDate: '', frequency: 'monthly', payment: String(this.subscriptionPrices['Free']), discount: '0' };
     }
 
     openCreateForm(): void {
@@ -206,10 +230,17 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
                 url:              w.url,
                 subscriptionType: w.subscriptionType,
                 isLive:           w.isLive,
-                startDate:        w.startDate ?? '',
                 frequency:        w.frequency,
-                payment:          String(w.payment),
-                discount:         String(w.discount)
+                payment:          w.subscriptionType !== 'Custom' && w.subscriptionType in this.subscriptionPrices
+                                    ? String(this.subscriptionPrices[w.subscriptionType])
+                                    : String(w.payment),
+                discount:         String(w.discount),
+                startDate:        w.startDate ? w.startDate.slice(0, 7) : ''
+            })),
+            domains: (customer.domains ?? []).map(d => ({
+                name:        d.name,
+                renewalDate: d.renewalDate ? d.renewalDate.slice(0, 7) : '',
+                annualPrice: String(d.annualPrice)
             }))
         };
         this.showForm = true;
@@ -221,24 +252,57 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     }
 
     submitForm(): void {
-        if (!this.form.name.trim()) { this.formError = 'Bedrijfsnaam is verplicht.'; return; }
+        if (!this.form.name.trim())      { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_NAME');      return; }
+        if (!this.form.logo)             { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_LOGO');      return; }
+        if (!this.form.firstName.trim()) { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_FIRSTNAME'); return; }
+        if (!this.form.lastName.trim())  { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_LASTNAME');  return; }
+        if (!this.form.email.trim())     { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_EMAIL');     return; }
+        if (!this.form.phone.trim())     { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_PHONE');     return; }
+        if (!this.form.mobile.trim())    { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_MOBILE');    return; }
+        if (!this.form.locations.length) { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_LOCATIONS'); return; }
+
+        for (let i = 0; i < this.form.locations.length; i++) {
+            const loc = this.form.locations[i];
+            const n   = i + 1;
+            if (!loc.street.trim())     { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_LOC_STREET',     { n }); return; }
+            if (!loc.number.trim())     { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_LOC_NUMBER',     { n }); return; }
+            if (!loc.postalCode.trim()) { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_LOC_POSTAL',     { n }); return; }
+            if (!loc.city.trim())       { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_LOC_CITY',       { n }); return; }
+            if (!loc.country.trim())    { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_LOC_COUNTRY',    { n }); return; }
+        }
+
+        for (let i = 0; i < this.form.websites.length; i++) {
+            const w = this.form.websites[i];
+            const n = i + 1;
+            if (!w.name.trim())  { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_SUB_NAME',  { n }); return; }
+            if (!w.url.trim())   { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_SUB_URL',   { n }); return; }
+            if (!w.startDate)    { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_SUB_START', { n }); return; }
+        }
+
+        for (let i = 0; i < this.form.domains.length; i++) {
+            const d = this.form.domains[i];
+            const n = i + 1;
+            if (!d.name.trim())    { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_DOM_NAME',    { n }); return; }
+            if (!d.renewalDate)    { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_DOM_RENEWAL', { n }); return; }
+        }
+
         this.formSaving = true;
         this.formError  = '';
 
         const payload: Partial<Customer> = {
             name:      this.form.name.trim(),
-            firstName: this.form.firstName.trim() || undefined,
-            lastName:  this.form.lastName.trim()  || undefined,
-            email:     this.form.email.trim()     || undefined,
-            phone:     this.form.phone.trim()     || undefined,
-            mobile:    this.form.mobile.trim()    || undefined,
-            logo:      this.form.logo.trim()      || undefined,
+            firstName: this.form.firstName.trim(),
+            lastName:  this.form.lastName.trim(),
+            email:     this.form.email.trim(),
+            phone:     this.form.phone.trim(),
+            mobile:    this.form.mobile.trim(),
+            logo:      this.form.logo,
             locations: this.form.locations.map(l => ({
                 street:     l.street.trim(),
                 number:     l.number.trim(),
                 postalCode: l.postalCode.trim(),
                 city:       l.city.trim(),
-                country:    l.country.trim() || 'Belgium',
+                country:    l.country.trim(),
                 vat:        l.vat.trim() || undefined,
                 latitude:   l.latitude  ? Number(l.latitude)  : 0,
                 longitude:  l.longitude ? Number(l.longitude) : 0,
@@ -249,12 +313,19 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
                 url:              w.url.trim(),
                 subscriptionType: w.subscriptionType,
                 isLive:           w.isLive,
-                startDate:        w.startDate || undefined,
+                startDate:        w.startDate ? `${w.startDate}-01` : undefined,
                 frequency:        w.frequency as any,
                 payment:          Number(w.payment) || 0,
                 discount:         Number(w.discount) || 0,
                 subtotal: 0, vat: 0, total: 0, id: ''
-            }) as CustomerWebsite)
+            }) as CustomerWebsite),
+            domains: this.form.domains.map(d => ({
+                name:        d.name.trim(),
+                renewalDate: d.renewalDate ? `${d.renewalDate}-01` : '',
+                annualPrice: Number(d.annualPrice) || 0,
+                discount:    0,
+                autoRenew:   true
+            }) as CustomerDomain)
         };
 
         const req = this.isEditing
@@ -273,8 +344,6 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
             }
         });
     }
-
-    // ── Delete ────────────────────────────────────────────────────────────────
 
     confirmDelete(id: string, event: Event): void {
         event.stopPropagation();
@@ -298,19 +367,26 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
             });
     }
 
-    // ── Location helpers ──────────────────────────────────────────────────────
-
     addLocation(): void    { this.form.locations.push(this.emptyLocation()); }
     removeLocation(i: number): void { this.form.locations.splice(i, 1); }
     addSocialLink(loc: LocationForm): void    { loc.socialLinks.push({ type: 'facebook', url: '' }); }
     removeSocialLink(loc: LocationForm, i: number): void { loc.socialLinks.splice(i, 1); }
 
-    // ── Website helpers ───────────────────────────────────────────────────────
-
     addWebsite(): void    { this.form.websites.push(this.emptyWebsite()); }
     removeWebsite(i: number): void { this.form.websites.splice(i, 1); }
 
-    // ── Misc ──────────────────────────────────────────────────────────────────
+    addDomain(): void    { this.form.domains.push(this.emptyDomain()); }
+    removeDomain(i: number): void { this.form.domains.splice(i, 1); }
+
+    getNextDomainRenewal(startDateStr: string): string {
+        if (!startDateStr) return '—';
+        const start = new Date(startDateStr);
+        if (isNaN(start.getTime())) return '—';
+        const now = new Date();
+        let next = new Date(start.getFullYear(), start.getMonth(), 1);
+        while (next <= now) next = new Date(next.getFullYear() + 1, next.getMonth(), 1);
+        return next.toLocaleDateString('nl-BE', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
 
     onOverlayClick(event: MouseEvent): void {
         if ((event.target as HTMLElement).classList.contains('customers-modal-overlay')) this.closeForm();
@@ -318,5 +394,46 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
 
     onDeleteOverlayClick(event: MouseEvent): void {
         if ((event.target as HTMLElement).classList.contains('customers-modal-overlay')) this.cancelDelete();
+    }
+
+    onLogoFileChange(event: Event): void {
+        const file = (event.target as HTMLInputElement).files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => { this.form.logo = reader.result as string; };
+        reader.readAsDataURL(file);
+    }
+
+    onSubscriptionTypeChange(w: WebsiteForm): void {
+        if (w.subscriptionType !== 'Custom') {
+            w.payment = String(this.subscriptionPrices[w.subscriptionType] ?? 0);
+            const price = Number(w.payment);
+            if (Number(w.discount) > price) w.discount = String(price);
+        }
+    }
+
+    onDiscountChange(w: WebsiteForm): void {
+        const price    = Number(w.payment)   || 0;
+        const discount = Number(w.discount)  || 0;
+        if (discount > price) w.discount = String(price);
+        if (discount < 0)     w.discount = '0';
+    }
+
+    onAddressBlur(loc: LocationForm, index: number): void {
+        if (!loc.street.trim() || !loc.city.trim()) return;
+        if (this.geocodingLoading[index]) return;
+        this.geocodingLoading[index] = true;
+        const parts = [loc.street, loc.number, loc.postalCode, loc.city, loc.country].filter(s => s.trim());
+        const query = parts.join(' ');
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`)
+            .then(r => r.json())
+            .then((data: any[]) => {
+                if (data?.length) {
+                    loc.latitude  = data[0].lat;
+                    loc.longitude = data[0].lon;
+                }
+            })
+            .catch(() => {})
+            .finally(() => { this.geocodingLoading[index] = false; });
     }
 }

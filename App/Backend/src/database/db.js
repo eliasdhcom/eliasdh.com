@@ -95,6 +95,25 @@ async function initSchema() {
             active        INTEGER NOT NULL DEFAULT 1,
             created_at    TEXT DEFAULT (datetime('now'))
         )`,
+        `CREATE TABLE IF NOT EXISTS domain_names (
+            id           INTEGER PRIMARY KEY AUTOINCREMENT,
+            customer_id  TEXT NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
+            name         TEXT NOT NULL,
+            registrar    TEXT,
+            renewal_date TEXT NOT NULL,
+            annual_price REAL NOT NULL DEFAULT 0,
+            discount     REAL NOT NULL DEFAULT 0,
+            auto_renew   INTEGER NOT NULL DEFAULT 1
+        )`,
+        `CREATE TABLE IF NOT EXISTS password_reset_tokens (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            email      TEXT NOT NULL,
+            code       TEXT NOT NULL,
+            expires_at TEXT NOT NULL,
+            used       INTEGER NOT NULL DEFAULT 0,
+            created_at TEXT DEFAULT (datetime('now'))
+        )`,
         `CREATE TABLE IF NOT EXISTS invoice_status (
             id              INTEGER PRIMARY KEY AUTOINCREMENT,
             customer_id     TEXT NOT NULL,
@@ -110,6 +129,9 @@ async function initSchema() {
     for (const sql of stmts) {
         await db.execute(sql);
     }
+
+    await db.execute(`UPDATE websites      SET subscription_type = 'Free' WHERE subscription_type = 'ToDo'`);
+    await db.execute(`DELETE FROM pricing_plans WHERE name = 'ToDo'`);
 }
 
 module.exports = { getDb, initSchema };

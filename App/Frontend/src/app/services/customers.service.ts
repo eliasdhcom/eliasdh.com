@@ -46,6 +46,13 @@ export interface SocialLink {
     url:  string;
 }
 
+export interface CustomerDomain {
+    id?:         number;
+    name:        string;
+    renewalDate: string;
+    annualPrice: number;
+}
+
 export interface Customer {
     id:           string;
     name:         string;
@@ -60,6 +67,7 @@ export interface Customer {
     socialLinks?: SocialLink[];
     websites:     CustomerWebsite[];
     locations:    CustomerLocation[];
+    domains?:     CustomerDomain[];
     address:      string;
     latitude:     number;
     longitude:    number;

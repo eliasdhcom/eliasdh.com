@@ -4,7 +4,7 @@
         <div class="invoices-filter-rows">
             <div class="invoices-filters">
                 <button class="invoices-filter-btn cursor-pointer" [class.invoices-filter-btn--active]="filterYear === 'all'" (click)="setYearFilter('all')">
-                    Alle <span class="invoices-filter-count cursor-pointer" [class.invoices-filter-count--paid]="allAllPaid" [class.invoices-filter-count--unpaid]="!allAllPaid && invoices.length > 0">{{allAllPaid ? invoices.length : allUnpaidCount}}</span>
+                    {{'PORTAL.INVOICES.ALL'|translate}} <span class="invoices-filter-count cursor-pointer" [class.invoices-filter-count--paid]="allAllPaid" [class.invoices-filter-count--unpaid]="!allAllPaid && invoices.length > 0">{{allAllPaid ? invoices.length : allUnpaidCount}}</span>
                 </button>
                 <button class="invoices-filter-btn cursor-pointer" *ngFor="let year of availableYears" [class.invoices-filter-btn--active]="filterYear === year" (click)="setYearFilter(year)">
                     {{year}} <span class="invoices-filter-count cursor-pointer" [class.invoices-filter-count--paid]="isYearAllPaid(year)" [class.invoices-filter-count--unpaid]="!isYearAllPaid(year)">{{isYearAllPaid(year) ? getYearCount(year) : getYearUnpaidCount(year)}}</span>
@@ -12,7 +12,7 @@
             </div>
             <div class="invoices-filters invoices-filters--months" *ngIf="filterYear !== 'all' && availableMonths.length > 1">
                 <button class="invoices-filter-btn cursor-pointer" [class.invoices-filter-btn--active]="filterMonth === 'all'" (click)="setMonthFilter('all')">
-                    Alle maanden
+                    {{'PORTAL.INVOICES.ALL_MONTHS'|translate}}
                 </button>
                 <button class="invoices-filter-btn cursor-pointer" *ngFor="let m of availableMonths" [class.invoices-filter-btn--active]="filterMonth === m" (click)="setMonthFilter(m)">
                     {{getMonthName(m)}} <span class="invoices-filter-count cursor-pointer" [class.invoices-filter-count--paid]="isMonthAllPaid(m)" [class.invoices-filter-count--unpaid]="!isMonthAllPaid(m)">{{isMonthAllPaid(m) ? getMonthCount(m) : getMonthUnpaidCount(m)}}</span>
@@ -27,7 +27,7 @@
                 <svg class="invoices-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                 </svg>
-                <input class="invoices-search cursor-text" type="text" placeholder="Zoek op factuurnr, klant, subscriptie of ID..." [value]="searchQuery" (input)="onSearch($event)"/>
+                <input class="invoices-search cursor-text" type="text" [placeholder]="'PORTAL.INVOICES.SEARCH'|translate" [value]="searchQuery" (input)="onSearch($event)"/>
             </div>
         </div>
     </div>
@@ -39,13 +39,13 @@
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
         </svg>
         <p>{{error}}</p>
-        <button class="invoices-retry-btn cursor-pointer" (click)="loadInvoices()">Opnieuw proberen</button>
+        <button class="invoices-retry-btn cursor-pointer" (click)="loadInvoices()">{{'PORTAL.COMMON.RETRY'|translate}}</button>
     </div>
     <div class="invoices-empty-state" *ngIf="!loading && !error && filteredInvoices.length === 0">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
         </svg>
-        <p>Geen facturen gevonden.</p>
+        <p>{{'PORTAL.INVOICES.EMPTY'|translate}}</p>
     </div>
     <div class="invoices-list" *ngIf="!loading && !error && filteredInvoices.length > 0">
         <div class="invoices-group" *ngFor="let group of groupedInvoices">
@@ -56,7 +56,7 @@
                 </div>
                 <span class="invoices-group-name">{{group.customerName}}</span>
                 <span class="invoices-group-id">#{{group.customerId}}</span>
-                <span class="invoices-group-count">{{group.items.length}} factuur{{group.items.length !== 1 ? 'en' : ''}}</span>
+                <span class="invoices-group-count">{{group.items.length}} {{group.items.length !== 1 ? ('PORTAL.INVOICES.INVOICES'|translate) : ('PORTAL.INVOICES.INVOICE'|translate)}}</span>
             </div>
             <div class="invoices-card" *ngFor="let inv of group.items">
                 <div class="invoices-card-header">
@@ -71,7 +71,7 @@
                             </span>
                         </div>
                         <div class="invoices-card-row-meta">
-                            <span class="invoices-meta-item invoices-meta-sub-id">#{{inv.subscriptionId}}</span>
+                            <span class="invoices-meta-item invoices-meta-sub-id">#{{formatSubscriptionId(inv.subscriptionId)}}</span>
                             <span class="invoices-meta-sep">·</span>
                             <span class="invoices-meta-item">{{inv.subscriptionName}}</span>
                         </div>
@@ -83,35 +83,35 @@
                                 {{formatPeriod(inv.periodStart, inv.periodEnd, inv.frequency)}}
                             </span>
                             <span class="invoices-meta-sep">·</span>
-                            <span class="invoices-meta-item invoices-meta-due">Vervalt: {{formatDate(inv.dueDate)}}</span>
+                            <span class="invoices-meta-item invoices-meta-due">{{'PORTAL.INVOICES.DUE'|translate}} {{formatDate(inv.dueDate)}}</span>
                         </div>
                     </div>
                     <div class="invoices-price-block">
                         <div class="invoices-price-row">
-                            <span class="invoices-price-label">Basisprijs</span>
+                            <span class="invoices-price-label">{{'PORTAL.INVOICES.BASE_PRICE'|translate}}</span>
                             <span class="invoices-price-value">{{formatCurrency(inv.payment)}}</span>
                         </div>
                         <div class="invoices-price-row invoices-price-row--discount">
-                            <span class="invoices-price-label">Korting</span>
+                            <span class="invoices-price-label">{{'PORTAL.INVOICES.DISCOUNT'|translate}}</span>
                             <span class="invoices-price-value">−{{formatCurrency(inv.discount)}}</span>
                         </div>
                         <div class="invoices-price-row">
-                            <span class="invoices-price-label">Subtotaal</span>
+                            <span class="invoices-price-label">{{'PORTAL.INVOICES.SUBTOTAL'|translate}}</span>
                             <span class="invoices-price-value">{{formatCurrency(inv.subtotal)}}</span>
                         </div>
                         <div class="invoices-price-divider"></div>
                         <div class="invoices-price-row invoices-price-row--vat">
-                            <span class="invoices-price-label">BTW (21%)</span>
+                            <span class="invoices-price-label">{{'PORTAL.INVOICES.VAT'|translate}}</span>
                             <span class="invoices-price-value">{{formatCurrency(inv.vat)}}</span>
                         </div>
                         <div class="invoices-price-divider"></div>
                         <div class="invoices-price-row invoices-price-row--total">
-                            <span class="invoices-price-label">Totaal</span>
+                            <span class="invoices-price-label">{{'PORTAL.INVOICES.TOTAL'|translate}}</span>
                             <span class="invoices-price-value">{{formatCurrency(inv.total)}}</span>
                         </div>
                     </div>
                     <div class="invoices-btn-col">
-                        <button class="invoices-paid-btn cursor-pointer" [class.invoices-paid-btn--paid]="inv.paid" (click)="togglePaid(inv.id)" [title]="inv.paid ? 'Markeer als openstaand' : 'Markeer als betaald'">
+                        <button class="invoices-paid-btn cursor-pointer" [class.invoices-paid-btn--paid]="inv.paid" (click)="togglePaid(inv.id)" [title]="inv.paid ? ('PORTAL.INVOICES.MARK_UNPAID'|translate) : ('PORTAL.INVOICES.MARK_PAID'|translate)">
                             <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <polyline class="cursor-pointer" *ngIf="inv.paid" points="20 6 9 17 4 12"/>
                                 <circle class="cursor-pointer" *ngIf="!inv.paid" cx="12" cy="12" r="10"/>
@@ -119,7 +119,7 @@
                                 <line class="cursor-pointer" *ngIf="!inv.paid" x1="12" y1="16" x2="12.01" y2="16"/>
                             </svg>
                         </button>
-                        <button class="invoices-pdf-btn cursor-pointer" (click)="downloadPdf(inv)" [disabled]="generatingPdfId === inv.id" title="Download PDF">
+                        <button class="invoices-pdf-btn cursor-pointer" (click)="downloadPdf(inv)" [disabled]="generatingPdfId === inv.id" [title]="'PORTAL.INVOICES.DOWNLOAD_PDF'|translate">
                             <svg class="cursor-pointer" *ngIf="generatingPdfId !== inv.id" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path class="cursor-pointer" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                                 <polyline class="cursor-pointer" points="14 2 14 8 20 8"/>

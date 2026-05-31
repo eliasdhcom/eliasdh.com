@@ -21,7 +21,7 @@ app.set('trust proxy', 1);
 
 const corsOptions = {
     origin: ['http://localhost:4200', 'https://eliasdh.com', 'https://www.eliasdh.com'],
-    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['X-API-Key', 'Content-Type', 'Authorization'],
     credentials: true,
     optionsSuccessStatus: 204,

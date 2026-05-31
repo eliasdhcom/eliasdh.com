@@ -35,4 +35,45 @@ router.post('/login',
     }
 );
 
+router.post('/forgot-password',
+    body('email').isEmail().trim(),
+    async (req, res, next) => {
+        try {
+            if (!validationResult(req).isEmpty())
+                return res.status(400).json({ success: false, error: 'Ongeldig e-mailadres.' });
+            await authService.forgotPassword(req.body.email);
+            res.json({ success: true });
+        } catch (err) { next(err); }
+    }
+);
+
+router.post('/verify-reset-code',
+    body('email').isEmail().trim(),
+    body('code').isLength({ min: 6, max: 6 }).isNumeric(),
+    async (req, res, next) => {
+        try {
+            if (!validationResult(req).isEmpty())
+                return res.status(400).json({ success: false, error: 'Ongeldige invoer.' });
+            const valid = await authService.verifyResetCode(req.body.email, req.body.code);
+            if (!valid) return res.status(400).json({ success: false, error: 'Ongeldige of verlopen code.' });
+            res.json({ success: true });
+        } catch (err) { next(err); }
+    }
+);
+
+router.post('/reset-password',
+    body('email').isEmail().trim(),
+    body('code').isLength({ min: 6, max: 6 }).isNumeric(),
+    body('password').isLength({ min: 8 }),
+    async (req, res, next) => {
+        try {
+            if (!validationResult(req).isEmpty())
+                return res.status(400).json({ success: false, error: 'Ongeldige invoer.' });
+            const ok = await authService.resetPassword(req.body.email, req.body.code, req.body.password);
+            if (!ok) return res.status(400).json({ success: false, error: 'Ongeldige of verlopen code.' });
+            res.json({ success: true });
+        } catch (err) { next(err); }
+    }
+);
+
 module.exports = router;

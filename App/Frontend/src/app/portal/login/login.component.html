@@ -56,7 +56,8 @@
                     </div>
                 </form>
             </div>
-            <div class="login-form-wrapper" [class.login-form-hidden]="!showForgotPassword">
+            <!-- Forgot password: step 1 — email -->
+            <div class="login-form-wrapper" [class.login-form-hidden]="!showForgotPassword || forgotStep !== 1">
                 <form [formGroup]="forgotPasswordForm" (ngSubmit)="onForgotPassword()" class="login-form">
                     <h2 class="login-form-title">{{'LOGIN.TRANSLATE16' | translate}}</h2>
                     <p class="login-form-description">{{'LOGIN.TRANSLATE21' | translate}}</p>
@@ -68,6 +69,10 @@
                             <span *ngIf="forgotEmailControl?.errors?.['invalidEmail']">{{'LOGIN.TRANSLATE5' | translate}}</span>
                         </div>
                     </div>
+                    <div class="login-auth-error" *ngIf="resetError">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span>{{resetError}}</span>
+                    </div>
                     <button type="submit" class="cursor-pointer login-button" [disabled]="submitting || forgotPasswordForm.invalid">
                         <span class="cursor-pointer" *ngIf="!submitting">{{'LOGIN.TRANSLATE18' | translate}}</span>
                         <span *ngIf="submitting" class="login-button-loading cursor-pointer">{{'LOGIN.TRANSLATE14' | translate}}</span>
@@ -76,6 +81,67 @@
                         {{'LOGIN.TRANSLATE19' | translate}}
                     </button>
                 </form>
+            </div>
+
+            <!-- Forgot password: step 2 — enter code -->
+            <div class="login-form-wrapper" [class.login-form-hidden]="!showForgotPassword || forgotStep !== 2">
+                <form [formGroup]="codeForm" (ngSubmit)="onVerifyCode()" class="login-form">
+                    <h2 class="login-form-title">{{'LOGIN.RESET_CODE_TITLE' | translate}}</h2>
+                    <p class="login-form-description">{{'LOGIN.RESET_CODE_DESC' | translate}} <strong>{{resetEmail}}</strong></p>
+                    <div class="login-form-group">
+                        <label class="login-label" for="reset-code">{{'LOGIN.RESET_CODE_LABEL' | translate}}</label>
+                        <input id="reset-code" type="text" inputmode="numeric" maxlength="6" formControlName="code" class="cursor-text login-input login-input-code" [class.login-input-error]="codeControl?.invalid && codeControl?.touched" placeholder="000000" autocomplete="one-time-code"/>
+                        <div *ngIf="codeControl?.invalid && codeControl?.touched" class="login-error-message">
+                            <span>{{'LOGIN.RESET_CODE_INVALID' | translate}}</span>
+                        </div>
+                    </div>
+                    <div class="login-auth-error" *ngIf="resetError">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span>{{resetError}}</span>
+                    </div>
+                    <button type="submit" class="cursor-pointer login-button" [disabled]="submitting || codeForm.invalid">
+                        <span class="cursor-pointer" *ngIf="!submitting">{{'LOGIN.RESET_CODE_BTN' | translate}}</span>
+                        <span *ngIf="submitting" class="login-button-loading cursor-pointer">{{'LOGIN.TRANSLATE14' | translate}}</span>
+                    </button>
+                    <button type="button" class="cursor-pointer login-link-bottom" (click)="toggleForgotPassword()">
+                        {{'LOGIN.TRANSLATE19' | translate}}
+                    </button>
+                </form>
+            </div>
+
+            <!-- Forgot password: step 3 — new password -->
+            <div class="login-form-wrapper" [class.login-form-hidden]="!showForgotPassword || forgotStep !== 3">
+                <form [formGroup]="newPasswordForm" (ngSubmit)="onResetPassword()" class="login-form" *ngIf="!resetSuccess">
+                    <h2 class="login-form-title">{{'LOGIN.RESET_PW_TITLE' | translate}}</h2>
+                    <div class="login-form-group">
+                        <label class="login-label" for="new-password">{{'LOGIN.RESET_PW_LABEL' | translate}}</label>
+                        <input id="new-password" type="password" formControlName="password" class="cursor-text login-input" [class.login-input-error]="newPasswordControl?.invalid && newPasswordControl?.touched" [class.login-input-valid]="newPasswordControl?.valid && newPasswordControl?.touched" placeholder="••••••••" autocomplete="new-password"/>
+                        <div *ngIf="newPasswordControl?.invalid && newPasswordControl?.touched" class="login-error-message">
+                            <span *ngIf="newPasswordControl?.errors?.['minlength']">{{'LOGIN.TRANSLATE8' | translate}}</span>
+                            <span *ngIf="newPasswordControl?.errors?.['missingDigit']">{{'LOGIN.TRANSLATE11' | translate}}</span>
+                            <span *ngIf="newPasswordControl?.errors?.['missingSpecial']">{{'LOGIN.TRANSLATE12' | translate}}</span>
+                        </div>
+                    </div>
+                    <div class="login-form-group">
+                        <label class="login-label" for="confirm-password">{{'LOGIN.RESET_PW_CONFIRM' | translate}}</label>
+                        <input id="confirm-password" type="password" formControlName="confirmPassword" class="cursor-text login-input" [class.login-input-error]="newPasswordForm.errors?.['passwordsMismatch'] && confirmPasswordControl?.touched" [class.login-input-valid]="!newPasswordForm.errors?.['passwordsMismatch'] && confirmPasswordControl?.touched && confirmPasswordControl?.value" placeholder="••••••••" autocomplete="new-password"/>
+                        <div *ngIf="newPasswordForm.errors?.['passwordsMismatch'] && confirmPasswordControl?.touched" class="login-error-message">
+                            <span>{{'LOGIN.RESET_PW_MISMATCH' | translate}}</span>
+                        </div>
+                    </div>
+                    <div class="login-auth-error" *ngIf="resetError">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span>{{resetError}}</span>
+                    </div>
+                    <button type="submit" class="cursor-pointer login-button" [disabled]="submitting || newPasswordForm.invalid">
+                        <span class="cursor-pointer" *ngIf="!submitting">{{'LOGIN.RESET_PW_BTN' | translate}}</span>
+                        <span *ngIf="submitting" class="login-button-loading cursor-pointer">{{'LOGIN.TRANSLATE14' | translate}}</span>
+                    </button>
+                </form>
+                <div class="login-reset-success" *ngIf="resetSuccess">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                    <p>{{'LOGIN.RESET_SUCCESS' | translate}}</p>
+                </div>
             </div>
         </div>
     </main>

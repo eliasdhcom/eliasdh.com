@@ -245,8 +245,8 @@
     animation: overview-grow .5s cubic-bezier(.4,0,.2,1);
 }
 
-.overview-bar--past    { opacity: .55; }
-.overview-bar--current { opacity: 1; box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 20%, transparent); }
+.overview-bar--past    { opacity: .6; }
+.overview-bar--current { box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 25%, transparent); }
 .overview-bar--future  { background: rgba(128,128,128,.25); opacity: .8; }
 
 .overview-bar--stacked {
@@ -254,7 +254,6 @@
     flex-direction: column;
     background: transparent;
     overflow: hidden;
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 20%, transparent);
 }
 
 .overview-bar-sub {
@@ -304,7 +303,6 @@
 .overview-badge--growth     { background: var(--type-growth-color); }
 .overview-badge--basic      { background: var(--type-basic-color); }
 .overview-badge--free       { background: var(--type-free-color); }
-.overview-badge--todo       { background: var(--type-todo-color); color: white; }
 
 .overview-type-count {
     font-size: 15px;
@@ -344,7 +342,6 @@
 .overview-stacked-segment.overview-badge--growth     { background: var(--type-growth-color); }
 .overview-stacked-segment.overview-badge--basic      { background: var(--type-basic-color); }
 .overview-stacked-segment.overview-badge--free       { background: var(--type-free-color); }
-.overview-stacked-segment.overview-badge--todo       { background: var(--type-todo-color); }
 
 .overview-type-empty {
     font-size: 13px;

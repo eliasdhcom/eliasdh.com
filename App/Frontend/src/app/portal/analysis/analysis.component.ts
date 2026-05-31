@@ -7,6 +7,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { CustomersService, Customer } from '../../services/customers.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -28,7 +29,7 @@ const DAYS_YEAR     = 365;
 @Component({
     selector: 'app-portal-analysis',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, TranslatePipe],
     templateUrl: './analysis.component.html',
     styleUrls: ['./analysis.component.css']
 })

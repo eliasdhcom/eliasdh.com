@@ -24,9 +24,16 @@ import { takeUntil } from 'rxjs/operators';
 export class LoginComponent implements OnInit, OnDestroy {
     loginForm!: FormGroup;
     forgotPasswordForm!: FormGroup;
+    codeForm!: FormGroup;
+    newPasswordForm!: FormGroup;
     showForgotPassword = false;
-    submitting = false;
-    loginError = '';
+    forgotStep: 1 | 2 | 3 = 1;
+    resetEmail   = '';
+    resetCode    = '';
+    submitting   = false;
+    loginError   = '';
+    resetError   = '';
+    resetSuccess = false;
     private destroy$ = new Subject<void>();
 
     passwordMinLength = 8;
@@ -49,6 +56,15 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.forgotPasswordForm = this.fb.group({
             email: ['', [Validators.required, this.emailValidator]]
         });
+
+        this.codeForm = this.fb.group({
+            code: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]]
+        });
+
+        this.newPasswordForm = this.fb.group({
+            password:        ['', [Validators.required, this.passwordValidator]],
+            confirmPassword: ['', [Validators.required]]
+        }, { validators: this.passwordsMatchValidator });
     }
 
     private emailValidator(control: AbstractControl): ValidationErrors | null {
@@ -79,10 +95,27 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     toggleForgotPassword(): void {
         this.showForgotPassword = !this.showForgotPassword;
+        this.forgotStep   = 1;
+        this.resetEmail   = '';
+        this.resetCode    = '';
+        this.resetError   = '';
+        this.resetSuccess = false;
         this.loginForm.reset();
         this.forgotPasswordForm.reset();
+        this.codeForm.reset();
+        this.newPasswordForm.reset();
         this.loginError = '';
     }
+
+    private passwordsMatchValidator(group: AbstractControl): ValidationErrors | null {
+        const pw  = group.get('password')?.value;
+        const cpw = group.get('confirmPassword')?.value;
+        return pw && cpw && pw !== cpw ? { passwordsMismatch: true } : null;
+    }
+
+    get codeControl()            { return this.codeForm.get('code'); }
+    get newPasswordControl()     { return this.newPasswordForm.get('password'); }
+    get confirmPasswordControl() { return this.newPasswordForm.get('confirmPassword'); }
 
     validatePassword(password: string): void {
         this.passwordHasUppercase = /[A-Z]/.test(password);
@@ -134,11 +167,50 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
     }
 
-    onForgotPassword(): void {
+    async onForgotPassword(): Promise<void> {
         if (this.forgotPasswordForm.invalid) return;
-
         this.submitting = true;
-        console.log('Forgot password email:', this.forgotPasswordForm.value);
+        this.resetError = '';
+        this.resetEmail = this.forgotPasswordForm.value.email;
+        const ok = await this.authService.forgotPassword(this.resetEmail);
+        this.submitting = false;
+        if (ok) {
+            this.forgotStep = 2;
+        } else {
+            this.resetError = 'Er is een fout opgetreden. Probeer opnieuw.';
+        }
+    }
+
+    async onVerifyCode(): Promise<void> {
+        if (this.codeForm.invalid) return;
+        this.submitting = true;
+        this.resetError = '';
+        this.resetCode  = this.codeForm.value.code;
+        const ok = await this.authService.verifyResetCode(this.resetEmail, this.resetCode);
+        this.submitting = false;
+        if (ok) {
+            this.forgotStep = 3;
+        } else {
+            this.resetError = 'Ongeldige of verlopen code. Probeer opnieuw.';
+        }
+    }
+
+    async onResetPassword(): Promise<void> {
+        if (this.newPasswordForm.invalid) return;
+        this.submitting = true;
+        this.resetError = '';
+        const ok = await this.authService.resetPassword(
+            this.resetEmail,
+            this.resetCode,
+            this.newPasswordForm.value.password
+        );
+        this.submitting = false;
+        if (ok) {
+            this.resetSuccess = true;
+            setTimeout(() => this.toggleForgotPassword(), 2500);
+        } else {
+            this.resetError = 'Code verlopen. Start opnieuw.';
+        }
     }
 
     onEmailChange(): void {

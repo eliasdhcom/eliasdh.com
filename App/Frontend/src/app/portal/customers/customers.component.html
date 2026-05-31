@@ -3,7 +3,7 @@
     <div class="customers-top-bar">
         <div class="customers-top-left">
             <span class="customers-total" *ngIf="!loading && !error">
-                {{filteredCustomers.length}} klant{{filteredCustomers.length !== 1 ? 'en' : ''}}
+                {{filteredCustomers.length}} {{filteredCustomers.length !== 1 ? ('PORTAL.CUSTOMERS.COUNT_MANY'|translate) : ('PORTAL.CUSTOMERS.COUNT_ONE'|translate)}}
             </span>
         </div>
         <div class="customers-top-right">
@@ -11,29 +11,26 @@
                 <svg class="customers-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                 </svg>
-                <input class="customers-search cursor-text" type="text" placeholder="Zoek op naam, adres, BTW of ID..." [value]="searchQuery" (input)="onSearch($event)"/>
+                <input class="customers-search cursor-text" type="text" [placeholder]="'PORTAL.CUSTOMERS.SEARCH'|translate" [value]="searchQuery" (input)="onSearch($event)"/>
             </div>
-            <button class="customers-add-btn cursor-pointer" *ngIf="isAuthenticated" (click)="openCreateForm()" title="Nieuwe klant toevoegen">
+            <button class="customers-add-btn cursor-pointer" *ngIf="isAuthenticated" (click)="openCreateForm()" [title]="'PORTAL.CUSTOMERS.NEW'|translate">
                 <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <line class="cursor-pointer" x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
                 </svg>
-                Nieuwe klant
+                {{'PORTAL.CUSTOMERS.NEW'|translate}}
             </button>
         </div>
     </div>
-
     <div class="customers-loading" *ngIf="loading">
         <div class="customers-skeleton" *ngFor="let i of [1,2,3,4,5]"></div>
     </div>
-
     <div class="customers-error-state" *ngIf="!loading && error">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
         </svg>
         <p>{{error}}</p>
-        <button class="customers-retry-btn cursor-pointer" (click)="loadCustomers()">Opnieuw proberen</button>
+        <button class="customers-retry-btn cursor-pointer" (click)="loadCustomers()">{{'PORTAL.COMMON.RETRY'|translate}}</button>
     </div>
-
     <div class="customers-empty-state" *ngIf="!loading && !error && filteredCustomers.length === 0">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -41,10 +38,9 @@
             <path d="M23 21v-2a4 4 0 0 1-3-3.87"/>
             <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
         </svg>
-        <p *ngIf="searchQuery">Geen klanten gevonden voor "<strong>{{searchQuery}}</strong>"</p>
-        <p *ngIf="!searchQuery">Nog geen klanten beschikbaar.</p>
+        <p *ngIf="searchQuery">{{'PORTAL.CUSTOMERS.EMPTY_SEARCH'|translate}} "<strong>{{searchQuery}}</strong>"</p>
+        <p *ngIf="!searchQuery">{{'PORTAL.CUSTOMERS.EMPTY'|translate}}</p>
     </div>
-
     <div class="customers-list" *ngIf="!loading && !error && filteredCustomers.length > 0">
         <div class="customers-card" [class.customers-card--expanded]="expandedId === customer.id" *ngFor="let customer of filteredCustomers">
             <div class="customers-card-header-wrap">
@@ -88,22 +84,23 @@
                     </div>
                 </button>
                 <div class="customers-card-actions" *ngIf="isAuthenticated">
-                    <button class="customers-action-btn customers-action-btn--edit cursor-pointer" title="Bewerken" (click)="openEditForm(customer, $event)">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    <button class="customers-action-btn customers-action-btn--edit cursor-pointer" [title]="'PORTAL.COMMON.EDIT'|translate" (click)="openEditForm(customer, $event)">
+                        <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path class="cursor-pointer" d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path class="cursor-pointer" d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                         </svg>
                     </button>
-                    <button class="customers-action-btn customers-action-btn--delete cursor-pointer" title="Verwijderen" (click)="confirmDelete(customer.id, $event)">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                            <path d="M10 11v6"/><path d="M14 11v6"/>
-                            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                    <button class="customers-action-btn customers-action-btn--delete cursor-pointer" [title]="'PORTAL.COMMON.DELETE'|translate" (click)="confirmDelete(customer.id, $event)">
+                        <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline class="cursor-pointer" points="3 6 5 6 21 6"/>
+                            <path class="cursor-pointer" d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                            <path class="cursor-pointer" d="M10 11v6"/>
+                            <path class="cursor-pointer" d="M14 11v6"/>
+                            <path class="cursor-pointer" d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
                         </svg>
                     </button>
                 </div>
             </div>
-
             <div class="customers-card-detail" *ngIf="expandedId === customer.id">
                 <div class="customers-detail-columns">
                     <div class="customers-detail-section">
@@ -111,27 +108,27 @@
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
                             </svg>
-                            Contactpersoon
+                            {{'PORTAL.CUSTOMERS.SECTION_CONTACT'|translate}}
                         </h4>
                         <dl class="customers-detail-list">
-                            <div class="customers-detail-row"><dt>Voornaam</dt><dd>{{customer.firstName || '—'}}</dd></div>
-                            <div class="customers-detail-row"><dt>Achternaam</dt><dd>{{customer.lastName || '—'}}</dd></div>
+                            <div class="customers-detail-row"><dt>{{'PORTAL.CUSTOMERS.FIRST_NAME'|translate}}</dt><dd>{{customer.firstName || '—'}}</dd></div>
+                            <div class="customers-detail-row"><dt>{{'PORTAL.CUSTOMERS.LAST_NAME'|translate}}</dt><dd>{{customer.lastName || '—'}}</dd></div>
                             <div class="customers-detail-row">
-                                <dt>E-mail</dt>
+                                <dt>{{'PORTAL.CUSTOMERS.EMAIL'|translate}}</dt>
                                 <dd>
                                     <a *ngIf="customer.email" [href]="'mailto:' + customer.email" class="customers-detail-link cursor-pointer" (click)="$event.stopPropagation()">{{customer.email}}</a>
                                     <span *ngIf="!customer.email">—</span>
                                 </dd>
                             </div>
                             <div class="customers-detail-row">
-                                <dt>Telefoon</dt>
+                                <dt>{{'PORTAL.CUSTOMERS.PHONE'|translate}}</dt>
                                 <dd>
                                     <a *ngIf="customer.phone" [href]="'tel:' + customer.phone" class="customers-detail-link cursor-pointer" (click)="$event.stopPropagation()">{{customer.phone}}</a>
                                     <span *ngIf="!customer.phone">—</span>
                                 </dd>
                             </div>
                             <div class="customers-detail-row">
-                                <dt>GSM</dt>
+                                <dt>{{'PORTAL.CUSTOMERS.MOBILE'|translate}}</dt>
                                 <dd>
                                     <a *ngIf="customer.mobile" [href]="'tel:' + customer.mobile" class="customers-detail-link cursor-pointer" (click)="$event.stopPropagation()">{{customer.mobile}}</a>
                                     <span *ngIf="!customer.mobile">—</span>
@@ -139,13 +136,12 @@
                             </div>
                         </dl>
                     </div>
-
                     <div class="customers-detail-section">
                         <h4 class="customers-detail-title">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
                             </svg>
-                            Subscriptions
+                            {{'PORTAL.CUSTOMERS.SECTION_SUBS'|translate}}
                             <span class="customers-detail-title-count">{{customer.websites.length}}</span>
                         </h4>
                         <div class="customers-sub-list">
@@ -164,16 +160,43 @@
                                     {{w.visitors | number}}
                                 </span>
                             </div>
-                            <p class="customers-sub-empty" *ngIf="!customer.websites.length">Geen subscriptions gekoppeld.</p>
+                            <p class="customers-sub-empty" *ngIf="!customer.websites.length">{{'PORTAL.CUSTOMERS.NO_SUBS'|translate}}</p>
                         </div>
                     </div>
-
+                    <div class="customers-detail-section customers-detail-section--full">
+                        <h4 class="customers-detail-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                            </svg>
+                            {{'PORTAL.CUSTOMERS.SECTION_DOMAINS'|translate}}
+                            <span class="customers-detail-title-count">{{(customer.domains ?? []).length}}</span>
+                        </h4>
+                        <div class="customers-sub-list">
+                            <div class="customers-sub-item" *ngFor="let dom of (customer.domains ?? [])">
+                                <span class="customers-badge customers-badge--domain">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;margin-right:3px" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                    </svg>
+                                    {{'PORTAL.CUSTOMERS.FORM.DOMAIN'|translate}}
+                                </span>
+                                <div class="customers-sub-info">
+                                    <span class="customers-sub-name">{{dom.name}}</span>
+                                    <span class="customers-domain-renewal">
+                                        {{'PORTAL.CUSTOMERS.RENEWS'|translate}} {{getNextDomainRenewal(dom.renewalDate)}} &nbsp;·&nbsp; €{{dom.annualPrice | number:'1.2-2'}}/j
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="customers-sub-empty" *ngIf="!(customer.domains ?? []).length">{{'PORTAL.CUSTOMERS.NO_DOMAINS'|translate}}</p>
+                        </div>
+                    </div>
                     <div class="customers-detail-section customers-detail-section--full" *ngIf="customer.locations.length">
                         <h4 class="customers-detail-title">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
                             </svg>
-                            Locaties
+                            {{'PORTAL.CUSTOMERS.SECTION_LOCATIONS'|translate}}
                             <span class="customers-detail-title-count">{{customer.locations.length}}</span>
                         </h4>
                         <div class="customers-locations-list">
@@ -195,13 +218,12 @@
                                 </div>
                                 <div class="customers-location-meta">
                                     <span class="customers-location-vat" *ngIf="loc.vat">{{loc.vat}}</span>
-                                    <a class="customers-location-map cursor-pointer" [href]="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(formatAddress(loc))" target="_blank" rel="noopener noreferrer" (click)="$event.stopPropagation()" title="Open in Google Maps">
+                                    <button class="customers-location-map cursor-pointer" (click)="openInMap(loc, $event)" [title]="'PORTAL.CUSTOMERS.OPEN_MAPS'|translate" [disabled]="!loc.latitude || !loc.longitude">
                                         <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                            <path class="cursor-pointer" d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                                            <polyline class="cursor-pointer" points="15 3 21 3 21 9"/>
-                                            <line class="cursor-pointer" x1="10" y1="14" x2="21" y2="3"/>
+                                            <path class="cursor-pointer" d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                            <circle class="cursor-pointer" cx="12" cy="10" r="3"/>
                                         </svg>
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -211,265 +233,323 @@
         </div>
     </div>
 </div>
-
-<!-- ── Create / Edit modal ──────────────────────────────────────────────────── -->
 <div class="customers-modal-overlay" *ngIf="showForm" (click)="onOverlayClick($event)">
     <div class="customers-modal">
         <div class="customers-modal-header">
             <h2 class="customers-modal-title">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path *ngIf="!isEditing" d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                    <circle *ngIf="!isEditing" cx="8.5" cy="7" r="4"/>
-                    <line *ngIf="!isEditing" x1="20" y1="8" x2="20" y2="14"/>
-                    <line *ngIf="!isEditing" x1="23" y1="11" x2="17" y2="11"/>
-                    <path *ngIf="isEditing" d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                    <path *ngIf="isEditing" d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path class="cursor-pointer" *ngIf="!isEditing" d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle class="cursor-pointer" *ngIf="!isEditing" cx="8.5" cy="7" r="4"/>
+                    <line class="cursor-pointer" *ngIf="!isEditing" x1="20" y1="8" x2="20" y2="14"/>
+                    <line class="cursor-pointer" *ngIf="!isEditing" x1="23" y1="11" x2="17" y2="11"/>
+                    <path class="cursor-pointer" *ngIf="isEditing" d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path class="cursor-pointer" *ngIf="isEditing" d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                 </svg>
-                {{isEditing ? 'Klant bewerken' : 'Nieuwe klant'}}
+                {{isEditing ? ('PORTAL.CUSTOMERS.FORM.EDIT_TITLE'|translate) : ('PORTAL.CUSTOMERS.FORM.CREATE_TITLE'|translate)}}
             </h2>
-            <button class="customers-modal-close cursor-pointer" (click)="closeForm()" aria-label="Sluiten">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            <button class="customers-modal-close cursor-pointer" (click)="closeForm()" [attr.aria-label]="'PORTAL.COMMON.CLOSE'|translate">
+                <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
+                    <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
             </button>
         </div>
-
         <div class="customers-modal-body">
-
-            <!-- Bedrijfsgegevens -->
             <section class="cform-section">
                 <h3 class="cform-section-title">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                    <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect class="cursor-pointer" x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                        <path class="cursor-pointer" d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
                     </svg>
-                    Bedrijfsgegevens
+                    {{'PORTAL.CUSTOMERS.FORM.BUSINESS'|translate}}
                 </h3>
-                <div class="cform-grid">
-                    <div class="cform-field cform-field--full">
-                        <label class="cform-label">Bedrijfsnaam <span class="cform-required">*</span></label>
-                        <input class="cform-input" type="text" placeholder="bv. Bistro Theo BV" [(ngModel)]="form.name"/>
+                <div class="cform-logo-name-row">
+                    <div class="cform-field">
+                        <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.LOGO'|translate}} <span class="cform-required">*</span></label>
+                        <label class="cform-logo-clickable cursor-pointer" [title]="'PORTAL.CUSTOMERS.FORM.UPLOAD_LOGO'|translate">
+                            <input class="cursor-pointer" type="file" accept="image/*" (change)="onLogoFileChange($event)" style="display:none"/>
+                            <img class="cursor-pointer" *ngIf="form.logo" [src]="form.logo" alt="Logo preview" class="cform-logo-preview-img"/>
+                            <div *ngIf="!form.logo" class="cform-logo-placeholder cursor-pointer">
+                                <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path class="cursor-pointer" d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline class="cursor-pointer" points="17 8 12 3 7 8"/>
+                                    <line class="cursor-pointer" x1="12" y1="3" x2="12" y2="15"/>
+                                </svg>
+                            </div>
+                        </label>
                     </div>
-                    <div class="cform-field cform-field--full">
-                        <label class="cform-label">Logo URL</label>
-                        <input class="cform-input" type="text" placeholder="https://... of data:image/..." [(ngModel)]="form.logo"/>
+                    <div class="cform-field cform-field--grow">
+                        <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.COMPANY_NAME'|translate}} <span class="cform-required">*</span></label>
+                        <input class="cform-input cursor-text" type="text" placeholder="bv. EliasDH BV" [(ngModel)]="form.name"/>
                     </div>
                 </div>
-                <h4 class="cform-subsection-title">Contactpersoon</h4>
+                <h4 class="cform-subsection-title">{{'PORTAL.CUSTOMERS.FORM.CONTACT'|translate}}</h4>
                 <div class="cform-grid">
                     <div class="cform-field">
-                        <label class="cform-label">Voornaam</label>
-                        <input class="cform-input" type="text" placeholder="Jan" [(ngModel)]="form.firstName"/>
+                        <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.FIRST_NAME'|translate}} <span class="cform-required">*</span></label>
+                        <input class="cform-input cursor-text" type="text" placeholder="Jan" [(ngModel)]="form.firstName"/>
                     </div>
                     <div class="cform-field">
-                        <label class="cform-label">Achternaam</label>
-                        <input class="cform-input" type="text" placeholder="Peeters" [(ngModel)]="form.lastName"/>
+                        <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.LAST_NAME'|translate}} <span class="cform-required">*</span></label>
+                        <input class="cform-input cursor-text" type="text" placeholder="Peeters" [(ngModel)]="form.lastName"/>
                     </div>
                     <div class="cform-field">
-                        <label class="cform-label">E-mail</label>
-                        <input class="cform-input" type="email" placeholder="jan@bedrijf.be" [(ngModel)]="form.email"/>
+                        <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.EMAIL'|translate}} <span class="cform-required">*</span></label>
+                        <input class="cform-input cursor-text" type="email" placeholder="jan@bedrijf.be" [(ngModel)]="form.email"/>
                     </div>
                     <div class="cform-field">
-                        <label class="cform-label">Telefoon</label>
-                        <input class="cform-input" type="text" placeholder="+32 9 123 45 67" [(ngModel)]="form.phone"/>
+                        <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.PHONE'|translate}} <span class="cform-required">*</span></label>
+                        <input class="cform-input cursor-text" type="text" placeholder="+32 9 123 45 67" [(ngModel)]="form.phone"/>
                     </div>
                     <div class="cform-field">
-                        <label class="cform-label">GSM</label>
-                        <input class="cform-input" type="text" placeholder="+32 478 12 34 56" [(ngModel)]="form.mobile"/>
+                        <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.MOBILE'|translate}} <span class="cform-required">*</span></label>
+                        <input class="cform-input cursor-text" type="text" placeholder="+32 478 12 34 56" [(ngModel)]="form.mobile"/>
                     </div>
                 </div>
             </section>
-
-            <!-- Locaties -->
             <section class="cform-section">
                 <div class="cform-section-header">
                     <h3 class="cform-section-title">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                        <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path class="cursor-pointer" d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle class="cursor-pointer" cx="12" cy="10" r="3"/>
                         </svg>
-                        Locaties
+                        {{'PORTAL.CUSTOMERS.FORM.LOCATIONS'|translate}}
                         <span class="cform-count">{{form.locations.length}}</span>
                     </h3>
                     <button class="cform-add-btn cursor-pointer" type="button" (click)="addLocation()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                        Locatie
+                        <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line class="cursor-pointer" x1="12" y1="5" x2="12" y2="19"/>
+                            <line class="cursor-pointer" x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        {{'PORTAL.CUSTOMERS.FORM.ADD_LOCATION'|translate}}
                     </button>
                 </div>
                 <div class="cform-list" *ngIf="form.locations.length">
                     <div class="cform-list-item" *ngFor="let loc of form.locations; let li = index">
                         <div class="cform-list-item-header">
-                            <span class="cform-list-item-label">Locatie {{li + 1}}</span>
-                            <button class="cform-remove-btn cursor-pointer" type="button" (click)="removeLocation(li)" title="Verwijder locatie">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            <span class="cform-list-item-label">{{'PORTAL.CUSTOMERS.FORM.LOCATION_N'|translate}} {{li + 1}}</span>
+                            <button class="cform-remove-btn cursor-pointer" type="button" (click)="removeLocation(li)" [title]="'PORTAL.CUSTOMERS.FORM.REMOVE_LOCATION'|translate">
+                                <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
+                                    <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
                             </button>
                         </div>
                         <div class="cform-grid">
                             <div class="cform-field cform-field--street">
-                                <label class="cform-label">Straat</label>
-                                <input class="cform-input" type="text" placeholder="Hoofdstraat" [(ngModel)]="loc.street"/>
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.STREET'|translate}} <span class="cform-required">*</span></label>
+                                <input class="cform-input cursor-text" type="text" placeholder="Hoofdstraat" [(ngModel)]="loc.street" (blur)="onAddressBlur(loc, li)"/>
                             </div>
                             <div class="cform-field cform-field--number">
-                                <label class="cform-label">Nr.</label>
-                                <input class="cform-input" type="text" placeholder="12" [(ngModel)]="loc.number"/>
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.NUMBER'|translate}} <span class="cform-required">*</span></label>
+                                <input class="cform-input cursor-text" type="text" placeholder="12" [(ngModel)]="loc.number" (blur)="onAddressBlur(loc, li)"/>
                             </div>
                             <div class="cform-field cform-field--postal">
-                                <label class="cform-label">Postcode</label>
-                                <input class="cform-input" type="text" placeholder="9000" [(ngModel)]="loc.postalCode"/>
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.POSTAL'|translate}} <span class="cform-required">*</span></label>
+                                <input class="cform-input cursor-text" type="text" placeholder="9000" [(ngModel)]="loc.postalCode" (blur)="onAddressBlur(loc, li)"/>
                             </div>
                             <div class="cform-field">
-                                <label class="cform-label">Gemeente</label>
-                                <input class="cform-input" type="text" placeholder="Gent" [(ngModel)]="loc.city"/>
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.CITY'|translate}} <span class="cform-required">*</span></label>
+                                <input class="cform-input cursor-text" type="text" placeholder="Gent" [(ngModel)]="loc.city" (blur)="onAddressBlur(loc, li)"/>
                             </div>
                             <div class="cform-field">
-                                <label class="cform-label">Land</label>
-                                <input class="cform-input" type="text" placeholder="Belgium" [(ngModel)]="loc.country"/>
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.COUNTRY'|translate}} <span class="cform-required">*</span></label>
+                                <input class="cform-input cursor-text" type="text" placeholder="Belgium" [(ngModel)]="loc.country" (blur)="onAddressBlur(loc, li)"/>
                             </div>
                             <div class="cform-field">
-                                <label class="cform-label">BTW-nummer</label>
-                                <input class="cform-input" type="text" placeholder="BE 0123.456.789" [(ngModel)]="loc.vat"/>
-                            </div>
-                            <div class="cform-field">
-                                <label class="cform-label">Breedtegraad</label>
-                                <input class="cform-input" type="text" placeholder="51.054" [(ngModel)]="loc.latitude"/>
-                            </div>
-                            <div class="cform-field">
-                                <label class="cform-label">Lengtegraad</label>
-                                <input class="cform-input" type="text" placeholder="3.717" [(ngModel)]="loc.longitude"/>
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.VAT'|translate}}</label>
+                                <input class="cform-input cursor-text" type="text" placeholder="BE 0123.456.789" [(ngModel)]="loc.vat"/>
                             </div>
                         </div>
-                        <!-- Social links per locatie -->
                         <div class="cform-socials">
                             <div class="cform-socials-header">
-                                <span class="cform-socials-label">Social media</span>
+                                <span class="cform-socials-label">{{'PORTAL.CUSTOMERS.FORM.SOCIAL'|translate}}</span>
                                 <button class="cform-add-btn cform-add-btn--sm cursor-pointer" type="button" (click)="addSocialLink(loc)">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                                    Link
+                                    <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <line class="cursor-pointer" x1="12" y1="5" x2="12" y2="19"/>
+                                        <line class="cursor-pointer" x1="5" y1="12" x2="19" y2="12"/>
+                                    </svg>
+                                    {{'PORTAL.CUSTOMERS.FORM.ADD_LINK'|translate}}
                                 </button>
                             </div>
-                            <div class="cform-social-row" *ngFor="let sl of loc.socialLinks; let si = index">
-                                <select class="cform-select" [(ngModel)]="sl.type">
-                                    <option *ngFor="let t of socialTypes" [value]="t">{{t}}</option>
+                            <div class="cform-social-row cursor-pointer" *ngFor="let sl of loc.socialLinks; let si = index">
+                                <select class="cform-select cursor-pointer" [(ngModel)]="sl.type">
+                                    <option class="cursor-pointer" *ngFor="let t of socialTypes" [value]="t">{{t}}</option>
                                 </select>
-                                <input class="cform-input" type="text" placeholder="https://..." [(ngModel)]="sl.url"/>
+                                <input class="cform-input cursor-text" type="text" placeholder="https://..." [(ngModel)]="sl.url"/>
                                 <button class="cform-remove-btn cform-remove-btn--inline cursor-pointer" type="button" (click)="removeSocialLink(loc, si)">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
+                                        <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
+                                    </svg>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <p class="cform-empty-hint" *ngIf="!form.locations.length">Nog geen locaties toegevoegd.</p>
+                <p class="cform-empty-hint" *ngIf="!form.locations.length">{{'PORTAL.CUSTOMERS.FORM.NO_LOCATIONS'|translate}}</p>
             </section>
-
-            <!-- Subscriptions -->
             <section class="cform-section">
                 <div class="cform-section-header">
                     <h3 class="cform-section-title">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
                         </svg>
-                        Subscriptions
+                        {{'PORTAL.CUSTOMERS.FORM.SUBS'|translate}}
                         <span class="cform-count">{{form.websites.length}}</span>
                     </h3>
                     <button class="cform-add-btn cursor-pointer" type="button" (click)="addWebsite()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                        Subscription
+                        <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line class="cursor-pointer" x1="12" y1="5" x2="12" y2="19"/>
+                            <line class="cursor-pointer" x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        {{'PORTAL.CUSTOMERS.FORM.ADD_SUBSCRIPTION'|translate}}
                     </button>
                 </div>
                 <div class="cform-list" *ngIf="form.websites.length">
                     <div class="cform-list-item" *ngFor="let w of form.websites; let wi = index">
                         <div class="cform-list-item-header">
-                            <span class="cform-list-item-label">Subscription {{wi + 1}}</span>
-                            <button class="cform-remove-btn cursor-pointer" type="button" (click)="removeWebsite(wi)" title="Verwijder subscription">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            <span class="cform-list-item-label">{{'PORTAL.CUSTOMERS.FORM.SUBSCRIPTION_N'|translate}} {{wi + 1}}</span>
+                            <button class="cform-remove-btn cursor-pointer" type="button" (click)="removeWebsite(wi)" [title]="'PORTAL.CUSTOMERS.FORM.REMOVE_SUBSCRIPTION'|translate">
+                                <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
+                                    <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
                             </button>
                         </div>
                         <div class="cform-grid">
                             <div class="cform-field">
-                                <label class="cform-label">Naam</label>
-                                <input class="cform-input" type="text" placeholder="Website naam" [(ngModel)]="w.name"/>
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.NAME'|translate}} <span class="cform-required">*</span></label>
+                                <input class="cform-input cursor-text" type="text" placeholder="Website naam" [(ngModel)]="w.name"/>
                             </div>
                             <div class="cform-field">
-                                <label class="cform-label">URL</label>
-                                <input class="cform-input" type="text" placeholder="https://bedrijf.be" [(ngModel)]="w.url"/>
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.URL'|translate}} <span class="cform-required">*</span></label>
+                                <input class="cform-input cursor-text" type="text" placeholder="https://bedrijf.be" [(ngModel)]="w.url"/>
                             </div>
                             <div class="cform-field">
-                                <label class="cform-label">Type</label>
-                                <select class="cform-select" [(ngModel)]="w.subscriptionType">
-                                    <option *ngFor="let t of subscriptionTypes" [value]="t">{{t}}</option>
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.TYPE'|translate}}</label>
+                                <select class="cform-select cursor-pointer" [(ngModel)]="w.subscriptionType" (change)="onSubscriptionTypeChange(w)">
+                                    <option class="cursor-pointer" *ngFor="let t of subscriptionTypes" [value]="t">{{t}}</option>
                                 </select>
                             </div>
                             <div class="cform-field">
-                                <label class="cform-label">Frequentie</label>
-                                <select class="cform-select" [(ngModel)]="w.frequency">
-                                    <option value="monthly">Maandelijks</option>
-                                    <option value="quarterly">Per kwartaal</option>
-                                    <option value="yearly">Jaarlijks</option>
-                                    <option value="one-time">Eenmalig</option>
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.FREQUENCY'|translate}}</label>
+                                <select class="cform-select cursor-pointer" [(ngModel)]="w.frequency">
+                                    <option class="cursor-pointer" value="monthly">{{'PORTAL.CUSTOMERS.FORM.FREQ_MONTHLY'|translate}}</option>
+                                    <option class="cursor-pointer" value="quarterly">{{'PORTAL.CUSTOMERS.FORM.FREQ_QUARTERLY'|translate}}</option>
+                                    <option class="cursor-pointer" value="yearly">{{'PORTAL.CUSTOMERS.FORM.FREQ_YEARLY'|translate}}</option>
+                                    <option class="cursor-pointer" value="one-time">{{'PORTAL.CUSTOMERS.FORM.FREQ_ONCE'|translate}}</option>
                                 </select>
                             </div>
                             <div class="cform-field">
-                                <label class="cform-label">Prijs (€, excl. BTW)</label>
-                                <input class="cform-input" type="number" placeholder="0.00" min="0" step="0.01" [(ngModel)]="w.payment"/>
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.PRICE'|translate}}</label>
+                                <input class="cform-input cursor-text" type="number" placeholder="0.00" min="0" step="0.01" [(ngModel)]="w.payment" [readonly]="w.subscriptionType !== 'Custom'" [class.cform-input--readonly]="w.subscriptionType !== 'Custom'" (input)="onDiscountChange(w)"/>
                             </div>
                             <div class="cform-field">
-                                <label class="cform-label">Korting (€)</label>
-                                <input class="cform-input" type="number" placeholder="0.00" min="0" step="0.01" [(ngModel)]="w.discount"/>
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.DISCOUNT'|translate}}</label>
+                                <input class="cform-input cursor-text" type="number" placeholder="0.00" min="0" step="0.01" [(ngModel)]="w.discount" [max]="w.payment" (input)="onDiscountChange(w)"/>
                             </div>
                             <div class="cform-field">
-                                <label class="cform-label">Startdatum</label>
-                                <input class="cform-input" type="date" [(ngModel)]="w.startDate"/>
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.START_DATE'|translate}} <span class="cform-required">*</span></label>
+                                <input class="cform-input cursor-text" type="month" [(ngModel)]="w.startDate"/>
                             </div>
                             <div class="cform-field cform-field--toggle">
-                                <label class="cform-label">Status</label>
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.STATUS'|translate}}</label>
                                 <label class="cform-toggle cursor-pointer">
                                     <input type="checkbox" [(ngModel)]="w.isLive"/>
-                                    <span class="cform-toggle-track">
-                                        <span class="cform-toggle-thumb"></span>
+                                    <span class="cform-toggle-track cursor-pointer">
+                                        <span class="cform-toggle-thumb cursor-pointer"></span>
                                     </span>
-                                    <span class="cform-toggle-label">{{w.isLive ? 'Live' : 'Inactief'}}</span>
+                                    <span class="cform-toggle-label">{{w.isLive ? ('PORTAL.CUSTOMERS.FORM.LIVE'|translate) : ('PORTAL.CUSTOMERS.FORM.INACTIVE'|translate)}}</span>
                                 </label>
                             </div>
                         </div>
                     </div>
                 </div>
-                <p class="cform-empty-hint" *ngIf="!form.websites.length">Nog geen subscriptions toegevoegd.</p>
+                <p class="cform-empty-hint" *ngIf="!form.websites.length">{{'PORTAL.CUSTOMERS.FORM.NO_SUBS'|translate}}</p>
             </section>
-
+            <section class="cform-section">
+                <div class="cform-section-header">
+                    <h3 class="cform-section-title">
+                        <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle class="cursor-pointer" cx="12" cy="12" r="10"/>
+                            <line class="cursor-pointer" x1="2" y1="12" x2="22" y2="12"/>
+                            <path class="cursor-pointer" d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                        {{'PORTAL.CUSTOMERS.FORM.DOMAINS'|translate}}
+                        <span class="cform-count">{{form.domains.length}}</span>
+                    </h3>
+                    <button class="cform-add-btn cursor-pointer" type="button" (click)="addDomain()">
+                        <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line class="cursor-pointer" x1="12" y1="5" x2="12" y2="19"/>
+                            <line class="cursor-pointer" x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        {{'PORTAL.CUSTOMERS.FORM.ADD_DOMAIN'|translate}}
+                    </button>
+                </div>
+                <div class="cform-list" *ngIf="form.domains.length">
+                    <div class="cform-list-item" *ngFor="let d of form.domains; let di = index">
+                        <div class="cform-list-item-header">
+                            <span class="cform-list-item-label">{{'PORTAL.CUSTOMERS.FORM.DOMAIN_N'|translate}} {{di + 1}}</span>
+                            <button class="cform-remove-btn cursor-pointer" type="button" (click)="removeDomain(di)" [title]="'PORTAL.CUSTOMERS.FORM.REMOVE_DOMAIN'|translate">
+                                <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
+                                    <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="cform-grid">
+                            <div class="cform-field">
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.DOMAIN_NAME'|translate}} <span class="cform-required">*</span></label>
+                                <input class="cform-input cursor-text" type="text" placeholder="bv. bedrijf.be" [(ngModel)]="d.name"/>
+                            </div>
+                            <div class="cform-field">
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.PURCHASE_DATE'|translate}} <span class="cform-required">*</span></label>
+                                <input class="cform-input cursor-text" type="month" [(ngModel)]="d.renewalDate"/>
+                            </div>
+                            <div class="cform-field cform-field--full">
+                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.ANNUAL_PRICE'|translate}}</label>
+                                <input class="cform-input cursor-text" type="number" placeholder="0.00" min="0" step="0.01" [(ngModel)]="d.annualPrice"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="cform-empty-hint" *ngIf="!form.domains.length">{{'PORTAL.CUSTOMERS.FORM.NO_DOMAINS'|translate}}</p>
+            </section>
         </div>
-
         <div class="customers-modal-footer">
             <p class="cform-error" *ngIf="formError">{{formError}}</p>
             <div class="customers-modal-footer-actions">
-                <button class="customers-modal-btn customers-modal-btn--cancel cursor-pointer" type="button" (click)="closeForm()" [disabled]="formSaving">Annuleren</button>
+                <button class="customers-modal-btn customers-modal-btn--cancel cursor-pointer" type="button" (click)="closeForm()" [disabled]="formSaving">{{'PORTAL.CUSTOMERS.FORM.CANCEL'|translate}}</button>
                 <button class="customers-modal-btn customers-modal-btn--save cursor-pointer" type="button" (click)="submitForm()" [disabled]="formSaving">
                     <svg *ngIf="formSaving" class="cform-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-opacity="0.3"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
-                    {{formSaving ? 'Opslaan...' : (isEditing ? 'Wijzigingen opslaan' : 'Klant aanmaken')}}
+                    {{formSaving ? ('PORTAL.CUSTOMERS.FORM.SAVING'|translate) : (isEditing ? ('PORTAL.CUSTOMERS.FORM.SAVE'|translate) : ('PORTAL.CUSTOMERS.FORM.CREATE'|translate))}}
                 </button>
             </div>
         </div>
     </div>
 </div>
-
-<!-- ── Delete confirmation ──────────────────────────────────────────────────── -->
 <div class="customers-modal-overlay customers-modal-overlay--sm" *ngIf="deleteConfirmId" (click)="onDeleteOverlayClick($event)">
     <div class="customers-modal customers-modal--confirm">
         <div class="customers-modal-header">
             <h2 class="customers-modal-title customers-modal-title--danger">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                    <path d="M10 11v6"/><path d="M14 11v6"/>
-                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline class="cursor-pointer" points="3 6 5 6 21 6"/>
+                    <path class="cursor-pointer" d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                    <path class="cursor-pointer" d="M10 11v6"/><path class="cursor-pointer" d="M14 11v6"/>
+                    <path class="cursor-pointer" d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
                 </svg>
-                Klant verwijderen
+                {{'PORTAL.CUSTOMERS.DELETE.TITLE'|translate}}
             </h2>
         </div>
         <div class="customers-modal-body customers-modal-body--confirm">
-            <p>Ben je zeker dat je klant <strong>#{{deleteConfirmId}}</strong> wil verwijderen? Alle locaties en subscriptions worden ook verwijderd.</p>
+            <p>{{'PORTAL.CUSTOMERS.DELETE.CONFIRM_PREFIX'|translate}} <strong>#{{deleteConfirmId}}</strong> {{'PORTAL.CUSTOMERS.DELETE.CONFIRM_SUFFIX'|translate}}</p>
         </div>
         <div class="customers-modal-footer">
             <div class="customers-modal-footer-actions">
-                <button class="customers-modal-btn customers-modal-btn--cancel cursor-pointer" (click)="cancelDelete()">Annuleren</button>
-                <button class="customers-modal-btn customers-modal-btn--danger cursor-pointer" (click)="executeDelete()">Verwijderen</button>
+                <button class="customers-modal-btn customers-modal-btn--cancel cursor-pointer" (click)="cancelDelete()">{{'PORTAL.CUSTOMERS.DELETE.CANCEL'|translate}}</button>
+                <button class="customers-modal-btn customers-modal-btn--danger cursor-pointer" (click)="executeDelete()">{{'PORTAL.CUSTOMERS.DELETE.DELETE'|translate}}</button>
             </div>
         </div>
     </div>

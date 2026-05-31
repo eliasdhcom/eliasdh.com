@@ -22,7 +22,6 @@ function logoToDataUrl(filename) {
 
 const PRICING_PLANS = [
     { name: 'Free',       monthly_price: 0   },
-    { name: 'ToDo',       monthly_price: 0   },
     { name: 'Basic',      monthly_price: 20  },
     { name: 'Growth',     monthly_price: 40  },
     { name: 'Startup',    monthly_price: 80  },
@@ -116,7 +115,7 @@ const CUSTOMERS = [
         email: 'invoice@tereiken.be', phone: '+3234574247', mobile: '+32477816519',
         logo: 'tereiken-logo.png',
         websites: [
-            { id: '024', name: 'Ter Eiken Website', url: 'https://tereiken.be', subscription_type: 'ToDo', is_live: 0, start_date: '2027-01-01', frequency: 'yearly', discount: 0 }
+            { id: '024', name: 'Ter Eiken Website', url: 'https://tereiken.be', subscription_type: 'Free', is_live: 0, start_date: '2027-01-01', frequency: 'yearly', discount: 0 }
         ],
         locations: [
             {
@@ -156,7 +155,7 @@ const CUSTOMERS = [
         email: 'invoice@tereiken.be', phone: '+3234574247', mobile: '+32477816519',
         logo: 'levelup-logo.png',
         websites: [
-            { id: '026', name: 'Level Up Website', url: 'https://levelup.be',      subscription_type: 'ToDo',       is_live: 0, start_date: '2027-01-01', frequency: 'yearly', discount: 0 },
+            { id: '026', name: 'Level Up Website', url: 'https://levelup.be',      subscription_type: 'Free',       is_live: 0, start_date: '2027-01-01', frequency: 'yearly', discount: 0 },
             { id: '027', name: 'Level Up App',     url: 'https://app.levelup.be',  subscription_type: 'Enterprise', is_live: 1, start_date: '2027-01-01', frequency: 'yearly', discount: 0 }
         ],
         locations: [
@@ -240,7 +239,6 @@ async function seed() {
         }
     }
 
-    // Always update logos from local files (works on fresh and existing databases)
     for (const c of CUSTOMERS) {
         const logoData = logoToDataUrl(c.logo);
         if (logoData) {

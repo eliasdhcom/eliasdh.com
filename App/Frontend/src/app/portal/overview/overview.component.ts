@@ -6,6 +6,7 @@
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 import { CustomersService, Customer, SubscriptionFrequency } from '../../services/customers.service';
 import { InvoicesService, InvoiceStatus } from '../../services/invoices.service';
 import { Subject, forkJoin, of } from 'rxjs';
@@ -28,14 +29,13 @@ interface TypeStat {
     cssClass: string;
 }
 
-const VAT_RATE   = 0.21;
-const DOMAIN_VAT = +(8.26 * (1 + VAT_RATE)).toFixed(2);
+const VAT_RATE = 0.21;
 const MONTH_LABELS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 @Component({
     selector: 'app-portal-overview',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, TranslatePipe],
     templateUrl: './overview.component.html',
     styleUrls: ['./overview.component.css']
 })
@@ -156,22 +156,24 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
             for (const website of (customer.websites ?? [])) {
                 if (!website.startDate) continue;
                 const isFree = this.isFreeOrTodo(website.subscriptionType);
+                if (website.payment <= 0 || isFree) continue;
 
-                if (website.payment > 0 && !isFree) {
-                    const m       = this.getMultiplier(website.frequency);
-                    const subtotal = Math.max(0, website.payment - website.discount);
-                    const amt     = subtotal * (1 + VAT_RATE) * m;
-                    for (const { start } of this.getBillingPeriods(website.startDate, website.frequency, endDate)) {
-                        const k = `${customer.id}_${website.id}_${start.toISOString()}_subscription`;
-                        addInvoice(k, start, amt);
-                    }
+                const m        = this.getMultiplier(website.frequency);
+                const subtotal = Math.max(0, website.payment - website.discount);
+                const amt      = subtotal * (1 + VAT_RATE) * m;
+                for (const { start } of this.getBillingPeriods(website.startDate, website.frequency, endDate)) {
+                    const k = `${customer.id}_${website.id}_${start.toISOString()}_subscription`;
+                    addInvoice(k, start, amt);
                 }
+            }
 
-                if (!isFree) {
-                    for (const { start } of this.getBillingPeriods(website.startDate, 'yearly', endDate)) {
-                        const k = `${customer.id}_${website.id}_${start.toISOString()}_domain`;
-                        addInvoice(k, start, DOMAIN_VAT);
-                    }
+            for (const domain of (customer.domains ?? [])) {
+                if (!domain.renewalDate || domain.annualPrice <= 0) continue;
+                const domainId = `domain:${String(domain.id ?? 0).padStart(4, '0')}`;
+                const amt      = +(domain.annualPrice * (1 + VAT_RATE)).toFixed(2);
+                for (const { start } of this.getBillingPeriods(domain.renewalDate, 'yearly', endDate)) {
+                    const k = `${customer.id}_${domainId}_${start.toISOString()}_domain`;
+                    addInvoice(k, start, amt);
                 }
             }
         }
@@ -228,8 +230,7 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
     }
 
     private isFreeOrTodo(type: string): boolean {
-        const t = type.toLowerCase();
-        return t.includes('free') || t.includes('todo');
+        return type.toLowerCase().includes('free');
     }
 
     private getMultiplier(freq: string): number {
@@ -274,16 +275,15 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
     }
 
     private readonly STANDARD_TYPES: { label: string; cssClass: string }[] = [
-        { label: 'Free',       cssClass: 'overview-badge--free'        },
-        { label: 'Basic',      cssClass: 'overview-badge--basic'       },
-        { label: 'Startup',    cssClass: 'overview-badge--startup'     },
-        { label: 'Growth',     cssClass: 'overview-badge--growth'      },
+        { label: 'Free',       cssClass: 'overview-badge--free'       },
+        { label: 'Basic',      cssClass: 'overview-badge--basic'      },
+        { label: 'Startup',    cssClass: 'overview-badge--startup'    },
+        { label: 'Growth',     cssClass: 'overview-badge--growth'     },
         { label: 'Business',   cssClass: 'overview-badge--business'   },
         { label: 'Enterprise', cssClass: 'overview-badge--enterprise' },
-        { label: 'Todo',       cssClass: 'overview-badge--todo'        },
     ];
 
-    private readonly TYPE_ORDER = ['free', 'basic', 'startup', 'growth', 'business', 'enterprise', 'todo'];
+    private readonly TYPE_ORDER = ['free', 'basic', 'startup', 'growth', 'business', 'enterprise'];
 
     private getTypeOrder(type: string): number {
         const t = type.toLowerCase();

@@ -15,7 +15,7 @@
                 </svg>
                 <span class="dashboard-sidebar-brand-name">EliasDH</span>
             </div>
-            <button class="dashboard-sidebar-toggle-btn cursor-pointer" (click)="toggleSidebar()" [title]="sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+            <button class="dashboard-sidebar-toggle-btn cursor-pointer" (click)="toggleSidebar()" [title]="sidebarCollapsed ? ('PORTAL.DASHBOARD.EXPAND_SIDEBAR'|translate) : ('PORTAL.DASHBOARD.COLLAPSE_SIDEBAR'|translate)">
                 <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <line class="cursor-pointer" x1="3" y1="12" x2="21" y2="12"/>
                     <line class="cursor-pointer" x1="3" y1="6" x2="21" y2="6"/>
@@ -24,34 +24,32 @@
             </button>
         </div>
         <nav class="dashboard-sidebar-nav">
-            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'overview'" (click)="navigateTo('overview')" title="Overview">
+            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'overview'" (click)="navigateTo('overview')" [title]="'PORTAL.NAV.OVERVIEW'|translate">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <rect class="cursor-pointer" x="3" y="3" width="7" height="7" rx="1"/>
                     <rect class="cursor-pointer" x="14" y="3" width="7" height="7" rx="1"/>
                     <rect class="cursor-pointer" x="3" y="14" width="7" height="7" rx="1"/>
                     <rect class="cursor-pointer" x="14" y="14" width="7" height="7" rx="1"/>
                 </svg>
-                <span class="dashboard-nav-label cursor-pointer">Overview</span>
+                <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.OVERVIEW' | translate}}</span>
             </button>
-            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'customers'" (click)="navigateTo('customers')" title="Customers">
+            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'customers'" (click)="navigateTo('customers')" [title]="'PORTAL.NAV.CUSTOMERS' | translate">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path class="cursor-pointer" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                     <circle class="cursor-pointer" cx="9" cy="7" r="4"/>
                     <path class="cursor-pointer" d="M23 21v-2a4 4 0 0 1-3-3.87"/>
                     <path class="cursor-pointer" d="M16 3.13a4 4 0 0 1 0 7.75"/>
                 </svg>
-                <span class="dashboard-nav-label cursor-pointer">Customers</span>
+                <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.CUSTOMERS'|translate}}</span>
             </button>
-            <!-- Subscriptions -->
-            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'subscriptions'" (click)="navigateTo('subscriptions')" title="Subscriptions">
+            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'subscriptions'" (click)="navigateTo('subscriptions')" [title]="'PORTAL.NAV.SUBSCRIPTIONS'|translate">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <rect class="cursor-pointer" x="1" y="4" width="22" height="16" rx="2" ry="2"/>
                     <line class="cursor-pointer" x1="1" y1="10" x2="23" y2="10"/>
                 </svg>
-                <span class="dashboard-nav-label cursor-pointer">Subscriptions</span>
+                <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.SUBSCRIPTIONS'|translate}}</span>
             </button>
-            <!-- Invoices -->
-            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'invoices'" (click)="navigateTo('invoices')" title="Invoices">
+            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'invoices'" (click)="navigateTo('invoices')" [title]="'PORTAL.NAV.INVOICES'|translate">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path class="cursor-pointer" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                     <polyline class="cursor-pointer" points="14 2 14 8 20 8"/>
@@ -59,49 +57,40 @@
                     <line class="cursor-pointer" x1="16" y1="17" x2="8" y2="17"/>
                     <polyline class="cursor-pointer" points="10 9 9 9 8 9"/>
                 </svg>
-                <span class="dashboard-nav-label cursor-pointer">Invoices</span>
+                <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.INVOICES'|translate}}</span>
             </button>
-            <!-- Users -->
-            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'users'" (click)="navigateTo('users')" title="Users">
+            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'users'" (click)="navigateTo('users')" [title]="'PORTAL.NAV.USERS'|translate">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path class="cursor-pointer" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                     <circle class="cursor-pointer" cx="12" cy="7" r="4"/>
                 </svg>
-                <span class="dashboard-nav-label cursor-pointer">Users</span>
+                <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.USERS'|translate}}</span>
             </button>
-            <!-- Analysis -->
-            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'analysis'" (click)="navigateTo('analysis')" title="Analysis">
+            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'analysis'" (click)="navigateTo('analysis')" [title]="'PORTAL.NAV.ANALYSIS'|translate">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <line class="cursor-pointer" x1="18" y1="20" x2="18" y2="10"/>
                     <line class="cursor-pointer" x1="12" y1="20" x2="12" y2="4"/>
                     <line class="cursor-pointer" x1="6" y1="20" x2="6" y2="14"/>
                     <line class="cursor-pointer" x1="2" y1="20" x2="22" y2="20"/>
                 </svg>
-                <span class="dashboard-nav-label cursor-pointer">Analysis</span>
+                <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.ANALYSIS'|translate}}</span>
             </button>
         </nav>
         <div class="dashboard-sidebar-footer">
-            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'settings'" (click)="navigateTo('settings')" title="Settings">
-                <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle class="cursor-pointer" cx="12" cy="12" r="3"/>
-                    <path class="cursor-pointer" d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                </svg>
-                <span class="dashboard-nav-label cursor-pointer">Settings</span>
-            </button>
-            <button class="dashboard-nav-item dashboard-nav-item-logout cursor-pointer" (click)="logout()" title="Logout">
+            <button class="dashboard-nav-item dashboard-nav-item-logout cursor-pointer" (click)="logout()" [title]="'PORTAL.NAV.LOGOUT'|translate">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path class="cursor-pointer" d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
                     <polyline class="cursor-pointer" points="16 17 21 12 16 7"/>
                     <line class="cursor-pointer" x1="21" y1="12" x2="9" y2="12"/>
                 </svg>
-                <span class="dashboard-nav-label cursor-pointer">Logout</span>
+                <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.LOGOUT'|translate}}</span>
             </button>
         </div>
     </aside>
     <div class="dashboard-main">
         <header class="dashboard-header">
             <div class="dashboard-header-left">
-                <button class="dashboard-mobile-menu-btn cursor-pointer" (click)="toggleMobileMenu()" aria-label="Toggle menu">
+                <button class="dashboard-mobile-menu-btn cursor-pointer" (click)="toggleMobileMenu()" [attr.aria-label]="'PORTAL.DASHBOARD.TOGGLE_MENU'|translate">
                     <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <line class="cursor-pointer" x1="3" y1="12" x2="21" y2="12"/>
                         <line class="cursor-pointer" x1="3" y1="6" x2="21" y2="6"/>
@@ -111,13 +100,17 @@
                 <h1 class="dashboard-header-page-title">{{getViewTitle()}}</h1>
             </div>
             <div class="dashboard-header-right">
-                <button class="dashboard-header-icon-btn cursor-pointer" (click)="navigateTo('settings')" title="Settings">
-                    <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle class="cursor-pointer" cx="12" cy="12" r="3"/>
-                        <path class="cursor-pointer" d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                    </svg>
-                </button>
-                <button class="dashboard-header-icon-btn dashboard-header-logout-btn cursor-pointer" (click)="logout()" title="Logout">
+                <div class="dashboard-lang-dropdown">
+                    <button class="dashboard-header-icon-btn cursor-pointer" (click)="toggleLangDropdown($event)" [title]="'PORTAL.LANG.TITLE' | translate">
+                        <svg class="cursor-pointer" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                            <path class="cursor-pointer" d="M4 0H6V2H10V4H8.86807C8.57073 5.66996 7.78574 7.17117 6.6656 8.35112C7.46567 8.73941 8.35737 8.96842 9.29948 8.99697L10.2735 6H12.7265L15.9765 16H13.8735L13.2235 14H9.77647L9.12647 16H7.0235L8.66176 10.9592C7.32639 10.8285 6.08165 10.3888 4.99999 9.71246C3.69496 10.5284 2.15255 11 0.5 11H0V9H0.5C1.5161 9 2.47775 8.76685 3.33437 8.35112C2.68381 7.66582 2.14629 6.87215 1.75171 6H4.02179C4.30023 6.43491 4.62904 6.83446 4.99999 7.19044C5.88743 6.33881 6.53369 5.23777 6.82607 4H0V2H4V0ZM12.5735 12L11.5 8.69688L10.4265 12H12.5735Z"/>
+                        </svg>
+                    </button>
+                    <ul class="dashboard-lang-menu" *ngIf="langDropdownOpen" (click)="$event.stopPropagation()">
+                        <li *ngFor="let lang of languages" [class.dashboard-lang-active]="lang.code === currentLanguage" (click)="changeLanguage(lang.code)" class="cursor-pointer">{{lang.name}}</li>
+                    </ul>
+                </div>
+                <button class="dashboard-header-icon-btn dashboard-header-logout-btn cursor-pointer" (click)="logout()" [title]="'PORTAL.NAV.LOGOUT'|translate">
                     <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path class="cursor-pointer" d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
                         <polyline class="cursor-pointer" points="16 17 21 12 16 7"/>
@@ -125,7 +118,7 @@
                     </svg>
                 </button>
                 <div class="dashboard-header-divider"></div>
-                <button class="dashboard-header-user-info cursor-pointer" (click)="toggleUserPanel()" title="Gebruikersprofiel">
+                <button class="dashboard-header-user-info cursor-pointer" (click)="toggleUserPanel()" [title]="'PORTAL.DASHBOARD.USER_PROFILE'|translate">
                     <div class="dashboard-user-avatar cursor-pointer">
                         <img *ngIf="userAvatar" class="dashboard-user-avatar-img cursor-pointer" [src]="userAvatar" alt="Profielfoto"/>
                         <span *ngIf="!userAvatar" class="cursor-pointer">{{getUserInitials()}}</span>
@@ -156,16 +149,14 @@
             <div class="dashboard-content-view" *ngIf="currentView === 'analysis'">
                 <app-portal-analysis></app-portal-analysis>
             </div>
-            <div class="dashboard-content-view" *ngIf="currentView === 'settings'">
-            </div>
         </main>
     </div>
 </div>
 <div class="dashboard-user-panel-overlay" [class.dashboard-user-panel-overlay--open]="userPanelOpen" (click)="closeUserPanel()"></div>
-<aside class="dashboard-user-panel" [class.dashboard-user-panel--open]="userPanelOpen" role="dialog" aria-label="Gebruikersprofiel">
+<aside class="dashboard-user-panel" [class.dashboard-user-panel--open]="userPanelOpen" role="dialog" [attr.aria-label]="'PORTAL.DASHBOARD.USER_PROFILE'|translate">
     <div class="dashboard-user-panel-header">
-        <span class="dashboard-user-panel-title">Gebruikersprofiel</span>
-        <button class="dashboard-user-panel-close cursor-pointer" (click)="closeUserPanel()" title="Sluiten">
+        <span class="dashboard-user-panel-title">{{'PORTAL.DASHBOARD.USER_PROFILE'|translate}}</span>
+        <button class="dashboard-user-panel-close cursor-pointer" (click)="closeUserPanel()" [title]="'PORTAL.COMMON.CLOSE'|translate">
             <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
                 <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
@@ -193,7 +184,7 @@
                         <circle cx="12" cy="7" r="4"/>
                     </svg>
                 </span>
-                <span class="dashboard-user-panel-detail-label">Voornaam</span>
+                <span class="dashboard-user-panel-detail-label">{{'PORTAL.DASHBOARD.FIRST_NAME'|translate}}</span>
                 <span class="dashboard-user-panel-detail-value">{{user.firstName}}</span>
             </li>
             <li class="dashboard-user-panel-detail-row">
@@ -203,7 +194,7 @@
                         <circle cx="12" cy="7" r="4"/>
                     </svg>
                 </span>
-                <span class="dashboard-user-panel-detail-label">Achternaam</span>
+                <span class="dashboard-user-panel-detail-label">{{'PORTAL.DASHBOARD.LAST_NAME'|translate}}</span>
                 <span class="dashboard-user-panel-detail-value">{{user.lastName}}</span>
             </li>
             <li class="dashboard-user-panel-detail-row">
@@ -213,7 +204,7 @@
                         <path d="M16 3H8a2 2 0 0 0-2 2v2h12V5a2 2 0 0 0-2-2z"/>
                     </svg>
                 </span>
-                <span class="dashboard-user-panel-detail-label">Bedrijf</span>
+                <span class="dashboard-user-panel-detail-label">{{'PORTAL.DASHBOARD.COMPANY'|translate}}</span>
                 <span class="dashboard-user-panel-detail-value">{{user.company}}</span>
             </li>
             <li class="dashboard-user-panel-detail-row">
@@ -222,7 +213,7 @@
                         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.64a16 16 0 0 0 5.45 5.45l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
                     </svg>
                 </span>
-                <span class="dashboard-user-panel-detail-label">Telefoon</span>
+                <span class="dashboard-user-panel-detail-label">{{'PORTAL.DASHBOARD.PHONE'|translate}}</span>
                 <span class="dashboard-user-panel-detail-value">{{user.phone}}</span>
             </li>
             <li class="dashboard-user-panel-detail-row">
@@ -232,7 +223,7 @@
                         <polyline points="22,6 12,13 2,6"/>
                     </svg>
                 </span>
-                <span class="dashboard-user-panel-detail-label">E-mailadres</span>
+                <span class="dashboard-user-panel-detail-label">{{'PORTAL.DASHBOARD.EMAIL'|translate}}</span>
                 <span class="dashboard-user-panel-detail-value">{{user.email}}</span>
             </li>
             <li class="dashboard-user-panel-detail-row">
@@ -244,7 +235,7 @@
                         <line x1="3" y1="10" x2="21" y2="10"/>
                     </svg>
                 </span>
-                <span class="dashboard-user-panel-detail-label">Geboortedatum</span>
+                <span class="dashboard-user-panel-detail-label">{{'PORTAL.DASHBOARD.BIRTH_DATE'|translate}}</span>
                 <span class="dashboard-user-panel-detail-value">{{user.birthDate}}</span>
             </li>
             <li class="dashboard-user-panel-detail-row">
@@ -253,7 +244,7 @@
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                     </svg>
                 </span>
-                <span class="dashboard-user-panel-detail-label">Rol</span>
+                <span class="dashboard-user-panel-detail-label">{{'PORTAL.DASHBOARD.ROLE'|translate}}</span>
                 <span class="dashboard-user-panel-detail-value">{{user.role}}</span>
             </li>
         </ul>

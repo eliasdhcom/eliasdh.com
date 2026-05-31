@@ -18,7 +18,7 @@ class ContactService {
                 secure: process.env.SMTP_SECURE === 'true',
                 auth: {
                     user: process.env.SMTP_USER,
-                    pass: process.env.SMTP_PASS
+                    pass: (process.env.SMTP_PASS || '').replace(/\s/g, '')
                 }
             });
             logger.info('SMTP transporter configured successfully');
@@ -43,16 +43,16 @@ class ContactService {
                 subject: `[Website Contact] ${subject}`,
                 html: `
                     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                        <div style="background: linear-gradient(135deg, #0f54ae 0%, #4f94f0 100%); padding: 20px; border-radius: 10px 10px 0 0;">
+                        <div style="background: #4f94f0; padding: 20px; border-radius: 10px 10px 0 0;">
                             <h2 style="color: #ffffff; margin: 0;">New Contact Message</h2>
                         </div>
                         <div style="background: #f6f7f9; padding: 30px; border-radius: 0 0 10px 10px;">
                             <p style="font-size: 16px; color: #333333;"><strong>From:</strong> ${name}</p>
-                            <p style="font-size: 16px; color: #333333;"><strong>Email:</strong> <a href="mailto:${email}" style="color: #0f54ae;">${email}</a></p>
+                            <p style="font-size: 16px; color: #333333;"><strong>Email:</strong> <a href="mailto:${email}" style="color: #4f94f0;">${email}</a></p>
                             <p style="font-size: 16px; color: #333333;"><strong>Subject:</strong> ${subject}</p>
-                            <hr style="border: none; border-top: 2px solid #0f54ae; margin: 20px 0;">
+                            <hr style="border: none; border-top: 2px solid #4f94f0; margin: 20px 0;">
                             <p style="font-size: 16px; color: #333333;"><strong>Message:</strong></p>
-                            <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #0f54ae;">
+                            <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #4f94f0;">
                                 <p style="font-size: 15px; color: #555555; line-height: 1.6; white-space: pre-wrap;">${message}</p>
                             </div>
                             <p style="font-size: 12px; color: #888888; margin-top: 20px;">
@@ -69,7 +69,7 @@ class ContactService {
                 subject: 'Confirmation: Your message has been received',
                 html: `
                     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                        <div style="background: linear-gradient(135deg, #0f54ae 0%, #4f94f0 100%); padding: 20px; border-radius: 10px 10px 0 0;">
+                        <div style="background: #4f94f0; padding: 20px; border-radius: 10px 10px 0 0;">
                             <h2 style="color: #ffffff; margin: 0;">Thank you for your message!</h2>
                         </div>
                         <div style="background: #f6f7f9; padding: 30px; border-radius: 0 0 10px 10px;">
@@ -77,7 +77,7 @@ class ContactService {
                             <p style="font-size: 16px; color: #333333; line-height: 1.6;">
                                 Thank you for contacting EliasDH! We have successfully received your message and will respond as soon as possible.
                             </p>
-                            <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #0f54ae; margin: 20px 0;">
+                            <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #4f94f0; margin: 20px 0;">
                                 <p style="font-size: 14px; color: #333333; margin: 0;"><strong>Your message:</strong></p>
                                 <p style="font-size: 14px; color: #555555; margin: 10px 0 0 0; white-space: pre-wrap;">${message}</p>
                             </div>
@@ -87,7 +87,7 @@ class ContactService {
                             </p>
                             <hr style="border: none; border-top: 1px solid #dddddd; margin: 20px 0;">
                             <p style="font-size: 12px; color: #888888; text-align: center;">
-                                EliasDH | <a href="https://eliasdh.com" style="color: #0f54ae;">eliasdh.com</a>
+                                EliasDH | <a href="https://eliasdh.com" style="color: #4f94f0;">eliasdh.com</a>
                             </p>
                         </div>
                     </div>

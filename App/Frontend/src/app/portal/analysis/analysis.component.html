@@ -11,9 +11,9 @@
                         <line x1="12" y1="1" x2="12" y2="23"/>
                         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                     </svg>
-                    Omzetanalyse
+                    {{'PORTAL.ANALYSIS.REVENUE_TITLE'|translate}}
                 </h2>
-                <span class="analysis-section-sub">Excl. BTW · op basis van actieve subscripties</span>
+                <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.REVENUE_SUB'|translate}}</span>
             </div>
             <div class="analysis-period-grid">
                 <div class="analysis-period-card" *ngFor="let p of periods">
@@ -21,11 +21,11 @@
                     <span class="analysis-period-note">{{p.note}}</span>
                     <div class="analysis-period-values">
                         <div class="analysis-period-row">
-                            <span class="analysis-period-tag analysis-tag--revenue">Omzet excl. BTW</span>
+                            <span class="analysis-period-tag analysis-tag--revenue">{{'PORTAL.ANALYSIS.REVENUE_EXCL'|translate}}</span>
                             <span class="analysis-period-amount">{{fmt(revenueFor(p.divisor))}}</span>
                         </div>
                         <div class="analysis-period-row">
-                            <span class="analysis-period-tag analysis-tag--incl">Omzet incl. BTW</span>
+                            <span class="analysis-period-tag analysis-tag--incl">{{'PORTAL.ANALYSIS.REVENUE_INCL'|translate}}</span>
                             <span class="analysis-period-amount analysis-amount--incl">{{fmt(revenueInclFor(p.divisor))}}</span>
                         </div>
                     </div>
@@ -39,9 +39,9 @@
                         <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
                         <polyline points="16 7 22 7 22 13"/>
                     </svg>
-                    Winstanalyse
+                    {{'PORTAL.ANALYSIS.PROFIT_TITLE'|translate}}
                 </h2>
-                <span class="analysis-section-sub">Vennootschapsbelasting 20%</span>
+                <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.PROFIT_SUB'|translate}}</span>
             </div>
             <div class="analysis-period-grid">
                 <div class="analysis-period-card" *ngFor="let p of periods">
@@ -49,17 +49,17 @@
                     <span class="analysis-period-note">{{p.note}}</span>
                     <div class="analysis-period-values">
                         <div class="analysis-period-row">
-                            <span class="analysis-period-tag analysis-tag--gross">Brutowinst</span>
+                            <span class="analysis-period-tag analysis-tag--gross">{{'PORTAL.ANALYSIS.GROSS'|translate}}</span>
                             <span class="analysis-period-amount" [class.analysis-amount--positive]="grossFor(p.divisor) >= 0" [class.analysis-amount--negative]="grossFor(p.divisor) < 0">
                                 {{fmt(grossFor(p.divisor))}}
                             </span>
                         </div>
                         <div class="analysis-period-row">
-                            <span class="analysis-period-tag analysis-tag--tax">Belasting (20%)</span>
+                            <span class="analysis-period-tag analysis-tag--tax">{{'PORTAL.ANALYSIS.TAX'|translate}}</span>
                             <span class="analysis-period-amount analysis-amount--tax">−{{fmt(taxFor(p.divisor))}}</span>
                         </div>
                         <div class="analysis-period-row analysis-period-row--net">
-                            <span class="analysis-period-tag analysis-tag--net">Nettowinst</span>
+                            <span class="analysis-period-tag analysis-tag--net">{{'PORTAL.ANALYSIS.NET'|translate}}</span>
                             <span class="analysis-period-amount analysis-amount--net" [class.analysis-amount--positive]="netFor(p.divisor) >= 0" [class.analysis-amount--negative]="netFor(p.divisor) < 0">
                                 {{fmt(netFor(p.divisor))}}
                             </span>
@@ -76,32 +76,32 @@
                         <line x1="8" y1="21" x2="16" y2="21"/>
                         <line x1="12" y1="17" x2="12" y2="21"/>
                     </svg>
-                    Kosten
+                    {{'PORTAL.ANALYSIS.COSTS_TITLE'|translate}}
                 </h2>
                 <div class="analysis-section-sub-group">
-                    <span class="analysis-section-sub">Vast: {{fmt(totalAnnualFixedCosts)}}/jaar</span>
+                    <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.FIXED'|translate}}: {{fmt(totalAnnualFixedCosts)}}{{'PORTAL.ANALYSIS.PER_YEAR'|translate}}</span>
                     <span class="analysis-section-sub-sep">·</span>
-                    <span class="analysis-section-sub">Variabel: {{fmt(totalAnnualVariableCosts)}}/jaar</span>
+                    <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.VARIABLE'|translate}}: {{fmt(totalAnnualVariableCosts)}}{{'PORTAL.ANALYSIS.PER_YEAR'|translate}}</span>
                     <span class="analysis-section-sub-sep">·</span>
-                    <span class="analysis-section-sub">Totaal: {{fmt(totalAnnualCosts)}}/jaar</span>
+                    <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.TOTAL'|translate}}: {{fmt(totalAnnualCosts)}}{{'PORTAL.ANALYSIS.PER_YEAR'|translate}}</span>
                 </div>
             </div>
             <div class="analysis-costs-table">
                 <div class="analysis-costs-row" *ngFor="let c of costs; trackBy: trackById">
-                    <input class="analysis-input analysis-input--name cursor-text" [(ngModel)]="c.name" placeholder="Naam kost"/>
+                    <input class="analysis-input analysis-input--name cursor-text" [(ngModel)]="c.name" [placeholder]="'PORTAL.ANALYSIS.COST_NAME'|translate"/>
                     <div class="analysis-costs-controls">
                         <select class="analysis-select analysis-select--type cursor-pointer" [(ngModel)]="c.type" [class.analysis-select--fixed]="c.type === 'fixed'" [class.analysis-select--variable]="c.type === 'variable'">
-                            <option class="cursor-pointer" value="fixed">Vast</option>
-                            <option class="cursor-pointer" value="variable">Variabel</option>
+                            <option class="cursor-pointer" value="fixed">{{'PORTAL.ANALYSIS.FIXED'|translate}}</option>
+                            <option class="cursor-pointer" value="variable">{{'PORTAL.ANALYSIS.VARIABLE'|translate}}</option>
                         </select>
                         <select class="analysis-select analysis-select--freq cursor-pointer" [(ngModel)]="c.frequency">
-                            <option class="cursor-pointer" value="monthly">Maandelijks</option>
-                            <option class="cursor-pointer" value="quarterly">Kwartaal</option>
-                            <option class="cursor-pointer" value="yearly">Jaarlijks</option>
+                            <option class="cursor-pointer" value="monthly">{{'PORTAL.ANALYSIS.FREQ_MONTHLY'|translate}}</option>
+                            <option class="cursor-pointer" value="quarterly">{{'PORTAL.ANALYSIS.FREQ_QUARTERLY'|translate}}</option>
+                            <option class="cursor-pointer" value="yearly">{{'PORTAL.ANALYSIS.FREQ_YEARLY'|translate}}</option>
                         </select>
                         <input class="analysis-input analysis-input--amount cursor-text" type="number" min="0" step="0.01" [(ngModel)]="c.amount"/>
                         <span class="analysis-costs-annual">{{fmt(annualCost(c))}}</span>
-                        <button class="analysis-btn-remove cursor-pointer" (click)="removeCost(c.id)" title="Verwijder">
+                        <button class="analysis-btn-remove cursor-pointer" (click)="removeCost(c.id)" [title]="'PORTAL.ANALYSIS.REMOVE_COST'|translate">
                             <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <polyline class="cursor-pointer" points="3 6 5 6 21 6"/>
                                 <path class="cursor-pointer" d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
@@ -117,7 +117,7 @@
                             <line class="cursor-pointer" x1="12" y1="5" x2="12" y2="19"/>
                             <line class="cursor-pointer" x1="5" y1="12" x2="19" y2="12"/>
                         </svg>
-                        Kost toevoegen
+                        {{'PORTAL.ANALYSIS.ADD_COST'|translate}}
                     </button>
                 </div>
             </div>
@@ -130,31 +130,31 @@
                         <line x1="12" y1="8" x2="12" y2="12"/>
                         <line x1="12" y1="16" x2="12.01" y2="16"/>
                     </svg>
-                    Jaarlijkse samenvatting
+                    {{'PORTAL.ANALYSIS.SUMMARY_TITLE'|translate}}
                 </h2>
-                <span class="analysis-section-sub">Excl. BTW</span>
+                <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.SUMMARY_SUB'|translate}}</span>
             </div>
             <div class="analysis-summary-grid">
                 <div class="analysis-summary-card analysis-summary-card--revenue">
-                    <span class="analysis-summary-label">Omzet</span>
+                    <span class="analysis-summary-label">{{'PORTAL.ANALYSIS.SUMMARY_REVENUE'|translate}}</span>
                     <span class="analysis-summary-value">{{fmt(revenueExcl)}}</span>
                 </div>
                 <div class="analysis-summary-card analysis-summary-card--costs">
-                    <span class="analysis-summary-label">Totale kosten</span>
+                    <span class="analysis-summary-label">{{'PORTAL.ANALYSIS.SUMMARY_COSTS'|translate}}</span>
                     <span class="analysis-summary-value">−{{fmt(totalAnnualCosts)}}</span>
                 </div>
                 <div class="analysis-summary-card analysis-summary-card--gross">
-                    <span class="analysis-summary-label">Brutowinst</span>
+                    <span class="analysis-summary-label">{{'PORTAL.ANALYSIS.GROSS'|translate}}</span>
                     <span class="analysis-summary-value" [class.analysis-amount--positive]="grossProfitYear >= 0" [class.analysis-amount--negative]="grossProfitYear < 0">
                         {{fmt(grossProfitYear)}}
                     </span>
                 </div>
                 <div class="analysis-summary-card analysis-summary-card--tax">
-                    <span class="analysis-summary-label">Vennootschapsbelasting (20%)</span>
+                    <span class="analysis-summary-label">{{'PORTAL.ANALYSIS.SUMMARY_TAX'|translate}}</span>
                     <span class="analysis-summary-value analysis-amount--tax">−{{fmt(taxYear)}}</span>
                 </div>
                 <div class="analysis-summary-card analysis-summary-card--net">
-                    <span class="analysis-summary-label">Nettowinst na belastingen</span>
+                    <span class="analysis-summary-label">{{'PORTAL.ANALYSIS.SUMMARY_NET'|translate}}</span>
                     <span class="analysis-summary-value analysis-summary-value--large" [class.analysis-amount--positive]="netProfitYear >= 0" [class.analysis-amount--negative]="netProfitYear < 0">
                         {{fmt(netProfitYear)}}
                     </span>

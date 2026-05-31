@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
-import { CustomersService, Customer } from '../services/customers.service';
+import { CustomersService, Customer, CustomerLocation } from '../services/customers.service';
 import { LanguageService } from '../services/language.service';
 
 declare const L: any;
@@ -31,6 +31,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     private refreshInterval: any;
     customers: Customer[] = [];
     selectedCustomer: Customer | null = null;
+    selectedLocation: CustomerLocation | null = null;
     selectedLat: number | null = null;
     selectedLng: number | null = null;
     isLoading: boolean = true;
@@ -53,8 +54,19 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         private router: Router
     ) { }
 
+    private focusLat: number | null = null;
+    private focusLng: number | null = null;
+
     ngOnInit(): void {
         this.languageService.checkAndSetLanguage();
+        this.route.queryParams.subscribe(params => {
+            const lat = parseFloat(params['lat']);
+            const lng = parseFloat(params['lng']);
+            if (!isNaN(lat) && !isNaN(lng)) {
+                this.focusLat = lat;
+                this.focusLng = lng;
+            }
+        });
         this.loadCustomers();
         this.startAutoRefresh();
     }
@@ -64,6 +76,9 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this.locateUser();
         if (this.customers.length > 0) {
             this.addMarkersToMap();
+        }
+        if (this.focusLat !== null && this.focusLng !== null) {
+            this.map.flyTo([this.focusLat, this.focusLng], 16, { animate: true, duration: 1.2 });
         }
     }
 
@@ -211,6 +226,9 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectedCustomer = customer;
         this.selectedLat = lat ?? customer.latitude ?? null;
         this.selectedLng = lng ?? customer.longitude ?? null;
+        this.selectedLocation = (lat != null && lng != null)
+            ? (customer.locations?.find(l => l.latitude === lat && l.longitude === lng) ?? customer.locations?.[0] ?? null)
+            : (customer.locations?.[0] ?? null);
         this.isSidebarOpen = true;
         this.router.navigate([], { queryParams: { customerId: customer.id }, replaceUrl: true });
 
@@ -236,6 +254,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     closeSidebar(): void {
         this.isSidebarOpen = false;
         this.selectedCustomer = null;
+        this.selectedLocation = null;
         this.router.navigate([], { queryParams: {}, replaceUrl: true });
     }
 

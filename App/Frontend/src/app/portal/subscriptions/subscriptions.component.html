@@ -3,20 +3,20 @@
     <div class="subscriptions-top-bar">
         <div class="subscriptions-filters">
             <button class="subscriptions-filter-btn cursor-pointer" [class.subscriptions-filter-btn--active]="filterLive === 'all'" (click)="setFilter('all')">
-                Alle <span class="subscriptions-filter-count cursor-pointer">{{subscriptions.length}}</span>
+                {{'PORTAL.SUBSCRIPTIONS.ALL'|translate}} <span class="subscriptions-filter-count cursor-pointer">{{subscriptions.length}}</span>
             </button>
             <button class="subscriptions-filter-btn cursor-pointer" [class.subscriptions-filter-btn--active]="filterLive === 'live'" (click)="setFilter('live')">
-                Actief <span class="subscriptions-filter-count subscriptions-filter-count--live cursor-pointer">{{liveCount}}</span>
+                {{'PORTAL.SUBSCRIPTIONS.ACTIVE'|translate}} <span class="subscriptions-filter-count subscriptions-filter-count--live cursor-pointer">{{liveCount}}</span>
             </button>
             <button class="subscriptions-filter-btn cursor-pointer" [class.subscriptions-filter-btn--active]="filterLive === 'inactive'" (click)="setFilter('inactive')">
-                Inactief <span class="subscriptions-filter-count cursor-pointer">{{inactiveCount}}</span>
+                {{'PORTAL.SUBSCRIPTIONS.INACTIVE'|translate}} <span class="subscriptions-filter-count cursor-pointer">{{inactiveCount}}</span>
             </button>
         </div>
         <div class="subscriptions-search-wrap">
             <svg class="subscriptions-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
-            <input class="subscriptions-search cursor-text" type="text" placeholder="Zoek op naam, URL, klant, type of ID..." [value]="searchQuery" (input)="onSearch($event)"/>
+            <input class="subscriptions-search cursor-text" type="text" [placeholder]="'PORTAL.SUBSCRIPTIONS.SEARCH'|translate" [value]="searchQuery" (input)="onSearch($event)"/>
         </div>
     </div>
     <div class="subscriptions-loading" *ngIf="loading">
@@ -27,13 +27,13 @@
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
         </svg>
         <p>{{error}}</p>
-        <button class="subscriptions-retry-btn cursor-pointer" (click)="loadSubscriptions()">Opnieuw proberen</button>
+        <button class="subscriptions-retry-btn cursor-pointer" (click)="loadSubscriptions()">{{'PORTAL.COMMON.RETRY'|translate}}</button>
     </div>
     <div class="subscriptions-empty-state" *ngIf="!loading && !error && filteredSubscriptions.length === 0">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
         </svg>
-        <p>Geen subscriptions gevonden.</p>
+        <p>{{'PORTAL.SUBSCRIPTIONS.EMPTY'|translate}}</p>
     </div>
     <div class="subscriptions-list" *ngIf="!loading && !error && filteredSubscriptions.length > 0">
         <div class="subscriptions-group" *ngFor="let group of groupedFilteredSubscriptions">
@@ -44,11 +44,11 @@
                 </div>
                 <span class="subscriptions-group-name">{{group.customerName}}</span>
                 <span class="subscriptions-group-id">#{{group.customerId}}</span>
-                <span class="subscriptions-group-count">{{group.items.length}} subscription{{group.items.length !== 1 ? 's' : ''}}</span>
+                <span class="subscriptions-group-count">{{group.items.length}} {{group.items.length !== 1 ? ('PORTAL.SUBSCRIPTIONS.SUBSCRIPTIONS'|translate) : ('PORTAL.SUBSCRIPTIONS.SUBSCRIPTION'|translate)}}</span>
             </div>
             <div class="subscriptions-card" [id]="'sub-' + sub.id" [class.subscriptions-card--highlighted]="_highlightId === sub.id" *ngFor="let sub of group.items">
                 <div class="subscriptions-card-header">
-                    <div class="subscriptions-status-dot" [class.subscriptions-status-dot--live]="sub.isLive" [title]="sub.isLive ? 'Actief' : 'Inactief'"></div>
+                    <div class="subscriptions-status-dot" [class.subscriptions-status-dot--live]="sub.isLive" [title]="sub.isLive ? ('PORTAL.COMMON.ACTIVE'|translate) : ('PORTAL.COMMON.INACTIVE'|translate)"></div>
                     <div class="subscriptions-card-info">
                         <div class="subscriptions-card-row-top">
                             <span class="subscriptions-card-name">{{sub.name}}</span>

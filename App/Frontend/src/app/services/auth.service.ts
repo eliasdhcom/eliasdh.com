@@ -29,6 +29,42 @@ export class AuthService {
     private readonly router     = inject(Router);
     private readonly http       = inject(HttpClient);
 
+    async forgotPassword(email: string): Promise<boolean> {
+        try {
+            const res = await firstValueFrom(
+                this.http.post<{ success: boolean }>(
+                    `${environment.eliasdhApiUrl}/api/v1/auth/forgot-password`,
+                    { email: email.trim() }
+                )
+            );
+            return !!res?.success;
+        } catch { return false; }
+    }
+
+    async verifyResetCode(email: string, code: string): Promise<boolean> {
+        try {
+            const res = await firstValueFrom(
+                this.http.post<{ success: boolean }>(
+                    `${environment.eliasdhApiUrl}/api/v1/auth/verify-reset-code`,
+                    { email: email.trim(), code }
+                )
+            );
+            return !!res?.success;
+        } catch { return false; }
+    }
+
+    async resetPassword(email: string, code: string, password: string): Promise<boolean> {
+        try {
+            const res = await firstValueFrom(
+                this.http.post<{ success: boolean }>(
+                    `${environment.eliasdhApiUrl}/api/v1/auth/reset-password`,
+                    { email: email.trim(), code, password }
+                )
+            );
+            return !!res?.success;
+        } catch { return false; }
+    }
+
     async login(email: string, password: string): Promise<boolean> {
         try {
             const res = await firstValueFrom(

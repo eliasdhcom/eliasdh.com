@@ -7,6 +7,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { UsersService, PortalUser } from '../../services/users.service';
 import { CustomersService, Customer } from '../../services/customers.service';
 import { Subject } from 'rxjs';
@@ -15,7 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
     selector: 'app-portal-users',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, TranslatePipe],
     templateUrl: './users.component.html',
     styleUrls: ['./users.component.css']
 })
@@ -32,9 +33,10 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
     editedUser:    PortalUser = this.emptyUser();
     newPassword    = '';
     avatarPreview: string | null = null;
-    saving         = false;
-    deleting       = false;
-    saveError      = '';
+    saving            = false;
+    deleting          = false;
+    deleteConfirmOpen = false;
+    saveError         = '';
 
     readonly ROLES = ['Admin', 'Employee', 'Customer'];
 
@@ -138,14 +140,18 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
     }
 
     closePanel(): void {
-        this.panelOpen    = false;
-        this.isCreating   = false;
-        this.selectedUser = null;
-        this.saveError    = '';
-        this.deleting     = false;
+        this.panelOpen         = false;
+        this.isCreating        = false;
+        this.selectedUser      = null;
+        this.saveError         = '';
+        this.deleting          = false;
+        this.deleteConfirmOpen = false;
     }
 
-    confirmDelete(): void {
+    openDeleteConfirm(): void  { this.deleteConfirmOpen = true; }
+    cancelDeleteConfirm(): void { this.deleteConfirmOpen = false; }
+
+    executeDelete(): void {
         if (!this.selectedUser || this.deleting) return;
         this.deleting  = true;
         this.saveError = '';
@@ -154,12 +160,14 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.users = this.users.filter(u => u.id !== this.selectedUser!.id);
-                    this.deleting = false;
+                    this.deleting          = false;
+                    this.deleteConfirmOpen = false;
                     this.closePanel();
                 },
                 error: () => {
-                    this.saveError = 'Verwijderen mislukt. Probeer opnieuw.';
-                    this.deleting  = false;
+                    this.saveError         = 'Verwijderen mislukt. Probeer opnieuw.';
+                    this.deleting          = false;
+                    this.deleteConfirmOpen = false;
                 }
             });
     }

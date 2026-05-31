@@ -6,7 +6,8 @@
 
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CustomersService, Customer, CustomerLocation, SubscriptionFrequency } from '../../services/customers.service';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CustomersService, Customer, CustomerDomain, CustomerLocation, SubscriptionFrequency } from '../../services/customers.service';
 import { InvoicesService } from '../../services/invoices.service';
 import { Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
@@ -46,16 +47,13 @@ export interface InvoiceGroup {
 }
 
 const VAT_RATE = 0.21;
-const DOMAIN_PRICE = 8.26;
-const DOMAIN_VAT = +(DOMAIN_PRICE * VAT_RATE).toFixed(2);
-const DOMAIN_TOTAL = +(DOMAIN_PRICE + DOMAIN_VAT).toFixed(2);
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
 
 @Component({
     selector: 'app-portal-invoices',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, TranslatePipe],
     templateUrl: './invoices.component.html',
     styleUrls: ['./invoices.component.css']
 })
@@ -133,76 +131,80 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         const raw: Omit<Invoice, 'id' | 'number'>[] = [];
 
         for (const customer of customers.filter(c => !c.isHQ)) {
+            const customerBase = {
+                customerId:        customer.id,
+                customerName:      customer.name,
+                customerLogo:      customer.logo,
+                customerVat:       customer.vat ?? '',
+                customerAddress:   customer.address ?? '',
+                customerLocations: customer.locations ?? []
+            };
+
             for (const website of (customer.websites ?? [])) {
                 if (!website.startDate) continue;
+                const isFree = website.subscriptionType.toLowerCase().includes('free');
+                if (website.payment <= 0 || isFree) continue;
 
-                const isFree = website.subscriptionType.toLowerCase().includes('free') || website.subscriptionType.toLowerCase().includes('todo');
+                const m                = this.getMultiplier(website.frequency);
+                const monthlySub       = website.subtotal ?? Math.max(0, website.payment - website.discount);
+                const periodicPayment  = website.payment  * m;
+                const periodicDiscount = website.discount * m;
+                const periodicSubtotal = monthlySub       * m;
+                const periodicVat      = (website.vat     ?? monthlySub * VAT_RATE) * m;
+                const periodicTotal    = (website.total   ?? monthlySub * (1 + VAT_RATE)) * m;
 
-                const baseInfo = {
-                    customerId: customer.id,
-                    customerName: customer.name,
-                    customerLogo: customer.logo,
-                    customerVat: customer.vat ?? '',
-                    customerAddress: customer.address ?? '',
-                    customerLocations: customer.locations ?? [],
-                    subscriptionId: website.id,
-                    subscriptionUrl: website.url
-                };
-
-                if (website.payment > 0 && !isFree) {
-                    const m = this.getMultiplier(website.frequency);
-                    const monthlySub = website.subtotal ?? Math.max(0, website.payment - website.discount);
-                    const periodicPayment  = website.payment * m;
-                    const periodicDiscount = website.discount * m;
-                    const periodicSubtotal = monthlySub * m;
-                    const periodicVat      = (website.vat ?? monthlySub * VAT_RATE) * m;
-                    const periodicTotal    = (website.total ?? monthlySub * (1 + VAT_RATE)) * m;
-
-                    for (const { start, end } of this.getBillingPeriods(website.startDate, website.frequency, endDate)) {
-                        const due = new Date(start);
-                        due.setDate(due.getDate() + 30);
-                        raw.push({
-                            ...baseInfo,
-                            issueDate: new Date(start),
-                            dueDate: due,
-                            periodStart: start,
-                            periodEnd: end,
-                            subscriptionName: website.name,
-                            subscriptionType: website.subscriptionType,
-                            frequency: website.frequency,
-                            payment: periodicPayment,
-                            discount: periodicDiscount,
-                            subtotal: periodicSubtotal,
-                            vat: periodicVat,
-                            total: periodicTotal,
-                            invoiceType: 'subscription',
-                            paid: false
-                        });
-                    }
+                for (const { start, end } of this.getBillingPeriods(website.startDate, website.frequency, endDate)) {
+                    const due = new Date(start);
+                    due.setDate(due.getDate() + 30);
+                    raw.push({
+                        ...customerBase,
+                        subscriptionId:   website.id,
+                        subscriptionUrl:  website.url,
+                        issueDate:        new Date(start),
+                        dueDate:          due,
+                        periodStart:      start,
+                        periodEnd:        end,
+                        subscriptionName: website.name,
+                        subscriptionType: website.subscriptionType,
+                        frequency:        website.frequency,
+                        payment:          periodicPayment,
+                        discount:         periodicDiscount,
+                        subtotal:         periodicSubtotal,
+                        vat:              periodicVat,
+                        total:            periodicTotal,
+                        invoiceType:      'subscription',
+                        paid:             false
+                    });
                 }
+            }
 
-                if (!isFree) {
-                    for (const { start, end } of this.getBillingPeriods(website.startDate, 'yearly', endDate)) {
-                        const due = new Date(start);
-                        due.setDate(due.getDate() + 30);
-                        raw.push({
-                            ...baseInfo,
-                            issueDate: new Date(start),
-                            dueDate: due,
-                            periodStart: start,
-                            periodEnd: end,
-                            subscriptionName: 'Domeinnaam',
-                            subscriptionType: 'Domain',
-                            frequency: 'yearly',
-                            payment: DOMAIN_PRICE,
-                            discount: 0,
-                            subtotal: DOMAIN_PRICE,
-                            vat: DOMAIN_VAT,
-                            total: DOMAIN_TOTAL,
-                            invoiceType: 'domain',
-                            paid: false
-                        });
-                    }
+            for (const domain of (customer.domains ?? [])) {
+                if (!domain.renewalDate || domain.annualPrice <= 0) continue;
+                const vatAmt = parseFloat((domain.annualPrice * VAT_RATE).toFixed(2));
+                const total  = parseFloat((domain.annualPrice + vatAmt).toFixed(2));
+
+                for (const { start, end } of this.getBillingPeriods(domain.renewalDate, 'yearly', endDate)) {
+                    const due = new Date(start);
+                    due.setDate(due.getDate() + 30);
+                    raw.push({
+                        ...customerBase,
+                        subscriptionId:   `domain:${String(domain.id ?? 0).padStart(4, '0')}`,
+                        subscriptionUrl:  '',
+                        issueDate:        new Date(start),
+                        dueDate:          due,
+                        periodStart:      start,
+                        periodEnd:        end,
+                        subscriptionName: domain.name,
+                        subscriptionType: 'Domain',
+                        frequency:        'yearly',
+                        payment:          domain.annualPrice,
+                        discount:         0,
+                        subtotal:         domain.annualPrice,
+                        vat:              vatAmt,
+                        total,
+                        invoiceType:      'domain',
+                        paid:             false
+                    });
                 }
             }
         }
@@ -391,6 +393,10 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         if (t.includes('growth'))     return 'invoices-badge--growth';
         if (t.includes('basic'))      return 'invoices-badge--basic';
         return 'invoices-badge--custom';
+    }
+
+    formatSubscriptionId(id: string): string {
+        return id.startsWith('domain:') ? id.slice('domain:'.length) : id;
     }
 
     formatCurrency(amount: number): string {

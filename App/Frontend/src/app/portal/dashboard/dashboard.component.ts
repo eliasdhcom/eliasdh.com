@@ -4,10 +4,11 @@
     * @since 08/04/2026
 **/
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { AuthService, AuthUser } from '../../services/auth.service';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { PortalCustomersComponent } from '../customers/customers.component';
 import { PortalSubscriptionsComponent } from '../subscriptions/subscriptions.component';
 import { PortalInvoicesComponent } from '../invoices/invoices.component';
@@ -21,7 +22,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-    imports: [CommonModule, SharedModule, PortalOverviewComponent, PortalCustomersComponent, PortalSubscriptionsComponent, PortalInvoicesComponent, PortalAnalysisComponent, PortalUsersComponent],
+    imports: [CommonModule, SharedModule, TranslatePipe, PortalOverviewComponent, PortalCustomersComponent, PortalSubscriptionsComponent, PortalInvoicesComponent, PortalAnalysisComponent, PortalUsersComponent],
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css']
 })
@@ -36,9 +37,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
     user:       AuthUser = { firstName: '', lastName: '', email: '', role: '', company: '', phone: '', birthDate: '' };
     userAvatar: string | null = null;
 
-    constructor(private authService: AuthService, private usersService: UsersService) {}
+    langDropdownOpen  = false;
+    currentLanguage   = 'nl';
+    readonly languages = [
+        { code: 'nl', name: 'Nederlands' },
+        { code: 'en', name: 'English' },
+        { code: 'fr', name: 'Français' },
+        { code: 'de', name: 'Deutsch' },
+        { code: 'es', name: 'Español' }
+    ];
+
+    constructor(
+        private authService: AuthService,
+        private usersService: UsersService,
+        private translate: TranslateService
+    ) {}
 
     ngOnInit(): void {
+        this.currentLanguage = this.translate.currentLang || localStorage.getItem('language') || 'nl';
         this.user = this.authService.getUser() ?? { firstName: 'Unknown', lastName: '', email: '', role: '', company: '', phone: '', birthDate: '' };
         if (this.user.id) {
             this.usersService.getUserById(this.user.id)
@@ -110,15 +126,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     getViewTitle(): string {
-        const titles: Record<string, string> = {
-            overview:      'Overview',
-            customers:     'Customers',
-            subscriptions: 'Subscriptions',
-            invoices:      'Invoices',
-            users:         'Users',
-            analysis:      'Analysis',
-            settings:      'Settings'
+        const keys: Record<string, string> = {
+            overview:      'PORTAL.NAV.OVERVIEW',
+            customers:     'PORTAL.NAV.CUSTOMERS',
+            subscriptions: 'PORTAL.NAV.SUBSCRIPTIONS',
+            invoices:      'PORTAL.NAV.INVOICES',
+            users:         'PORTAL.NAV.USERS',
+            analysis:      'PORTAL.NAV.ANALYSIS'
         };
-        return titles[this.currentView] ?? 'Dashboard';
+        return this.translate.instant(keys[this.currentView] ?? 'PORTAL.NAV.OVERVIEW');
+    }
+
+    toggleLangDropdown(event: Event): void {
+        event.stopPropagation();
+        this.langDropdownOpen = !this.langDropdownOpen;
+    }
+
+    changeLanguage(code: string): void {
+        this.translate.use(code);
+        localStorage.setItem('language', code);
+        this.currentLanguage  = code;
+        this.langDropdownOpen = false;
+    }
+
+    @HostListener('document:click')
+    onDocumentClick(): void {
+        if (this.langDropdownOpen) this.langDropdownOpen = false;
     }
 }
