@@ -4,136 +4,71 @@
     * @since 17/12/2025
 **/
 
-const nodemailer = require('nodemailer');
+const mailer = require('../mailer/mailerService');
 const logger = require('../../../utils/logger');
 
 class ContactService {
-    constructor() {
-        this.smtpConfigured = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
-        
-        if (this.smtpConfigured) {
-            this.transporter = nodemailer.createTransport({
-                host: process.env.SMTP_HOST,
-                port: parseInt(process.env.SMTP_PORT) || 587,
-                secure: process.env.SMTP_SECURE === 'true',
-                auth: {
-                    user: process.env.SMTP_USER,
-                    pass: (process.env.SMTP_PASS || '').replace(/\s/g, '')
-                }
-            });
-            logger.info('SMTP transporter configured successfully');
-        } else {
-            logger.warn('SMTP not configured. Missing environment variables: SMTP_HOST, SMTP_USER, SMTP_PASS');
-            this.transporter = null;
-        }
-    }
 
     async submitContactForm(contactData) {
-        try {
-            const { name, email, subject, message } = contactData;
-            if (!name || !email || !subject || !message) throw new Error('All fields are required');
+        const { name, email, subject, message } = contactData;
+        if (!name || !email || !subject || !message) throw new Error('All fields are required');
 
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) throw new Error('Invalid email format');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) throw new Error('Invalid email format');
 
-            const mailOptions = {
-                from: `"${name}" <${process.env.SMTP_USER}>`,
-                to: 'info@eliasdh.com',
-                replyTo: email,
-                subject: `[Website Contact] ${subject}`,
-                html: `
-                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                        <div style="background: #4f94f0; padding: 20px; border-radius: 10px 10px 0 0;">
-                            <h2 style="color: #ffffff; margin: 0;">New Contact Message</h2>
-                        </div>
-                        <div style="background: #f6f7f9; padding: 30px; border-radius: 0 0 10px 10px;">
-                            <p style="font-size: 16px; color: #333333;"><strong>From:</strong> ${name}</p>
-                            <p style="font-size: 16px; color: #333333;"><strong>Email:</strong> <a href="mailto:${email}" style="color: #4f94f0;">${email}</a></p>
-                            <p style="font-size: 16px; color: #333333;"><strong>Subject:</strong> ${subject}</p>
-                            <hr style="border: none; border-top: 2px solid #4f94f0; margin: 20px 0;">
-                            <p style="font-size: 16px; color: #333333;"><strong>Message:</strong></p>
-                            <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #4f94f0;">
-                                <p style="font-size: 15px; color: #555555; line-height: 1.6; white-space: pre-wrap;">${message}</p>
-                            </div>
-                            <p style="font-size: 12px; color: #888888; margin-top: 20px;">
-                                Sent on: ${new Date().toLocaleString('en-GB', { timeZone: 'Europe/Brussels' })}
-                            </p>
-                        </div>
-                    </div>
-                `
-            };
+        const timestamp = new Date().toLocaleString('en-GB', { timeZone: 'Europe/Brussels' });
 
-            const confirmationMailOptions = {
-                from: `"EliasDH Team" <${process.env.SMTP_USER}>`,
-                to: email,
-                subject: 'Confirmation: Your message has been received',
-                html: `
-                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                        <div style="background: #4f94f0; padding: 20px; border-radius: 10px 10px 0 0;">
-                            <h2 style="color: #ffffff; margin: 0;">Thank you for your message!</h2>
-                        </div>
-                        <div style="background: #f6f7f9; padding: 30px; border-radius: 0 0 10px 10px;">
-                            <p style="font-size: 16px; color: #333333; margin-bottom: 30px;">Hello ${name}</p>
-                            <p style="font-size: 16px; color: #333333; line-height: 1.6;">
-                                Thank you for contacting EliasDH! We have successfully received your message and will respond as soon as possible.
-                            </p>
-                            <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #4f94f0; margin: 20px 0;">
-                                <p style="font-size: 14px; color: #333333; margin: 0;"><strong>Your message:</strong></p>
-                                <p style="font-size: 14px; color: #555555; margin: 10px 0 0 0; white-space: pre-wrap;">${message}</p>
-                            </div>
-                            <p style="font-size: 16px; color: #333333; line-height: 1.6; margin-top: 30px;">
-                                Kind regards<br>
-                                <strong>The EliasDH Team</strong>
-                            </p>
-                            <hr style="border: none; border-top: 1px solid #dddddd; margin: 20px 0;">
-                            <p style="font-size: 12px; color: #888888; text-align: center;">
-                                EliasDH | <a href="https://eliasdh.com" style="color: #4f94f0;">eliasdh.com</a>
-                            </p>
-                        </div>
-                    </div>
-                `
-            };
+        const internalBody = `
+            <p style="font-size:15px;color:#333;margin:0 0 6px 0;"><strong>Van:</strong> ${name}</p>
+            <p style="font-size:15px;color:#333;margin:0 0 6px 0;"><strong>E-mail:</strong> <a href="mailto:${email}" style="color:#4f94f0;">${email}</a></p>
+            <p style="font-size:15px;color:#333;margin:0 0 16px 0;"><strong>Onderwerp:</strong> ${subject}</p>
+            <div style="background:#f6f7f9;border-left:4px solid #4f94f0;border-radius:0 8px 8px 0;padding:20px;">
+                <p style="font-size:14px;color:#555;margin:0;line-height:1.6;white-space:pre-wrap;">${message}</p>
+            </div>
+            <p style="font-size:12px;color:#aaa;margin:20px 0 0 0;">Ontvangen op: ${timestamp}</p>
+        `;
 
-            if (!this.transporter) {
-                logger.error('SMTP not configured! Please set SMTP_HOST, SMTP_USER, and SMTP_PASS environment variables.');
-                logger.info('Contact form data received but email NOT sent due to missing SMTP config');
-            } else {
-                try {
-                    await this.transporter.sendMail(mailOptions);
-                    logger.info('Contact email sent successfully to info@eliasdh.com');
-                    
-                    await this.transporter.sendMail(confirmationMailOptions);
-                    logger.info(`Confirmation email sent to ${email}`);
-                } catch (emailError) {
-                    logger.error('Error sending email:', emailError.message);
-                    logger.error('Full error:', JSON.stringify(emailError, null, 2));
-                    logger.warn('Email delivery failed, but form was processed');
-                }
+        const confirmBody = `
+            <p style="font-size:15px;color:#555;margin:0 0 20px 0;">Hallo <strong>${name}</strong>,</p>
+            <p style="font-size:15px;color:#555;line-height:1.6;margin:0 0 20px 0;">
+                Bedankt voor uw bericht! We hebben het goed ontvangen en nemen zo snel mogelijk contact met u op.
+            </p>
+            <div style="background:#f6f7f9;border-left:4px solid #4f94f0;border-radius:0 8px 8px 0;padding:20px;margin:0 0 28px 0;">
+                <p style="font-size:13px;color:#333;margin:0 0 6px 0;"><strong>Uw bericht:</strong></p>
+                <p style="font-size:14px;color:#555;margin:0;line-height:1.6;white-space:pre-wrap;">${message}</p>
+            </div>
+            <p style="font-size:15px;color:#555;margin:0;">Met vriendelijke groeten,<br><strong style="color:#4f94f0;">Het EliasDH team</strong></p>
+        `;
+
+        if (!mailer.smtpConfigured) {
+            logger.warn('Contact form received but email NOT sent: SMTP not configured');
+        } else {
+            try {
+                await mailer.send({
+                    from:    `"${name}" <${process.env.SMTP_USER}>`,
+                    to:      'info@eliasdh.com',
+                    replyTo: email,
+                    subject: `[Website Contact] ${subject}`,
+                    html:    mailer.layout({ headerTitle: 'Nieuw contactbericht', body: internalBody })
+                });
+                logger.info('Contact email sent to info@eliasdh.com');
+
+                await mailer.send({
+                    to:      email,
+                    subject: 'Bevestiging: Uw bericht is ontvangen — EliasDH',
+                    html:    mailer.layout({ headerTitle: 'Bevestiging', body: confirmBody })
+                });
+                logger.info(`Confirmation email sent to ${email}`);
+            } catch (err) {
+                logger.error('Error sending contact emails:', err.message);
             }
-
-            return {
-                success: true,
-                message: 'Contact form submitted successfully',
-                data: {
-                    submittedAt: new Date().toISOString()
-                }
-            };
-        } catch (error) {
-            logger.error('Error processing contact form:', error);
-            throw error;
         }
+
+        return { success: true, data: { submittedAt: new Date().toISOString() } };
     }
 
     async getContactStats() {
-        try {
-            return {
-                totalSubmissions: 0,
-                lastSubmission: null
-            };
-        } catch (error) {
-            logger.error('Error getting contact stats:', error);
-            throw error;
-        }
+        return { totalSubmissions: 0, lastSubmission: null };
     }
 }
 

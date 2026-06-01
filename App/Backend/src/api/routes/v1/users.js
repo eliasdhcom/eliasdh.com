@@ -4,10 +4,11 @@
     * @since 29/05/2026
 **/
 
-const express      = require('express');
+const express              = require('express');
 const { param, body, validationResult } = require('express-validator');
-const { jwtAuth }  = require('../../../middleware/jwtAuth');
-const usersService = require('../../services/users/usersService');
+const { jwtAuth }          = require('../../../middleware/jwtAuth');
+const usersService         = require('../../services/users/usersService');
+const notificationService  = require('../../services/notifications/notificationService');
 
 const router = express.Router();
 
@@ -51,6 +52,7 @@ router.post('/',
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             const id = await usersService.createUser(req.body);
             const created = await usersService.getUserById(id);
+            notificationService.sendWelcomeEmail(created, req.body.password).catch(() => {});
             res.status(201).json({ success: true, data: created });
         } catch (err) {
             if (err.message?.includes('UNIQUE')) {
