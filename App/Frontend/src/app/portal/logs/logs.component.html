@@ -1,0 +1,83 @@
+<!--Author EliasDH Team-->
+<div class="logs-container">
+    <div class="logs-filters">
+        <div class="logs-search-wrap">
+            <svg class="logs-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input class="logs-search cursor-text" type="search" [placeholder]="'PORTAL.LOGS.SEARCH'|translate" [(ngModel)]="filterSearch" (input)="onSearchInput()" autocomplete="off"/>
+        </div>
+    </div>
+    <div class="logs-meta" *ngIf="!loading && !error">
+        <span class="logs-count">{{total}} {{'PORTAL.LOGS.RECORDS'|translate}}</span>
+        <span class="logs-page-info">
+            {{'PORTAL.LOGS.PAGE'|translate}} {{currentPage}} / {{totalPages}}
+        </span>
+    </div>
+    <div class="logs-loading" *ngIf="loading">
+        <div class="logs-skeleton" *ngFor="let i of [1,2,3,4,5,6]"></div>
+    </div>
+    <div class="logs-error" *ngIf="!loading && error">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <p>{{error}}</p>
+        <button class="logs-retry-btn cursor-pointer" (click)="load()">{{'PORTAL.COMMON.RETRY'|translate}}</button>
+    </div>
+    <div class="logs-empty" *ngIf="!loading && !error && logs.length === 0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+        <p>{{'PORTAL.LOGS.EMPTY'|translate}}</p>
+    </div>
+    <div class="logs-table-wrap" *ngIf="!loading && !error && logs.length > 0">
+        <table class="logs-table">
+            <thead>
+                <tr>
+                    <th>{{'PORTAL.LOGS.COL_TIME'|translate}}</th>
+                    <th>{{'PORTAL.LOGS.COL_USER'|translate}}</th>
+                    <th>{{'PORTAL.LOGS.COL_ACTION'|translate}}</th>
+                    <th class="logs-col-details">{{'PORTAL.LOGS.COL_DETAILS'|translate}}</th>
+                    <th class="logs-col-ip">{{'PORTAL.LOGS.COL_IP'|translate}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let log of logs" class="logs-row">
+                    <td class="logs-cell-time">{{formatDate(log.createdAt)}}</td>
+                    <td class="logs-cell-user">
+                        <span class="logs-user-name">{{log.userName || '—'}}</span>
+                        <span class="logs-user-email" *ngIf="log.userEmail">{{log.userEmail}}</span>
+                    </td>
+                    <td class="logs-cell-action">
+                        <span class="logs-badge" [class]="actionClass(log.action)">{{log.action}}</span>
+                    </td>
+                    <td class="logs-cell-details logs-col-details">{{log.details || '—'}}</td>
+                    <td class="logs-cell-ip logs-col-ip">{{log.ipAddress || '—'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="logs-cards" *ngIf="!loading && !error && logs.length > 0">
+        <div class="logs-card" *ngFor="let log of logs">
+            <div class="logs-card-header">
+                <span class="logs-badge" [class]="actionClass(log.action)">{{log.action}}</span>
+                <span class="logs-card-time">{{formatDate(log.createdAt)}}</span>
+            </div>
+            <div class="logs-card-body">
+                <span class="logs-card-user">{{log.userName || log.userEmail || '—'}}</span>
+                <span class="logs-card-details" *ngIf="log.details">{{log.details}}</span>
+                <span class="logs-card-ip" *ngIf="log.ipAddress">{{log.ipAddress}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="logs-pagination" *ngIf="!loading && !error && totalPages > 1">
+        <button class="logs-page-btn cursor-pointer" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="logs-page-btn cursor-pointer" *ngFor="let p of pageNumbers" [class.logs-page-btn--active]="p === currentPage" (click)="goToPage(p)">{{p}}</button>
+        <button class="logs-page-btn cursor-pointer" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+    </div>
+</div>

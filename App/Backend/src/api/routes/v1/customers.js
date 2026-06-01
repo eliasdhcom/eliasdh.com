@@ -8,8 +8,16 @@ const express         = require('express');
 const { body, param, validationResult } = require('express-validator');
 const customerService = require('../../services/customers/customersService');
 const { jwtAuth }     = require('../../../middleware/jwtAuth');
+const logsService     = require('../../services/logs/logsService');
 const logger          = require('../../../utils/logger');
 const router          = express.Router();
+
+const logActor = req => ({
+    userId:    req.user?.id,
+    userEmail: req.user?.email,
+    userName:  `${req.user?.firstName ?? ''} ${req.user?.lastName ?? ''}`.trim(),
+    ipAddress: req.ip
+});
 
 router.get('/', async (req, res) => {
     try {
@@ -38,6 +46,7 @@ router.post('/',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             const customer = await customerService.createCustomer(req.body);
+            logsService.addLog({ ...logActor(req), action: 'CREATE', resource: 'customer', resourceId: customer.id, details: customer.name });
             res.status(201).json({ success: true, data: customer });
         } catch (err) {
             if (err.message?.includes('UNIQUE')) return res.status(409).json({ success: false, error: 'Een klant met dit ID bestaat al.' });
@@ -54,6 +63,7 @@ router.put('/:id',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             const customer = await customerService.updateCustomer(req.params.id, req.body);
+            logsService.addLog({ ...logActor(req), action: 'UPDATE', resource: 'customer', resourceId: req.params.id, details: customer.name });
             res.json({ success: true, data: customer });
         } catch (err) {
             next(err);
@@ -67,6 +77,7 @@ router.delete('/:id',
     async (req, res, next) => {
         try {
             await customerService.deleteCustomer(req.params.id);
+            logsService.addLog({ ...logActor(req), action: 'DELETE', resource: 'customer', resourceId: req.params.id });
             res.json({ success: true });
         } catch (err) {
             next(err);

@@ -16,6 +16,7 @@ import { PortalOverviewComponent } from '../overview/overview.component';
 import { PortalAnalysisComponent } from '../analysis/analysis.component';
 import { PortalUsersComponent } from '../users/users.component';
 import { PortalPricingPlansComponent } from '../pricing-plans/pricing-plans.component';
+import { PortalLogsComponent } from '../logs/logs.component';
 import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -23,7 +24,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-    imports: [CommonModule, SharedModule, TranslatePipe, PortalOverviewComponent, PortalCustomersComponent, PortalSubscriptionsComponent, PortalInvoicesComponent, PortalAnalysisComponent, PortalUsersComponent, PortalPricingPlansComponent],
+    imports: [CommonModule, SharedModule, TranslatePipe, PortalOverviewComponent, PortalCustomersComponent, PortalSubscriptionsComponent, PortalInvoicesComponent, PortalAnalysisComponent, PortalUsersComponent, PortalPricingPlansComponent, PortalLogsComponent],
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css']
 })
@@ -163,7 +164,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             invoices:      'PORTAL.NAV.INVOICES',
             users:         'PORTAL.NAV.USERS',
             analysis:      'PORTAL.NAV.ANALYSIS',
-            pricing:       'PORTAL.NAV.PRICING'
+            pricing:       'PORTAL.NAV.PRICING',
+            logs:          'PORTAL.NAV.LOGS'
         };
         return this.translate.instant(keys[this.currentView] ?? 'PORTAL.NAV.OVERVIEW');
     }

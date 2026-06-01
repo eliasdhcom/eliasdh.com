@@ -15,6 +15,7 @@ const invoicesRoutes  = require('./invoices');
 const usersRoutes     = require('./users');
 const pricingRoutes   = require('./pricing');
 const costsRoutes     = require('./costs');
+const logsRoutes      = require('./logs');
 
 const router = express.Router();
 
@@ -28,5 +29,6 @@ router.use('/invoices',  invoicesRoutes);
 router.use('/users',     usersRoutes);
 router.use('/pricing',   pricingRoutes);
 router.use('/costs',     costsRoutes);
+router.use('/logs',      logsRoutes);
 
 module.exports = router;

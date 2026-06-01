@@ -7,6 +7,7 @@
 const express     = require('express');
 const { body, validationResult } = require('express-validator');
 const authService = require('../../services/auth/authService');
+const logsService = require('../../services/logs/logsService');
 
 const router = express.Router();
 
@@ -28,6 +29,15 @@ router.post('/login',
                 return res.status(403).json({ success: false, error: 'Uw account is gedeactiveerd. Neem contact op met de beheerder.' });
             }
 
+            logsService.addLog({
+                userId:    result.user.id,
+                userEmail: result.user.email,
+                userName:  `${result.user.firstName ?? ''} ${result.user.lastName ?? ''}`.trim(),
+                action:    'LOGIN',
+                resource:  'auth',
+                details:   'Ingelogd',
+                ipAddress: req.ip
+            });
             res.json({ success: true, token: result.token, data: result.user });
         } catch (err) {
             next(err);

@@ -7,6 +7,8 @@
 const express          = require('express');
 const { body, validationResult } = require('express-validator');
 const invoicesService  = require('../../services/invoices/invoicesService');
+const { jwtAuth }      = require('../../../middleware/jwtAuth');
+const logsService      = require('../../services/logs/logsService');
 
 const router = express.Router();
 
@@ -20,6 +22,7 @@ router.get('/status', async (req, res, next) => {
 });
 
 router.patch('/status',
+    jwtAuth,
     body('customerId').notEmpty(),
     body('subscriptionId').notEmpty(),
     body('periodStart').notEmpty(),
@@ -32,6 +35,16 @@ router.patch('/status',
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
 
             await invoicesService.upsertStatus(req.body);
+            logsService.addLog({
+                userId:    req.user?.id,
+                userEmail: req.user?.email,
+                userName:  `${req.user?.firstName ?? ''} ${req.user?.lastName ?? ''}`.trim(),
+                action:    'UPDATE',
+                resource:  'invoice',
+                resourceId: `${req.body.customerId}/${req.body.subscriptionId}`,
+                details:   req.body.paid ? 'Gemarkeerd als betaald' : 'Gemarkeerd als openstaand',
+                ipAddress: req.ip
+            });
             res.json({ success: true });
         } catch (err) {
             next(err);

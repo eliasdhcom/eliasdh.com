@@ -139,6 +139,19 @@ async function initSchema() {
         `CREATE INDEX IF NOT EXISTS idx_invoice_status_lookup           ON invoice_status(customer_id, subscription_id, period_start, invoice_type)`,
         `CREATE INDEX IF NOT EXISTS idx_analysis_costs_sort             ON analysis_costs(sort_order)`,
         `CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_user_id   ON password_reset_tokens(user_id)`,
+        `CREATE TABLE IF NOT EXISTS logs (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id     INTEGER,
+            user_email  TEXT,
+            user_name   TEXT,
+            action      TEXT NOT NULL,
+            resource_id TEXT,
+            details     TEXT,
+            ip_address  TEXT,
+            created_at  TEXT DEFAULT (datetime('now'))
+        )`,
+        `CREATE INDEX IF NOT EXISTS idx_logs_created_at ON logs(created_at DESC)`,
+        `CREATE INDEX IF NOT EXISTS idx_logs_action     ON logs(action)`,
     ];
 
     for (const sql of stmts) {

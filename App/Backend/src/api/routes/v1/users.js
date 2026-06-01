@@ -9,10 +9,18 @@ const { param, body, validationResult } = require('express-validator');
 const { jwtAuth }          = require('../../../middleware/jwtAuth');
 const usersService         = require('../../services/users/usersService');
 const notificationService  = require('../../services/notifications/notificationService');
+const logsService          = require('../../services/logs/logsService');
 
 const router = express.Router();
 
 router.use(jwtAuth);
+
+const logActor = req => ({
+    userId:    req.user?.id,
+    userEmail: req.user?.email,
+    userName:  `${req.user?.firstName ?? ''} ${req.user?.lastName ?? ''}`.trim(),
+    ipAddress: req.ip
+});
 
 router.get('/', async (req, res, next) => {
     try {
@@ -53,6 +61,7 @@ router.post('/',
             const id = await usersService.createUser(req.body);
             const created = await usersService.getUserById(id);
             notificationService.sendWelcomeEmail(created).catch(() => {});
+            logsService.addLog({ ...logActor(req), action: 'CREATE', resource: 'user', resourceId: id, details: created?.email });
             res.status(201).json({ success: true, data: created });
         } catch (err) {
             if (err.message?.includes('UNIQUE')) {
@@ -71,6 +80,7 @@ router.patch('/:id/active',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             await usersService.setActive(Number(req.params.id), req.body.active);
+            logsService.addLog({ ...logActor(req), action: 'TOGGLE', resource: 'user', resourceId: req.params.id, details: req.body.active ? 'Geactiveerd' : 'Gedeactiveerd' });
             res.json({ success: true });
         } catch (err) {
             next(err);
@@ -93,6 +103,7 @@ router.patch('/:id',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             await usersService.updateUser(Number(req.params.id), req.body);
+            logsService.addLog({ ...logActor(req), action: 'UPDATE', resource: 'user', resourceId: req.params.id });
             res.json({ success: true });
         } catch (err) {
             next(err);
@@ -107,6 +118,7 @@ router.delete('/:id',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             await usersService.deleteUser(Number(req.params.id));
+            logsService.addLog({ ...logActor(req), action: 'DELETE', resource: 'user', resourceId: req.params.id });
             res.json({ success: true });
         } catch (err) {
             next(err);
