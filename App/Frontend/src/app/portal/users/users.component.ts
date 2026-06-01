@@ -40,7 +40,7 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
     formTouched        = false;
     showDiscardConfirm = false;
 
-    readonly ROLES = ['Admin', 'Customer'];
+    readonly ROLES = ['Admin', 'Employee', 'Customer'];
 
     private destroy$ = new Subject<void>();
 
@@ -289,7 +289,8 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
 
     getRoleClass(role: string): string {
         const r = (role ?? '').toLowerCase();
-        if (r === 'admin') return 'users-role--admin';
+        if (r === 'admin')    return 'users-role--admin';
+        if (r === 'employee') return 'users-role--employee';
         return 'users-role--customer';
     }
 

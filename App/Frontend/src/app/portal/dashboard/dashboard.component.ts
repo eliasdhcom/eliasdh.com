@@ -85,6 +85,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     navigateTo(view: string): void {
+        if (!this.isAdmin && view !== 'overview') return;
         this.highlightedSubscriptionId = null;
         this.currentView = view;
         if (this.mobileMenuOpen) this.mobileMenuOpen = false;
@@ -120,9 +121,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return ((this.user.firstName?.[0] ?? '') + (this.user.lastName?.[0] ?? '')).toUpperCase();
     }
 
+    get isAdmin(): boolean {
+        return (this.user.role ?? '').toLowerCase() === 'admin';
+    }
+
     getRoleClass(role: string): string {
         const r = (role ?? '').toLowerCase();
-        if (r === 'admin') return 'role--admin';
+        if (r === 'admin')    return 'role--admin';
+        if (r === 'employee') return 'role--employee';
         return 'role--customer';
     }
 

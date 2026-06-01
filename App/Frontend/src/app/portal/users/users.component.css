@@ -275,7 +275,10 @@
 }
 
 .users-role--admin,
-.users-role--customer { background: rgba(128, 128, 128, 0.12); color: var(--secondary); }
+.users-role--customer,
+.users-role--employee { background: rgba(128, 128, 128, 0.12); color: var(--secondary); }
+
+.users-role--employee { background: rgba(59, 130, 246, 0.12); color: #3b82f6; }
 
 .users-email {
     font-size: 13px;

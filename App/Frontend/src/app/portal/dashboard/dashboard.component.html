@@ -33,7 +33,7 @@
                 </svg>
                 <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.OVERVIEW' | translate}}</span>
             </button>
-            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'customers'" (click)="navigateTo('customers')" [title]="'PORTAL.NAV.CUSTOMERS' | translate">
+            <button *ngIf="isAdmin" class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'customers'" (click)="navigateTo('customers')" [title]="'PORTAL.NAV.CUSTOMERS' | translate">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path class="cursor-pointer" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                     <circle class="cursor-pointer" cx="9" cy="7" r="4"/>
@@ -42,14 +42,14 @@
                 </svg>
                 <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.CUSTOMERS'|translate}}</span>
             </button>
-            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'subscriptions'" (click)="navigateTo('subscriptions')" [title]="'PORTAL.NAV.SUBSCRIPTIONS'|translate">
+            <button *ngIf="isAdmin" class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'subscriptions'" (click)="navigateTo('subscriptions')" [title]="'PORTAL.NAV.SUBSCRIPTIONS'|translate">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <rect class="cursor-pointer" x="1" y="4" width="22" height="16" rx="2" ry="2"/>
                     <line class="cursor-pointer" x1="1" y1="10" x2="23" y2="10"/>
                 </svg>
                 <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.SUBSCRIPTIONS'|translate}}</span>
             </button>
-            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'invoices'" (click)="navigateTo('invoices')" [title]="'PORTAL.NAV.INVOICES'|translate">
+            <button *ngIf="isAdmin" class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'invoices'" (click)="navigateTo('invoices')" [title]="'PORTAL.NAV.INVOICES'|translate">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path class="cursor-pointer" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                     <polyline class="cursor-pointer" points="14 2 14 8 20 8"/>
@@ -59,14 +59,14 @@
                 </svg>
                 <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.INVOICES'|translate}}</span>
             </button>
-            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'users'" (click)="navigateTo('users')" [title]="'PORTAL.NAV.USERS'|translate">
+            <button *ngIf="isAdmin" class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'users'" (click)="navigateTo('users')" [title]="'PORTAL.NAV.USERS'|translate">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path class="cursor-pointer" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                     <circle class="cursor-pointer" cx="12" cy="7" r="4"/>
                 </svg>
                 <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.USERS'|translate}}</span>
             </button>
-            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'analysis'" (click)="navigateTo('analysis')" [title]="'PORTAL.NAV.ANALYSIS'|translate">
+            <button *ngIf="isAdmin" class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'analysis'" (click)="navigateTo('analysis')" [title]="'PORTAL.NAV.ANALYSIS'|translate">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <line class="cursor-pointer" x1="18" y1="20" x2="18" y2="10"/>
                     <line class="cursor-pointer" x1="12" y1="20" x2="12" y2="4"/>
@@ -75,7 +75,7 @@
                 </svg>
                 <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.ANALYSIS'|translate}}</span>
             </button>
-            <button class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'pricing'" (click)="navigateTo('pricing')" [title]="'PORTAL.NAV.PRICING'|translate">
+            <button *ngIf="isAdmin" class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'pricing'" (click)="navigateTo('pricing')" [title]="'PORTAL.NAV.PRICING'|translate">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <line class="cursor-pointer" x1="12" y1="1" x2="12" y2="23"/>
                     <path class="cursor-pointer" d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
@@ -141,22 +141,22 @@
             <div class="dashboard-content-view" *ngIf="currentView === 'overview'">
                 <app-portal-overview (navigateTo)="navigateTo($event)"></app-portal-overview>
             </div>
-            <div class="dashboard-content-view" *ngIf="currentView === 'customers'">
+            <div class="dashboard-content-view" *ngIf="currentView === 'customers' && isAdmin">
                 <app-portal-customers (navigateToSubscription)="onNavigateToSubscription($event)"></app-portal-customers>
             </div>
-            <div class="dashboard-content-view" *ngIf="currentView === 'subscriptions'">
+            <div class="dashboard-content-view" *ngIf="currentView === 'subscriptions' && isAdmin">
                 <app-portal-subscriptions [highlightId]="highlightedSubscriptionId"></app-portal-subscriptions>
             </div>
-            <div class="dashboard-content-view" *ngIf="currentView === 'invoices'">
+            <div class="dashboard-content-view" *ngIf="currentView === 'invoices' && isAdmin">
                 <app-portal-invoices></app-portal-invoices>
             </div>
-            <div class="dashboard-content-view" *ngIf="currentView === 'users'">
+            <div class="dashboard-content-view" *ngIf="currentView === 'users' && isAdmin">
                 <app-portal-users></app-portal-users>
             </div>
-            <div class="dashboard-content-view" *ngIf="currentView === 'analysis'">
+            <div class="dashboard-content-view" *ngIf="currentView === 'analysis' && isAdmin">
                 <app-portal-analysis></app-portal-analysis>
             </div>
-            <div class="dashboard-content-view" *ngIf="currentView === 'pricing'">
+            <div class="dashboard-content-view" *ngIf="currentView === 'pricing' && isAdmin">
                 <app-portal-pricing-plans></app-portal-pricing-plans>
             </div>
         </main>
