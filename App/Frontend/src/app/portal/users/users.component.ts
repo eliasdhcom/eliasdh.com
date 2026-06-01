@@ -309,6 +309,32 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
     get activeCount(): number   { return this.users.filter(u => u.active).length; }
     get inactiveCount(): number { return this.users.filter(u => !u.active).length; }
 
+    downloadVCard(user: PortalUser, event: Event): void {
+        event.stopPropagation();
+        const lines: string[] = [
+            'BEGIN:VCARD',
+            'VERSION:3.0',
+            `FN:${user.firstName} ${user.lastName}`,
+            `N:${user.lastName};${user.firstName};;;`,
+            ...(user.phone    ? [`TEL;TYPE=CELL:${user.phone}`]  : []),
+            `EMAIL:${user.email}`,
+            ...(user.company  ? [`ORG:${user.company}`]          : []),
+            ...(user.birthDate ? [`BDAY:${user.birthDate}`]      : []),
+        ];
+        if (user.avatar) {
+            const b64 = user.avatar.split(',')[1];
+            if (b64) lines.push(`PHOTO;ENCODING=b;TYPE=JPEG:${b64}`);
+        }
+        lines.push('END:VCARD');
+        const blob = new Blob([lines.join('\r\n')], { type: 'text/vcard;charset=utf-8' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = `${user.firstName}_${user.lastName}.vcf`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
     private emptyUser(): PortalUser {
         return { id: 0, email: '', firstName: '', lastName: '', role: '', company: '', phone: '', birthDate: '', avatar: null, createdAt: '', active: true };
     }
