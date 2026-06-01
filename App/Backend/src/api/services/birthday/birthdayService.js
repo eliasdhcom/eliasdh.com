@@ -9,32 +9,28 @@ const { getDb } = require('../../../database/db');
 const logger    = require('../../../utils/logger');
 const mailer    = require('../mailer/mailerService');
 
-const EMOJIS = ['🎂', '🥳', '🎉', '🎈', '✨', '🎁'];
-
 function calcAge(birthDate, today) {
     return today.year() - dayjs(birthDate).year();
 }
 
 function buildBirthdayBody(name, age) {
-    const confetti = EMOJIS.join(' ');
     return `
         <div style="text-align:center;margin-bottom:24px;">
             <div style="font-size:52px;margin-bottom:8px;">🎂</div>
             <h1 style="margin:0;color:#4f94f0;font-size:24px;font-weight:800;">Happy Birthday, ${name}!</h1>
-            <p style="color:#888;font-size:14px;margin:6px 0 0 0;">${confetti}</p>
         </div>
         <p style="font-size:16px;color:#333;line-height:1.7;margin:0 0 20px 0;">
-            <strong style="color:#4f94f0;">Wow, ${age} jaar!</strong> 🎉 Dat verdient een feestje!<br><br>
-            Van iedereen bij <strong>EliasDH</strong> wensen we u een geweldige verjaardag toe — vol taart 🍰, vreugde en alles wat uw hart begeert.
+            <strong style="color:#4f94f0;">Wow, ${age} years old!</strong> That deserves a celebration!<br><br>
+            From everyone at <strong>EliasDH</strong>, we wish you a wonderful birthday — full of cake, joy, and everything your heart desires.
         </p>
         <div style="background:#f0f7ff;border-left:4px solid #4f94f0;padding:16px 20px;border-radius:0 8px 8px 0;margin:0 0 24px 0;">
             <p style="margin:0;font-size:13px;color:#666;line-height:1.6;font-style:italic;">
-                🤖 <em>Ja, dit is een geautomatiseerde e-mail — maar achter dit digitale berichtje zit een oprecht warme gedachte. Geniet van uw dag!</em> 🎈
+                <em>Yes, this is an automated email — but behind this little digital message is a genuinely warm thought. Enjoy your day!</em>
             </p>
         </div>
         <p style="font-size:14px;color:#555;margin:0;">
-            Met vriendelijke groeten,<br>
-            <strong style="color:#4f94f0;">Het EliasDH team</strong> 💙
+            Kind regards,<br>
+            <strong style="color:#4f94f0;">The EliasDH team</strong>
         </p>
     `;
 }
@@ -75,9 +71,9 @@ async function checkAndSendBirthdays() {
 
         await mailer.send({
             to:      user.email,
-            subject: `${EMOJIS.join(' ')} Happy Birthday, ${name}! ${EMOJIS.join(' ')}`,
+            subject: `Happy Birthday, ${name}! — EliasDH`,
             html:    mailer.layout({
-                headerTitle: 'Fijne verjaardag!',
+                headerTitle: 'Happy Birthday!',
                 headerBg:    'linear-gradient(135deg, #4f94f0 0%, #7bb8f7 100%)',
                 body:        buildBirthdayBody(name, age)
             })

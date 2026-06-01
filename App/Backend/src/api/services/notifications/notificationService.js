@@ -63,26 +63,27 @@ class NotificationService {
         });
     }
 
-    async sendWelcomeEmail(user, plainPassword) {
+    async sendWelcomeEmail(user) {
         const body = `
-            <h2 style="color:#1a1a2e;margin:0 0 10px 0;font-size:22px;">Welkom, ${user.firstName}!</h2>
+            <h2 style="color:#1a1a2e;margin:0 0 10px 0;font-size:22px;">Welcome, ${user.firstName}!</h2>
             <p style="color:#555;font-size:15px;line-height:1.6;margin:0 0 20px 0;">
-                Een account is voor u aangemaakt op het EliasDH platform. Hieronder vindt u uw inloggegevens.
+                An account has been created for you on the EliasDH platform.
             </p>
             ${mailer.infoTable([
-                ['E-mailadres',       user.email],
-                ['Tijdelijk wachtwoord', `<span style="font-family:monospace;font-size:15px;">${plainPassword}</span>`],
-                ['Rol',               user.role],
-                ['Bedrijf',           user.company]
+                ['Email address', user.email],
+                ['Role',          user.role],
+                ['Company',       user.company]
             ])}
-            ${mailer.button('Aanmelden bij EliasDH', 'https://eliasdh.com/login')}
-            ${mailer.banner('<strong>Belangrijk:</strong> Verander uw wachtwoord na de eerste aanmelding voor de veiligheid van uw account.')}
+            <p style="color:#555;font-size:15px;line-height:1.6;margin:20px 0;">
+                To set your password, click the button below to go to the login page and then click <strong>"Forgot Password"</strong>. You will receive a code by email to set a new password.
+            </p>
+            ${mailer.button('Go to login', 'https://eliasdh.com/login')}
         `;
 
         await mailer.send({
             to:      user.email,
-            subject: `Welkom bij EliasDH, ${user.firstName}!`,
-            html:    mailer.layout({ headerTitle: 'Uw account is aangemaakt', body })
+            subject: `Welcome to EliasDH, ${user.firstName}!`,
+            html:    mailer.layout({ headerTitle: 'Your account has been created', body })
         });
         logger.info(`Welcome email sent to ${user.email}`);
     }

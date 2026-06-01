@@ -72,21 +72,21 @@ async function forgotPassword(email) {
     });
 
     const body = `
-        <h2 style="margin:0 0 8px;font-size:22px;color:#4f94f0;font-weight:700;">Wachtwoord resetten</h2>
-        <p style="font-size:15px;color:#555;margin:0 0 24px;line-height:1.6;">Hallo <strong style="color:#1a1a1a;">${user.first_name}</strong>,</p>
-        <p style="font-size:15px;color:#555;margin:0 0 28px;line-height:1.6;">Gebruik de onderstaande code om uw wachtwoord te resetten. De code is <strong style="color:#4f94f0;">15 minuten</strong> geldig.</p>
+        <h2 style="margin:0 0 8px;font-size:22px;color:#4f94f0;font-weight:700;">Reset your password</h2>
+        <p style="font-size:15px;color:#555;margin:0 0 24px;line-height:1.6;">Hello <strong style="color:#1a1a1a;">${user.first_name}</strong>,</p>
+        <p style="font-size:15px;color:#555;margin:0 0 28px;line-height:1.6;">Use the code below to reset your password. The code is valid for <strong style="color:#4f94f0;">15 minutes</strong>.</p>
         <div style="text-align:center;margin:0 0 32px;">
             <div style="display:inline-block;background:#eef4ff;border:2px solid #4f94f0;border-radius:12px;padding:18px 36px;">
                 <span style="font-size:42px;font-weight:800;letter-spacing:12px;color:#4f94f0;font-variant-numeric:tabular-nums;">${code}</span>
             </div>
         </div>
-        <p style="font-size:13px;color:#999;margin:0;line-height:1.5;">Als u dit niet heeft aangevraagd, kunt u deze e-mail negeren. De code vervalt automatisch.</p>
+        <p style="font-size:13px;color:#999;margin:0;line-height:1.5;">If you did not request this, you can safely ignore this email. The code will expire automatically.</p>
     `;
 
     await mailer.send({
         to:      email.trim(),
-        subject: 'Reset uw wachtwoord — EliasDH',
-        html:    mailer.layout({ headerTitle: 'Wachtwoord reset', body })
+        subject: 'Reset your password — EliasDH',
+        html:    mailer.layout({ headerTitle: 'Password reset', body })
     });
 
     logger.info(`Password reset code sent to ${email}`);

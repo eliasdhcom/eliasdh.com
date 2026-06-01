@@ -52,7 +52,7 @@ router.post('/',
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             const id = await usersService.createUser(req.body);
             const created = await usersService.getUserById(id);
-            notificationService.sendWelcomeEmail(created, req.body.password).catch(() => {});
+            notificationService.sendWelcomeEmail(created).catch(() => {});
             res.status(201).json({ success: true, data: created });
         } catch (err) {
             if (err.message?.includes('UNIQUE')) {
