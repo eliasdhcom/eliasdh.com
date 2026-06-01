@@ -422,14 +422,6 @@
     letter-spacing: 0.2px;
 }
 
-.invoices-badge--custom     { background: var(--type-custom-color); }
-.invoices-badge--enterprise { background: var(--type-enterprise-color); }
-.invoices-badge--business   { background: var(--type-business-color); }
-.invoices-badge--startup    { background: var(--type-startup-color); }
-.invoices-badge--growth     { background: var(--type-growth-color); }
-.invoices-badge--basic      { background: var(--type-basic-color); }
-.invoices-badge--domain     { background: #dbeafe; color: #1e40af; }
-
 .invoices-frequency-badge {
     font-size: 11px;
     font-weight: 500;

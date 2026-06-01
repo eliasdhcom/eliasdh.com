@@ -415,46 +415,6 @@
     width: fit-content;
 }
 
-.map-sidebar-website-type.type-custom {
-    background-color: var(--type-custom-color);
-    color: white;
-}
-
-.map-sidebar-website-type.type-enterprise {
-    background-color: var(--type-enterprise-color);
-    color: white;
-}
-
-.map-sidebar-website-type.type-business {
-    background-color: var(--type-business-color);
-    color: white;
-}
-
-.map-sidebar-website-type.type-startup {
-    background-color: var(--type-startup-color);
-    color: white;
-}
-
-.map-sidebar-website-type.type-growth {
-    background-color: var(--type-growth-color);
-    color: white;
-}
-
-.map-sidebar-website-type.type-basic {
-    background-color: var(--type-basic-color);
-    color: white;
-}
-
-.map-sidebar-website-type.type-free {
-    background-color: var(--type-free-color);
-    color: white;
-}
-
-.map-sidebar-website-type.type-todo {
-    background-color: var(--type-todo-color);
-    color: white;
-}
-
 .map-sidebar-website-button {
     display: flex;
     align-items: center;

@@ -303,14 +303,6 @@
     justify-content: center;
 }
 
-.overview-badge--custom     { background: var(--type-custom-color); }
-.overview-badge--enterprise { background: var(--type-enterprise-color); }
-.overview-badge--business   { background: var(--type-business-color); }
-.overview-badge--startup    { background: var(--type-startup-color); }
-.overview-badge--growth     { background: var(--type-growth-color); }
-.overview-badge--basic      { background: var(--type-basic-color); }
-.overview-badge--free       { background: var(--type-free-color); }
-
 .overview-type-count {
     font-size: 15px;
     font-weight: 700;
@@ -341,14 +333,6 @@
     border-radius: 2px;
     transition: width .5s ease;
 }
-
-.overview-stacked-segment.overview-badge--custom     { background: var(--type-custom-color); }
-.overview-stacked-segment.overview-badge--enterprise { background: var(--type-enterprise-color); }
-.overview-stacked-segment.overview-badge--business   { background: var(--type-business-color); }
-.overview-stacked-segment.overview-badge--startup    { background: var(--type-startup-color); }
-.overview-stacked-segment.overview-badge--growth     { background: var(--type-growth-color); }
-.overview-stacked-segment.overview-badge--basic      { background: var(--type-basic-color); }
-.overview-stacked-segment.overview-badge--free       { background: var(--type-free-color); }
 
 .overview-type-empty {
     font-size: 13px;

@@ -339,15 +339,6 @@
     letter-spacing: 0.2px;
 }
 
-.customers-badge--custom     { background: var(--type-custom-color); }
-.customers-badge--enterprise { background: var(--type-enterprise-color); }
-.customers-badge--business   { background: var(--type-business-color); }
-.customers-badge--startup    { background: var(--type-startup-color); }
-.customers-badge--growth     { background: var(--type-growth-color); }
-.customers-badge--basic      { background: var(--type-basic-color); }
-.customers-badge--free       { background: var(--type-free-color); }
-.customers-badge--more       { background: rgba(128, 128, 128, 0.15); color: var(--secondary); }
-
 .customers-card-detail {
     border-top: 1px solid rgba(128, 128, 128, 0.12);
     padding: 20px;

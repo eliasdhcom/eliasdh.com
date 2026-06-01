@@ -98,15 +98,6 @@
     background: rgba(128, 128, 128, 0.08);
 }
 
-.subscriptions-type-chip.subscriptions-badge--enterprise { background: var(--type-enterprise-color); color: #1a1a1a; }
-.subscriptions-type-chip.subscriptions-badge--business   { background: var(--type-business-color);   color: #1a1a1a; }
-.subscriptions-type-chip.subscriptions-badge--startup    { background: var(--type-startup-color);    color: #1a1a1a; }
-.subscriptions-type-chip.subscriptions-badge--growth     { background: var(--type-growth-color);     color: #1a1a1a; }
-.subscriptions-type-chip.subscriptions-badge--basic      { background: var(--type-basic-color);      color: #1a1a1a; }
-.subscriptions-type-chip.subscriptions-badge--free       { background: var(--type-free-color);       color: #1a1a1a; }
-.subscriptions-type-chip.subscriptions-badge--custom     { background: var(--type-custom-color);     color: #1a1a1a; }
-.subscriptions-type-chip.subscriptions-badge--todo       { background: var(--type-todo-color);       color: white; }
-
 .subscriptions-type-chip:hover { opacity: 0.85; }
 
 .subscriptions-type-chip--active {
@@ -340,15 +331,6 @@
     color: #1a1a1a;
     letter-spacing: 0.2px;
 }
-
-.subscriptions-badge--custom     { background: var(--type-custom-color); }
-.subscriptions-badge--enterprise { background: var(--type-enterprise-color); }
-.subscriptions-badge--business   { background: var(--type-business-color); }
-.subscriptions-badge--startup    { background: var(--type-startup-color); }
-.subscriptions-badge--growth     { background: var(--type-growth-color); }
-.subscriptions-badge--basic      { background: var(--type-basic-color); }
-.subscriptions-badge--free       { background: var(--type-free-color); }
-.subscriptions-badge--todo       { background: var(--type-todo-color); color: white; }
 
 .subscriptions-frequency-badge {
     font-size: 11px;
