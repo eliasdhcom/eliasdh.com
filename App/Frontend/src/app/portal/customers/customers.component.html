@@ -1,4 +1,4 @@
-<!--Author EliasDH Team-->
+﻿<!--Author EliasDH Team-->
 <div class="customers-container">
     <div class="customers-top-bar">
         <div class="customers-top-left">
@@ -111,27 +111,27 @@
                             {{'PORTAL.CUSTOMERS.SECTION_CONTACT'|translate}}
                         </h4>
                         <dl class="customers-detail-list">
-                            <div class="customers-detail-row"><dt>{{'PORTAL.CUSTOMERS.FIRST_NAME'|translate}}</dt><dd>{{customer.firstName || '—'}}</dd></div>
-                            <div class="customers-detail-row"><dt>{{'PORTAL.CUSTOMERS.LAST_NAME'|translate}}</dt><dd>{{customer.lastName || '—'}}</dd></div>
+                            <div class="customers-detail-row"><dt>{{'PORTAL.CUSTOMERS.FIRST_NAME'|translate}}</dt><dd>{{customer.firstName || 'â€”'}}</dd></div>
+                            <div class="customers-detail-row"><dt>{{'PORTAL.CUSTOMERS.LAST_NAME'|translate}}</dt><dd>{{customer.lastName || 'â€”'}}</dd></div>
                             <div class="customers-detail-row">
                                 <dt>{{'PORTAL.CUSTOMERS.EMAIL'|translate}}</dt>
                                 <dd>
                                     <a *ngIf="customer.email" [href]="'mailto:' + customer.email" class="customers-detail-link cursor-pointer" (click)="$event.stopPropagation()">{{customer.email}}</a>
-                                    <span *ngIf="!customer.email">—</span>
+                                    <span *ngIf="!customer.email">â€”</span>
                                 </dd>
                             </div>
                             <div class="customers-detail-row">
                                 <dt>{{'PORTAL.CUSTOMERS.PHONE'|translate}}</dt>
                                 <dd>
                                     <a *ngIf="customer.phone" [href]="'tel:' + customer.phone" class="customers-detail-link cursor-pointer" (click)="$event.stopPropagation()">{{customer.phone}}</a>
-                                    <span *ngIf="!customer.phone">—</span>
+                                    <span *ngIf="!customer.phone">â€”</span>
                                 </dd>
                             </div>
                             <div class="customers-detail-row">
                                 <dt>{{'PORTAL.CUSTOMERS.MOBILE'|translate}}</dt>
                                 <dd>
                                     <a *ngIf="customer.mobile" [href]="'tel:' + customer.mobile" class="customers-detail-link cursor-pointer" (click)="$event.stopPropagation()">{{customer.mobile}}</a>
-                                    <span *ngIf="!customer.mobile">—</span>
+                                    <span *ngIf="!customer.mobile">â€”</span>
                                 </dd>
                             </div>
                         </dl>
@@ -184,7 +184,7 @@
                                 <div class="customers-sub-info">
                                     <span class="customers-sub-name">{{dom.name}}</span>
                                     <span class="customers-domain-renewal">
-                                        {{'PORTAL.CUSTOMERS.RENEWS'|translate}} {{getNextDomainRenewal(dom.renewalDate)}} &nbsp;·&nbsp; €{{dom.annualPrice | number:'1.2-2'}}/j
+                                        {{'PORTAL.CUSTOMERS.RENEWS'|translate}} {{getNextDomainRenewal(dom.renewalDate)}} &nbsp;Â·&nbsp; â‚¬{{dom.annualPrice | number:'1.2-2'}}/j
                                     </span>
                                 </div>
                             </div>
@@ -255,21 +255,21 @@
             </button>
         </div>
         <div class="customers-modal-body">
-            <section class="cform-section">
-                <h3 class="cform-section-title">
+            <section class="customers-form-section">
+                <h3 class="customers-form-section-title">
                     <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <rect class="cursor-pointer" x="2" y="7" width="20" height="14" rx="2" ry="2"/>
                         <path class="cursor-pointer" d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
                     </svg>
                     {{'PORTAL.CUSTOMERS.FORM.BUSINESS'|translate}}
                 </h3>
-                <div class="cform-logo-name-row">
-                    <div class="cform-field">
-                        <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.LOGO'|translate}} <span class="cform-required">*</span></label>
-                        <label class="cform-logo-clickable cursor-pointer" [title]="'PORTAL.CUSTOMERS.FORM.UPLOAD_LOGO'|translate">
+                <div class="customers-form-logo-name-row">
+                    <div class="customers-form-field">
+                        <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.LOGO'|translate}} <span class="customers-form-required">*</span></label>
+                        <label class="customers-form-logo-clickable cursor-pointer" [title]="'PORTAL.CUSTOMERS.FORM.UPLOAD_LOGO'|translate">
                             <input class="cursor-pointer" type="file" accept="image/*" (change)="onLogoFileChange($event); markTouched()" style="display:none"/>
-                            <img class="cursor-pointer" *ngIf="form.logo" [src]="form.logo" alt="Logo preview" class="cform-logo-preview-img"/>
-                            <div *ngIf="!form.logo" class="cform-logo-placeholder cursor-pointer">
+                            <img class="cursor-pointer" *ngIf="form.logo" [src]="form.logo" alt="Logo preview" class="customers-form-logo-preview-img"/>
+                            <div *ngIf="!form.logo" class="customers-form-logo-placeholder cursor-pointer">
                                 <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <path class="cursor-pointer" d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                                     <polyline class="cursor-pointer" points="17 8 12 3 7 8"/>
@@ -278,46 +278,46 @@
                             </div>
                         </label>
                     </div>
-                    <div class="cform-field cform-field--grow">
-                        <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.COMPANY_NAME'|translate}} <span class="cform-required">*</span></label>
-                        <input class="cform-input cursor-text" type="text" placeholder="bv. EliasDH BV" [(ngModel)]="form.name" (input)="markTouched()"/>
+                    <div class="customers-form-field customers-form-field--grow">
+                        <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.COMPANY_NAME'|translate}} <span class="customers-form-required">*</span></label>
+                        <input class="customers-form-input cursor-text" type="text" placeholder="bv. EliasDH BV" [(ngModel)]="form.name" (input)="markTouched()"/>
                     </div>
                 </div>
-                <h4 class="cform-subsection-title">{{'PORTAL.CUSTOMERS.FORM.CONTACT'|translate}}</h4>
-                <div class="cform-grid">
-                    <div class="cform-field">
-                        <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.FIRST_NAME'|translate}} <span class="cform-required">*</span></label>
-                        <input class="cform-input cursor-text" type="text" placeholder="Jan" [(ngModel)]="form.firstName"/>
+                <h4 class="customers-form-subsection-title">{{'PORTAL.CUSTOMERS.FORM.CONTACT'|translate}}</h4>
+                <div class="customers-form-grid">
+                    <div class="customers-form-field">
+                        <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.FIRST_NAME'|translate}} <span class="customers-form-required">*</span></label>
+                        <input class="customers-form-input cursor-text" type="text" placeholder="Jan" [(ngModel)]="form.firstName"/>
                     </div>
-                    <div class="cform-field">
-                        <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.LAST_NAME'|translate}} <span class="cform-required">*</span></label>
-                        <input class="cform-input cursor-text" type="text" placeholder="Peeters" [(ngModel)]="form.lastName"/>
+                    <div class="customers-form-field">
+                        <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.LAST_NAME'|translate}} <span class="customers-form-required">*</span></label>
+                        <input class="customers-form-input cursor-text" type="text" placeholder="Peeters" [(ngModel)]="form.lastName"/>
                     </div>
-                    <div class="cform-field">
-                        <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.EMAIL'|translate}} <span class="cform-required">*</span></label>
-                        <input class="cform-input cursor-text" type="email" placeholder="jan@bedrijf.be" [(ngModel)]="form.email"/>
+                    <div class="customers-form-field">
+                        <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.EMAIL'|translate}} <span class="customers-form-required">*</span></label>
+                        <input class="customers-form-input cursor-text" type="email" placeholder="jan@bedrijf.be" [(ngModel)]="form.email"/>
                     </div>
-                    <div class="cform-field">
-                        <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.PHONE'|translate}} <span class="cform-required">*</span></label>
-                        <input class="cform-input cursor-text" type="text" placeholder="+32 9 123 45 67" [(ngModel)]="form.phone"/>
+                    <div class="customers-form-field">
+                        <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.PHONE'|translate}} <span class="customers-form-required">*</span></label>
+                        <input class="customers-form-input cursor-text" type="text" placeholder="+32 9 123 45 67" [(ngModel)]="form.phone"/>
                     </div>
-                    <div class="cform-field">
-                        <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.MOBILE'|translate}} <span class="cform-required">*</span></label>
-                        <input class="cform-input cursor-text" type="text" placeholder="+32 478 12 34 56" [(ngModel)]="form.mobile"/>
+                    <div class="customers-form-field">
+                        <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.MOBILE'|translate}} <span class="customers-form-required">*</span></label>
+                        <input class="customers-form-input cursor-text" type="text" placeholder="+32 478 12 34 56" [(ngModel)]="form.mobile"/>
                     </div>
                 </div>
             </section>
-            <section class="cform-section">
-                <div class="cform-section-header">
-                    <h3 class="cform-section-title">
+            <section class="customers-form-section">
+                <div class="customers-form-section-header">
+                    <h3 class="customers-form-section-title">
                         <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path class="cursor-pointer" d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                             <circle class="cursor-pointer" cx="12" cy="10" r="3"/>
                         </svg>
                         {{'PORTAL.CUSTOMERS.FORM.LOCATIONS'|translate}}
-                        <span class="cform-count">{{form.locations.length}}</span>
+                        <span class="customers-form-count">{{form.locations.length}}</span>
                     </h3>
-                    <button class="cform-add-btn cursor-pointer" type="button" (click)="addLocation()">
+                    <button class="customers-form-add-btn cursor-pointer" type="button" (click)="addLocation()">
                         <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <line class="cursor-pointer" x1="12" y1="5" x2="12" y2="19"/>
                             <line class="cursor-pointer" x1="5" y1="12" x2="19" y2="12"/>
@@ -325,47 +325,47 @@
                         {{'PORTAL.CUSTOMERS.FORM.ADD_LOCATION'|translate}}
                     </button>
                 </div>
-                <div class="cform-list" *ngIf="form.locations.length">
-                    <div class="cform-list-item" *ngFor="let loc of form.locations; let li = index">
-                        <div class="cform-list-item-header">
-                            <span class="cform-list-item-label">{{'PORTAL.CUSTOMERS.FORM.LOCATION_N'|translate}} {{li + 1}}</span>
-                            <button class="cform-remove-btn cursor-pointer" type="button" (click)="removeLocation(li)" [title]="'PORTAL.CUSTOMERS.FORM.REMOVE_LOCATION'|translate">
+                <div class="customers-form-list" *ngIf="form.locations.length">
+                    <div class="customers-form-list-item" *ngFor="let loc of form.locations; let li = index">
+                        <div class="customers-form-list-item-header">
+                            <span class="customers-form-list-item-label">{{'PORTAL.CUSTOMERS.FORM.LOCATION_N'|translate}} {{li + 1}}</span>
+                            <button class="customers-form-remove-btn cursor-pointer" type="button" (click)="removeLocation(li)" [title]="'PORTAL.CUSTOMERS.FORM.REMOVE_LOCATION'|translate">
                                 <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
                                     <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
                                 </svg>
                             </button>
                         </div>
-                        <div class="cform-grid">
-                            <div class="cform-field cform-field--street">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.STREET'|translate}} <span class="cform-required">*</span></label>
-                                <input class="cform-input cursor-text" type="text" placeholder="Hoofdstraat" [(ngModel)]="loc.street" (blur)="onAddressBlur(loc, li)"/>
+                        <div class="customers-form-grid">
+                            <div class="customers-form-field customers-form-field--street">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.STREET'|translate}} <span class="customers-form-required">*</span></label>
+                                <input class="customers-form-input cursor-text" type="text" placeholder="Hoofdstraat" [(ngModel)]="loc.street" (blur)="onAddressBlur(loc, li)"/>
                             </div>
-                            <div class="cform-field cform-field--number">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.NUMBER'|translate}} <span class="cform-required">*</span></label>
-                                <input class="cform-input cursor-text" type="text" placeholder="12" [(ngModel)]="loc.number" (blur)="onAddressBlur(loc, li)"/>
+                            <div class="customers-form-field customers-form-field--number">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.NUMBER'|translate}} <span class="customers-form-required">*</span></label>
+                                <input class="customers-form-input cursor-text" type="text" placeholder="12" [(ngModel)]="loc.number" (blur)="onAddressBlur(loc, li)"/>
                             </div>
-                            <div class="cform-field cform-field--postal">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.POSTAL'|translate}} <span class="cform-required">*</span></label>
-                                <input class="cform-input cursor-text" type="text" placeholder="9000" [(ngModel)]="loc.postalCode" (blur)="onAddressBlur(loc, li)"/>
+                            <div class="customers-form-field customers-form-field--postal">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.POSTAL'|translate}} <span class="customers-form-required">*</span></label>
+                                <input class="customers-form-input cursor-text" type="text" placeholder="9000" [(ngModel)]="loc.postalCode" (blur)="onAddressBlur(loc, li)"/>
                             </div>
-                            <div class="cform-field">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.CITY'|translate}} <span class="cform-required">*</span></label>
-                                <input class="cform-input cursor-text" type="text" placeholder="Gent" [(ngModel)]="loc.city" (blur)="onAddressBlur(loc, li)"/>
+                            <div class="customers-form-field">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.CITY'|translate}} <span class="customers-form-required">*</span></label>
+                                <input class="customers-form-input cursor-text" type="text" placeholder="Gent" [(ngModel)]="loc.city" (blur)="onAddressBlur(loc, li)"/>
                             </div>
-                            <div class="cform-field">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.COUNTRY'|translate}} <span class="cform-required">*</span></label>
-                                <input class="cform-input cursor-text" type="text" placeholder="Belgium" [(ngModel)]="loc.country" (blur)="onAddressBlur(loc, li)"/>
+                            <div class="customers-form-field">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.COUNTRY'|translate}} <span class="customers-form-required">*</span></label>
+                                <input class="customers-form-input cursor-text" type="text" placeholder="Belgium" [(ngModel)]="loc.country" (blur)="onAddressBlur(loc, li)"/>
                             </div>
-                            <div class="cform-field">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.VAT'|translate}}</label>
-                                <input class="cform-input cursor-text" type="text" placeholder="BE 0123.456.789" [(ngModel)]="loc.vat"/>
+                            <div class="customers-form-field">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.VAT'|translate}}</label>
+                                <input class="customers-form-input cursor-text" type="text" placeholder="BE 0123.456.789" [(ngModel)]="loc.vat"/>
                             </div>
                         </div>
-                        <div class="cform-socials">
-                            <div class="cform-socials-header">
-                                <span class="cform-socials-label">{{'PORTAL.CUSTOMERS.FORM.SOCIAL'|translate}}</span>
-                                <button class="cform-add-btn cform-add-btn--sm cursor-pointer" type="button" (click)="addSocialLink(loc)">
+                        <div class="customers-form-socials">
+                            <div class="customers-form-socials-header">
+                                <span class="customers-form-socials-label">{{'PORTAL.CUSTOMERS.FORM.SOCIAL'|translate}}</span>
+                                <button class="customers-form-add-btn customers-form-add-btn--sm cursor-pointer" type="button" (click)="addSocialLink(loc)">
                                     <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                         <line class="cursor-pointer" x1="12" y1="5" x2="12" y2="19"/>
                                         <line class="cursor-pointer" x1="5" y1="12" x2="19" y2="12"/>
@@ -373,12 +373,12 @@
                                     {{'PORTAL.CUSTOMERS.FORM.ADD_LINK'|translate}}
                                 </button>
                             </div>
-                            <div class="cform-social-row cursor-pointer" *ngFor="let sl of loc.socialLinks; let si = index">
-                                <select class="cform-select cursor-pointer" [(ngModel)]="sl.type">
+                            <div class="customers-form-social-row cursor-pointer" *ngFor="let sl of loc.socialLinks; let si = index">
+                                <select class="customers-form-select cursor-pointer" [(ngModel)]="sl.type">
                                     <option class="cursor-pointer" *ngFor="let t of socialTypes" [value]="t">{{t}}</option>
                                 </select>
-                                <input class="cform-input cursor-text" type="text" placeholder="https://..." [(ngModel)]="sl.url"/>
-                                <button class="cform-remove-btn cform-remove-btn--inline cursor-pointer" type="button" (click)="removeSocialLink(loc, si)">
+                                <input class="customers-form-input cursor-text" type="text" placeholder="https://..." [(ngModel)]="sl.url"/>
+                                <button class="customers-form-remove-btn customers-form-remove-btn--inline cursor-pointer" type="button" (click)="removeSocialLink(loc, si)">
                                     <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
                                         <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
@@ -388,18 +388,18 @@
                         </div>
                     </div>
                 </div>
-                <p class="cform-empty-hint" *ngIf="!form.locations.length">{{'PORTAL.CUSTOMERS.FORM.NO_LOCATIONS'|translate}}</p>
+                <p class="customers-form-empty-hint" *ngIf="!form.locations.length">{{'PORTAL.CUSTOMERS.FORM.NO_LOCATIONS'|translate}}</p>
             </section>
-            <section class="cform-section">
-                <div class="cform-section-header">
-                    <h3 class="cform-section-title">
+            <section class="customers-form-section">
+                <div class="customers-form-section-header">
+                    <h3 class="customers-form-section-title">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
                         </svg>
                         {{'PORTAL.CUSTOMERS.FORM.SUBS'|translate}}
-                        <span class="cform-count">{{form.websites.length}}</span>
+                        <span class="customers-form-count">{{form.websites.length}}</span>
                     </h3>
-                    <button class="cform-add-btn cursor-pointer" type="button" (click)="addWebsite()">
+                    <button class="customers-form-add-btn cursor-pointer" type="button" (click)="addWebsite()">
                         <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <line class="cursor-pointer" x1="12" y1="5" x2="12" y2="19"/>
                             <line class="cursor-pointer" x1="5" y1="12" x2="19" y2="12"/>
@@ -407,80 +407,80 @@
                         {{'PORTAL.CUSTOMERS.FORM.ADD_SUBSCRIPTION'|translate}}
                     </button>
                 </div>
-                <div class="cform-list" *ngIf="form.websites.length">
-                    <div class="cform-list-item" *ngFor="let w of form.websites; let wi = index">
-                        <div class="cform-list-item-header">
-                            <span class="cform-list-item-label">{{'PORTAL.CUSTOMERS.FORM.SUBSCRIPTION_N'|translate}} {{wi + 1}}</span>
-                            <button class="cform-remove-btn cursor-pointer" type="button" (click)="removeWebsite(wi)" [title]="'PORTAL.CUSTOMERS.FORM.REMOVE_SUBSCRIPTION'|translate">
+                <div class="customers-form-list" *ngIf="form.websites.length">
+                    <div class="customers-form-list-item" *ngFor="let w of form.websites; let wi = index">
+                        <div class="customers-form-list-item-header">
+                            <span class="customers-form-list-item-label">{{'PORTAL.CUSTOMERS.FORM.SUBSCRIPTION_N'|translate}} {{wi + 1}}</span>
+                            <button class="customers-form-remove-btn cursor-pointer" type="button" (click)="removeWebsite(wi)" [title]="'PORTAL.CUSTOMERS.FORM.REMOVE_SUBSCRIPTION'|translate">
                                 <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
                                     <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
                                 </svg>
                             </button>
                         </div>
-                        <div class="cform-grid">
-                            <div class="cform-field">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.NAME'|translate}} <span class="cform-required">*</span></label>
-                                <input class="cform-input cursor-text" type="text" placeholder="Website naam" [(ngModel)]="w.name"/>
+                        <div class="customers-form-grid">
+                            <div class="customers-form-field">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.NAME'|translate}} <span class="customers-form-required">*</span></label>
+                                <input class="customers-form-input cursor-text" type="text" placeholder="Website naam" [(ngModel)]="w.name"/>
                             </div>
-                            <div class="cform-field">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.URL'|translate}} <span class="cform-required">*</span></label>
-                                <input class="cform-input cursor-text" type="text" placeholder="https://bedrijf.be" [(ngModel)]="w.url"/>
+                            <div class="customers-form-field">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.URL'|translate}} <span class="customers-form-required">*</span></label>
+                                <input class="customers-form-input cursor-text" type="text" placeholder="https://bedrijf.be" [(ngModel)]="w.url"/>
                             </div>
-                            <div class="cform-field">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.TYPE'|translate}}</label>
-                                <select class="cform-select cursor-pointer" [(ngModel)]="w.subscriptionType" (change)="onSubscriptionTypeChange(w)">
+                            <div class="customers-form-field">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.TYPE'|translate}}</label>
+                                <select class="customers-form-select cursor-pointer" [(ngModel)]="w.subscriptionType" (change)="onSubscriptionTypeChange(w)">
                                     <option class="cursor-pointer" *ngFor="let t of subscriptionTypes" [value]="t">{{t}}</option>
                                 </select>
                             </div>
-                            <div class="cform-field">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.FREQUENCY'|translate}}</label>
-                                <select class="cform-select cursor-pointer" [(ngModel)]="w.frequency">
+                            <div class="customers-form-field">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.FREQUENCY'|translate}}</label>
+                                <select class="customers-form-select cursor-pointer" [(ngModel)]="w.frequency">
                                     <option class="cursor-pointer" value="monthly">{{'PORTAL.CUSTOMERS.FORM.FREQ_MONTHLY'|translate}}</option>
                                     <option class="cursor-pointer" value="quarterly">{{'PORTAL.CUSTOMERS.FORM.FREQ_QUARTERLY'|translate}}</option>
                                     <option class="cursor-pointer" value="yearly">{{'PORTAL.CUSTOMERS.FORM.FREQ_YEARLY'|translate}}</option>
                                     <option class="cursor-pointer" value="one-time">{{'PORTAL.CUSTOMERS.FORM.FREQ_ONCE'|translate}}</option>
                                 </select>
                             </div>
-                            <div class="cform-field">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.PRICE'|translate}}</label>
-                                <input class="cform-input cursor-text" type="number" placeholder="0.00" min="0" step="0.01" [(ngModel)]="w.payment" [readonly]="w.subscriptionType !== 'Custom'" [class.cform-input--readonly]="w.subscriptionType !== 'Custom'" (input)="onDiscountChange(w)"/>
+                            <div class="customers-form-field">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.PRICE'|translate}}</label>
+                                <input class="customers-form-input cursor-text" type="number" placeholder="0.00" min="0" step="0.01" [(ngModel)]="w.payment" [readonly]="w.subscriptionType !== 'Custom'" [class.customers-form-input--readonly]="w.subscriptionType !== 'Custom'" (input)="onDiscountChange(w)"/>
                             </div>
-                            <div class="cform-field">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.DISCOUNT'|translate}}</label>
-                                <input class="cform-input cursor-text" type="number" placeholder="0.00" min="0" step="0.01" [(ngModel)]="w.discount" [max]="w.payment" (input)="onDiscountChange(w)"/>
+                            <div class="customers-form-field">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.DISCOUNT'|translate}}</label>
+                                <input class="customers-form-input cursor-text" type="number" placeholder="0.00" min="0" step="0.01" [(ngModel)]="w.discount" [max]="w.payment" (input)="onDiscountChange(w)"/>
                             </div>
-                            <div class="cform-field">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.START_DATE'|translate}} <span class="cform-required">*</span></label>
-                                <input class="cform-input cursor-text" type="month" [(ngModel)]="w.startDate"/>
+                            <div class="customers-form-field">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.START_DATE'|translate}} <span class="customers-form-required">*</span></label>
+                                <input class="customers-form-input cursor-text" type="month" [(ngModel)]="w.startDate"/>
                             </div>
-                            <div class="cform-field cform-field--toggle">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.STATUS'|translate}}</label>
-                                <label class="cform-toggle cursor-pointer">
+                            <div class="customers-form-field customers-form-field--toggle">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.STATUS'|translate}}</label>
+                                <label class="customers-form-toggle cursor-pointer">
                                     <input type="checkbox" [(ngModel)]="w.isLive"/>
-                                    <span class="cform-toggle-track cursor-pointer">
-                                        <span class="cform-toggle-thumb cursor-pointer"></span>
+                                    <span class="customers-form-toggle-track cursor-pointer">
+                                        <span class="customers-form-toggle-thumb cursor-pointer"></span>
                                     </span>
-                                    <span class="cform-toggle-label">{{w.isLive ? ('PORTAL.CUSTOMERS.FORM.LIVE'|translate) : ('PORTAL.CUSTOMERS.FORM.INACTIVE'|translate)}}</span>
+                                    <span class="customers-form-toggle-label">{{w.isLive ? ('PORTAL.CUSTOMERS.FORM.LIVE'|translate) : ('PORTAL.CUSTOMERS.FORM.INACTIVE'|translate)}}</span>
                                 </label>
                             </div>
                         </div>
                     </div>
                 </div>
-                <p class="cform-empty-hint" *ngIf="!form.websites.length">{{'PORTAL.CUSTOMERS.FORM.NO_SUBS'|translate}}</p>
+                <p class="customers-form-empty-hint" *ngIf="!form.websites.length">{{'PORTAL.CUSTOMERS.FORM.NO_SUBS'|translate}}</p>
             </section>
-            <section class="cform-section">
-                <div class="cform-section-header">
-                    <h3 class="cform-section-title">
+            <section class="customers-form-section">
+                <div class="customers-form-section-header">
+                    <h3 class="customers-form-section-title">
                         <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <circle class="cursor-pointer" cx="12" cy="12" r="10"/>
                             <line class="cursor-pointer" x1="2" y1="12" x2="22" y2="12"/>
                             <path class="cursor-pointer" d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                         </svg>
                         {{'PORTAL.CUSTOMERS.FORM.DOMAINS'|translate}}
-                        <span class="cform-count">{{form.domains.length}}</span>
+                        <span class="customers-form-count">{{form.domains.length}}</span>
                     </h3>
-                    <button class="cform-add-btn cursor-pointer" type="button" (click)="addDomain()">
+                    <button class="customers-form-add-btn cursor-pointer" type="button" (click)="addDomain()">
                         <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <line class="cursor-pointer" x1="12" y1="5" x2="12" y2="19"/>
                             <line class="cursor-pointer" x1="5" y1="12" x2="19" y2="12"/>
@@ -488,34 +488,34 @@
                         {{'PORTAL.CUSTOMERS.FORM.ADD_DOMAIN'|translate}}
                     </button>
                 </div>
-                <div class="cform-list" *ngIf="form.domains.length">
-                    <div class="cform-list-item" *ngFor="let d of form.domains; let di = index">
-                        <div class="cform-list-item-header">
-                            <span class="cform-list-item-label">{{'PORTAL.CUSTOMERS.FORM.DOMAIN_N'|translate}} {{di + 1}}</span>
-                            <button class="cform-remove-btn cursor-pointer" type="button" (click)="removeDomain(di)" [title]="'PORTAL.CUSTOMERS.FORM.REMOVE_DOMAIN'|translate">
+                <div class="customers-form-list" *ngIf="form.domains.length">
+                    <div class="customers-form-list-item" *ngFor="let d of form.domains; let di = index">
+                        <div class="customers-form-list-item-header">
+                            <span class="customers-form-list-item-label">{{'PORTAL.CUSTOMERS.FORM.DOMAIN_N'|translate}} {{di + 1}}</span>
+                            <button class="customers-form-remove-btn cursor-pointer" type="button" (click)="removeDomain(di)" [title]="'PORTAL.CUSTOMERS.FORM.REMOVE_DOMAIN'|translate">
                                 <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
                                     <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
                                 </svg>
                             </button>
                         </div>
-                        <div class="cform-grid">
-                            <div class="cform-field">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.DOMAIN_NAME'|translate}} <span class="cform-required">*</span></label>
-                                <input class="cform-input cursor-text" type="text" placeholder="bv. bedrijf.be" [(ngModel)]="d.name"/>
+                        <div class="customers-form-grid">
+                            <div class="customers-form-field">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.DOMAIN_NAME'|translate}} <span class="customers-form-required">*</span></label>
+                                <input class="customers-form-input cursor-text" type="text" placeholder="bv. bedrijf.be" [(ngModel)]="d.name"/>
                             </div>
-                            <div class="cform-field">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.PURCHASE_DATE'|translate}} <span class="cform-required">*</span></label>
-                                <input class="cform-input cursor-text" type="month" [(ngModel)]="d.renewalDate"/>
+                            <div class="customers-form-field">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.PURCHASE_DATE'|translate}} <span class="customers-form-required">*</span></label>
+                                <input class="customers-form-input cursor-text" type="month" [(ngModel)]="d.renewalDate"/>
                             </div>
-                            <div class="cform-field cform-field--full">
-                                <label class="cform-label">{{'PORTAL.CUSTOMERS.FORM.ANNUAL_PRICE'|translate}}</label>
-                                <input class="cform-input cursor-text" type="number" placeholder="0.00" min="0" step="0.01" [(ngModel)]="d.annualPrice"/>
+                            <div class="customers-form-field customers-form-field--full">
+                                <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.ANNUAL_PRICE'|translate}}</label>
+                                <input class="customers-form-input cursor-text" type="number" placeholder="0.00" min="0" step="0.01" [(ngModel)]="d.annualPrice"/>
                             </div>
                         </div>
                     </div>
                 </div>
-                <p class="cform-empty-hint" *ngIf="!form.domains.length">{{'PORTAL.CUSTOMERS.FORM.NO_DOMAINS'|translate}}</p>
+                <p class="customers-form-empty-hint" *ngIf="!form.domains.length">{{'PORTAL.CUSTOMERS.FORM.NO_DOMAINS'|translate}}</p>
             </section>
         </div>
         <div class="customers-modal-footer">
@@ -526,11 +526,11 @@
                     <button class="customers-modal-btn customers-modal-btn--discard cursor-pointer" type="button" (click)="confirmDiscard()">{{'PORTAL.COMMON.DISCARD.DISCARD'|translate}}</button>
                 </div>
             </div>
-            <p class="cform-error" *ngIf="formError && !showDiscardConfirm">{{formError}}</p>
+            <p class="customers-form-error" *ngIf="formError && !showDiscardConfirm">{{formError}}</p>
             <div class="customers-modal-footer-actions" *ngIf="!showDiscardConfirm">
                 <button class="customers-modal-btn customers-modal-btn--cancel cursor-pointer" type="button" (click)="requestClose()" [disabled]="formSaving">{{'PORTAL.CUSTOMERS.FORM.CANCEL'|translate}}</button>
                 <button class="customers-modal-btn customers-modal-btn--save cursor-pointer" type="button" (click)="submitForm()" [disabled]="formSaving">
-                    <svg *ngIf="formSaving" class="cform-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-opacity="0.3"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+                    <svg *ngIf="formSaving" class="customers-form-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-opacity="0.3"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
                     {{formSaving ? ('PORTAL.CUSTOMERS.FORM.SAVING'|translate) : (isEditing ? ('PORTAL.CUSTOMERS.FORM.SAVE'|translate) : ('PORTAL.CUSTOMERS.FORM.CREATE'|translate))}}
                 </button>
             </div>

@@ -1,36 +1,36 @@
-/**
+﻿/**
     * @author EliasDH Team
     * @see https://eliasdh.com
     * @since 31/05/2026
 **/
 
 /* Pricing Plans */
-@keyframes pricing-shimmer {
+@keyframes pricing-plans-shimmer {
     0%   { background-position: 200% center; }
     100% { background-position: -200% center; }
 }
 
-.pricing-container {
+.pricing-plans-container {
     display: flex;
     flex-direction: column;
     gap: 16px;
     max-width: 1200px;
 }
 
-.pricing-top-bar {
+.pricing-plans-top-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
 }
 
-.pricing-total {
+.pricing-plans-total {
     font-size: 13px;
     font-weight: 500;
     color: var(--secondary);
 }
 
-.pricing-add-btn {
+.pricing-plans-add-btn {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -44,25 +44,25 @@
     transition: background 0.18s, transform 0.12s;
 }
 
-.pricing-add-btn svg { width: 16px; height: 16px; }
-.pricing-add-btn:hover { background: color-mix(in srgb, var(--primary) 85%, #000); transform: translateY(-1px); }
+.pricing-plans-add-btn svg { width: 16px; height: 16px; }
+.pricing-plans-add-btn:hover { background: color-mix(in srgb, var(--primary) 85%, #000); transform: translateY(-1px); }
 
-.pricing-loading {
+.pricing-plans-loading {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 16px;
 }
 
-.pricing-skeleton {
+.pricing-plans-skeleton {
     height: 130px;
     border-radius: 12px;
     background: linear-gradient(90deg, rgba(128,128,128,0.08) 25%, rgba(128,128,128,0.16) 50%, rgba(128,128,128,0.08) 75%);
     background-size: 200% 100%;
-    animation: pricing-shimmer 1.4s ease-in-out infinite;
+    animation: pricing-plans-shimmer 1.4s ease-in-out infinite;
 }
 
-.pricing-error-state,
-.pricing-empty-state {
+.pricing-plans-error-state,
+.pricing-plans-empty-state {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -71,14 +71,14 @@
     color: var(--secondary);
 }
 
-.pricing-error-state svg,
-.pricing-empty-state svg {
+.pricing-plans-error-state svg,
+.pricing-plans-empty-state svg {
     width: 40px;
     height: 40px;
     opacity: 0.4;
 }
 
-.pricing-retry-btn {
+.pricing-plans-retry-btn {
     background: transparent;
     border: 1px solid rgba(128,128,128,0.3);
     border-radius: 6px;
@@ -88,15 +88,15 @@
     transition: background 0.15s;
 }
 
-.pricing-retry-btn:hover { background: rgba(128,128,128,0.08); }
+.pricing-plans-retry-btn:hover { background: rgba(128,128,128,0.08); }
 
-.pricing-grid {
+.pricing-plans-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 16px;
 }
 
-.pricing-card {
+.pricing-plans-card {
     background: var(--background);
     border: 1px solid rgba(128,128,128,0.15);
     border-radius: 12px;
@@ -107,56 +107,56 @@
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.pricing-card-color-bar {
+.pricing-plans-card-color-bar {
     height: 6px;
     width: 100%;
     flex-shrink: 0;
 }
 
 
-.pricing-card:hover {
+.pricing-plans-card:hover {
     border-color: color-mix(in srgb, var(--primary) 40%, transparent);
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
 
-.pricing-card-body { display: flex; flex-direction: column; gap: 6px; padding: 20px; padding-bottom: 0; }
+.pricing-plans-card-body { display: flex; flex-direction: column; gap: 6px; padding: 20px; padding-bottom: 0; }
 
-.pricing-card-name {
+.pricing-plans-card-name {
     font-size: 16px;
     font-weight: 600;
     color: var(--text);
 }
 
-.pricing-card-price {
+.pricing-plans-card-price {
     display: flex;
     align-items: baseline;
     gap: 4px;
 }
 
-.pricing-card-amount {
+.pricing-plans-card-amount {
     font-size: 22px;
     font-weight: 700;
     color: var(--primary);
 }
 
-.pricing-card-period {
+.pricing-plans-card-period {
     font-size: 12px;
     color: var(--secondary);
 }
 
-.pricing-card-year {
+.pricing-plans-card-year {
     font-size: 12px;
     color: var(--secondary);
 }
 
-.pricing-card-actions {
+.pricing-plans-card-actions {
     display: flex;
     gap: 8px;
     justify-content: flex-end;
     padding: 0 20px 20px;
 }
 
-.pricing-action-btn {
+.pricing-plans-action-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -168,15 +168,15 @@
     transition: background 0.15s, border-color 0.15s;
 }
 
-.pricing-action-btn svg { width: 14px; height: 14px; }
+.pricing-plans-action-btn svg { width: 14px; height: 14px; }
 
-.pricing-action-btn--edit { color: var(--primary); }
-.pricing-action-btn--edit:hover { background: color-mix(in srgb, var(--primary) 10%, transparent); border-color: var(--primary); }
+.pricing-plans-action-btn--edit { color: var(--primary); }
+.pricing-plans-action-btn--edit:hover { background: color-mix(in srgb, var(--primary) 10%, transparent); border-color: var(--primary); }
 
-.pricing-action-btn--delete { color: #ef4444; }
-.pricing-action-btn--delete:hover { background: rgba(239,68,68,0.08); border-color: #ef4444; }
+.pricing-plans-action-btn--delete { color: #ef4444; }
+.pricing-plans-action-btn--delete:hover { background: rgba(239,68,68,0.08); border-color: #ef4444; }
 
-.pricing-modal-overlay {
+.pricing-plans-modal-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.45);
@@ -188,35 +188,35 @@
     padding: 16px;
 }
 
-.pricing-modal {
+.pricing-plans-modal {
     background: var(--background);
     border-radius: 14px;
     width: 100%;
     max-width: 420px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-    animation: pricing-modal-in 0.18s ease;
+    animation: pricing-plans-modal-in 0.18s ease;
 }
 
-@keyframes pricing-modal-in {
+@keyframes pricing-plans-modal-in {
     from { opacity: 0; transform: translateY(-10px) scale(0.97); }
     to   { opacity: 1; transform: none; }
 }
 
-.pricing-modal-header {
+.pricing-plans-modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 20px 24px 0;
 }
 
-.pricing-modal-title {
+.pricing-plans-modal-title {
     font-size: 17px;
     font-weight: 600;
     color: var(--text);
     margin: 0;
 }
 
-.pricing-modal-close {
+.pricing-plans-modal-close {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -229,16 +229,16 @@
     transition: background 0.15s;
 }
 
-.pricing-modal-close svg { width: 16px; height: 16px; }
-.pricing-modal-close:hover { background: rgba(128,128,128,0.12); }
+.pricing-plans-modal-close svg { width: 16px; height: 16px; }
+.pricing-plans-modal-close:hover { background: rgba(128,128,128,0.12); }
 
-.pricing-modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+.pricing-plans-modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
 
-.pricing-form-group { display: flex; flex-direction: column; gap: 6px; }
+.pricing-plans-form-group { display: flex; flex-direction: column; gap: 6px; }
 
-.pricing-form-label { font-size: 13px; font-weight: 500; color: var(--secondary); }
+.pricing-plans-form-label { font-size: 13px; font-weight: 500; color: var(--secondary); }
 
-.pricing-form-input {
+.pricing-plans-form-input {
     padding: 8px 12px;
     border: 1px solid rgba(128,128,128,0.25);
     border-radius: 8px;
@@ -250,13 +250,13 @@
     box-sizing: border-box;
 }
 
-.pricing-form-input:focus {
+.pricing-plans-form-input:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
 }
 
-.pricing-form-input-wrap {
+.pricing-plans-form-input-wrap {
     display: flex;
     align-items: center;
     gap: 0;
@@ -266,12 +266,12 @@
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.pricing-form-input-wrap:focus-within {
+.pricing-plans-form-input-wrap:focus-within {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
 }
 
-.pricing-form-prefix {
+.pricing-plans-form-prefix {
     padding: 8px 10px;
     background: rgba(128,128,128,0.08);
     color: var(--secondary);
@@ -279,21 +279,21 @@
     border-right: 1px solid rgba(128,128,128,0.2);
 }
 
-.pricing-form-input--price {
+.pricing-plans-form-input--price {
     border: none;
     border-radius: 0;
     flex: 1;
 }
 
-.pricing-form-input--price:focus { box-shadow: none; }
+.pricing-plans-form-input--price:focus { box-shadow: none; }
 
-.pricing-color-wrap {
+.pricing-plans-color-wrap {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.pricing-color-input {
+.pricing-plans-color-input {
     width: 42px;
     height: 36px;
     border: 1px solid rgba(128,128,128,0.25);
@@ -303,7 +303,7 @@
     flex-shrink: 0;
 }
 
-.pricing-color-preview {
+.pricing-plans-color-preview {
     display: inline-flex;
     align-items: center;
     padding: 4px 12px;
@@ -315,7 +315,7 @@
     white-space: nowrap;
 }
 
-.pricing-form-error {
+.pricing-plans-form-error {
     font-size: 13px;
     color: #ef4444;
     padding: 8px 12px;
@@ -323,26 +323,26 @@
     border-radius: 6px;
 }
 
-.pricing-delete-msg {
+.pricing-plans-delete-msg {
     font-size: 14px;
     color: var(--secondary);
     margin: 0;
 }
 
-.pricing-modal-footer {
+.pricing-plans-modal-footer {
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding: 0 24px 20px;
 }
 
-.pricing-modal-footer > ng-container,
-.pricing-modal-footer:not(:has(.pricing-discard-confirm)) {
+.pricing-plans-modal-footer > ng-container,
+.pricing-plans-modal-footer:not(:has(.pricing-plans-discard-confirm)) {
     flex-direction: row;
     justify-content: flex-end;
 }
 
-.pricing-discard-confirm {
+.pricing-plans-discard-confirm {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -354,18 +354,18 @@
     flex-wrap: wrap;
 }
 
-.pricing-discard-question {
+.pricing-plans-discard-question {
     font-size: 13px;
     color: var(--text);
     font-weight: 500;
 }
 
-.pricing-discard-actions {
+.pricing-plans-discard-actions {
     display: flex;
     gap: 8px;
 }
 
-.pricing-btn {
+.pricing-plans-btn {
     padding: 8px 18px;
     border-radius: 8px;
     font-size: 14px;
@@ -374,27 +374,27 @@
     transition: background 0.15s, transform 0.1s;
 }
 
-.pricing-btn:disabled { opacity: 0.6; }
-.pricing-btn:not(:disabled):hover { transform: translateY(-1px); }
+.pricing-plans-btn:disabled { opacity: 0.6; }
+.pricing-plans-btn:not(:disabled):hover { transform: translateY(-1px); }
 
-.pricing-btn--cancel {
+.pricing-plans-btn--cancel {
     background: rgba(128,128,128,0.1);
     color: var(--text);
 }
 
-.pricing-btn--cancel:hover { background: rgba(128,128,128,0.18); }
+.pricing-plans-btn--cancel:hover { background: rgba(128,128,128,0.18); }
 
-.pricing-btn--save {
+.pricing-plans-btn--save {
     background: var(--primary);
     color: #fff;
 }
 
-.pricing-btn--save:hover { background: color-mix(in srgb, var(--primary) 85%, #000); }
+.pricing-plans-btn--save:hover { background: color-mix(in srgb, var(--primary) 85%, #000); }
 
-.pricing-btn--delete {
+.pricing-plans-btn--delete {
     background: #ef4444;
     color: #fff;
 }
 
-.pricing-btn--delete:hover { background: #dc2626; }
+.pricing-plans-btn--delete:hover { background: #dc2626; }
 /* Pricing Plans */
