@@ -10,12 +10,13 @@ import { Title, Meta } from '@angular/platform-browser';
 import { filter, map } from 'rxjs/operators';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { CookieConsentComponent } from './shared/cookie-consent/cookie-consent.component';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterModule, CommonModule],
-    template: `<router-outlet></router-outlet>`,
+    imports: [RouterModule, CommonModule, CookieConsentComponent],
+    template: `<router-outlet></router-outlet><app-cookie-consent></app-cookie-consent>`,
     providers: [Title, Meta]
 })
 

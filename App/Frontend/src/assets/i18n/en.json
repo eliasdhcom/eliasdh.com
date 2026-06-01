@@ -331,6 +331,17 @@
     "TITLE": "Can we help you?",
     "TEXT": "We're here to answer all your questions. No strings attached, just a conversation."
   },
+  "COOKIE-CONSENT": {
+    "TITLE": "Cookies & Privacy",
+    "TEXT": "We use cookies to improve your experience and ensure the website functions correctly. By accepting, you agree to our Privacy Policy and Legal Guidelines.",
+    "PRIVACY-LINK": "Privacy Policy",
+    "LEGAL-LINK": "Legal Guidelines",
+    "ACCEPT": "Accept",
+    "DECLINE": "Decline",
+    "BLOCKED-TITLE": "Access Denied",
+    "BLOCKED-TEXT": "You have declined cookies. To use this website, you must accept cookies.",
+    "BLOCKED-CHANGE": "Change my choice"
+  },
   "LOGIN": {
     "TRANSLATE1": "EliasDH Login",
     "TRANSLATE2": "Enter your EliasDH account to access your dashboard",

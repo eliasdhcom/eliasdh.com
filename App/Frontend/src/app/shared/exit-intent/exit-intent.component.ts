@@ -22,7 +22,7 @@ export class ExitIntentComponent {
 
     @HostListener('document:mouseleave', ['$event'])
     onMouseLeave(event: MouseEvent): void {
-        if (event.clientY <= 0 && !this.popupShown) {
+        if (event.clientY <= 0 && !this.popupShown && localStorage.getItem('cookieConsent') === 'accepted') {
             this.showPopup = true;
             this.popupShown = true;
         }

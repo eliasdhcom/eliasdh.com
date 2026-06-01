@@ -330,6 +330,17 @@
     "TITLE": "Können wir Ihnen helfen?",
     "TEXT": "Wir sind hier, um alle Ihre Fragen zu beantworten. Unverbindlich, einfach ein Gespräch."
   },
+  "COOKIE-CONSENT": {
+    "TITLE": "Cookies & Datenschutz",
+    "TEXT": "Wir verwenden Cookies, um Ihr Erlebnis zu verbessern und die Website korrekt zu betreiben. Durch die Annahme stimmen Sie unserer Datenschutzrichtlinie und unseren Rechtlichen Richtlinien zu.",
+    "PRIVACY-LINK": "Datenschutzrichtlinie",
+    "LEGAL-LINK": "Rechtliche Richtlinien",
+    "ACCEPT": "Akzeptieren",
+    "DECLINE": "Ablehnen",
+    "BLOCKED-TITLE": "Zugriff verweigert",
+    "BLOCKED-TEXT": "Sie haben Cookies abgelehnt. Um diese Website zu nutzen, müssen Sie Cookies akzeptieren.",
+    "BLOCKED-CHANGE": "Meine Wahl ändern"
+  },
   "LOGIN": {
     "TRANSLATE1": "EliasDH Anmeldung",
     "TRANSLATE2": "Melden Sie sich in Ihrem EliasDH-Konto an, um auf Ihr Dashboard zuzugreifen",

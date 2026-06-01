@@ -330,6 +330,17 @@
     "TITLE": "Kunnen we je helpen?",
     "TEXT": "We staan klaar om al je vragen te beantwoorden. Geen verplichtingen, gewoon een gesprek."
   },
+  "COOKIE-CONSENT": {
+    "TITLE": "Cookies & Privacy",
+    "TEXT": "We gebruiken cookies om uw ervaring te verbeteren en de website correct te laten functioneren. Door te accepteren, gaat u akkoord met ons Privacybeleid en onze Juridische richtlijnen.",
+    "PRIVACY-LINK": "Privacybeleid",
+    "LEGAL-LINK": "Juridische richtlijnen",
+    "ACCEPT": "Accepteren",
+    "DECLINE": "Weigeren",
+    "BLOCKED-TITLE": "Toegang geweigerd",
+    "BLOCKED-TEXT": "U heeft cookies geweigerd. Om deze website te gebruiken, moet u cookies accepteren.",
+    "BLOCKED-CHANGE": "Mijn keuze wijzigen"
+  },
   "LOGIN": {
     "TRANSLATE1": "EliasDH Inloggen",
     "TRANSLATE2": "Log in op je EliasDH account om je dashboard te openen",

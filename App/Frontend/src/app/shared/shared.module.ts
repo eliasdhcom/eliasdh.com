@@ -13,6 +13,7 @@ import { PageHeaderComponent } from './page-header/page-header.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { ErrorBoxComponent } from './error-box/error-box.component';
 import { ExitIntentComponent } from './exit-intent/exit-intent.component';
+import { CookieConsentComponent } from './cookie-consent/cookie-consent.component';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { ExitIntentComponent } from './exit-intent/exit-intent.component';
         PageHeaderComponent,
         LoadingSpinnerComponent,
         ErrorBoxComponent,
-        ExitIntentComponent
+        ExitIntentComponent,
+        CookieConsentComponent
     ],
     exports: [
         ContextMenuComponent,
@@ -33,7 +35,8 @@ import { ExitIntentComponent } from './exit-intent/exit-intent.component';
         PageHeaderComponent,
         LoadingSpinnerComponent,
         ErrorBoxComponent,
-        ExitIntentComponent
+        ExitIntentComponent,
+        CookieConsentComponent
     ]
 })
 
