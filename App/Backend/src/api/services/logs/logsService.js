@@ -13,7 +13,7 @@ async function addLog({ userId, userEmail, userName, action, resourceId, details
     const db = getDb();
     try {
         await db.execute({
-            sql:  `INSERT INTO logs (user_id, user_email, user_name, action, resource_id, details, ip_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            sql:  `INSERT INTO logs (user_id, user_email, user_name, action, resource_id, details, ip_address) VALUES (?, ?, ?, ?, ?, ?, ?)`,
             args: [
                 userId     ?? null,
                 userEmail  ?? null,

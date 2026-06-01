@@ -40,9 +40,8 @@ router.patch('/status',
                 userEmail: req.user?.email,
                 userName:  `${req.user?.firstName ?? ''} ${req.user?.lastName ?? ''}`.trim(),
                 action:    'UPDATE',
-                resource:  'invoice',
                 resourceId: `${req.body.customerId}/${req.body.subscriptionId}`,
-                details:   req.body.paid ? 'Gemarkeerd als betaald' : 'Gemarkeerd als openstaand',
+                details:   `Invoice ${req.body.paid ? 'marked as paid' : 'marked as pending'}`,
                 ipAddress: req.ip
             });
             res.json({ success: true });

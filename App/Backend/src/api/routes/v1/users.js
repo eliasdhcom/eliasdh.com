@@ -61,7 +61,7 @@ router.post('/',
             const id = await usersService.createUser(req.body);
             const created = await usersService.getUserById(id);
             notificationService.sendWelcomeEmail(created).catch(() => {});
-            logsService.addLog({ ...logActor(req), action: 'CREATE', resource: 'user', resourceId: id, details: created?.email });
+            logsService.addLog({ ...logActor(req), action: 'CREATE', resourceId: id, details: `User: ${created?.email}` });
             res.status(201).json({ success: true, data: created });
         } catch (err) {
             if (err.message?.includes('UNIQUE')) {
@@ -80,7 +80,7 @@ router.patch('/:id/active',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             await usersService.setActive(Number(req.params.id), req.body.active);
-            logsService.addLog({ ...logActor(req), action: 'TOGGLE', resource: 'user', resourceId: req.params.id, details: req.body.active ? 'Geactiveerd' : 'Gedeactiveerd' });
+            logsService.addLog({ ...logActor(req), action: 'TOGGLE', resourceId: req.params.id, details: `User toggled: ${req.body.active ? 'Activated' : 'Deactivated'}` });
             res.json({ success: true });
         } catch (err) {
             next(err);
@@ -103,7 +103,7 @@ router.patch('/:id',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             await usersService.updateUser(Number(req.params.id), req.body);
-            logsService.addLog({ ...logActor(req), action: 'UPDATE', resource: 'user', resourceId: req.params.id });
+            logsService.addLog({ ...logActor(req), action: 'UPDATE', resourceId: req.params.id, details: 'User updated' });
             res.json({ success: true });
         } catch (err) {
             next(err);
@@ -118,7 +118,7 @@ router.delete('/:id',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             await usersService.deleteUser(Number(req.params.id));
-            logsService.addLog({ ...logActor(req), action: 'DELETE', resource: 'user', resourceId: req.params.id });
+            logsService.addLog({ ...logActor(req), action: 'DELETE', resourceId: req.params.id, details: 'User deleted' });
             res.json({ success: true });
         } catch (err) {
             next(err);
