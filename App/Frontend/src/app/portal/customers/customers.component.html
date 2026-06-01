@@ -111,27 +111,27 @@
                             {{'PORTAL.CUSTOMERS.SECTION_CONTACT'|translate}}
                         </h4>
                         <dl class="customers-detail-list">
-                            <div class="customers-detail-row"><dt>{{'PORTAL.CUSTOMERS.FIRST_NAME'|translate}}</dt><dd>{{customer.firstName || 'â€”'}}</dd></div>
-                            <div class="customers-detail-row"><dt>{{'PORTAL.CUSTOMERS.LAST_NAME'|translate}}</dt><dd>{{customer.lastName || 'â€”'}}</dd></div>
+                            <div class="customers-detail-row"><dt>{{'PORTAL.CUSTOMERS.FIRST_NAME'|translate}}</dt><dd>{{customer.firstName || '&mdash;'}}</dd></div>
+                            <div class="customers-detail-row"><dt>{{'PORTAL.CUSTOMERS.LAST_NAME'|translate}}</dt><dd>{{customer.lastName || '&mdash;'}}</dd></div>
                             <div class="customers-detail-row">
                                 <dt>{{'PORTAL.CUSTOMERS.EMAIL'|translate}}</dt>
                                 <dd>
                                     <a *ngIf="customer.email" [href]="'mailto:' + customer.email" class="customers-detail-link cursor-pointer" (click)="$event.stopPropagation()">{{customer.email}}</a>
-                                    <span *ngIf="!customer.email">â€”</span>
+                                    <span *ngIf="!customer.email">&mdash;</span>
                                 </dd>
                             </div>
                             <div class="customers-detail-row">
                                 <dt>{{'PORTAL.CUSTOMERS.PHONE'|translate}}</dt>
                                 <dd>
                                     <a *ngIf="customer.phone" [href]="'tel:' + customer.phone" class="customers-detail-link cursor-pointer" (click)="$event.stopPropagation()">{{customer.phone}}</a>
-                                    <span *ngIf="!customer.phone">â€”</span>
+                                    <span *ngIf="!customer.phone">&mdash;</span>
                                 </dd>
                             </div>
                             <div class="customers-detail-row">
                                 <dt>{{'PORTAL.CUSTOMERS.MOBILE'|translate}}</dt>
                                 <dd>
                                     <a *ngIf="customer.mobile" [href]="'tel:' + customer.mobile" class="customers-detail-link cursor-pointer" (click)="$event.stopPropagation()">{{customer.mobile}}</a>
-                                    <span *ngIf="!customer.mobile">â€”</span>
+                                    <span *ngIf="!customer.mobile">&mdash;</span>
                                 </dd>
                             </div>
                         </dl>
@@ -184,7 +184,7 @@
                                 <div class="customers-sub-info">
                                     <span class="customers-sub-name">{{dom.name}}</span>
                                     <span class="customers-domain-renewal">
-                                        {{'PORTAL.CUSTOMERS.RENEWS'|translate}} {{getNextDomainRenewal(dom.renewalDate)}} &nbsp;Â·&nbsp; â‚¬{{dom.annualPrice | number:'1.2-2'}}/j
+                                        {{'PORTAL.CUSTOMERS.RENEWS'|translate}} {{getNextDomainRenewal(dom.renewalDate)}} &nbsp;&middot;&nbsp; &euro;{{dom.annualPrice | number:'1.2-2'}}/j
                                     </span>
                                 </div>
                             </div>
