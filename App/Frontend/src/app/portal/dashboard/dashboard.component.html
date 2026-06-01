@@ -117,6 +117,13 @@
                         <li *ngFor="let lang of languages" [class.dashboard-lang-active]="lang.code === currentLanguage" (click)="changeLanguage(lang.code)" class="cursor-pointer">{{lang.name}}</li>
                     </ul>
                 </div>
+                <button *ngIf="pwaPrompt && !pwaInstalled" class="dashboard-header-icon-btn dashboard-header-install-btn cursor-pointer" (click)="installPwa()" title="App installeren">
+                    <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path class="cursor-pointer" d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline class="cursor-pointer" points="7 10 12 15 17 10"/>
+                        <line class="cursor-pointer" x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                </button>
                 <button class="dashboard-header-icon-btn dashboard-header-logout-btn cursor-pointer" (click)="logout()" [title]="'PORTAL.NAV.LOGOUT'|translate">
                     <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path class="cursor-pointer" d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>

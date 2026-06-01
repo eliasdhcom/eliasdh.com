@@ -360,6 +360,9 @@
     color: #ef4444;
 }
 
+.dashboard-header-install-btn        { color: var(--primary); }
+.dashboard-header-install-btn:hover  { background: color-mix(in srgb, var(--primary) 10%, transparent); }
+
 .dashboard-lang-dropdown {
     position: relative;
 }

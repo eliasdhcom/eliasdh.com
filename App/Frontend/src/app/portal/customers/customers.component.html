@@ -429,12 +429,9 @@
                             </div>
                             <div class="customers-form-field">
                                 <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.TYPE'|translate}}</label>
-                                <div class="customers-form-type-wrap">
-                                    <span class="customers-form-type-dot" [style.background]="getBadgeStyle(w.subscriptionType).background"></span>
-                                    <select class="customers-form-select customers-form-select--with-dot cursor-pointer" [(ngModel)]="w.subscriptionType" (change)="onSubscriptionTypeChange(w)">
-                                        <option class="cursor-pointer" *ngFor="let t of subscriptionTypes" [value]="t" [style.background]="getBadgeStyle(t).background" [style.color]="getBadgeStyle(t).color">{{t}}</option>
-                                    </select>
-                                </div>
+                                <select class="customers-form-select cursor-pointer" [(ngModel)]="w.subscriptionType" (change)="onSubscriptionTypeChange(w)">
+                                    <option class="cursor-pointer" *ngFor="let t of subscriptionTypes" [value]="t">{{t}}</option>
+                                </select>
                             </div>
                             <div class="customers-form-field">
                                 <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.FREQUENCY'|translate}}</label>

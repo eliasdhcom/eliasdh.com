@@ -102,7 +102,6 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         const now          = new Date();
         const currentYear  = now.getFullYear();
         const currentMonth = now.getMonth();
-        const nextMonthDate = new Date(currentYear, currentMonth + 1, 1);
 
         const endDate = new Date();
         endDate.setMonth(endDate.getMonth() + 2, 0);
@@ -114,8 +113,14 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         const nonHQ       = customers.filter(c => !c.isHQ);
         const allWebsites = nonHQ.flatMap(c => c.websites ?? []);
 
+        // Parse as local date to avoid UTC-offset causing off-by-one day errors
+        const parseLocal = (s: string) => {
+            const p = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+            return p ? new Date(+p[1], +p[2] - 1, +p[3]) : new Date(s);
+        };
+
         const isActuallyLive = (w: { isLive: boolean; startDate?: string }) =>
-            w.isLive && !!w.startDate && new Date(w.startDate) <= today;
+            w.isLive && !!w.startDate && parseLocal(w.startDate) <= today;
 
         this.customerCount = nonHQ.length;
         this.liveCount     = allWebsites.filter(isActuallyLive).length;
@@ -198,8 +203,8 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
             const paidM = monthlyPaidMap.get(`${currentYear}-${m}`) ?? 0;
             return {
                 label,
-                amount:          total,
-                paidAmount:      paidM,
+                amount:            total,
+                paidAmount:        paidM,
                 outstandingAmount: Math.max(0, total - paidM),
                 isPast:    m < currentMonth,
                 isCurrent: m === currentMonth,

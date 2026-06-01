@@ -38,6 +38,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     user:       AuthUser = { firstName: '', lastName: '', email: '', role: '', company: '', phone: '', birthDate: '' };
     userAvatar: string | null = null;
 
+    pwaPrompt:    any  = null;
+    pwaInstalled       = false;
+
     langDropdownOpen  = false;
     currentLanguage   = 'nl';
     readonly languages = [
@@ -54,7 +57,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
         private translate: TranslateService
     ) {}
 
+    private readonly onBeforeInstallPrompt = (e: Event) => { e.preventDefault(); this.pwaPrompt = e; };
+    private readonly onAppInstalled        = ()          => { this.pwaPrompt = null; this.pwaInstalled = true; };
+
+    private swapManifest(href: string): void {
+        const link = document.querySelector<HTMLLinkElement>('link[rel="manifest"]');
+        if (link) link.href = href;
+    }
+
     ngOnInit(): void {
+        this.swapManifest('assets/portal-manifest.json');
+        window.addEventListener('beforeinstallprompt', this.onBeforeInstallPrompt);
+        window.addEventListener('appinstalled',        this.onAppInstalled);
         this.currentLanguage = this.translate.currentLang ?? localStorage.getItem('language') ?? 'nl';
         this.user = this.authService.getUser() ?? { firstName: 'Unknown', lastName: '', email: '', role: '', company: '', phone: '', birthDate: '' };
         if (this.user.id && Number.isInteger(this.user.id) && this.user.id > 0) {
@@ -80,8 +94,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.swapManifest('assets/manifest.json');
+        window.removeEventListener('beforeinstallprompt', this.onBeforeInstallPrompt);
+        window.removeEventListener('appinstalled',        this.onAppInstalled);
         this.destroy$.next();
         this.destroy$.complete();
+    }
+
+    installPwa(): void {
+        if (!this.pwaPrompt) return;
+        this.pwaPrompt.prompt();
+        this.pwaPrompt.userChoice.then(() => { this.pwaPrompt = null; });
     }
 
     navigateTo(view: string): void {

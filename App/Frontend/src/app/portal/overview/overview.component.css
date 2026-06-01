@@ -277,6 +277,39 @@
     white-space: nowrap;
 }
 
+.overview-year-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.overview-year-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 1px solid rgba(128,128,128,.2);
+    background: none;
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background .15s, color .15s, border-color .15s;
+}
+
+.overview-year-btn svg      { width: 14px; height: 14px; }
+.overview-year-btn:hover:not(:disabled) { background: rgba(128,128,128,.08); color: var(--text); border-color: rgba(128,128,128,.35); }
+.overview-year-btn:disabled { opacity: .3; cursor: default; }
+
+.overview-year-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    min-width: 38px;
+    text-align: center;
+    letter-spacing: .3px;
+}
+
 .overview-type-list {
     display: flex;
     flex-direction: column;
@@ -349,6 +382,9 @@
     }
     .overview-middle-row {
         grid-template-columns: 1fr;
+    }
+    .overview-card--types {
+        max-width: 100%;
     }
 }
 
