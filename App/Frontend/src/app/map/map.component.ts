@@ -11,6 +11,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { CustomersService, Customer, CustomerLocation } from '../services/customers.service';
+import { PricingPlansService } from '../services/pricing-plans.service';
 import { LanguageService } from '../services/language.service';
 
 declare const L: any;
@@ -48,6 +49,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(
         private customersService: CustomersService,
+        private pricingPlansService: PricingPlansService,
         private languageService: LanguageService,
         private translateService: TranslateService,
         private route: ActivatedRoute,
@@ -69,9 +71,14 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             this.focusCustomerId = params['customerId'] ?? null;
         });
+        this.pricingPlansService.getAll().subscribe({
+            next: (r) => this.pricingPlansService.setPlanColors(r.data ?? [])
+        });
         this.loadCustomers();
         this.startAutoRefresh();
     }
+
+    getBadgeStyle(type: string) { return this.pricingPlansService.getBadgeStyle(type); }
 
     ngAfterViewInit(): void {
         this.initMap();

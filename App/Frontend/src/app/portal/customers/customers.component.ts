@@ -121,6 +121,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
                 for (const p of this.pricingPlans) { prices[p.name] = p.monthlyPrice; types.push(p.name); }
                 this.subscriptionPrices = prices;
                 this.subscriptionTypes  = [...types, 'Custom'];
+                if (this.customers.length) this.customers = [...this.customers];
             }});
     }
 

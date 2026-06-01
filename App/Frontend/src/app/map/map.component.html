@@ -166,7 +166,7 @@
                     <div class="map-sidebar-website-info">
                         <span class="map-sidebar-website-name">{{ website.name }}</span>
                         <div class="map-sidebar-website-badges">
-                            <span class="map-sidebar-website-type" [class]="'type-' + website.subscriptionType.toLowerCase()">
+                            <span class="map-sidebar-website-type" [style.background]="getBadgeStyle(website.subscriptionType).background" [style.color]="getBadgeStyle(website.subscriptionType).color">
                                 {{ website.subscriptionType }}
                             </span>
                             <span class="map-sidebar-website-visitors" *ngIf="website.visitors !== undefined" [title]="'MAP.TRANSLATE14' | translate">
