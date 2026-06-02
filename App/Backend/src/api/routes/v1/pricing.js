@@ -39,7 +39,13 @@ router.post('/',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             const plan = await pricingService.create(req.body);
-            logsService.addLog({ ...logActor(req), action: 'CREATE', resourceId: plan.id, details: `Pricing plan created: ${plan.name}` });
+            logsService.addLog({
+                ...logActor(req),
+                action:     'CREATE',
+                resource:   'pricing',
+                resourceId: plan.id,
+                details:    `Prijsplan aangemaakt: "${plan.name}" — €${plan.monthlyPrice}/maand`
+            });
             res.status(201).json({ success: true, data: plan });
         } catch (err) {
             if (err.message?.includes('UNIQUE')) return res.status(409).json({ success: false, error: 'Een plan met deze naam bestaat al.' });
@@ -56,7 +62,13 @@ router.put('/:id',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             const plan = await pricingService.update(Number(req.params.id), req.body);
-            logsService.addLog({ ...logActor(req), action: 'UPDATE', resourceId: req.params.id, details: `Pricing plan updated: ${plan.name}` });
+            logsService.addLog({
+                ...logActor(req),
+                action:     'UPDATE',
+                resource:   'pricing',
+                resourceId: req.params.id,
+                details:    `Prijsplan bijgewerkt: "${plan.name}" — €${plan.monthlyPrice}/maand`
+            });
             res.json({ success: true, data: plan });
         } catch (err) {
             next(err);
@@ -72,7 +84,13 @@ router.delete('/:id',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             await pricingService.delete(Number(req.params.id));
-            logsService.addLog({ ...logActor(req), action: 'DELETE', resourceId: req.params.id, details: 'Pricing plan deleted' });
+            logsService.addLog({
+                ...logActor(req),
+                action:     'DELETE',
+                resource:   'pricing',
+                resourceId: req.params.id,
+                details:    `Prijsplan verwijderd (ID: ${req.params.id})`
+            });
             res.json({ success: true });
         } catch (err) {
             next(err);

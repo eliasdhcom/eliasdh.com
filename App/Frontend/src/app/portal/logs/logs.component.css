@@ -168,12 +168,15 @@
     font-size: 10px; font-weight: 700; letter-spacing: .3px;
     text-transform: uppercase; white-space: nowrap;
 }
-.logs-badge--login  { background: rgba(59,130,246,.12);  color: #3b82f6; }
-.logs-badge--create { background: rgba(16,185,129,.12);  color: #059669; }
-.logs-badge--update { background: rgba(245,158,11,.12);  color: #d97706; }
-.logs-badge--delete { background: rgba(239,68,68,.10);   color: #dc2626; }
-.logs-badge--toggle { background: rgba(139,92,246,.12);  color: #7c3aed; }
-.logs-badge--default{ background: rgba(128,128,128,.12); color: var(--secondary); }
+.logs-badge--login    { background: rgba(59,130,246,.12);  color: #3b82f6; }
+.logs-badge--logout   { background: rgba(99,102,241,.12);  color: #6366f1; }
+.logs-badge--create   { background: rgba(16,185,129,.12);  color: #059669; }
+.logs-badge--update   { background: rgba(245,158,11,.12);  color: #d97706; }
+.logs-badge--delete   { background: rgba(239,68,68,.10);   color: #dc2626; }
+.logs-badge--toggle   { background: rgba(139,92,246,.12);  color: #7c3aed; }
+.logs-badge--download { background: rgba(20,184,166,.12);  color: #0d9488; }
+.logs-badge--password { background: rgba(249,115,22,.12);  color: #ea580c; }
+.logs-badge--default  { background: rgba(128,128,128,.12); color: var(--secondary); }
 
 .logs-cards { display: none; flex-direction: column; gap: 8px; }
 

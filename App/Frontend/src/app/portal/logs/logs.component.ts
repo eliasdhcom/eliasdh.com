@@ -94,12 +94,15 @@ export class PortalLogsComponent implements OnInit, OnDestroy {
 
     actionClass(action: string): string {
         switch (action) {
-            case 'LOGIN':  return 'logs-badge--login';
-            case 'CREATE': return 'logs-badge--create';
-            case 'UPDATE': return 'logs-badge--update';
-            case 'DELETE': return 'logs-badge--delete';
-            case 'TOGGLE': return 'logs-badge--toggle';
-            default:       return 'logs-badge--default';
+            case 'LOGIN':          return 'logs-badge--login';
+            case 'LOGOUT':         return 'logs-badge--logout';
+            case 'CREATE':         return 'logs-badge--create';
+            case 'UPDATE':         return 'logs-badge--update';
+            case 'DELETE':         return 'logs-badge--delete';
+            case 'TOGGLE':         return 'logs-badge--toggle';
+            case 'DOWNLOAD':       return 'logs-badge--download';
+            case 'PASSWORD_RESET': return 'logs-badge--password';
+            default:               return 'logs-badge--default';
         }
     }
 }

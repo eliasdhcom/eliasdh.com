@@ -10,6 +10,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { CustomersService, Customer, CustomerDomain, CustomerLocation, SubscriptionFrequency } from '../../services/customers.service';
 import { InvoicesService } from '../../services/invoices.service';
 import { PricingPlansService } from '../../services/pricing-plans.service';
+import { LogsService } from '../../services/logs.service';
 import { Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 
@@ -74,7 +75,8 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         private customersService: CustomersService,
         private invoicesService: InvoicesService,
         private cdr: ChangeDetectorRef,
-        readonly pricingPlansService: PricingPlansService
+        readonly pricingPlansService: PricingPlansService,
+        private logsService: LogsService
     ) {}
 
     ngOnInit(): void {
@@ -537,6 +539,12 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
                 this.loadLogoBase64()
             ]);
             this.buildPdf(jsPDFModule.jsPDF, invoice, logoBase64);
+            this.logsService.logEvent({
+                action:     'DOWNLOAD',
+                resource:   'invoice',
+                resourceId: `${invoice.customerId}/${invoice.subscriptionId}`,
+                details:    `PDF gedownload: factuur ${invoice.id} — ${invoice.customerName} (${this.formatPeriod(invoice.periodStart, invoice.periodEnd, invoice.frequency)})`
+            }).subscribe();
         } catch (err) {
             console.error('PDF generatie mislukt:', err);
         } finally {

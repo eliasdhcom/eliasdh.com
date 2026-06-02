@@ -12,6 +12,13 @@ const logsService      = require('../../services/logs/logsService');
 
 const router = express.Router();
 
+const logActor = req => ({
+    userId:    req.user?.id,
+    userEmail: req.user?.email,
+    userName:  `${req.user?.firstName ?? ''} ${req.user?.lastName ?? ''}`.trim(),
+    ipAddress: req.ip
+});
+
 router.get('/status', async (req, res, next) => {
     try {
         const statuses = await invoicesService.getAllStatuses();
@@ -35,14 +42,19 @@ router.patch('/status',
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
 
             await invoicesService.upsertStatus(req.body);
+
+            const { customerId, subscriptionId, periodStart, invoiceType, paid } = req.body;
+            const period = new Date(periodStart);
+            const periodLabel = isNaN(period.getTime())
+                ? periodStart
+                : period.toLocaleDateString('nl-BE', { month: 'long', year: 'numeric' });
+
             logsService.addLog({
-                userId:    req.user?.id,
-                userEmail: req.user?.email,
-                userName:  `${req.user?.firstName ?? ''} ${req.user?.lastName ?? ''}`.trim(),
-                action:    'UPDATE',
-                resourceId: `${req.body.customerId}/${req.body.subscriptionId}`,
-                details:   `Invoice ${req.body.paid ? 'marked as paid' : 'marked as pending'}`,
-                ipAddress: req.ip
+                ...logActor(req),
+                action:     'TOGGLE',
+                resource:   'invoice',
+                resourceId: `${customerId}/${subscriptionId}`,
+                details:    `Factuur ${paid ? 'betaald' : 'onbetaald'}: ${subscriptionId} (${invoiceType}, ${periodLabel})`
             });
             res.json({ success: true });
         } catch (err) {

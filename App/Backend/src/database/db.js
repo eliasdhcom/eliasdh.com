@@ -145,6 +145,7 @@ async function initSchema() {
             user_email  TEXT,
             user_name   TEXT,
             action      TEXT NOT NULL,
+            resource    TEXT,
             resource_id TEXT,
             details     TEXT,
             ip_address  TEXT,
@@ -152,6 +153,7 @@ async function initSchema() {
         )`,
         `CREATE INDEX IF NOT EXISTS idx_logs_created_at ON logs(created_at DESC)`,
         `CREATE INDEX IF NOT EXISTS idx_logs_action     ON logs(action)`,
+        `CREATE INDEX IF NOT EXISTS idx_logs_resource   ON logs(resource)`,
     ];
 
     for (const sql of stmts) {
@@ -162,6 +164,8 @@ async function initSchema() {
     try { await db.execute(`ALTER TABLE invoice_status ADD COLUMN amount    REAL`); } catch (_) {}
     try { await db.execute(`ALTER TABLE invoice_status ADD COLUMN frequency TEXT`); } catch (_) {}
     try { await db.execute(`ALTER TABLE pricing_plans  ADD COLUMN color     TEXT NOT NULL DEFAULT '#cccccc'`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE logs ADD COLUMN resource TEXT`); } catch (_) {}
+    try { await db.execute(`CREATE INDEX IF NOT EXISTS idx_logs_resource ON logs(resource)`); } catch (_) {}
 }
 
 module.exports = { getDb, initSchema };

@@ -46,7 +46,13 @@ router.post('/',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             const customer = await customerService.createCustomer(req.body);
-            logsService.addLog({ ...logActor(req), action: 'CREATE', resourceId: customer.id, details: `Customer created: ${customer.name}` });
+            logsService.addLog({
+                ...logActor(req),
+                action:     'CREATE',
+                resource:   'customer',
+                resourceId: customer.id,
+                details:    `Klant aangemaakt: ${customer.name} (ID: ${customer.id})`
+            });
             res.status(201).json({ success: true, data: customer });
         } catch (err) {
             if (err.message?.includes('UNIQUE')) return res.status(409).json({ success: false, error: 'Een klant met dit ID bestaat al.' });
@@ -63,7 +69,13 @@ router.put('/:id',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             const customer = await customerService.updateCustomer(req.params.id, req.body);
-            logsService.addLog({ ...logActor(req), action: 'UPDATE', resourceId: req.params.id, details: `Customer updated: ${customer.name}` });
+            logsService.addLog({
+                ...logActor(req),
+                action:     'UPDATE',
+                resource:   'customer',
+                resourceId: req.params.id,
+                details:    `Klant bijgewerkt: ${customer.name} (ID: ${req.params.id})`
+            });
             res.json({ success: true, data: customer });
         } catch (err) {
             next(err);
@@ -76,8 +88,16 @@ router.delete('/:id',
     param('id').notEmpty(),
     async (req, res, next) => {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             await customerService.deleteCustomer(req.params.id);
-            logsService.addLog({ ...logActor(req), action: 'DELETE', resourceId: req.params.id, details: 'Customer deleted' });
+            logsService.addLog({
+                ...logActor(req),
+                action:     'DELETE',
+                resource:   'customer',
+                resourceId: req.params.id,
+                details:    `Klant verwijderd (ID: ${req.params.id})`
+            });
             res.json({ success: true });
         } catch (err) {
             next(err);

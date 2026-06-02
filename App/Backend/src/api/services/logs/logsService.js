@@ -9,16 +9,17 @@ const logger    = require('../../../utils/logger');
 
 const MAX_RECORDS = Number(process.env.MAX_LOG_RECORDS ?? 500);
 
-async function addLog({ userId, userEmail, userName, action, resourceId, details, ipAddress } = {}) {
+async function addLog({ userId, userEmail, userName, action, resource, resourceId, details, ipAddress } = {}) {
     const db = getDb();
     try {
         await db.execute({
-            sql:  `INSERT INTO logs (user_id, user_email, user_name, action, resource_id, details, ip_address) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            sql:  `INSERT INTO logs (user_id, user_email, user_name, action, resource, resource_id, details, ip_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
             args: [
                 userId     ?? null,
                 userEmail  ?? null,
                 userName   ?? null,
                 action,
+                resource   ?? null,
                 resourceId != null ? String(resourceId) : null,
                 details    != null ? (typeof details === 'object' ? JSON.stringify(details) : String(details)) : null,
                 ipAddress  ?? null
@@ -33,19 +34,20 @@ async function addLog({ userId, userEmail, userName, action, resourceId, details
     }
 }
 
-async function getLogs({ action, userId, search, dateFrom, dateTo, limit = 100, offset = 0 } = {}) {
+async function getLogs({ action, resource, userId, search, dateFrom, dateTo, limit = 100, offset = 0 } = {}) {
     const db         = getDb();
     const conditions = [];
     const args       = [];
 
     if (action)   { conditions.push(`action = ?`);    args.push(action); }
+    if (resource)  { conditions.push(`resource = ?`);  args.push(resource); }
     if (userId)   { conditions.push(`user_id = ?`);   args.push(Number(userId)); }
     if (dateFrom) { conditions.push(`created_at >= ?`); args.push(dateFrom); }
     if (dateTo)   { conditions.push(`created_at <= ?`); args.push(dateTo + 'T23:59:59'); }
     if (search) {
         const s = `%${search}%`;
-        conditions.push(`(user_email LIKE ? OR user_name LIKE ? OR details LIKE ? OR resource_id LIKE ?)`);
-        args.push(s, s, s, s);
+        conditions.push(`(user_email LIKE ? OR user_name LIKE ? OR details LIKE ? OR resource_id LIKE ? OR resource LIKE ?)`);
+        args.push(s, s, s, s, s);
     }
 
     const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
@@ -70,6 +72,7 @@ function mapLog(row) {
         userEmail:  row.user_email ?? null,
         userName:   row.user_name  ?? null,
         action:     row.action,
+        resource:   row.resource    ?? null,
         resourceId: row.resource_id ?? null,
         details:    row.details     ?? null,
         ipAddress:  row.ip_address  ?? null,

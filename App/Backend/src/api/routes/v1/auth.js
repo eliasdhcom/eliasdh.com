@@ -8,6 +8,7 @@ const express     = require('express');
 const { body, validationResult } = require('express-validator');
 const authService = require('../../services/auth/authService');
 const logsService = require('../../services/logs/logsService');
+const { jwtAuth } = require('../../../middleware/jwtAuth');
 
 const router = express.Router();
 
@@ -23,6 +24,13 @@ router.post('/login',
 
             const result = await authService.login(req.body.email, req.body.password);
             if (!result) {
+                logsService.addLog({
+                    userEmail: req.body.email,
+                    action:    'LOGIN',
+                    resource:  'auth',
+                    details:   'Mislukte aanmeldpoging',
+                    ipAddress: req.ip
+                });
                 return res.status(401).json({ success: false, error: 'Ongeldig e-mailadres of wachtwoord.' });
             }
             if (result.blocked) {
@@ -35,7 +43,7 @@ router.post('/login',
                 userName:  `${result.user.firstName ?? ''} ${result.user.lastName ?? ''}`.trim(),
                 action:    'LOGIN',
                 resource:  'auth',
-                details:   'Ingelogd',
+                details:   'Succesvol aangemeld',
                 ipAddress: req.ip
             });
             res.json({ success: true, token: result.token, data: result.user });
@@ -45,6 +53,23 @@ router.post('/login',
     }
 );
 
+router.post('/logout', jwtAuth, async (req, res, next) => {
+    try {
+        logsService.addLog({
+            userId:    req.user?.id,
+            userEmail: req.user?.email,
+            userName:  `${req.user?.firstName ?? ''} ${req.user?.lastName ?? ''}`.trim(),
+            action:    'LOGOUT',
+            resource:  'auth',
+            details:   'Afgemeld',
+            ipAddress: req.ip
+        });
+        res.json({ success: true });
+    } catch (err) {
+        next(err);
+    }
+});
+
 router.post('/forgot-password',
     body('email').isEmail().trim(),
     async (req, res, next) => {
@@ -52,6 +77,13 @@ router.post('/forgot-password',
             if (!validationResult(req).isEmpty())
                 return res.status(400).json({ success: false, error: 'Ongeldig e-mailadres.' });
             await authService.forgotPassword(req.body.email);
+            logsService.addLog({
+                userEmail: req.body.email,
+                action:    'PASSWORD_RESET',
+                resource:  'auth',
+                details:   'Wachtwoord reset aangevraagd',
+                ipAddress: req.ip
+            });
             res.json({ success: true });
         } catch (err) { next(err); }
     }
@@ -81,6 +113,13 @@ router.post('/reset-password',
                 return res.status(400).json({ success: false, error: 'Ongeldige invoer.' });
             const ok = await authService.resetPassword(req.body.email, req.body.code, req.body.password);
             if (!ok) return res.status(400).json({ success: false, error: 'Ongeldige of verlopen code.' });
+            logsService.addLog({
+                userEmail: req.body.email,
+                action:    'PASSWORD_RESET',
+                resource:  'auth',
+                details:   'Wachtwoord succesvol gereset',
+                ipAddress: req.ip
+            });
             res.json({ success: true });
         } catch (err) { next(err); }
     }

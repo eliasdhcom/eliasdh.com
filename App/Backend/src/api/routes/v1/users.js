@@ -61,7 +61,13 @@ router.post('/',
             const id = await usersService.createUser(req.body);
             const created = await usersService.getUserById(id);
             notificationService.sendWelcomeEmail(created).catch(() => {});
-            logsService.addLog({ ...logActor(req), action: 'CREATE', resourceId: id, details: `User: ${created?.email}` });
+            logsService.addLog({
+                ...logActor(req),
+                action:     'CREATE',
+                resource:   'user',
+                resourceId: id,
+                details:    `Gebruiker aangemaakt: ${created?.email} (${created?.firstName} ${created?.lastName})`
+            });
             res.status(201).json({ success: true, data: created });
         } catch (err) {
             if (err.message?.includes('UNIQUE')) {
@@ -80,7 +86,13 @@ router.patch('/:id/active',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             await usersService.setActive(Number(req.params.id), req.body.active);
-            logsService.addLog({ ...logActor(req), action: 'TOGGLE', resourceId: req.params.id, details: `User toggled: ${req.body.active ? 'Activated' : 'Deactivated'}` });
+            logsService.addLog({
+                ...logActor(req),
+                action:     'TOGGLE',
+                resource:   'user',
+                resourceId: req.params.id,
+                details:    `Gebruiker ${req.body.active ? 'geactiveerd' : 'gedeactiveerd'} (ID: ${req.params.id})`
+            });
             res.json({ success: true });
         } catch (err) {
             next(err);
@@ -102,8 +114,25 @@ router.patch('/:id',
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
+
+            const changedFields = Object.keys(req.body).filter(k => k !== 'avatar');
             await usersService.updateUser(Number(req.params.id), req.body);
-            logsService.addLog({ ...logActor(req), action: 'UPDATE', resourceId: req.params.id, details: 'User updated' });
+
+            const fieldLabels = {
+                firstName: 'voornaam', lastName: 'achternaam', email: 'e-mail',
+                role: 'rol', company: 'bedrijf', phone: 'telefoon', birthDate: 'geboortedatum', avatar: 'avatar'
+            };
+            const changed = Object.keys(req.body)
+                .map(k => fieldLabels[k] ?? k)
+                .join(', ');
+
+            logsService.addLog({
+                ...logActor(req),
+                action:     'UPDATE',
+                resource:   'user',
+                resourceId: req.params.id,
+                details:    `Gebruiker bijgewerkt (ID: ${req.params.id}): ${changed || 'geen velden'}`
+            });
             res.json({ success: true });
         } catch (err) {
             next(err);
@@ -117,8 +146,15 @@ router.delete('/:id',
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
+            const user = await usersService.getUserById(Number(req.params.id));
             await usersService.deleteUser(Number(req.params.id));
-            logsService.addLog({ ...logActor(req), action: 'DELETE', resourceId: req.params.id, details: 'User deleted' });
+            logsService.addLog({
+                ...logActor(req),
+                action:     'DELETE',
+                resource:   'user',
+                resourceId: req.params.id,
+                details:    `Gebruiker verwijderd: ${user?.email ?? ''} (ID: ${req.params.id})`
+            });
             res.json({ success: true });
         } catch (err) {
             next(err);

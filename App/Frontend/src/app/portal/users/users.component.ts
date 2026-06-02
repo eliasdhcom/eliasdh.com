@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UsersService, PortalUser } from '../../services/users.service';
 import { CustomersService, Customer } from '../../services/customers.service';
+import { LogsService } from '../../services/logs.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -46,7 +47,8 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
 
     constructor(
         private usersService:    UsersService,
-        private customersService: CustomersService
+        private customersService: CustomersService,
+        private logsService:     LogsService
     ) {}
 
     ngOnInit(): void {
@@ -333,6 +335,12 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
         a.download = `${user.firstName}_${user.lastName}.vcf`;
         a.click();
         URL.revokeObjectURL(url);
+        this.logsService.logEvent({
+            action:     'DOWNLOAD',
+            resource:   'user',
+            resourceId: String(user.id),
+            details:    `vCard gedownload: ${user.firstName} ${user.lastName} (${user.email})`
+        }).subscribe();
     }
 
     private emptyUser(): PortalUser {

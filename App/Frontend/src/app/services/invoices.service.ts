@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
+import { AuthService } from './auth.service';
 
 export interface InvoiceStatus {
     customerId:     string;
@@ -24,13 +25,13 @@ export interface InvoiceStatus {
 export class InvoicesService {
     private readonly apiUrl = `${environment.eliasdhApiUrl}/api/v1/invoices`;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private authService: AuthService) {}
 
     private getHeaders(): HttpHeaders {
-        return new HttpHeaders({
-            'Content-Type': 'application/json',
-            'x-api-key': environment.eliasdhApiKey
-        });
+        const token = this.authService.getToken();
+        let h = new HttpHeaders({ 'Content-Type': 'application/json', 'x-api-key': environment.eliasdhApiKey });
+        if (token) h = h.set('Authorization', `Bearer ${token}`);
+        return h;
     }
 
     getAllStatuses(): Observable<{ success: boolean; data: InvoiceStatus[] }> {

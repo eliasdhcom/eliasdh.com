@@ -6,7 +6,7 @@
 
 import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment.development';
@@ -83,6 +83,16 @@ export class AuthService {
     }
 
     logout(): void {
+        const token = this.getToken();
+        if (token && isPlatformBrowser(this.platformId)) {
+            const headers = new HttpHeaders({
+                'Content-Type': 'application/json',
+                'x-api-key':    environment.eliasdhApiKey,
+                'Authorization': `Bearer ${token}`
+            });
+            this.http.post(`${environment.eliasdhApiUrl}/api/v1/auth/logout`, {}, { headers })
+                .subscribe({ error: () => {} });
+        }
         if (isPlatformBrowser(this.platformId)) {
             sessionStorage.removeItem(this.TOKEN_KEY);
         }

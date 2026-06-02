@@ -40,6 +40,13 @@ export interface LogsFilter {
     offset?:   number;
 }
 
+export interface LogEventPayload {
+    action:      'DOWNLOAD' | 'LOGOUT';
+    resource?:   string;
+    resourceId?: string;
+    details?:    string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class LogsService {
     private readonly apiUrl = `${environment.eliasdhApiUrl}/api/v1/logs`;
@@ -64,5 +71,9 @@ export class LogsService {
         if (filter.limit != null)  params = params.set('limit',  String(filter.limit));
         if (filter.offset != null) params = params.set('offset', String(filter.offset));
         return this.http.get<LogsResponse>(this.apiUrl, { headers: this.getHeaders(), params });
+    }
+
+    logEvent(payload: LogEventPayload): Observable<{ success: boolean }> {
+        return this.http.post<{ success: boolean }>(this.apiUrl, payload, { headers: this.getHeaders() });
     }
 }

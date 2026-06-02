@@ -5,6 +5,7 @@
 **/
 
 const express     = require('express');
+const { body, validationResult } = require('express-validator');
 const { jwtAuth } = require('../../../middleware/jwtAuth');
 const logsService = require('../../services/logs/logsService');
 
@@ -12,17 +13,47 @@ const router = express.Router();
 
 router.use(jwtAuth);
 
+const ALLOWED_CLIENT_ACTIONS = ['DOWNLOAD', 'LOGOUT'];
+
 router.get('/', async (req, res, next) => {
     try {
         if ((req.user?.role ?? '').toLowerCase() !== 'admin') {
             return res.status(403).json({ success: false, error: 'Geen toegang.' });
         }
-        const { action, userId, search, dateFrom, dateTo, limit, offset } = req.query;
-        const result = await logsService.getLogs({ action, userId, search, dateFrom, dateTo, limit, offset });
+        const { action, resource, userId, search, dateFrom, dateTo, limit, offset } = req.query;
+        const result = await logsService.getLogs({ action, resource, userId, search, dateFrom, dateTo, limit, offset });
         res.json({ success: true, ...result });
     } catch (err) {
         next(err);
     }
 });
+
+// Endpoint for client-side actions (PDF downloads, vCard downloads, logout, etc.)
+router.post('/',
+    body('action').notEmpty().isString().isIn(ALLOWED_CLIENT_ACTIONS),
+    body('resource').optional({ nullable: true }).isString(),
+    body('resourceId').optional({ nullable: true }).isString(),
+    body('details').optional({ nullable: true }).isString(),
+    async (req, res, next) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
+
+            await logsService.addLog({
+                userId:     req.user?.id,
+                userEmail:  req.user?.email,
+                userName:   `${req.user?.firstName ?? ''} ${req.user?.lastName ?? ''}`.trim(),
+                action:     req.body.action,
+                resource:   req.body.resource   ?? null,
+                resourceId: req.body.resourceId ?? null,
+                details:    req.body.details    ?? null,
+                ipAddress:  req.ip
+            });
+            res.json({ success: true });
+        } catch (err) {
+            next(err);
+        }
+    }
+);
 
 module.exports = router;

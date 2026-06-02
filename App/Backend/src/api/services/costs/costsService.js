@@ -11,14 +11,12 @@ class CostsService {
     async getAll() {
         const db = getDb();
         const { rows } = await db.execute('SELECT * FROM analysis_costs ORDER BY sort_order ASC, id ASC');
-        return rows.map(r => ({
-            id:        Number(r.id),
-            name:      r.name,
-            amount:    Number(r.amount),
-            frequency: r.frequency,
-            type:      r.type,
-            sortOrder: Number(r.sort_order)
-        }));
+        return rows.map(r => this._map(r));
+    }
+
+    async getById(id) {
+        const { rows } = await getDb().execute({ sql: 'SELECT * FROM analysis_costs WHERE id = ?', args: [id] });
+        return rows.length ? this._map(rows[0]) : null;
     }
 
     async create(data) {
@@ -53,14 +51,24 @@ class CostsService {
         await db.execute({ sql: `UPDATE analysis_costs SET ${fields.join(', ')} WHERE id = ?`, args });
         const { rows } = await db.execute({ sql: 'SELECT * FROM analysis_costs WHERE id = ?', args: [id] });
         if (!rows.length) throw new Error(`Cost ${id} not found`);
-        const r = rows[0];
         logger.info(`Analysis cost updated: ${id}`);
-        return { id: Number(r.id), name: r.name, amount: Number(r.amount), frequency: r.frequency, type: r.type, sortOrder: Number(r.sort_order) };
+        return this._map(rows[0]);
     }
 
     async delete(id) {
         await getDb().execute({ sql: 'DELETE FROM analysis_costs WHERE id = ?', args: [id] });
         logger.info(`Analysis cost deleted: ${id}`);
+    }
+
+    _map(r) {
+        return {
+            id:        Number(r.id),
+            name:      r.name,
+            amount:    Number(r.amount),
+            frequency: r.frequency,
+            type:      r.type,
+            sortOrder: Number(r.sort_order)
+        };
     }
 }
 
