@@ -9,6 +9,7 @@ const { body, param, validationResult } = require('express-validator');
 const customerService = require('../../services/customers/customersService');
 const { jwtAuth }     = require('../../../middleware/jwtAuth');
 const logsService     = require('../../services/logs/logsService');
+const mailerService   = require('../../services/mailer/mailerService');
 const logger          = require('../../../utils/logger');
 const router          = express.Router();
 
@@ -69,12 +70,13 @@ router.put('/:id',
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
             const customer = await customerService.updateCustomer(req.params.id, req.body);
+            const subsChanged = req.body.websites !== undefined || req.body.domains !== undefined;
             logsService.addLog({
                 ...logActor(req),
                 action:     'UPDATE',
                 resource:   'customer',
                 resourceId: req.params.id,
-                details:    `Klant bijgewerkt: ${customer.name} (ID: ${req.params.id})`
+                details:    `Klant bijgewerkt: ${customer.name} (ID: ${req.params.id})${subsChanged ? ' — overeenkomst gereset' : ''}`
             });
             res.json({ success: true, data: customer });
         } catch (err) {
@@ -99,6 +101,41 @@ router.delete('/:id',
                 details:    `Klant verwijderd (ID: ${req.params.id})`
             });
             res.json({ success: true });
+        } catch (err) {
+            next(err);
+        }
+    }
+);
+
+router.post('/:id/agreement/sign',
+    jwtAuth,
+    param('id').notEmpty(),
+    body('pdfBase64').notEmpty().isString(),
+    async (req, res, next) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
+
+            const customer = await customerService.getCustomerById(req.params.id);
+            if (!customer) return res.status(404).json({ success: false, error: 'Klant niet gevonden.' });
+
+            const result = await customerService.signAgreement(req.params.id);
+
+            if (customer.email) {
+                const contactName = `${customer.firstName ?? ''} ${customer.lastName ?? ''}`.trim();
+                mailerService.sendAgreementEmail(customer.email, customer.name, contactName, req.body.pdfBase64)
+                    .catch(err => logger.warn(`Agreement email failed for ${req.params.id}: ${err.message}`));
+            }
+
+            logsService.addLog({
+                ...logActor(req),
+                action:     'CREATE',
+                resource:   'agreement',
+                resourceId: req.params.id,
+                details:    `Overeenkomst ondertekend: ${customer.name}`
+            });
+
+            res.json({ success: true, signedAt: result.signedAt });
         } catch (err) {
             next(err);
         }

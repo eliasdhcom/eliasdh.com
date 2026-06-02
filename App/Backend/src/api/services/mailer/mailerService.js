@@ -77,6 +77,32 @@ class MailerService {
             <p style="margin:0;font-size:13px;color:#555;">${text}</p>
         </div>`;
     }
+
+    async sendAgreementEmail(to, customerName, contactName, pdfBase64) {
+        const filename = `customer_agreement-EliasDH-${customerName.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+        const body = `
+            <h2 style="font-size:20px;color:#1a1a2e;margin:0 0 8px;">Your signed service agreement</h2>
+            <p style="color:#555;font-size:14px;margin:0 0 20px;">Dear ${contactName || customerName},</p>
+            <p style="color:#555;font-size:14px;">Please find attached your signed service agreement with EliasDH. Please keep this document for your records.</p>
+            ${this.infoTable([
+                ['Client',   customerName],
+                ['Date',     new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })],
+                ['Document', 'Service Agreement']
+            ])}
+            ${this.banner('Questions? Send an e-mail to <a href="mailto:info@eliasdh.com" style="color:#4f94f0;">info@eliasdh.com</a>', BRAND_COLOR, '#f0f5ff')}
+        `;
+        await this.send({
+            to,
+            subject:     `Your signed service agreement — EliasDH`,
+            html:        this.layout({ headerTitle: 'Service Agreement', body }),
+            attachments: [{
+                filename,
+                content:     Buffer.from(pdfBase64, 'base64'),
+                contentType: 'application/pdf'
+            }]
+        });
+        logger.info(`Agreement email sent to: ${to}`);
+    }
 }
 
 module.exports = new MailerService();

@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.use(jwtAuth);
 
-const ALLOWED_CLIENT_ACTIONS = ['DOWNLOAD', 'LOGOUT'];
+const ALLOWED_CLIENT_ACTIONS = ['DOWNLOAD', 'LOGOUT', 'CREATE'];
 
 router.get('/', async (req, res, next) => {
     try {

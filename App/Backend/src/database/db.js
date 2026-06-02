@@ -166,6 +166,7 @@ async function initSchema() {
     try { await db.execute(`ALTER TABLE pricing_plans  ADD COLUMN color     TEXT NOT NULL DEFAULT '#cccccc'`); } catch (_) {}
     try { await db.execute(`ALTER TABLE logs ADD COLUMN resource TEXT`); } catch (_) {}
     try { await db.execute(`CREATE INDEX IF NOT EXISTS idx_logs_resource ON logs(resource)`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE customers ADD COLUMN agreement_signed_at TEXT`); } catch (_) {}
 }
 
 module.exports = { getDb, initSchema };

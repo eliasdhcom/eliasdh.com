@@ -148,23 +148,24 @@ function buildCustomer(row, locations, websites, domains) {
         (link, idx, arr) => arr.findIndex(l => l.url === link.url) === idx
     );
     return {
-        id:          row.id,
-        name:        row.name,
-        isHQ:        row.is_hq === 1 || row.is_hq === 1n,
-        firstName:   row.first_name  ?? undefined,
-        lastName:    row.last_name   ?? undefined,
-        email:       row.email       ?? undefined,
-        phone:       row.phone       ?? undefined,
-        mobile:      row.mobile      ?? undefined,
-        logo:        row.logo        ?? undefined,
-        vat:         primaryLoc?.vat ?? null,
-        address:     primaryLoc ? formatAddress(primaryLoc) : '',
-        latitude:    primaryLoc?.latitude  ?? null,
-        longitude:   primaryLoc?.longitude ?? null,
-        socialLinks: uniqueSocialLinks,
+        id:                 row.id,
+        name:               row.name,
+        isHQ:               row.is_hq === 1 || row.is_hq === 1n,
+        firstName:          row.first_name  ?? undefined,
+        lastName:           row.last_name   ?? undefined,
+        email:              row.email       ?? undefined,
+        phone:              row.phone       ?? undefined,
+        mobile:             row.mobile      ?? undefined,
+        logo:               row.logo        ?? undefined,
+        vat:                primaryLoc?.vat ?? null,
+        address:            primaryLoc ? formatAddress(primaryLoc) : '',
+        latitude:           primaryLoc?.latitude  ?? null,
+        longitude:          primaryLoc?.longitude ?? null,
+        socialLinks:        uniqueSocialLinks,
         locations,
         websites,
-        domains
+        domains,
+        agreementSignedAt:  row.agreement_signed_at ?? null
     };
 }
 
@@ -396,10 +397,16 @@ class CustomersService {
 
             await db.execute({ sql: 'DELETE FROM websites WHERE customer_id = ?', args: [id] });
             await insertWebsites(db, id, data.websites);
+            // Reset agreement — subscription changed
+            await db.execute({ sql: `UPDATE customers SET agreement_signed_at = NULL WHERE id = ?`, args: [id] });
+            logger.info(`Agreement reset for customer ${id}: subscription changed`);
         }
         if (data.domains !== undefined) {
             await db.execute({ sql: 'DELETE FROM domain_names WHERE customer_id = ?', args: [id] });
             await insertDomains(db, id, data.domains);
+            // Reset agreement — domain changed
+            await db.execute({ sql: `UPDATE customers SET agreement_signed_at = NULL WHERE id = ?`, args: [id] });
+            logger.info(`Agreement reset for customer ${id}: domain changed`);
         }
         logger.info(`Customer updated: ${id}`);
         return this.getCustomerById(id);
@@ -408,6 +415,17 @@ class CustomersService {
     async deleteCustomer(id) {
         await getDb().execute({ sql: 'DELETE FROM customers WHERE id = ?', args: [id] });
         logger.info(`Customer deleted: ${id}`);
+    }
+
+    async signAgreement(id) {
+        const db = getDb();
+        const signedAt = new Date().toISOString();
+        await db.execute({
+            sql:  `UPDATE customers SET agreement_signed_at = ? WHERE id = ?`,
+            args: [signedAt, id]
+        });
+        logger.info(`Agreement signed for customer: ${id}`);
+        return { signedAt };
     }
 }
 

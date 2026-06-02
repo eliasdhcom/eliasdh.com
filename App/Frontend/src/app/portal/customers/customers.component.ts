@@ -5,7 +5,7 @@
 **/
 
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -66,7 +66,7 @@ interface CustomerForm {
 @Component({
     selector: 'app-portal-customers',
     standalone: true,
-    imports: [CommonModule, FormsModule, TranslatePipe],
+    imports: [CommonModule, FormsModule, TranslatePipe, DatePipe],
     templateUrl: './customers.component.html',
     styleUrls: ['./customers.component.css']
 })
@@ -98,6 +98,29 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     private pricingPlans: PricingPlan[]    = [];
 
     geocodingLoading: boolean[] = [];
+
+    // ── Agreement modal state ─────────────────────────────────────────────────
+    agreementCustomer     : Customer | null = null;
+    agreementSigning       = false;
+    agreementError         = '';
+    agreementSuccess       = false;
+    agreementShowDiscard   = false;
+    sigHasContent          = false;
+    private agreementPdf   : string | null = null;
+    agreementLang     = 'nl';
+    readonly agreementLangs = [
+        { code: 'nl', label: 'NL' },
+        { code: 'en', label: 'EN' },
+        { code: 'de', label: 'DE' },
+        { code: 'fr', label: 'FR' },
+        { code: 'es', label: 'ES' }
+    ];
+    private prevLang   = 'nl';
+    private sigDrawing = false;
+    private sigLastX   = 0;
+    private sigLastY   = 0;
+    private sigCanvas: HTMLCanvasElement | null = null;
+    private readonly boundPreventScroll = (e: Event) => e.preventDefault();
 
     @Output() navigateToSubscription = new EventEmitter<string>();
 
@@ -131,6 +154,10 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     }
 
     get isAuthenticated(): boolean { return this.authService.isAuthenticated(); }
+
+    get todayLabel(): string {
+        return new Date().toLocaleDateString('nl-BE', { day: '2-digit', month: 'long', year: 'numeric' });
+    }
 
     loadCustomers(): void {
         this.loading = true;
@@ -476,5 +503,371 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
             })
             .catch(() => {})
             .finally(() => { this.geocodingLoading[index] = false; });
+    }
+
+    openAgreementModal(customer: Customer, event: Event): void {
+        event.stopPropagation();
+        this.prevLang            = localStorage.getItem('language') ?? 'nl';
+        this.agreementLang       = this.prevLang;
+        this.agreementCustomer   = customer;
+        this.agreementSigning    = false;
+        this.agreementError      = '';
+        this.agreementSuccess    = false;
+        this.agreementShowDiscard = false;
+        this.sigHasContent       = false;
+        this.sigCanvas           = null;
+        setTimeout(() => this.initCanvas(), 60);
+    }
+
+    requestCloseAgreement(): void {
+        if (this.agreementSigning) return;
+        if (this.sigHasContent && !this.agreementSuccess) {
+            this.agreementShowDiscard = true;
+            return;
+        }
+        this.closeAgreementModal();
+    }
+
+    confirmDiscardAgreement(): void {
+        this.agreementShowDiscard = false;
+        this.closeAgreementModal();
+    }
+
+    cancelDiscardAgreement(): void {
+        this.agreementShowDiscard = false;
+    }
+
+    closeAgreementModal(): void {
+        this.destroyCanvas();
+        this.translate.use(this.prevLang);
+        this.agreementCustomer    = null;
+        this.agreementError       = '';
+        this.agreementSuccess     = false;
+        this.agreementShowDiscard = false;
+        this.agreementPdf         = null;
+    }
+
+    downloadAgreementPdf(): void {
+        if (!this.agreementPdf || !this.agreementCustomer) return;
+        const name     = this.agreementCustomer.name.replace(/[^a-zA-Z0-9]/g, '_');
+        const filename = `customer_agreement-EliasDH-${name}.pdf`;
+        const bytes    = atob(this.agreementPdf);
+        const arr      = new Uint8Array(bytes.length);
+        for (let i = 0; i < bytes.length; i++) arr[i] = bytes.charCodeAt(i);
+        const blob = new Blob([arr], { type: 'application/pdf' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    async downloadSignedCustomerAgreement(customer: Customer, event: Event): Promise<void> {
+        event.stopPropagation();
+        if (!customer.agreementSignedAt) return;
+        try {
+            const name     = customer.name.replace(/[^a-zA-Z0-9]/g, '_');
+            const filename = `customer_agreement-EliasDH-${name}.pdf`;
+            const pdfBase64 = await this.buildAgreementPdf(customer, '');
+            const bytes    = atob(pdfBase64);
+            const arr      = new Uint8Array(bytes.length);
+            for (let i = 0; i < bytes.length; i++) arr[i] = bytes.charCodeAt(i);
+            const blob = new Blob([arr], { type: 'application/pdf' });
+            const url  = URL.createObjectURL(blob);
+            const a    = document.createElement('a');
+            a.href     = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        } catch (e) {
+            console.error('Failed to download agreement:', e);
+        }
+    }
+
+    setAgreementLang(code: string): void {
+        this.agreementLang = code;
+        this.translate.use(code);
+    }
+
+    private initCanvas(): void {
+        const el = document.getElementById('customers-agr-sig-canvas') as HTMLCanvasElement | null;
+        if (!el) return;
+        this.sigCanvas = el;
+        const ctx = el.getContext('2d')!;
+        ctx.strokeStyle = '#4f94f0';
+        ctx.lineWidth   = 2.5;
+        ctx.lineCap     = 'round';
+        ctx.lineJoin    = 'round';
+
+        el.addEventListener('mousedown',  this.onSigDown.bind(this));
+        el.addEventListener('mousemove',  this.onSigMove.bind(this));
+        el.addEventListener('mouseup',    this.onSigUp.bind(this));
+        el.addEventListener('mouseleave', this.onSigUp.bind(this));
+        el.addEventListener('touchstart', this.onSigTouchStart.bind(this), { passive: false });
+        el.addEventListener('touchmove',  this.onSigTouchMove.bind(this),  { passive: false });
+        el.addEventListener('touchend',   this.onSigUp.bind(this));
+    }
+
+    private destroyCanvas(): void {
+        if (!this.sigCanvas) return;
+        const el = this.sigCanvas;
+        el.removeEventListener('mousedown',  this.onSigDown.bind(this));
+        el.removeEventListener('mousemove',  this.onSigMove.bind(this));
+        el.removeEventListener('mouseup',    this.onSigUp.bind(this));
+        el.removeEventListener('mouseleave', this.onSigUp.bind(this));
+        el.removeEventListener('touchstart', this.onSigTouchStart.bind(this));
+        el.removeEventListener('touchmove',  this.onSigTouchMove.bind(this));
+        el.removeEventListener('touchend',   this.onSigUp.bind(this));
+        this.sigCanvas = null;
+    }
+
+    private canvasPos(el: HTMLCanvasElement, clientX: number, clientY: number): [number, number] {
+        const r      = el.getBoundingClientRect();
+        const scaleX = el.width  / r.width;
+        const scaleY = el.height / r.height;
+        return [(clientX - r.left) * scaleX, (clientY - r.top) * scaleY];
+    }
+
+    private lockScroll(): void {
+        document.addEventListener('touchmove', this.boundPreventScroll, { passive: false });
+    }
+    private unlockScroll(): void {
+        document.removeEventListener('touchmove', this.boundPreventScroll);
+    }
+
+    private onSigDown(e: MouseEvent): void {
+        this.sigDrawing = true;
+        this.lockScroll();
+        [this.sigLastX, this.sigLastY] = this.canvasPos(this.sigCanvas!, e.clientX, e.clientY);
+    }
+    private onSigMove(e: MouseEvent): void {
+        if (!this.sigDrawing || !this.sigCanvas) return;
+        const [x, y] = this.canvasPos(this.sigCanvas, e.clientX, e.clientY);
+        this.drawSigLine(x, y);
+    }
+    private onSigUp(): void {
+        this.sigDrawing = false;
+        this.unlockScroll();
+    }
+
+    private onSigTouchStart(e: TouchEvent): void {
+        e.preventDefault();
+        if (!this.sigCanvas || !e.touches[0]) return;
+        this.sigDrawing = true;
+        this.lockScroll();
+        [this.sigLastX, this.sigLastY] = this.canvasPos(this.sigCanvas, e.touches[0].clientX, e.touches[0].clientY);
+    }
+    private onSigTouchMove(e: TouchEvent): void {
+        e.preventDefault();
+        if (!this.sigDrawing || !this.sigCanvas || !e.touches[0]) return;
+        const [x, y] = this.canvasPos(this.sigCanvas, e.touches[0].clientX, e.touches[0].clientY);
+        this.drawSigLine(x, y);
+    }
+
+    private drawSigLine(x: number, y: number): void {
+        const ctx = this.sigCanvas!.getContext('2d')!;
+        ctx.beginPath();
+        ctx.moveTo(this.sigLastX, this.sigLastY);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        this.sigLastX    = x;
+        this.sigLastY    = y;
+        this.sigHasContent = true;
+    }
+
+    clearSignature(): void {
+        if (!this.sigCanvas) return;
+        const ctx = this.sigCanvas.getContext('2d')!;
+        ctx.clearRect(0, 0, this.sigCanvas.width, this.sigCanvas.height);
+        this.sigHasContent = false;
+    }
+
+    async submitAgreement(): Promise<void> {
+        if (!this.agreementCustomer || !this.sigHasContent || this.agreementSigning) return;
+        this.agreementSigning = true;
+        this.agreementError   = '';
+        try {
+            const signatureDataUrl = this.sigCanvas!.toDataURL('image/png');
+            const pdfBase64 = await this.buildAgreementPdf(this.agreementCustomer, signatureDataUrl);
+            this.agreementPdf = pdfBase64;
+            this.customersService.signAgreement(this.agreementCustomer.id, pdfBase64)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (r) => {
+                        const idx = this.customers.findIndex(c => c.id === this.agreementCustomer!.id);
+                        if (idx !== -1) this.customers[idx] = { ...this.customers[idx], agreementSignedAt: r.signedAt };
+                        this.agreementSigning = false;
+                        this.agreementSuccess = true;
+                    },
+                    error: () => {
+                        this.agreementError   = this.translate.instant('PORTAL.CUSTOMERS.AGREEMENT.ERR_FAILED');
+                        this.agreementSigning = false;
+                    }
+                });
+        } catch {
+            this.agreementError   = this.translate.instant('PORTAL.CUSTOMERS.AGREEMENT.ERR_PDF');
+            this.agreementSigning = false;
+        }
+    }
+
+    private async buildAgreementPdf(c: Customer, signatureDataUrl: string): Promise<string> {
+        // Switch to English so all translate.instant() calls return English strings
+        await new Promise<void>(resolve => {
+            this.translate.use('en').subscribe({ complete: () => resolve(), error: () => resolve() });
+        });
+        const p$ = 'PORTAL.CUSTOMERS.AGREEMENT.';
+        const t  = (key: string, params?: object) => this.translate.instant(p$ + key, params);
+
+        const { jsPDF } = await import('jspdf');
+        const doc     = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        const W       = 210;
+        const M       = 15;
+        const CW      = W - M * 2;
+        const P: [number, number, number] = [79, 148, 240];
+        const fd      = (d: Date) => d.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        const today   = fd(new Date());
+        const contact = `${c.firstName ?? ''} ${c.lastName ?? ''}`.trim();
+
+        let logoBase64: string | null = null;
+        try {
+            const resp = await fetch('assets/media/images/logo.png');
+            const blob = await resp.blob();
+            logoBase64 = await new Promise<string>((res, rej) => {
+                const r = new FileReader(); r.onloadend = () => res(r.result as string); r.onerror = rej; r.readAsDataURL(blob);
+            });
+        } catch { }
+
+        let y = 42;
+        const newPageIfNeeded = (mm: number): void => { if (y + mm > 280) { doc.addPage(); y = M; } };
+
+        const addPara = (text: string): void => {
+            const lines = doc.splitTextToSize(text, CW);
+            newPageIfNeeded(lines.length * 4 + 3);
+            doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(55, 55, 55);
+            doc.text(lines, M, y);
+            y += lines.length * 3.8 + 2;
+        };
+
+        const addSection = (titleKey: string, paraKeys: string[]): void => {
+            newPageIfNeeded(10 + paraKeys.length * 12);
+            doc.setFontSize(8.5); doc.setFont('helvetica', 'bold'); doc.setTextColor(79, 148, 240);
+            doc.text(t(titleKey), M, y); y += 5;
+            paraKeys.forEach(k => addPara(t(k)));
+            y += 3;
+        };
+
+        const drawSubsTable = (): void => {
+            const subs = (c.websites ?? []).filter(w => !!w.name);
+            if (!subs.length) return;
+            newPageIfNeeded(10 + subs.length * 12);
+            doc.setFillColor(241, 243, 248);
+            doc.rect(M, y, CW, 7, 'F');
+            doc.setFontSize(7.5); doc.setFont('helvetica', 'bold'); doc.setTextColor(70, 70, 70);
+            doc.text(t('SUBS_APP').toUpperCase(),   M + 2,     y + 4.8);
+            doc.text(t('SUBS_TYPE').toUpperCase(),  M + 75,    y + 4.8);
+            doc.text(t('SUBS_FREQ').toUpperCase(),  M + 110,   y + 4.8);
+            doc.text(t('SUBS_PRICE').toUpperCase(), W - M - 2, y + 4.8, { align: 'right' });
+            y += 7;
+            for (const w of subs) {
+                doc.setFontSize(8); doc.setFont('helvetica', 'bold'); doc.setTextColor(20, 20, 20);
+                doc.text(w.name, M + 2, y + 4);
+                doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(120, 120, 120);
+                doc.text(w.url, M + 2, y + 7.5);
+                doc.setFontSize(8); doc.setTextColor(20, 20, 20);
+                doc.text(w.subscriptionType, M + 75, y + 4);
+                doc.text(t('FREQ_' + w.frequency.toUpperCase()), M + 110, y + 4);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`€${w.payment.toFixed(2)}`, W - M - 2, y + 4, { align: 'right' });
+                y += 11;
+            }
+            doc.setDrawColor(210, 210, 210); doc.line(M, y, W - M, y); y += 4;
+        };
+
+        doc.setFillColor(...P); doc.rect(0, 0, W, 32, 'F');
+        const logoSize = 16;
+        if (logoBase64) doc.addImage(logoBase64, 'PNG', M, 8, logoSize, logoSize);
+        const tX = logoBase64 ? M + logoSize + 4 : M;
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(20); doc.setFont('helvetica', 'bold'); doc.text('EliasDH', tX, 17);
+        doc.setFontSize(8.5); doc.setFont('helvetica', 'normal'); doc.text('eliasdh.com', tX, 23);
+        doc.setFontSize(17); doc.setFont('helvetica', 'bold'); doc.text(t('TITLE').toUpperCase(), W - M, 18, { align: 'right' });
+
+        const col2X = M + CW / 2 + 8;
+        doc.setFontSize(7.5); doc.setFont('helvetica', 'bold'); doc.setTextColor(130, 130, 130);
+        doc.text(t('FROM'), M, y); doc.text(t('CLIENT_LABEL'), col2X, y); y += 5;
+        doc.setFontSize(10); doc.setFont('helvetica', 'bold'); doc.setTextColor(20, 20, 20);
+        doc.text('EliasDH BV', M, y); doc.text(c.name, col2X, y); y += 5;
+        doc.setFontSize(8.5); doc.setFont('helvetica', 'normal'); doc.setTextColor(70, 70, 70);
+        doc.text('info@eliasdh.com  ·  eliasdh.com', M, y);
+        if (contact) doc.text(contact, col2X, y); y += 4;
+        doc.text('VAT: BE1034925266', M, y);
+        if (c.vat) doc.text(`VAT: ${c.vat}`, col2X, y); y += 4;
+        doc.text(`Date: ${today}`, M, y);
+
+        y = 80;
+        doc.setDrawColor(210, 210, 210); doc.line(M, y, W - M, y); y += 6;
+        const introText = `${t('INTRO_BEFORE')} ${today}${t('INTRO_BETWEEN')} ${c.name}${c.vat ? `${t('INTRO_VAT')} ${c.vat}` : ''}${t('INTRO_AFTER')}`;
+        const introLines = doc.splitTextToSize(introText, CW);
+        doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(55, 55, 55);
+        doc.text(introLines, M, y); y += introLines.length * 3.8 + 6;
+
+        addSection('ART1_TITLE', ['ART1_P1', 'ART1_P2']);
+
+        newPageIfNeeded(14);
+        doc.setFontSize(8.5); doc.setFont('helvetica', 'bold'); doc.setTextColor(79, 148, 240);
+        doc.text(t('ART2_TITLE'), M, y); y += 5;
+        addPara(t('ART2_P1'));
+        drawSubsTable();
+        ['ART2_P2', 'ART2_P3', 'ART2_P4'].forEach(k => addPara(t(k)));
+        y += 3;
+
+        addSection('ART3_TITLE',  ['ART3_P1', 'ART3_P2']);
+        addSection('ART4_TITLE',  ['ART4_P1', 'ART4_P2', 'ART4_P3', 'ART4_P4']);
+        addSection('ART5_TITLE',  ['ART5_P1', 'ART5_P2']);
+        addSection('ART6_TITLE',  ['ART6_P1', 'ART6_P2']);
+        addSection('ART7_TITLE',  ['ART7_P1']);
+        addSection('ART8_TITLE',  ['ART8_P1', 'ART8_P2']);
+        addSection('ART9_TITLE',  ['ART9_P1']);
+        newPageIfNeeded(14);
+        doc.setFontSize(8.5); doc.setFont('helvetica', 'bold'); doc.setTextColor(79, 148, 240);
+        doc.text(t('ART10_TITLE'), M, y); y += 5;
+        ['ART10_P1', 'ART10_P2', 'ART10_P3'].forEach(k => addPara(t(k)));
+        addPara(`${t('ART10_CONTACT')} info@eliasdh.com`);
+        y += 3;
+
+        newPageIfNeeded(40);
+        doc.setDrawColor(210, 210, 210); doc.line(M, y, W - M, y); y += 6;
+        const declLines = doc.splitTextToSize(t('DECLARATION', { client: c.name }), CW);
+        doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(80, 80, 80);
+        doc.text(declLines, M, y); y += declLines.length * 3.8 + 6;
+
+        const sigColW = CW / 2 - 5;
+        doc.setFontSize(7.5); doc.setFont('helvetica', 'bold'); doc.setTextColor(130, 130, 130);
+        doc.text('NAME & TITLE', M, y); doc.text('SIGNATURE', M + sigColW + 10, y); y += 5;
+        doc.setFontSize(9); doc.setFont('helvetica', 'normal'); doc.setTextColor(20, 20, 20);
+        doc.text(contact || c.name, M, y);
+        doc.setFontSize(8); doc.setTextColor(100, 100, 100);
+        doc.text(`Date: ${today}`, M, y + 5);
+        if (signatureDataUrl && signatureDataUrl.length > 0) {
+            doc.addImage(signatureDataUrl, 'PNG', M + sigColW + 10, y - 3, sigColW, 22);
+        }
+
+        const totalPages = (doc as any).internal.getNumberOfPages();
+        for (let pg = 1; pg <= totalPages; pg++) {
+            doc.setPage(pg);
+            doc.setDrawColor(210, 210, 210); doc.line(M, 287, W - M, 287);
+            doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(150, 150, 150);
+            doc.text('EliasDH BV  ·  VAT: BE1034925266  ·  info@eliasdh.com  ·  eliasdh.com', M, 291);
+            doc.text(`Page ${pg} / ${totalPages}`, W - M, 291, { align: 'right' });
+        }
+
+        this.translate.use(this.agreementLang);
+
+        const ab = doc.output('arraybuffer');
+        const bytes = new Uint8Array(ab);
+        let bin = '';
+        for (let i = 0; i < bytes.byteLength; i++) bin += String.fromCharCode(bytes[i]);
+        return btoa(bin);
     }
 }

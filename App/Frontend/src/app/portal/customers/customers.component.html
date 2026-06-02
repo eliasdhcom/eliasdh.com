@@ -58,6 +58,10 @@
                             <div class="customers-card-badges cursor-pointer">
                                 <span class="customers-badge cursor-pointer" [style.background]="getBadgeStyle(w.subscriptionType).background" [style.color]="getBadgeStyle(w.subscriptionType).color" *ngFor="let w of getVisibleBadges(customer)">{{w.subscriptionType}}</span>
                                 <span class="customers-badge customers-badge--more cursor-pointer" *ngIf="getExtraBadgeCount(customer) > 0">+{{getExtraBadgeCount(customer)}}</span>
+                                <span class="customers-badge customers-badge--signed cursor-pointer" *ngIf="customer.agreementSignedAt" [title]="('PORTAL.CUSTOMERS.AGREEMENT.SIGNED_TOOLTIP'|translate) + ' ' + (customer.agreementSignedAt | date:'dd/MM/yyyy')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:9px;height:9px;margin-right:3px" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                                    {{'PORTAL.CUSTOMERS.AGREEMENT.SIGNED_BADGE'|translate}}
+                                </span>
                             </div>
                         </div>
                         <div class="customers-card-row-meta cursor-pointer">
@@ -84,6 +88,17 @@
                     </div>
                 </button>
                 <div class="customers-card-actions" *ngIf="isAuthenticated">
+                    <button class="customers-action-btn customers-action-btn--agreement cursor-pointer"
+                            [title]="customer.agreementSignedAt ? 'Overeenkomst reeds ondertekend' : 'Overeenkomst ondertekenen'"
+                            (click)="openAgreementModal(customer, $event)">
+                        <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path class="cursor-pointer" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline class="cursor-pointer" points="14 2 14 8 20 8"/>
+                            <line class="cursor-pointer" x1="16" y1="13" x2="8" y2="13"/>
+                            <line class="cursor-pointer" x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline class="cursor-pointer" *ngIf="customer.agreementSignedAt" points="9 10 12 13 16 8"/>
+                        </svg>
+                    </button>
                     <button class="customers-action-btn customers-action-btn--edit cursor-pointer" [title]="'PORTAL.COMMON.EDIT'|translate" (click)="openEditForm(customer, $event)">
                         <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path class="cursor-pointer" d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -97,6 +112,13 @@
                             <path class="cursor-pointer" d="M10 11v6"/>
                             <path class="cursor-pointer" d="M14 11v6"/>
                             <path class="cursor-pointer" d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                        </svg>
+                    </button>
+                    <button *ngIf="customer.agreementSignedAt" class="customers-action-btn customers-action-btn--download cursor-pointer" [title]="'Download contract'" (click)="downloadSignedCustomerAgreement(customer, $event)">
+                        <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path class="cursor-pointer" d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline class="cursor-pointer" points="7 10 12 15 17 10"/>
+                            <line class="cursor-pointer" x1="12" y1="15" x2="12" y2="3"/>
                         </svg>
                     </button>
                 </div>
@@ -532,6 +554,188 @@
                 <button class="customers-modal-btn customers-modal-btn--save cursor-pointer" type="button" (click)="submitForm()" [disabled]="formSaving">
                     <svg *ngIf="formSaving" class="customers-form-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-opacity="0.3"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
                     {{formSaving ? ('PORTAL.CUSTOMERS.FORM.SAVING'|translate) : (isEditing ? ('PORTAL.CUSTOMERS.FORM.SAVE'|translate) : ('PORTAL.CUSTOMERS.FORM.CREATE'|translate))}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="customers-modal-overlay customers-agr-overlay" *ngIf="agreementCustomer" (click)="$event.target === $event.currentTarget && requestCloseAgreement()">
+    <div class="customers-modal customers-agr-modal">
+        <div class="customers-modal-header customers-agr-header">
+            <div class="customers-agr-header-top">
+                <h2 class="customers-modal-title">
+                    <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                    {{'PORTAL.CUSTOMERS.AGREEMENT.TITLE'|translate}}
+                </h2>
+                <button class="customers-modal-close cursor-pointer" (click)="requestCloseAgreement()" [disabled]="agreementSigning" aria-label="Sluiten">
+                    <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line class="cursor-pointer" x1="18" y1="6" x2="6" y2="18"/>
+                        <line class="cursor-pointer" x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="customers-agr-lang-switcher">
+                <button *ngFor="let l of agreementLangs" class="customers-agr-lang-btn cursor-pointer" [class.customers-agr-lang-btn--active]="agreementLang === l.code" (click)="setAgreementLang(l.code)">{{l.label}}</button>
+            </div>
+        </div>
+        <div class="customers-modal-body customers-agr-body" *ngIf="!agreementSuccess">
+            <div class="customers-agr-document">
+                <div class="customers-agr-parties">
+                    <div class="customers-agr-party">
+                        <span class="customers-agr-party-label">{{'PORTAL.CUSTOMERS.AGREEMENT.FROM'|translate}}</span>
+                        <strong>EliasDH BV</strong>
+                        <span>BTW: BE1034925266</span>
+                        <span>info&#64;eliasdh.com · eliasdh.com</span>
+                    </div>
+                    <div class="customers-agr-party">
+                        <span class="customers-agr-party-label">{{'PORTAL.CUSTOMERS.AGREEMENT.CLIENT_LABEL'|translate}}</span>
+                        <strong>{{agreementCustomer.name}}</strong>
+                        <span *ngIf="agreementCustomer.firstName || agreementCustomer.lastName">{{agreementCustomer.firstName}} {{agreementCustomer.lastName}}</span>
+                        <span *ngIf="agreementCustomer.vat">BTW: {{agreementCustomer.vat}}</span>
+                    </div>
+                </div>
+                <p class="customers-agr-intro">
+                    {{'PORTAL.CUSTOMERS.AGREEMENT.INTRO_BEFORE'|translate}} <strong>{{todayLabel}}</strong>
+                    {{'PORTAL.CUSTOMERS.AGREEMENT.INTRO_BETWEEN'|translate}}
+                    <strong>{{agreementCustomer.name}}</strong><ng-container *ngIf="agreementCustomer.vat">{{'PORTAL.CUSTOMERS.AGREEMENT.INTRO_VAT'|translate}} {{agreementCustomer.vat}}</ng-container>
+                    {{'PORTAL.CUSTOMERS.AGREEMENT.INTRO_AFTER'|translate}}
+                </p>
+                <ol class="customers-agr-articles">
+                    <li>
+                        <strong>{{'PORTAL.CUSTOMERS.AGREEMENT.ART1_TITLE'|translate}}</strong>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART1_P1'|translate}}</p>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART1_P2'|translate}}</p>
+                    </li>
+                    <li>
+                        <strong>{{'PORTAL.CUSTOMERS.AGREEMENT.ART2_TITLE'|translate}}</strong>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART2_P1'|translate}}</p>
+                        <div class="customers-agr-subs" *ngIf="agreementCustomer.websites.length">
+                            <table class="customers-agr-subs-table">
+                                <thead><tr>
+                                    <th>{{'PORTAL.CUSTOMERS.AGREEMENT.SUBS_APP'|translate}}</th>
+                                    <th>{{'PORTAL.CUSTOMERS.AGREEMENT.SUBS_TYPE'|translate}}</th>
+                                    <th>{{'PORTAL.CUSTOMERS.AGREEMENT.SUBS_FREQ'|translate}}</th>
+                                    <th>{{'PORTAL.CUSTOMERS.AGREEMENT.SUBS_PRICE'|translate}}</th>
+                                </tr></thead>
+                                <tbody>
+                                    <ng-container *ngFor="let w of agreementCustomer.websites">
+                                        <tr *ngIf="w.name">
+                                            <td>
+                                                <span class="customers-agr-sub-name">{{w.name}}</span>
+                                                <span class="customers-agr-sub-url">{{w.url}}</span>
+                                            </td>
+                                            <td>{{w.subscriptionType}}</td>
+                                            <td>{{('PORTAL.CUSTOMERS.AGREEMENT.FREQ_' + w.frequency.toUpperCase())|translate}}</td>
+                                            <td class="customers-agr-sub-price">€{{w.payment | number:'1.2-2'}}</td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART2_P2'|translate}}</p>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART2_P3'|translate}}</p>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART2_P4'|translate}}</p>
+                    </li>
+                    <li>
+                        <strong>{{'PORTAL.CUSTOMERS.AGREEMENT.ART3_TITLE'|translate}}</strong>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART3_P1'|translate}}</p>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART3_P2'|translate}}</p>
+                    </li>
+                    <li>
+                        <strong>{{'PORTAL.CUSTOMERS.AGREEMENT.ART4_TITLE'|translate}}</strong>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART4_P1'|translate}}</p>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART4_P2'|translate}}</p>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART4_P3'|translate}}</p>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART4_P4'|translate}}</p>
+                    </li>
+                    <li>
+                        <strong>{{'PORTAL.CUSTOMERS.AGREEMENT.ART5_TITLE'|translate}}</strong>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART5_P1'|translate}}</p>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART5_P2'|translate}}</p>
+                    </li>
+                    <li>
+                        <strong>{{'PORTAL.CUSTOMERS.AGREEMENT.ART6_TITLE'|translate}}</strong>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART6_P1'|translate}}</p>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART6_P2'|translate}}</p>
+                    </li>
+                    <li>
+                        <strong>{{'PORTAL.CUSTOMERS.AGREEMENT.ART7_TITLE'|translate}}</strong>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART7_P1'|translate}}</p>
+                    </li>
+                    <li>
+                        <strong>{{'PORTAL.CUSTOMERS.AGREEMENT.ART8_TITLE'|translate}}</strong>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART8_P1'|translate}}</p>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART8_P2'|translate}}</p>
+                    </li>
+                    <li>
+                        <strong>{{'PORTAL.CUSTOMERS.AGREEMENT.ART9_TITLE'|translate}}</strong>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART9_P1'|translate}}</p>
+                    </li>
+                    <li>
+                        <strong>{{'PORTAL.CUSTOMERS.AGREEMENT.ART10_TITLE'|translate}}</strong>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART10_P1'|translate}}</p>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART10_P2'|translate}}</p>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART10_P3'|translate}}</p>
+                        <p>{{'PORTAL.CUSTOMERS.AGREEMENT.ART10_CONTACT'|translate}} <a href="mailto:info&#64;eliasdh.com" class="customers-agr-link cursor-pointer">info&#64;eliasdh.com</a>.</p>
+                    </li>
+                </ol>
+                <p class="customers-agr-declaration">
+                    {{'PORTAL.CUSTOMERS.AGREEMENT.DECLARATION'|translate:{ client: agreementCustomer.name } }}
+                </p>
+                <div class="customers-agr-sig-section">
+                    <div class="customers-agr-sig-header">
+                        <span class="customers-agr-sig-label">{{'PORTAL.CUSTOMERS.AGREEMENT.SIG_LABEL'|translate}}</span>
+                        <button class="customers-agr-sig-clear cursor-pointer" type="button" (click)="clearSignature()" [disabled]="!sigHasContent">{{'PORTAL.CUSTOMERS.AGREEMENT.SIG_CLEAR'|translate}}</button>
+                    </div>
+                    <canvas id="customers-agr-sig-canvas" class="customers-agr-sig-canvas" width="600" height="120"></canvas>
+                    <p class="customers-agr-sig-hint" *ngIf="!sigHasContent">{{'PORTAL.CUSTOMERS.AGREEMENT.SIG_HINT'|translate}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="customers-modal-body customers-agr-body customers-agr-success" *ngIf="agreementSuccess">
+            <div class="customers-agr-success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+            </div>
+            <h3>{{'PORTAL.CUSTOMERS.AGREEMENT.SUCCESS_TITLE'|translate}}</h3>
+            <p>{{'PORTAL.CUSTOMERS.AGREEMENT.SUCCESS_MSG'|translate}}<span *ngIf="agreementCustomer.email"> {{'PORTAL.CUSTOMERS.AGREEMENT.SUCCESS_EMAIL'|translate}} <strong>{{agreementCustomer.email}}</strong></span>.</p>
+            <button class="customers-agr-download-btn cursor-pointer" (click)="downloadAgreementPdf()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px" aria-hidden="true">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download PDF
+            </button>
+        </div>
+        <div class="customers-modal-footer">
+            <div class="customers-discard-confirm" *ngIf="agreementShowDiscard">
+                <span class="customers-discard-question">{{'PORTAL.COMMON.DISCARD.QUESTION'|translate}}</span>
+                <div class="customers-discard-actions">
+                    <button class="customers-modal-btn customers-modal-btn--cancel cursor-pointer" (click)="cancelDiscardAgreement()">{{'PORTAL.COMMON.DISCARD.KEEP'|translate}}</button>
+                    <button class="customers-modal-btn customers-modal-btn--discard cursor-pointer" (click)="confirmDiscardAgreement()">{{'PORTAL.COMMON.DISCARD.DISCARD'|translate}}</button>
+                </div>
+            </div>
+            <p class="customers-form-error" *ngIf="agreementError && !agreementShowDiscard">{{agreementError}}</p>
+            <div class="customers-modal-footer-actions" *ngIf="!agreementShowDiscard">
+                <button class="customers-modal-btn customers-modal-btn--cancel cursor-pointer" (click)="agreementSuccess ? closeAgreementModal() : requestCloseAgreement()" [disabled]="agreementSigning">
+                    {{agreementSuccess ? ('PORTAL.CUSTOMERS.AGREEMENT.BTN_CLOSE'|translate) : ('PORTAL.CUSTOMERS.AGREEMENT.BTN_CANCEL'|translate)}}
+                </button>
+                <button *ngIf="!agreementSuccess"
+                        class="customers-modal-btn customers-modal-btn--save cursor-pointer customers-agr-sign-btn"
+                        (click)="submitAgreement()"
+                        [disabled]="!sigHasContent || agreementSigning">
+                    <svg *ngIf="agreementSigning" class="customers-form-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-opacity="0.3"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+                    <svg *ngIf="!agreementSigning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:6px" aria-hidden="true">
+                        <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"/>
+                    </svg>
+                    {{agreementSigning ? ('PORTAL.CUSTOMERS.AGREEMENT.BTN_SIGNING'|translate) : ('PORTAL.CUSTOMERS.AGREEMENT.BTN_SIGN'|translate)}}
                 </button>
             </div>
         </div>

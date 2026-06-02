@@ -67,10 +67,11 @@ export interface Customer {
     socialLinks?: SocialLink[];
     websites:     CustomerWebsite[];
     locations:    CustomerLocation[];
-    domains?:     CustomerDomain[];
-    address:      string;
-    latitude:     number;
-    longitude:    number;
+    domains?:           CustomerDomain[];
+    address:            string;
+    latitude:           number;
+    longitude:          number;
+    agreementSignedAt?: string | null;
 }
 
 export interface MetricsResponse {
@@ -122,6 +123,14 @@ export class CustomersService {
 
     deleteCustomer(id: string): Observable<{ success: boolean }> {
         return this.http.delete<{ success: boolean }>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
+    }
+
+    signAgreement(id: string, pdfBase64: string): Observable<{ success: boolean; signedAt: string }> {
+        return this.http.post<{ success: boolean; signedAt: string }>(
+            `${this.apiUrl}/${id}/agreement/sign`,
+            { pdfBase64 },
+            { headers: this.getAuthHeaders() }
+        );
     }
 
     getVisitorCount(domain: string): Observable<MetricsResponse> {
