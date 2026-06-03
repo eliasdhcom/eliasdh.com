@@ -18,6 +18,7 @@ import { PortalUsersComponent } from '../users/users.component';
 import { PortalPricingPlansComponent } from '../pricing-plans/pricing-plans.component';
 import { PortalLogsComponent } from '../logs/logs.component';
 import { UsersService } from '../../services/users.service';
+import { ThemeService } from '../../services/theme.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -55,7 +56,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     constructor(
         private authService: AuthService,
         private usersService: UsersService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        public themeService: ThemeService
     ) {}
 
     private readonly onBeforeInstallPrompt = (e: Event) => { e.preventDefault(); this.pwaPrompt = e; };

@@ -11,6 +11,7 @@ import { filter, map } from 'rxjs/operators';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieConsentComponent } from './shared/cookie-consent/cookie-consent.component';
+import { ThemeService } from './services/theme.service';
 
 @Component({
     selector: 'app-root',
@@ -25,10 +26,12 @@ export class AppComponent {
     private titleService = inject(Title);
     private metaService = inject(Meta);
     private translate = inject(TranslateService);
+    private themeService = inject(ThemeService);
 
     private defaultDescription = 'Welcome to EliasDH, a company that offers hosting services, web development, and tailored IT solutions for businesses and individuals.';
 
     constructor(@Inject(DOCUMENT) private document: Document) {
+        this.themeService.initTheme();
         const lang = localStorage.getItem('language') || 'nl';
         this.translate.setDefaultLang(lang);
         this.translate.use(lang);
