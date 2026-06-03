@@ -94,6 +94,13 @@
             </button>
         </nav>
         <div class="dashboard-sidebar-footer">
+            <button *ngIf="isAdmin" class="dashboard-nav-item cursor-pointer" [class.dashboard-active]="currentView === 'settings'" (click)="navigateTo('settings')" [title]="'PORTAL.NAV.COMPANY'|translate">
+                <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect class="cursor-pointer" x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                    <path class="cursor-pointer" d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                </svg>
+                <span class="dashboard-nav-label cursor-pointer">{{'PORTAL.NAV.COMPANY'|translate}}</span>
+            </button>
             <button class="dashboard-nav-item dashboard-nav-item-logout cursor-pointer" (click)="logout()" [title]="'PORTAL.NAV.LOGOUT'|translate">
                 <svg class="dashboard-nav-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path class="cursor-pointer" d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -186,6 +193,9 @@
             </div>
             <div class="dashboard-content-view" *ngIf="currentView === 'logs' && isAdmin">
                 <app-portal-logs></app-portal-logs>
+            </div>
+            <div class="dashboard-content-view" *ngIf="currentView === 'settings' && isAdmin">
+                <app-portal-company></app-portal-company>
             </div>
         </main>
     </div>
