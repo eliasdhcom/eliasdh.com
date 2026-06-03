@@ -1401,13 +1401,21 @@
     margin-bottom: 24px;
 }
 
-.customers-agr-sig-section { border-top: 1px solid rgba(128,128,128,.15); padding-top: 16px; }
+.customers-agr-sig-section {
+    border-top: 1px solid rgba(128,128,128,.15);
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
 
 .customers-agr-sig-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
+    gap: 12px;
     margin-bottom: 8px;
+    width: 60%;
 }
 .customers-agr-sig-label { font-size: 12px; font-weight: 600; color: var(--secondary); }
 
@@ -1426,7 +1434,7 @@
 
 .customers-agr-sig-canvas {
     display: block;
-    width: 100%;
+    width: 60%;
     height: 120px;
     border: 2px dashed rgba(79,148,240,.35);
     border-radius: 8px;
@@ -1441,6 +1449,7 @@
     text-align: center;
     margin-top: 6px;
     opacity: .7;
+    width: 60%;
 }
 
 .customers-agr-sign-btn {

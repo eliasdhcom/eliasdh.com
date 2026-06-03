@@ -6,6 +6,7 @@
 
 const nodemailer = require('nodemailer');
 const logger     = require('../../../utils/logger');
+const { generateAgreementPdf } = require('../pdf/pdfService');
 
 const BRAND_COLOR  = '#4f94f0';
 const BRAND_FOOTER = '#f0f5ff';
@@ -78,7 +79,7 @@ class MailerService {
         </div>`;
     }
 
-    async sendAgreementEmail(to, customerName, contactName, pdfBase64) {
+    async sendAgreementEmail(to, customerName, contactName, customer, signatureDataUrl, signedAt) {
         const filename = `customer_agreement-EliasDH-${customerName.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
         const body = `
             <h2 style="font-size:20px;color:#1a1a2e;margin:0 0 8px;">Your signed service agreement</h2>
@@ -91,15 +92,20 @@ class MailerService {
             ])}
             ${this.banner('Questions? Send an e-mail to <a href="mailto:info@eliasdh.com" style="color:#4f94f0;">info@eliasdh.com</a>', BRAND_COLOR, '#f0f5ff')}
         `;
+
+        let attachments = [];
+        try {
+            const pdfBuffer = await generateAgreementPdf(customer, signatureDataUrl, signedAt ? new Date(signedAt) : new Date());
+            attachments = [{ filename, content: pdfBuffer, contentType: 'application/pdf' }];
+        } catch (err) {
+            logger.warn(`PDF generation for email failed: ${err.message}`);
+        }
+
         await this.send({
             to,
             subject:     `Your signed service agreement — EliasDH`,
             html:        this.layout({ headerTitle: 'Service Agreement', body }),
-            attachments: [{
-                filename,
-                content:     Buffer.from(pdfBase64, 'base64'),
-                contentType: 'application/pdf'
-            }]
+            attachments,
         });
         logger.info(`Agreement email sent to: ${to}`);
     }

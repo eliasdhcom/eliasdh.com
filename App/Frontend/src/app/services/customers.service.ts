@@ -126,10 +126,10 @@ export class CustomersService {
         return this.http.delete<{ success: boolean }>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
     }
 
-    signAgreement(id: string, pdfBase64: string, signature: string): Observable<{ success: boolean; signedAt: string }> {
+    signAgreement(id: string, signature: string): Observable<{ success: boolean; signedAt: string }> {
         return this.http.post<{ success: boolean; signedAt: string }>(
             `${this.apiUrl}/${id}/agreement/sign`,
-            { pdfBase64, signature },
+            { signature },
             { headers: this.getAuthHeaders() }
         );
     }

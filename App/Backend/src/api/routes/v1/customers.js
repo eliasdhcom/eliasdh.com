@@ -110,7 +110,6 @@ router.delete('/:id',
 router.post('/:id/agreement/sign',
     jwtAuth,
     param('id').notEmpty(),
-    body('pdfBase64').notEmpty().isString(),
     body('signature').notEmpty().isString(),
     async (req, res, next) => {
         try {
@@ -124,7 +123,7 @@ router.post('/:id/agreement/sign',
 
             if (customer.email) {
                 const contactName = `${customer.firstName ?? ''} ${customer.lastName ?? ''}`.trim();
-                mailerService.sendAgreementEmail(customer.email, customer.name, contactName, req.body.pdfBase64)
+                mailerService.sendAgreementEmail(customer.email, customer.name, contactName, customer, req.body.signature, result.signedAt)
                     .catch(err => logger.warn(`Agreement email failed for ${req.params.id}: ${err.message}`));
             }
 

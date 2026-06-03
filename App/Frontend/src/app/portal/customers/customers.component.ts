@@ -655,7 +655,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     }
 
     private onSigTouchStart(e: TouchEvent): void {
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault();
         if (!this.sigCanvas || !e.touches[0]) return;
         this.sigDrawing = true;
         this.lockScroll();
@@ -694,7 +694,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
             const signatureDataUrl = this.sigCanvas!.toDataURL('image/png');
             const pdfBase64 = await this.buildAgreementPdf(this.agreementCustomer, signatureDataUrl);
             this.agreementPdf = pdfBase64;
-            this.customersService.signAgreement(this.agreementCustomer.id, pdfBase64, signatureDataUrl)
+            this.customersService.signAgreement(this.agreementCustomer.id, signatureDataUrl)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: (r) => {
