@@ -8,6 +8,7 @@ const express     = require('express');
 const { body, validationResult } = require('express-validator');
 const { jwtAuth } = require('../../../middleware/jwtAuth');
 const logsService = require('../../services/logs/logsService');
+const logger      = require('../../../utils/logger');
 
 const router = express.Router();
 
@@ -18,11 +19,24 @@ const ALLOWED_CLIENT_ACTIONS = ['DOWNLOAD', 'LOGOUT', 'CREATE'];
 router.get('/', async (req, res, next) => {
     try {
         if ((req.user?.role ?? '').toLowerCase() !== 'admin') {
-            return res.status(403).json({ success: false, error: 'Geen toegang.' });
+            return res.status(403).json({ success: false, error: 'Access denied.' });
         }
         const { action, resource, userId, search, dateFrom, dateTo, limit, offset } = req.query;
         const result = await logsService.getLogs({ action, resource, userId, search, dateFrom, dateTo, limit, offset });
         res.json({ success: true, ...result });
+    } catch (err) {
+        next(err);
+    }
+});
+
+router.delete('/', async (req, res, next) => {
+    try {
+        if ((req.user?.role ?? '').toLowerCase() !== 'admin') {
+            return res.status(403).json({ success: false, error: 'Access denied.' });
+        }
+        await logsService.clearLogs();
+        logger.info(`[logs] All logs cleared by ${req.user?.email}`);
+        res.json({ success: true });
     } catch (err) {
         next(err);
     }

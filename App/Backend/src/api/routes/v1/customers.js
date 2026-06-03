@@ -52,11 +52,11 @@ router.post('/',
                 action:     'CREATE',
                 resource:   'customer',
                 resourceId: customer.id,
-                details:    `Klant aangemaakt: ${customer.name} (ID: ${customer.id})`
+                details:    `Customer created: ${customer.name} (ID: ${customer.id})`
             });
             res.status(201).json({ success: true, data: customer });
         } catch (err) {
-            if (err.message?.includes('UNIQUE')) return res.status(409).json({ success: false, error: 'Een klant met dit ID bestaat al.' });
+            if (err.message?.includes('UNIQUE')) return res.status(409).json({ success: false, error: 'A customer with this ID already exists.' });
             next(err);
         }
     }
@@ -76,7 +76,7 @@ router.put('/:id',
                 action:     'UPDATE',
                 resource:   'customer',
                 resourceId: req.params.id,
-                details:    `Klant bijgewerkt: ${customer.name} (ID: ${req.params.id})${subsChanged ? ' — overeenkomst gereset' : ''}`
+                details:    `Customer updated: ${customer.name} (ID: ${req.params.id})${subsChanged ? ' — agreement reset' : ''}`
             });
             res.json({ success: true, data: customer });
         } catch (err) {
@@ -98,7 +98,7 @@ router.delete('/:id',
                 action:     'DELETE',
                 resource:   'customer',
                 resourceId: req.params.id,
-                details:    `Klant verwijderd (ID: ${req.params.id})`
+                details:    `Customer deleted (ID: ${req.params.id})`
             });
             res.json({ success: true });
         } catch (err) {
@@ -117,7 +117,7 @@ router.post('/:id/agreement/sign',
             if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() });
 
             const customer = await customerService.getCustomerById(req.params.id);
-            if (!customer) return res.status(404).json({ success: false, error: 'Klant niet gevonden.' });
+            if (!customer) return res.status(404).json({ success: false, error: 'Customer not found.' });
 
             const result = await customerService.signAgreement(req.params.id, req.body.signature);
 
@@ -132,7 +132,7 @@ router.post('/:id/agreement/sign',
                 action:     'CREATE',
                 resource:   'agreement',
                 resourceId: req.params.id,
-                details:    `Overeenkomst ondertekend: ${customer.name}`
+                details:    `Agreement signed: ${customer.name}`
             });
 
             res.json({ success: true, signedAt: result.signedAt });

@@ -68,6 +68,75 @@
 .logs-filter-date:focus    { border-color: var(--primary); }
 .logs-filter-date          { max-width: 140px; }
 
+.logs-delete-all-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(239,68,68,.35);
+    background: rgba(239,68,68,.07);
+    color: #dc2626;
+    font-size: 13px; font-weight: 500; font-family: inherit;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background .15s, border-color .15s;
+}
+.logs-delete-all-btn svg   { width: 14px; height: 14px; flex-shrink: 0; }
+.logs-delete-all-btn:hover { background: rgba(239,68,68,.14); border-color: rgba(239,68,68,.55); }
+
+.logs-confirm-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.45);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+    animation: logs-fade-in .15s ease;
+}
+@keyframes logs-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.logs-confirm-dialog {
+    background: var(--background);
+    border: 1px solid rgba(128,128,128,.2);
+    border-radius: 14px;
+    padding: 28px 28px 24px;
+    max-width: 380px; width: 90%;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 14px; text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,.18);
+    animation: logs-slide-up .18s ease;
+}
+@keyframes logs-slide-up { from { transform: translateY(12px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+.logs-confirm-icon { width: 40px; height: 40px; color: #dc2626; opacity: .85; }
+
+.logs-confirm-msg {
+    font-size: 14px; color: var(--text);
+    margin: 0; line-height: 1.5;
+}
+
+.logs-confirm-actions {
+    display: flex; gap: 10px; width: 100%; justify-content: center;
+}
+
+.logs-confirm-cancel {
+    flex: 1; padding: 9px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(128,128,128,.25);
+    background: none; color: var(--text);
+    font-size: 13px; font-weight: 500; font-family: inherit;
+    transition: background .15s;
+}
+.logs-confirm-cancel:hover { background: rgba(128,128,128,.07); }
+
+.logs-confirm-submit {
+    flex: 1; padding: 9px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(239,68,68,.4);
+    background: #dc2626; color: #fff;
+    font-size: 13px; font-weight: 600; font-family: inherit;
+    transition: background .15s, opacity .15s;
+}
+.logs-confirm-submit:hover:not(:disabled) { background: #b91c1c; }
+.logs-confirm-submit:disabled { opacity: .55; cursor: default; }
+
 .logs-clear-btn {
     width: 32px; height: 32px;
     border-radius: 8px;

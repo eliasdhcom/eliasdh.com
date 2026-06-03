@@ -44,11 +44,11 @@ router.post('/',
                 action:     'CREATE',
                 resource:   'pricing',
                 resourceId: plan.id,
-                details:    `Prijsplan aangemaakt: "${plan.name}" — €${plan.monthlyPrice}/maand`
+                details:    `Pricing plan created: "${plan.name}" — €${plan.monthlyPrice}/month`
             });
             res.status(201).json({ success: true, data: plan });
         } catch (err) {
-            if (err.message?.includes('UNIQUE')) return res.status(409).json({ success: false, error: 'Een plan met deze naam bestaat al.' });
+            if (err.message?.includes('UNIQUE')) return res.status(409).json({ success: false, error: 'A plan with this name already exists.' });
             next(err);
         }
     }
@@ -67,7 +67,7 @@ router.put('/:id',
                 action:     'UPDATE',
                 resource:   'pricing',
                 resourceId: req.params.id,
-                details:    `Prijsplan bijgewerkt: "${plan.name}" — €${plan.monthlyPrice}/maand`
+                details:    `Pricing plan updated: "${plan.name}" — €${plan.monthlyPrice}/month`
             });
             res.json({ success: true, data: plan });
         } catch (err) {
@@ -89,7 +89,7 @@ router.delete('/:id',
                 action:     'DELETE',
                 resource:   'pricing',
                 resourceId: req.params.id,
-                details:    `Prijsplan verwijderd (ID: ${req.params.id})`
+                details:    `Pricing plan deleted (ID: ${req.params.id})`
             });
             res.json({ success: true });
         } catch (err) {

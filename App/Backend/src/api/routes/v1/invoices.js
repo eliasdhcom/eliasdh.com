@@ -47,14 +47,14 @@ router.patch('/status',
             const period = new Date(periodStart);
             const periodLabel = isNaN(period.getTime())
                 ? periodStart
-                : period.toLocaleDateString('nl-BE', { month: 'long', year: 'numeric' });
+                : period.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 
             logsService.addLog({
                 ...logActor(req),
                 action:     'TOGGLE',
                 resource:   'invoice',
                 resourceId: `${customerId}/${subscriptionId}`,
-                details:    `Factuur ${paid ? 'betaald' : 'onbetaald'}: ${subscriptionId} (${invoiceType}, ${periodLabel})`
+                details:    `Invoice ${paid ? 'paid' : 'unpaid'}: ${subscriptionId} (${invoiceType}, ${periodLabel})`
             });
             res.json({ success: true });
         } catch (err) {

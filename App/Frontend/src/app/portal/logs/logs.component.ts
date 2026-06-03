@@ -22,10 +22,12 @@ const PAGE_SIZE = 50;
     styleUrls: ['./logs.component.css']
 })
 export class PortalLogsComponent implements OnInit, OnDestroy {
-    logs:    LogEntry[] = [];
-    total    = 0;
-    loading  = true;
-    error    = '';
+    logs:        LogEntry[] = [];
+    total        = 0;
+    loading      = true;
+    error        = '';
+    showConfirm  = false;
+    clearing     = false;
 
     filterSearch   = '';
 
@@ -71,7 +73,7 @@ export class PortalLogsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next:  r => { this.logs = r.data; this.total = r.total; this.loading = false; },
-                error: () => { this.error = 'Logs konden niet worden geladen.'; this.loading = false; }
+                error: () => { this.error = 'Failed to load logs.'; this.loading = false; }
             });
     }
 
@@ -90,6 +92,23 @@ export class PortalLogsComponent implements OnInit, OnDestroy {
             day: '2-digit', month: '2-digit', year: 'numeric',
             hour: '2-digit', minute: '2-digit', second: '2-digit'
         });
+    }
+
+    clearAll(): void {
+        this.clearing = true;
+        this.logsService.clearLogs()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.showConfirm = false;
+                    this.clearing    = false;
+                    this.currentPage = 1;
+                    this.load();
+                },
+                error: () => {
+                    this.clearing = false;
+                }
+            });
     }
 
     actionClass(action: string): string {

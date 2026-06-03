@@ -76,4 +76,8 @@ export class LogsService {
     logEvent(payload: LogEventPayload): Observable<{ success: boolean }> {
         return this.http.post<{ success: boolean }>(this.apiUrl, payload, { headers: this.getHeaders() });
     }
+
+    clearLogs(): Observable<{ success: boolean }> {
+        return this.http.delete<{ success: boolean }>(this.apiUrl, { headers: this.getHeaders() });
+    }
 }

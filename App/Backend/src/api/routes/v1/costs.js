@@ -19,8 +19,8 @@ const logActor = req => ({
     ipAddress: req.ip
 });
 
-const FREQ_LABELS = { monthly: 'maandelijks', quarterly: 'kwartaal', yearly: 'jaarlijks' };
-const TYPE_LABELS = { fixed: 'vast', variable: 'variabel' };
+const FREQ_LABELS = { monthly: 'monthly', quarterly: 'quarterly', yearly: 'yearly' };
+const TYPE_LABELS = { fixed: 'fixed', variable: 'variable' };
 
 router.get('/', async (req, res, next) => {
     try {
@@ -42,7 +42,7 @@ router.post('/', jwtAuth, async (req, res, next) => {
             action:     'CREATE',
             resource:   'cost',
             resourceId: cost.id,
-            details:    `Kost aangemaakt: "${cost.name}" — €${cost.amount}, ${freq}, ${type}`
+            details:    `Cost created: "${cost.name}" — €${cost.amount}, ${freq}, ${type}`
         });
         res.status(201).json({ success: true, data: cost });
     } catch (err) { next(err); }
@@ -61,14 +61,14 @@ router.put('/:id',
             const updated = await costsService.update(id, req.body);
 
             const changes = [];
-            if (old && old.name      !== updated.name)      changes.push(`naam: "${old.name}" → "${updated.name}"`);
-            if (old && old.amount    !== updated.amount)    changes.push(`bedrag: €${old.amount} → €${updated.amount}`);
-            if (old && old.frequency !== updated.frequency) changes.push(`frequentie: ${FREQ_LABELS[old.frequency] ?? old.frequency} → ${FREQ_LABELS[updated.frequency] ?? updated.frequency}`);
+            if (old && old.name      !== updated.name)      changes.push(`name: "${old.name}" → "${updated.name}"`);
+            if (old && old.amount    !== updated.amount)    changes.push(`amount: €${old.amount} → €${updated.amount}`);
+            if (old && old.frequency !== updated.frequency) changes.push(`frequency: ${FREQ_LABELS[old.frequency] ?? old.frequency} → ${FREQ_LABELS[updated.frequency] ?? updated.frequency}`);
             if (old && old.type      !== updated.type)      changes.push(`type: ${TYPE_LABELS[old.type] ?? old.type} → ${TYPE_LABELS[updated.type] ?? updated.type}`);
 
             const details = changes.length
-                ? `Kost bijgewerkt: "${updated.name}" | ${changes.join(', ')}`
-                : `Kost bijgewerkt: "${updated.name}"`;
+                ? `Cost updated: "${updated.name}" | ${changes.join(', ')}`
+                : `Cost updated: "${updated.name}"`;
 
             logsService.addLog({
                 ...logActor(req),
@@ -100,8 +100,8 @@ router.delete('/:id',
                 resource:   'cost',
                 resourceId: id,
                 details:    cost
-                    ? `Kost verwijderd: "${cost.name}" (${FREQ_LABELS[cost.frequency] ?? cost.frequency}, ${TYPE_LABELS[cost.type] ?? cost.type}, €${cost.amount})`
-                    : `Kost verwijderd (ID: ${id})`
+                    ? `Cost deleted: "${cost.name}" (${FREQ_LABELS[cost.frequency] ?? cost.frequency}, ${TYPE_LABELS[cost.type] ?? cost.type}, €${cost.amount})`
+                    : `Cost deleted (ID: ${id})`
             });
             res.json({ success: true });
         } catch (err) { next(err); }

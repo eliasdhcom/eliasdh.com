@@ -80,4 +80,9 @@ function mapLog(row) {
     };
 }
 
-module.exports = { addLog, getLogs };
+async function clearLogs() {
+    const db = getDb();
+    await db.execute({ sql: `DELETE FROM logs`, args: [] });
+}
+
+module.exports = { addLog, getLogs, clearLogs };

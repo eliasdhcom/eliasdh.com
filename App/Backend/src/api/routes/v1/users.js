@@ -35,10 +35,10 @@ router.get('/:id', async (req, res, next) => {
     try {
         const id = Number(req.params.id);
         if (!Number.isInteger(id) || id < 1) {
-            return res.status(400).json({ success: false, error: 'Ongeldig gebruikers-ID.' });
+            return res.status(400).json({ success: false, error: 'Invalid user ID.' });
         }
         const user = await usersService.getUserById(id);
-        if (!user) return res.status(404).json({ success: false, error: 'Gebruiker niet gevonden.' });
+        if (!user) return res.status(404).json({ success: false, error: 'User not found.' });
         res.json({ success: true, data: user });
     } catch (err) {
         next(err);
@@ -66,12 +66,12 @@ router.post('/',
                 action:     'CREATE',
                 resource:   'user',
                 resourceId: id,
-                details:    `Gebruiker aangemaakt: ${created?.email} (${created?.firstName} ${created?.lastName})`
+                details:    `User created: ${created?.email} (${created?.firstName} ${created?.lastName})`
             });
             res.status(201).json({ success: true, data: created });
         } catch (err) {
             if (err.message?.includes('UNIQUE')) {
-                return res.status(409).json({ success: false, error: 'Dit e-mailadres is al in gebruik.' });
+                return res.status(409).json({ success: false, error: 'This email address is already in use.' });
             }
             next(err);
         }
@@ -91,7 +91,7 @@ router.patch('/:id/active',
                 action:     'TOGGLE',
                 resource:   'user',
                 resourceId: req.params.id,
-                details:    `Gebruiker ${req.body.active ? 'geactiveerd' : 'gedeactiveerd'} (ID: ${req.params.id})`
+                details:    `User ${req.body.active ? 'activated' : 'deactivated'} (ID: ${req.params.id})`
             });
             res.json({ success: true });
         } catch (err) {
@@ -119,8 +119,8 @@ router.patch('/:id',
             await usersService.updateUser(Number(req.params.id), req.body);
 
             const fieldLabels = {
-                firstName: 'voornaam', lastName: 'achternaam', email: 'e-mail',
-                role: 'rol', company: 'bedrijf', phone: 'telefoon', birthDate: 'geboortedatum', avatar: 'avatar'
+                firstName: 'first name', lastName: 'last name', email: 'email',
+                role: 'role', company: 'company', phone: 'phone', birthDate: 'birth date', avatar: 'avatar'
             };
             const changed = Object.keys(req.body)
                 .map(k => fieldLabels[k] ?? k)
@@ -131,7 +131,7 @@ router.patch('/:id',
                 action:     'UPDATE',
                 resource:   'user',
                 resourceId: req.params.id,
-                details:    `Gebruiker bijgewerkt (ID: ${req.params.id}): ${changed || 'geen velden'}`
+                details:    `User updated (ID: ${req.params.id}): ${changed || 'no fields'}`
             });
             res.json({ success: true });
         } catch (err) {
@@ -153,7 +153,7 @@ router.delete('/:id',
                 action:     'DELETE',
                 resource:   'user',
                 resourceId: req.params.id,
-                details:    `Gebruiker verwijderd: ${user?.email ?? ''} (ID: ${req.params.id})`
+                details:    `User deleted: ${user?.email ?? ''} (ID: ${req.params.id})`
             });
             res.json({ success: true });
         } catch (err) {

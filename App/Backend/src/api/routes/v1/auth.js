@@ -19,7 +19,7 @@ router.post('/login',
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400).json({ success: false, error: 'Ongeldige invoer.' });
+                return res.status(400).json({ success: false, error: 'Invalid input.' });
             }
 
             const result = await authService.login(req.body.email, req.body.password);
@@ -28,13 +28,13 @@ router.post('/login',
                     userEmail: req.body.email,
                     action:    'LOGIN',
                     resource:  'auth',
-                    details:   'Mislukte aanmeldpoging',
+                    details:   'Failed login attempt',
                     ipAddress: req.ip
                 });
-                return res.status(401).json({ success: false, error: 'Ongeldig e-mailadres of wachtwoord.' });
+                return res.status(401).json({ success: false, error: 'Invalid email address or password.' });
             }
             if (result.blocked) {
-                return res.status(403).json({ success: false, error: 'Uw account is gedeactiveerd. Neem contact op met de beheerder.' });
+                return res.status(403).json({ success: false, error: 'Your account is deactivated. Please contact the administrator.' });
             }
 
             logsService.addLog({
@@ -43,7 +43,7 @@ router.post('/login',
                 userName:  `${result.user.firstName ?? ''} ${result.user.lastName ?? ''}`.trim(),
                 action:    'LOGIN',
                 resource:  'auth',
-                details:   'Succesvol aangemeld',
+                details:   'Successfully logged in',
                 ipAddress: req.ip
             });
             res.json({ success: true, token: result.token, data: result.user });
@@ -61,7 +61,7 @@ router.post('/logout', jwtAuth, async (req, res, next) => {
             userName:  `${req.user?.firstName ?? ''} ${req.user?.lastName ?? ''}`.trim(),
             action:    'LOGOUT',
             resource:  'auth',
-            details:   'Afgemeld',
+            details:   'Logged out',
             ipAddress: req.ip
         });
         res.json({ success: true });
@@ -75,13 +75,13 @@ router.post('/forgot-password',
     async (req, res, next) => {
         try {
             if (!validationResult(req).isEmpty())
-                return res.status(400).json({ success: false, error: 'Ongeldig e-mailadres.' });
+                return res.status(400).json({ success: false, error: 'Invalid email address.' });
             await authService.forgotPassword(req.body.email);
             logsService.addLog({
                 userEmail: req.body.email,
                 action:    'PASSWORD_RESET',
                 resource:  'auth',
-                details:   'Wachtwoord reset aangevraagd',
+                details:   'Password reset requested',
                 ipAddress: req.ip
             });
             res.json({ success: true });
@@ -95,9 +95,9 @@ router.post('/verify-reset-code',
     async (req, res, next) => {
         try {
             if (!validationResult(req).isEmpty())
-                return res.status(400).json({ success: false, error: 'Ongeldige invoer.' });
+                return res.status(400).json({ success: false, error: 'Invalid input.' });
             const valid = await authService.verifyResetCode(req.body.email, req.body.code);
-            if (!valid) return res.status(400).json({ success: false, error: 'Ongeldige of verlopen code.' });
+            if (!valid) return res.status(400).json({ success: false, error: 'Invalid or expired code.' });
             res.json({ success: true });
         } catch (err) { next(err); }
     }
@@ -110,14 +110,14 @@ router.post('/reset-password',
     async (req, res, next) => {
         try {
             if (!validationResult(req).isEmpty())
-                return res.status(400).json({ success: false, error: 'Ongeldige invoer.' });
+                return res.status(400).json({ success: false, error: 'Invalid input.' });
             const ok = await authService.resetPassword(req.body.email, req.body.code, req.body.password);
-            if (!ok) return res.status(400).json({ success: false, error: 'Ongeldige of verlopen code.' });
+            if (!ok) return res.status(400).json({ success: false, error: 'Invalid or expired code.' });
             logsService.addLog({
                 userEmail: req.body.email,
                 action:    'PASSWORD_RESET',
                 resource:  'auth',
-                details:   'Wachtwoord succesvol gereset',
+                details:   'Password successfully reset',
                 ipAddress: req.ip
             });
             res.json({ success: true });
