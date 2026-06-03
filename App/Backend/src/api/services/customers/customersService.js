@@ -10,8 +10,6 @@ const invoicesService  = require('../invoices/invoicesService');
 
 const VAT_RATE = 0.21;
 
-// ── Billing helpers for invoice snapshotting ─────────────────────────────────
-
 function getBillingPeriods(startDateStr, frequency, endDate) {
     const periods = [];
     const startDate = new Date(startDateStr);
@@ -72,10 +70,8 @@ async function snapshotWebsiteHistory(customerId, websiteRow) {
     await invoicesService.snapshotPastPeriods(snapshots);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-
 function formatAddress(loc) {
-    return `${loc.street} ${loc.number}, ${loc.postal_code} ${loc.city}, ${loc.country}`;
+    return `${loc.street} ${loc.number}, ${loc.postalCode ?? loc.postal_code} ${loc.city}, ${loc.country}`;
 }
 
 function inClause(n) {
@@ -369,7 +365,6 @@ class CustomersService {
             await insertLocations(db, id, data.locations);
         }
         if (data.websites !== undefined) {
-            // Fetch current websites to snapshot billing history before changes take effect
             const { rows: currentRows } = await db.execute({
                 sql: 'SELECT * FROM websites WHERE customer_id = ? ORDER BY id', args: [id]
             });
@@ -387,8 +382,6 @@ class CustomersService {
 
                 if (billingChanged) {
                     await snapshotWebsiteHistory(id, oldW);
-                    // If frequency changed, reset startDate to first day of current month
-                    // so new billing structure doesn't overlap with historical snapshots
                     if (oldW.frequency !== (newW.frequency ?? oldW.frequency)) {
                         const now = new Date();
                         newW.startDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
@@ -398,14 +391,12 @@ class CustomersService {
 
             await db.execute({ sql: 'DELETE FROM websites WHERE customer_id = ?', args: [id] });
             await insertWebsites(db, id, data.websites);
-            // Reset agreement — subscription changed
             await db.execute({ sql: `UPDATE customers SET agreement_signed_at = NULL, agreement_signature = NULL WHERE id = ?`, args: [id] });
             logger.info(`Agreement reset for customer ${id}: subscription changed`);
         }
         if (data.domains !== undefined) {
             await db.execute({ sql: 'DELETE FROM domain_names WHERE customer_id = ?', args: [id] });
             await insertDomains(db, id, data.domains);
-            // Reset agreement — domain changed
             await db.execute({ sql: `UPDATE customers SET agreement_signed_at = NULL, agreement_signature = NULL WHERE id = ?`, args: [id] });
             logger.info(`Agreement reset for customer ${id}: domain changed`);
         }
