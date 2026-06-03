@@ -705,14 +705,6 @@
             </div>
             <h3>{{'PORTAL.CUSTOMERS.AGREEMENT.SUCCESS_TITLE'|translate}}</h3>
             <p>{{'PORTAL.CUSTOMERS.AGREEMENT.SUCCESS_MSG'|translate}}<span *ngIf="agreementCustomer.email"> {{'PORTAL.CUSTOMERS.AGREEMENT.SUCCESS_EMAIL'|translate}} <strong>{{agreementCustomer.email}}</strong></span>.</p>
-            <button class="customers-agr-download-btn cursor-pointer" (click)="downloadAgreementPdf()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px" aria-hidden="true">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                    <polyline points="7 10 12 15 17 10"/>
-                    <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                Download PDF
-            </button>
         </div>
         <div class="customers-modal-footer">
             <div class="customers-discard-confirm" *ngIf="agreementShowDiscard">

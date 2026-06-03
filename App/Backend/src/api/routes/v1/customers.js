@@ -111,6 +111,7 @@ router.post('/:id/agreement/sign',
     jwtAuth,
     param('id').notEmpty(),
     body('pdfBase64').notEmpty().isString(),
+    body('signature').notEmpty().isString(),
     async (req, res, next) => {
         try {
             const errors = validationResult(req);
@@ -119,7 +120,7 @@ router.post('/:id/agreement/sign',
             const customer = await customerService.getCustomerById(req.params.id);
             if (!customer) return res.status(404).json({ success: false, error: 'Klant niet gevonden.' });
 
-            const result = await customerService.signAgreement(req.params.id);
+            const result = await customerService.signAgreement(req.params.id, req.body.signature);
 
             if (customer.email) {
                 const contactName = `${customer.firstName ?? ''} ${customer.lastName ?? ''}`.trim();

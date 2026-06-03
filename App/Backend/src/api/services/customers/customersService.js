@@ -165,7 +165,8 @@ function buildCustomer(row, locations, websites, domains) {
         locations,
         websites,
         domains,
-        agreementSignedAt:  row.agreement_signed_at ?? null
+        agreementSignedAt:  row.agreement_signed_at  ?? null,
+        agreementSignature: row.agreement_signature  ?? null
     };
 }
 
@@ -398,14 +399,14 @@ class CustomersService {
             await db.execute({ sql: 'DELETE FROM websites WHERE customer_id = ?', args: [id] });
             await insertWebsites(db, id, data.websites);
             // Reset agreement — subscription changed
-            await db.execute({ sql: `UPDATE customers SET agreement_signed_at = NULL WHERE id = ?`, args: [id] });
+            await db.execute({ sql: `UPDATE customers SET agreement_signed_at = NULL, agreement_signature = NULL WHERE id = ?`, args: [id] });
             logger.info(`Agreement reset for customer ${id}: subscription changed`);
         }
         if (data.domains !== undefined) {
             await db.execute({ sql: 'DELETE FROM domain_names WHERE customer_id = ?', args: [id] });
             await insertDomains(db, id, data.domains);
             // Reset agreement — domain changed
-            await db.execute({ sql: `UPDATE customers SET agreement_signed_at = NULL WHERE id = ?`, args: [id] });
+            await db.execute({ sql: `UPDATE customers SET agreement_signed_at = NULL, agreement_signature = NULL WHERE id = ?`, args: [id] });
             logger.info(`Agreement reset for customer ${id}: domain changed`);
         }
         logger.info(`Customer updated: ${id}`);
@@ -417,12 +418,12 @@ class CustomersService {
         logger.info(`Customer deleted: ${id}`);
     }
 
-    async signAgreement(id) {
+    async signAgreement(id, signature) {
         const db = getDb();
         const signedAt = new Date().toISOString();
         await db.execute({
-            sql:  `UPDATE customers SET agreement_signed_at = ? WHERE id = ?`,
-            args: [signedAt, id]
+            sql:  `UPDATE customers SET agreement_signed_at = ?, agreement_signature = ? WHERE id = ?`,
+            args: [signedAt, signature ?? null, id]
         });
         logger.info(`Agreement signed for customer: ${id}`);
         return { signedAt };

@@ -567,18 +567,21 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         event.stopPropagation();
         if (!customer.agreementSignedAt) return;
         try {
-            const name     = customer.name.replace(/[^a-zA-Z0-9]/g, '_');
-            const filename = `customer_agreement-EliasDH-${name}.pdf`;
-            const pdfBase64 = await this.buildAgreementPdf(customer, '');
-            const bytes    = atob(pdfBase64);
-            const arr      = new Uint8Array(bytes.length);
+            const name      = customer.name.replace(/[^a-zA-Z0-9]/g, '_');
+            const filename  = `customer_agreement-EliasDH-${name}.pdf`;
+            const signingDate = new Date(customer.agreementSignedAt);
+            const pdfBase64 = await this.buildAgreementPdf(customer, customer.agreementSignature ?? '', signingDate);
+            const bytes     = atob(pdfBase64);
+            const arr       = new Uint8Array(bytes.length);
             for (let i = 0; i < bytes.length; i++) arr[i] = bytes.charCodeAt(i);
             const blob = new Blob([arr], { type: 'application/pdf' });
             const url  = URL.createObjectURL(blob);
             const a    = document.createElement('a');
             a.href     = url;
             a.download = filename;
+            document.body.appendChild(a);
             a.click();
+            document.body.removeChild(a);
             URL.revokeObjectURL(url);
         } catch (e) {
             console.error('Failed to download agreement:', e);
@@ -691,12 +694,12 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
             const signatureDataUrl = this.sigCanvas!.toDataURL('image/png');
             const pdfBase64 = await this.buildAgreementPdf(this.agreementCustomer, signatureDataUrl);
             this.agreementPdf = pdfBase64;
-            this.customersService.signAgreement(this.agreementCustomer.id, pdfBase64)
+            this.customersService.signAgreement(this.agreementCustomer.id, pdfBase64, signatureDataUrl)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: (r) => {
                         const idx = this.customers.findIndex(c => c.id === this.agreementCustomer!.id);
-                        if (idx !== -1) this.customers[idx] = { ...this.customers[idx], agreementSignedAt: r.signedAt };
+                        if (idx !== -1) this.customers[idx] = { ...this.customers[idx], agreementSignedAt: r.signedAt, agreementSignature: signatureDataUrl };
                         this.agreementSigning = false;
                         this.agreementSuccess = true;
                     },
@@ -711,13 +714,19 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         }
     }
 
-    private async buildAgreementPdf(c: Customer, signatureDataUrl: string): Promise<string> {
-        // Switch to English so all translate.instant() calls return English strings
-        await new Promise<void>(resolve => {
-            this.translate.use('en').subscribe({ complete: () => resolve(), error: () => resolve() });
-        });
-        const p$ = 'PORTAL.CUSTOMERS.AGREEMENT.';
-        const t  = (key: string, params?: object) => this.translate.instant(p$ + key, params);
+    private async buildAgreementPdf(c: Customer, signatureDataUrl: string, dateOverride?: Date): Promise<string> {
+        let enTr: any = {};
+        try {
+            const resp = await fetch('assets/i18n/en.json');
+            if (resp.ok) enTr = await resp.json();
+        } catch { }
+        const t = (key: string, params?: Record<string, string>): string => {
+            let val: any = enTr;
+            for (const seg of ['PORTAL', 'CUSTOMERS', 'AGREEMENT', key]) val = val?.[seg];
+            if (typeof val !== 'string') return key;
+            if (params) return Object.entries(params).reduce((s, [k, v]) => s.replace(new RegExp(`{{${k}}}`, 'g'), v), val);
+            return val;
+        };
 
         const { jsPDF } = await import('jspdf');
         const doc     = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
@@ -726,7 +735,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         const CW      = W - M * 2;
         const P: [number, number, number] = [79, 148, 240];
         const fd      = (d: Date) => d.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        const today   = fd(new Date());
+        const today   = fd(dateOverride ?? new Date());
         const contact = `${c.firstName ?? ''} ${c.lastName ?? ''}`.trim();
 
         let logoBase64: string | null = null;
@@ -843,14 +852,24 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         doc.text(declLines, M, y); y += declLines.length * 3.8 + 6;
 
         const sigColW = CW / 2 - 5;
+        const sigX = M + sigColW + 10;
         doc.setFontSize(7.5); doc.setFont('helvetica', 'bold'); doc.setTextColor(130, 130, 130);
-        doc.text('NAME & TITLE', M, y); doc.text('SIGNATURE', M + sigColW + 10, y); y += 5;
+        doc.text('NAME & TITLE', M, y); doc.text('SIGNATURE', sigX, y); y += 5;
         doc.setFontSize(9); doc.setFont('helvetica', 'normal'); doc.setTextColor(20, 20, 20);
         doc.text(contact || c.name, M, y);
         doc.setFontSize(8); doc.setTextColor(100, 100, 100);
         doc.text(`Date: ${today}`, M, y + 5);
         if (signatureDataUrl && signatureDataUrl.length > 0) {
-            doc.addImage(signatureDataUrl, 'PNG', M + sigColW + 10, y - 3, sigColW, 22);
+            doc.addImage(signatureDataUrl, 'PNG', sigX, y - 3, sigColW, 22);
+        } else {
+            doc.setFillColor(240, 247, 255);
+            doc.roundedRect(sigX, y - 4, sigColW, 18, 2, 2, 'F');
+            doc.setDrawColor(79, 148, 240);
+            doc.roundedRect(sigX, y - 4, sigColW, 18, 2, 2, 'S');
+            doc.setFontSize(9); doc.setFont('helvetica', 'bold'); doc.setTextColor(79, 148, 240);
+            doc.text('Electronically signed', sigX + sigColW / 2, y + 3.5, { align: 'center' });
+            doc.setFontSize(7.5); doc.setFont('helvetica', 'normal'); doc.setTextColor(100, 140, 200);
+            doc.text(today, sigX + sigColW / 2, y + 9, { align: 'center' });
         }
 
         const totalPages = (doc as any).internal.getNumberOfPages();
@@ -861,8 +880,6 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
             doc.text('EliasDH BV  ·  VAT: BE1034925266  ·  info@eliasdh.com  ·  eliasdh.com', M, 291);
             doc.text(`Page ${pg} / ${totalPages}`, W - M, 291, { align: 'right' });
         }
-
-        this.translate.use(this.agreementLang);
 
         const ab = doc.output('arraybuffer');
         const bytes = new Uint8Array(ab);
