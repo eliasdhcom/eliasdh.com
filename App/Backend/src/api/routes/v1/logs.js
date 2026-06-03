@@ -35,6 +35,15 @@ router.delete('/', async (req, res, next) => {
             return res.status(403).json({ success: false, error: 'Access denied.' });
         }
         await logsService.clearLogs();
+        await logsService.addLog({
+            userId:    req.user?.id,
+            userEmail: req.user?.email,
+            userName:  `${req.user?.firstName ?? ''} ${req.user?.lastName ?? ''}`.trim(),
+            action:    'DELETE',
+            resource:  'logs',
+            details:   'All logs cleared',
+            ipAddress: req.ip
+        });
         logger.info(`[logs] All logs cleared by ${req.user?.email}`);
         res.json({ success: true });
     } catch (err) {
@@ -42,7 +51,6 @@ router.delete('/', async (req, res, next) => {
     }
 });
 
-// Endpoint for client-side actions (PDF downloads, vCard downloads, logout, etc.)
 router.post('/',
     body('action').notEmpty().isString().isIn(ALLOWED_CLIENT_ACTIONS),
     body('resource').optional({ nullable: true }).isString(),

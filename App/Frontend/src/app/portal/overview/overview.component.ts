@@ -135,7 +135,7 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
                 const isFree = this.isFreeOrTodo(website.subscriptionType);
                 if (website.payment > 0 && !isFree) {
                     const subtotal = Math.max(0, website.payment - website.discount);
-                    mrrTotal += subtotal * (1 + VAT_RATE);
+                    mrrTotal += subtotal;
                 }
             }
         }
