@@ -8,19 +8,22 @@ const webPush = require('web-push');
 const { getDb } = require('../../../database/db');
 const logger   = require('../../../utils/logger');
 
-webPush.setVapidDetails(
-    process.env.VAPID_SUBJECT  || 'mailto:info@eliasdh.com',
-    process.env.VAPID_PUBLIC_KEY,
-    process.env.VAPID_PRIVATE_KEY
-);
+const vapidReady = !!(process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY);
+if (vapidReady) {
+    webPush.setVapidDetails(
+        process.env.VAPID_SUBJECT || 'mailto:info@eliasdh.com',
+        process.env.VAPID_PUBLIC_KEY,
+        process.env.VAPID_PRIVATE_KEY
+    );
+} else {
+    logger.warn('VAPID keys not set — push notifications disabled.');
+}
 
 async function saveSubscription(userId, subscription) {
     const db = getDb();
     const { endpoint, keys: { p256dh, auth } } = subscription;
     await db.execute({
-        sql: `INSERT INTO push_subscriptions (user_id, endpoint, p256dh, auth)
-              VALUES (?, ?, ?, ?)
-              ON CONFLICT(endpoint) DO UPDATE SET user_id=excluded.user_id, p256dh=excluded.p256dh, auth=excluded.auth`,
+        sql: `INSERT INTO push_subscriptions (user_id, endpoint, p256dh, auth) VALUES (?, ?, ?, ?) ON CONFLICT(endpoint) DO UPDATE SET user_id=excluded.user_id, p256dh=excluded.p256dh, auth=excluded.auth`,
         args: [userId, endpoint, p256dh, auth]
     });
 }
@@ -31,12 +34,10 @@ async function removeSubscription(endpoint) {
 }
 
 async function sendToAdmins(payload) {
+    if (!vapidReady) return;
     const db = getDb();
     const { rows } = await db.execute({
-        sql: `SELECT ps.endpoint, ps.p256dh, ps.auth
-              FROM push_subscriptions ps
-              JOIN users u ON u.id = ps.user_id
-              WHERE u.role = 'admin' AND u.active = 1`,
+        sql: `SELECT ps.endpoint, ps.p256dh, ps.auth FROM push_subscriptions ps JOIN users u ON u.id = ps.user_id WHERE u.role = 'admin' AND u.active = 1`,
         args: []
     });
     const message = JSON.stringify(payload);
