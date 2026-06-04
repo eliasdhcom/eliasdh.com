@@ -44,7 +44,7 @@ async function sendToAdmins(payload) {
     if (!vapidReady) { logger.warn('Push: sendToAdmins called but VAPID not ready.'); return; }
     const db = getDb();
     const { rows } = await db.execute({
-        sql: `SELECT ps.endpoint, ps.p256dh, ps.auth FROM push_subscriptions ps JOIN users u ON u.id = ps.user_id WHERE u.role = 'admin' AND u.active = 1`,
+        sql: `SELECT ps.endpoint, ps.p256dh, ps.auth FROM push_subscriptions ps JOIN users u ON u.id = ps.user_id WHERE LOWER(u.role) = 'admin' AND u.active = 1`,
         args: []
     });
     logger.info(`Push: sendToAdmins — ${rows.length} subscription(s) found.`);
