@@ -146,7 +146,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     logout(): void {
-        this.authService.logout();
+        this.pushService.unsubscribe().finally(() => this.authService.logout());
     }
 
     getUserInitials(): string {

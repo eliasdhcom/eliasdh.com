@@ -47,6 +47,26 @@ export class PushService {
         } catch { }
     }
 
+    async unsubscribe(): Promise<void> {
+        if (!('serviceWorker' in navigator)) return;
+        try {
+            const reg = await navigator.serviceWorker.getRegistration('/sw.js');
+            if (!reg) return;
+            const sub = await reg.pushManager.getSubscription();
+            if (!sub) return;
+            const token = this.authService.getToken();
+            const headers = new HttpHeaders({
+                'Content-Type': 'application/json',
+                'x-api-key': environment.eliasdhApiKey,
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+            });
+            await this.http.delete(`${this.apiUrl}/subscribe`, {
+                headers,
+                body: { endpoint: sub.endpoint }
+            }).toPromise().catch(() => {});
+        } catch { }
+    }
+
     private urlBase64ToUint8Array(base64String: string): Uint8Array<ArrayBuffer> {
         const padding = '='.repeat((4 - base64String.length % 4) % 4);
         const base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
