@@ -24,9 +24,6 @@ export class PushService {
                 new Promise<never>((_, reject) => setTimeout(() => reject(new Error('SW not ready')), 8000))
             ]);
 
-            const existing = await reg.pushManager.getSubscription();
-            if (existing) return;
-
             const keyRes = await fetch(`${this.apiUrl}/vapid-public-key`, {
                 headers: { 'x-api-key': environment.eliasdhApiKey }
             });
@@ -34,7 +31,7 @@ export class PushService {
             const { key } = await keyRes.json();
             if (!key) return;
 
-            const sub = await reg.pushManager.subscribe({
+            const sub = (await reg.pushManager.getSubscription()) ?? await reg.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey: this.urlBase64ToUint8Array(key)
             });
