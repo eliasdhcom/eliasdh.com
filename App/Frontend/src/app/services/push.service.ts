@@ -12,25 +12,33 @@ import { AuthService } from './auth.service';
 @Injectable({ providedIn: 'root' })
 export class PushService {
     private readonly apiUrl = `${environment.eliasdhApiUrl}/api/v1/push`;
-    private swReg: ServiceWorkerRegistration | null = null;
-
     constructor(private http: HttpClient, private authService: AuthService) {}
 
     async subscribe(): Promise<void> {
         if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
         if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
         try {
-            if (!this.swReg) {
-                this.swReg = await navigator.serviceWorker.ready;
-            }
+            await navigator.serviceWorker.register('/sw.js');
+            const reg = await Promise.race([
+                navigator.serviceWorker.ready,
+                new Promise<never>((_, reject) => setTimeout(() => reject(new Error('SW not ready')), 8000))
+            ]);
+
+            const existing = await reg.pushManager.getSubscription();
+            if (existing) return;
+
             const keyRes = await fetch(`${this.apiUrl}/vapid-public-key`, {
                 headers: { 'x-api-key': environment.eliasdhApiKey }
             });
+            if (!keyRes.ok) return;
             const { key } = await keyRes.json();
-            const sub = await this.swReg.pushManager.subscribe({
+            if (!key) return;
+
+            const sub = await reg.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey: this.urlBase64ToUint8Array(key)
             });
+
             const token = this.authService.getToken();
             const headers = new HttpHeaders({
                 'Content-Type': 'application/json',
