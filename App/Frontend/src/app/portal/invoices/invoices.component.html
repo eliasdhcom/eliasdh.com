@@ -1,4 +1,24 @@
 <!--Author EliasDH Team-->
+<div class="invoices-confirm-overlay" *ngIf="paidConfirmId" (click)="cancelPaidConfirm()">
+    <div class="invoices-confirm-modal" (click)="$event.stopPropagation()">
+        <div class="invoices-confirm-header" [class.invoices-confirm-header--paid]="!paidConfirmCurrentState" [class.invoices-confirm-header--unpaid]="paidConfirmCurrentState">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline *ngIf="!paidConfirmCurrentState" points="20 6 9 17 4 12"/>
+                <ng-container *ngIf="paidConfirmCurrentState">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                </ng-container>
+            </svg>
+            {{(paidConfirmCurrentState ? 'PORTAL.INVOICES.CONFIRM_TITLE_UNPAID' : 'PORTAL.INVOICES.CONFIRM_TITLE_PAID') | translate}}
+        </div>
+        <p class="invoices-confirm-body">
+            {{(paidConfirmCurrentState ? 'PORTAL.INVOICES.CONFIRM_BODY_UNPAID' : 'PORTAL.INVOICES.CONFIRM_BODY_PAID') | translate}}
+        </p>
+        <div class="invoices-confirm-actions">
+            <button class="invoices-confirm-btn invoices-confirm-btn--cancel cursor-pointer" (click)="cancelPaidConfirm()">{{'PORTAL.COMMON.CANCEL'|translate}}</button>
+            <button class="invoices-confirm-btn cursor-pointer" [class.invoices-confirm-btn--paid]="!paidConfirmCurrentState" [class.invoices-confirm-btn--unpaid]="paidConfirmCurrentState" (click)="confirmTogglePaid()">{{'PORTAL.INVOICES.CONFIRM_BTN'|translate}}</button>
+        </div>
+    </div>
+</div>
 <div class="invoices-container">
     <div class="invoices-top-bar">
         <div class="invoices-filter-rows">
@@ -111,7 +131,7 @@
                         </div>
                     </div>
                     <div class="invoices-btn-col">
-                        <button class="invoices-paid-btn cursor-pointer" [class.invoices-paid-btn--paid]="inv.paid" (click)="togglePaid(inv.id)" [title]="inv.paid ? ('PORTAL.INVOICES.MARK_UNPAID'|translate) : ('PORTAL.INVOICES.MARK_PAID'|translate)">
+                        <button class="invoices-paid-btn cursor-pointer" [class.invoices-paid-btn--paid]="inv.paid" (click)="requestTogglePaid(inv.id)" [title]="inv.paid ? ('PORTAL.INVOICES.MARK_UNPAID'|translate) : ('PORTAL.INVOICES.MARK_PAID'|translate)">
                             <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <polyline class="cursor-pointer" *ngIf="inv.paid" points="20 6 9 17 4 12"/>
                                 <circle class="cursor-pointer" *ngIf="!inv.paid" cx="12" cy="12" r="10"/>

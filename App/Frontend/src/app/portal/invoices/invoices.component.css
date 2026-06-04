@@ -528,6 +528,107 @@
     animation: invoices-spin 0.8s linear infinite;
     transform-origin: center;
 }
+
+.invoices-confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    animation: invoices-confirm-fade 0.15s ease-out;
+}
+
+@keyframes invoices-confirm-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.invoices-confirm-modal {
+    background: var(--background);
+    border-radius: 14px;
+    border: 1px solid rgba(128, 128, 128, 0.15);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+    width: 100%;
+    max-width: 400px;
+    padding: 22px 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    animation: invoices-confirm-in 0.18s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+@keyframes invoices-confirm-in {
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.invoices-confirm-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.invoices-confirm-header svg { width: 17px; height: 17px; flex-shrink: 0; }
+
+.invoices-confirm-header--paid  { color: #059669; }
+.invoices-confirm-header--unpaid { color: #d97706; }
+
+.invoices-confirm-body {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.55;
+    margin: 0;
+}
+
+.invoices-confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.invoices-confirm-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    transition: opacity 0.15s, background 0.15s;
+}
+
+.invoices-confirm-btn--cancel {
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    background: none;
+    color: var(--secondary);
+}
+
+.invoices-confirm-btn--cancel:hover { background: rgba(128, 128, 128, 0.07); color: var(--text); }
+
+.invoices-confirm-btn--paid {
+    border: 1px solid #059669;
+    background: #059669;
+    color: #fff;
+}
+
+.invoices-confirm-btn--paid:hover { opacity: 0.88; }
+
+.invoices-confirm-btn--unpaid {
+    border: 1px solid #d97706;
+    background: #d97706;
+    color: #fff;
+}
+
+.invoices-confirm-btn--unpaid:hover { opacity: 0.88; }
 /* Invoices */
 
 /* Media Queries */

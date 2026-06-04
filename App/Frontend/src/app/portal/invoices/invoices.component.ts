@@ -69,6 +69,8 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
     availableYears: number[] = [];
     generatingPdfId: string | null = null;
     failedGroupLogos = new Set<string>();
+    paidConfirmId: string | null = null;
+    paidConfirmCurrentState = false;
     private destroy$ = new Subject<void>();
 
     constructor(
@@ -494,6 +496,24 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
 
     formatCurrency(amount: number): string {
         return new Intl.NumberFormat('nl-BE', { style: 'currency', currency: 'EUR' }).format(amount);
+    }
+
+    requestTogglePaid(id: string): void {
+        const inv = this.invoices.find(i => i.id === id);
+        if (!inv) return;
+        this.paidConfirmCurrentState = inv.paid;
+        this.paidConfirmId = id;
+    }
+
+    cancelPaidConfirm(): void {
+        this.paidConfirmId = null;
+    }
+
+    confirmTogglePaid(): void {
+        if (!this.paidConfirmId) return;
+        const id = this.paidConfirmId;
+        this.paidConfirmId = null;
+        this.togglePaid(id);
     }
 
     togglePaid(id: string): void {
