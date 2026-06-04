@@ -9,6 +9,7 @@ const { body, validationResult } = require('express-validator');
 const invoicesService  = require('../../services/invoices/invoicesService');
 const { jwtAuth }      = require('../../../middleware/jwtAuth');
 const logsService      = require('../../services/logs/logsService');
+const pushService      = require('../../services/push/pushService');
 
 const router = express.Router();
 
@@ -56,6 +57,16 @@ router.patch('/status',
                 resourceId: `${customerId}/${subscriptionId}`,
                 details:    `Invoice ${paid ? 'paid' : 'unpaid'}: ${subscriptionId} (${invoiceType}, ${periodLabel})`
             });
+
+            if (paid) {
+                const amount = req.body.amount ?? null;
+                pushService.sendToAdmins({
+                    title: 'EliasDH Portal — Invoice paid',
+                    body:  `Invoice for ${subscriptionId}${amount != null ? ` (€${Number(amount).toFixed(2)})` : ''} has been marked as paid.`,
+                    url:   '/dashboard'
+                }).catch(() => {});
+            }
+
             res.json({ success: true });
         } catch (err) {
             next(err);

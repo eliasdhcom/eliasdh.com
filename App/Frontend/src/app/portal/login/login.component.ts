@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { SharedModule } from '../../shared/shared.module';
 import { AuthService } from '../../services/auth.service';
+import { PushService } from '../../services/push.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -36,6 +37,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     resetSuccess = false;
     private destroy$ = new Subject<void>();
 
+    notifPermission: string = 'default';
+    isAndroid = false;
+    pwaPrompt: any = null;
+    private readonly onPwaPrompt = (e: Event) => { e.preventDefault(); this.pwaPrompt = e; };
+
     passwordMinLength = 8;
     passwordHasUppercase = false;
     passwordHasLowercase = false;
@@ -46,6 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         private fb: FormBuilder,
         private translateService: TranslateService,
         private authService: AuthService,
+        private pushService: PushService,
         private router: Router
     ) {
         this.loginForm = this.fb.group({
@@ -86,11 +93,19 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.translateService.get('LOGIN.TRANSLATE1').pipe(takeUntil(this.destroy$)).subscribe();
+        if (typeof Notification === 'undefined') {
+            this.notifPermission = 'granted';
+        } else {
+            this.notifPermission = Notification.permission;
+        }
+        this.isAndroid = /Android/i.test(navigator.userAgent);
+        window.addEventListener('beforeinstallprompt', this.onPwaPrompt);
     }
 
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+        window.removeEventListener('beforeinstallprompt', this.onPwaPrompt);
     }
 
     toggleForgotPassword(): void {
@@ -113,9 +128,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         return pw && cpw && pw !== cpw ? { passwordsMismatch: true } : null;
     }
 
-    get codeControl()            { return this.codeForm.get('code'); }
-    get newPasswordControl()     { return this.newPasswordForm.get('password'); }
-    get confirmPasswordControl() { return this.newPasswordForm.get('confirmPassword'); }
+    get codeControl():            AbstractControl { return this.codeForm.get('code')!; }
+    get newPasswordControl():     AbstractControl { return this.newPasswordForm.get('password')!; }
+    get confirmPasswordControl(): AbstractControl { return this.newPasswordForm.get('confirmPassword')!; }
 
     validatePassword(password: string): void {
         this.passwordHasUppercase = /[A-Z]/.test(password);
@@ -124,16 +139,16 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.passwordHasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
     }
 
-    get passwordControl() {
-        return this.loginForm.get('password');
+    get passwordControl(): AbstractControl {
+        return this.loginForm.get('password')!;
     }
 
-    get emailControl() {
-        return this.loginForm.get('email');
+    get emailControl(): AbstractControl {
+        return this.loginForm.get('email')!;
     }
 
-    get forgotEmailControl() {
-        return this.forgotPasswordForm.get('email');
+    get forgotEmailControl(): AbstractControl {
+        return this.forgotPasswordForm.get('email')!;
     }
 
     isPasswordStrong(): boolean {
@@ -150,6 +165,18 @@ export class LoginComponent implements OnInit, OnDestroy {
         return emailRegex.test(email);
     }
 
+    async requestNotifPermission(): Promise<void> {
+        const perm = await Notification.requestPermission();
+        this.notifPermission = perm;
+    }
+
+    async installPwa(): Promise<void> {
+        if (!this.pwaPrompt) return;
+        (this.pwaPrompt as any).prompt();
+        const { outcome } = await (this.pwaPrompt as any).userChoice;
+        if (outcome === 'accepted') this.pwaPrompt = null;
+    }
+
     async onLogin(): Promise<void> {
         if (this.loginForm.invalid) return;
 
@@ -160,6 +187,14 @@ export class LoginComponent implements OnInit, OnDestroy {
         const success = await this.authService.login(email, password);
 
         if (success) {
+            const user = this.authService.getUser();
+            if (typeof Notification !== 'undefined' && Notification.permission === 'granted' && user) {
+                new Notification('EliasDH Portal', {
+                    body: `Welcome back, ${user.firstName} ${user.lastName}! You have successfully logged in.`,
+                    icon: '/assets/media/images/logo.png'
+                });
+            }
+            this.pushService.subscribe();
             this.router.navigate(['/dashboard']);
         } else {
             this.submitting = false;

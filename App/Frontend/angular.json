@@ -35,6 +35,11 @@
                 "glob": "sitemap.xml",
                 "input": ".",
                 "output": "/"
+              },
+              {
+                "glob": "sw.js",
+                "input": "src",
+                "output": "/"
               }
             ],
             "styles": [

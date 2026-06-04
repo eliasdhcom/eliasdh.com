@@ -373,7 +373,15 @@
     "RESET_PW_CONFIRM": "Passwort bestätigen",
     "RESET_PW_MISMATCH": "Passwörter stimmen nicht überein.",
     "RESET_PW_BTN": "Passwort festlegen",
-    "RESET_SUCCESS": "Passwort erfolgreich geändert. Weiterleitung..."
+    "RESET_SUCCESS": "Passwort erfolgreich geändert. Weiterleitung...",
+    "NOTIF": {
+      "TITLE": "Benachrichtigungen erforderlich",
+      "DESC": "Aktivieren Sie Benachrichtigungen, um auf das EliasDH-Portal zuzugreifen. Sie werden beim Einloggen und über wichtige Updates informiert.",
+      "BLOCKED": "Benachrichtigungen sind in Ihrem Browser blockiert. Aktivieren Sie sie über die Website-Einstellungen (Website-Einstellungen → Benachrichtigungen → Zulassen) und laden Sie die Seite neu.",
+      "BTN_ENABLE": "Benachrichtigungen aktivieren",
+      "BTN_INSTALL": "App installieren",
+      "BTN_INSTALL_HINT": "Installieren Sie die App auf Ihrem Gerät"
+    }
   },
   "PORTAL": {
     "LANG": { "TITLE": "Sprache" },

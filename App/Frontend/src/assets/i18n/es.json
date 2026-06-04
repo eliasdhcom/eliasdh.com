@@ -374,7 +374,15 @@
     "RESET_PW_CONFIRM": "Confirmar contraseña",
     "RESET_PW_MISMATCH": "Las contraseñas no coinciden.",
     "RESET_PW_BTN": "Establecer contraseña",
-    "RESET_SUCCESS": "Contraseña cambiada con éxito. Redirigiendo..."
+    "RESET_SUCCESS": "Contraseña cambiada con éxito. Redirigiendo...",
+    "NOTIF": {
+      "TITLE": "Notificaciones requeridas",
+      "DESC": "Activa las notificaciones para acceder al portal EliasDH. Serás notificado cuando inicies sesión y sobre actualizaciones importantes.",
+      "BLOCKED": "Las notificaciones están bloqueadas en tu navegador. Actívalas a través de la configuración del sitio (Configuración del sitio → Notificaciones → Permitir) y recarga la página.",
+      "BTN_ENABLE": "Activar notificaciones",
+      "BTN_INSTALL": "Instalar aplicación",
+      "BTN_INSTALL_HINT": "Instala la aplicación en tu dispositivo"
+    }
   },
   "PORTAL": {
     "LANG": { "TITLE": "Idioma" },

@@ -461,6 +461,151 @@
     }
 }
 
+.login-notif-gate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 0 4px;
+    text-align: center;
+    animation: slideInSuccess 0.3s ease-out;
+}
+
+.login-notif-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+.login-notif-icon svg {
+    width: 30px;
+    height: 30px;
+    color: white;
+}
+
+.login-notif-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+}
+
+.login-notif-desc {
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.82);
+    margin: 0;
+    line-height: 1.6;
+    max-width: 300px;
+}
+
+.login-notif-blocked {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: rgba(239, 68, 68, 0.18);
+    border: 1px solid rgba(252, 165, 165, 0.35);
+    border-radius: 10px;
+    padding: 12px 14px;
+    text-align: left;
+    max-width: 320px;
+}
+
+.login-notif-blocked svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #fca5a5;
+}
+
+.login-notif-blocked p {
+    font-size: 12.5px;
+    color: #fca5a5;
+    margin: 0;
+    line-height: 1.55;
+}
+
+.login-notif-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 320px;
+}
+
+.login-notif-pwa-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 320px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+    cursor: url('/assets/svg/cursor-pointer.svg'), pointer;
+    transition: background 0.2s, border-color 0.2s;
+    letter-spacing: 0.3px;
+    font-family: inherit;
+}
+
+.login-notif-pwa-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.65);
+}
+
+.login-pwa-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.login-pwa-banner svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: white;
+}
+
+.login-pwa-banner span {
+    flex: 1;
+    line-height: 1.4;
+}
+
+.login-pwa-banner-btn {
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    white-space: nowrap;
+    cursor: url('/assets/svg/cursor-pointer.svg'), pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.login-pwa-banner-btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
 .login-footer {
     text-align: center;
     margin-top: auto;

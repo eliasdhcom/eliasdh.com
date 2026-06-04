@@ -373,7 +373,15 @@
     "RESET_PW_CONFIRM": "Bevestig wachtwoord",
     "RESET_PW_MISMATCH": "Wachtwoorden komen niet overeen.",
     "RESET_PW_BTN": "Wachtwoord instellen",
-    "RESET_SUCCESS": "Wachtwoord succesvol gewijzigd. Je wordt teruggeleid..."
+    "RESET_SUCCESS": "Wachtwoord succesvol gewijzigd. Je wordt teruggeleid...",
+    "NOTIF": {
+      "TITLE": "Meldingen vereist",
+      "DESC": "Schakel meldingen in om toegang te krijgen tot het EliasDH Portal. Je wordt verwittigd wanneer je inlogt en bij belangrijke updates.",
+      "BLOCKED": "Meldingen zijn geblokkeerd in je browser. Schakel ze in via je browserinstellingen (Site-instellingen → Meldingen → Toestaan) en herlaad de pagina.",
+      "BTN_ENABLE": "Meldingen inschakelen",
+      "BTN_INSTALL": "App installeren",
+      "BTN_INSTALL_HINT": "Installeer de app op je toestel"
+    }
   },
   "PORTAL": {
     "LANG": { "TITLE": "Taal" },

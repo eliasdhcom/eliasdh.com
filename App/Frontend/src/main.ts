@@ -10,6 +10,10 @@ import { appConfig } from './app/app.config';
 
 bootstrapApplication(AppComponent, appConfig).catch(err => console.error(err));
 
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
+
 // Set Default Theme
 document.addEventListener('DOMContentLoaded', () => {
     const savedTheme: string | null = localStorage.getItem('theme') || 'light';

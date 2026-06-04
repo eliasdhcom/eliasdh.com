@@ -154,6 +154,15 @@ async function initSchema() {
         `CREATE INDEX IF NOT EXISTS idx_logs_created_at ON logs(created_at DESC)`,
         `CREATE INDEX IF NOT EXISTS idx_logs_action     ON logs(action)`,
         `CREATE INDEX IF NOT EXISTS idx_logs_resource   ON logs(resource)`,
+        `CREATE TABLE IF NOT EXISTS push_subscriptions (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            endpoint   TEXT NOT NULL UNIQUE,
+            p256dh     TEXT NOT NULL,
+            auth       TEXT NOT NULL,
+            created_at TEXT DEFAULT (datetime('now'))
+        )`,
+        `CREATE INDEX IF NOT EXISTS idx_push_subscriptions_user_id ON push_subscriptions(user_id)`,
     ];
 
     for (const sql of stmts) {
