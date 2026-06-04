@@ -16,16 +16,13 @@ export class PushService {
 
     constructor(private http: HttpClient, private authService: AuthService) {}
 
-    async init(): Promise<void> {
-        if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
-        try {
-            this.swReg = await navigator.serviceWorker.register('/sw.js');
-        } catch { return; }
-    }
-
     async subscribe(): Promise<void> {
-        if (!this.swReg || Notification.permission !== 'granted') return;
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+        if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
         try {
+            if (!this.swReg) {
+                this.swReg = await navigator.serviceWorker.ready;
+            }
             const keyRes = await fetch(`${this.apiUrl}/vapid-public-key`, {
                 headers: { 'x-api-key': environment.eliasdhApiKey }
             });

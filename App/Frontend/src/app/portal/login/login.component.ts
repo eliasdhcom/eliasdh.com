@@ -187,14 +187,15 @@ export class LoginComponent implements OnInit, OnDestroy {
         const success = await this.authService.login(email, password);
 
         if (success) {
-            const user = this.authService.getUser();
-            if (typeof Notification !== 'undefined' && Notification.permission === 'granted' && user) {
-                new Notification('EliasDH Portal', {
-                    body: `Welcome back, ${user.firstName} ${user.lastName}! You have successfully logged in.`,
-                    icon: '/assets/media/images/logo.png'
-                });
-            }
-            this.pushService.subscribe();
+            try {
+                const user = this.authService.getUser();
+                if (typeof Notification !== 'undefined' && Notification.permission === 'granted' && user) {
+                    new Notification('EliasDH Portal', {
+                        body: `Welcome back, ${user.firstName} ${user.lastName}! You have successfully logged in.`,
+                        icon: '/assets/media/images/logo.png'
+                    });
+                }
+            } catch { }
             this.router.navigate(['/dashboard']);
         } else {
             this.submitting = false;

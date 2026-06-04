@@ -20,6 +20,7 @@ import { PortalLogsComponent } from '../logs/logs.component';
 import { PortalCompanyComponent } from '../company/company.component';
 import { UsersService } from '../../services/users.service';
 import { ThemeService } from '../../services/theme.service';
+import { PushService } from '../../services/push.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -58,7 +59,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         private authService: AuthService,
         private usersService: UsersService,
         private translate: TranslateService,
-        public themeService: ThemeService
+        public themeService: ThemeService,
+        private pushService: PushService
     ) {}
 
     private readonly onBeforeInstallPrompt = (e: Event) => { e.preventDefault(); this.pwaPrompt = e; };
@@ -73,6 +75,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.swapManifest('assets/portal-manifest.json');
         window.addEventListener('beforeinstallprompt', this.onBeforeInstallPrompt);
         window.addEventListener('appinstalled',        this.onAppInstalled);
+        this.pushService.subscribe().catch(() => {});
         this.currentLanguage = this.translate.currentLang ?? localStorage.getItem('language') ?? 'nl';
         this.user = this.authService.getUser() ?? { firstName: 'Unknown', lastName: '', email: '', role: '', company: '', phone: '', birthDate: '' };
         if (this.user.id && Number.isInteger(this.user.id) && this.user.id > 0) {
