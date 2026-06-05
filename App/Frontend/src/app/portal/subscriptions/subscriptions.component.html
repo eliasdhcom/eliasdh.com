@@ -194,21 +194,6 @@
                                                 </svg>
                                                 {{'PORTAL.SUBSCRIPTIONS.K8S.BTN_LOGS'|translate}}
                                             </button>
-                                            <button class="subscriptions-action-btn subscriptions-action-btn--restart cursor-pointer" [class.subscriptions-action-btn--restarting]="isPodRestarting(pod.namespace, pod.name)" [disabled]="isPodRestarting(pod.namespace, pod.name)" (click)="openRestartModal(pod.namespace, pod.name)" [title]="'PORTAL.SUBSCRIPTIONS.K8S.BTN_RESTART'|translate">
-                                                <svg class="subscriptions-action-restart-icon cursor-pointer" [class.subscriptions-spin]="isPodRestarting(pod.namespace, pod.name)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                                    <polyline class="cursor-pointer" points="23 4 23 10 17 10"/>
-                                                    <path class="cursor-pointer" d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-                                                </svg>
-                                                {{isPodRestarting(pod.namespace, pod.name) ? ('PORTAL.SUBSCRIPTIONS.K8S.BTN_RESTARTING'|translate) : ('PORTAL.SUBSCRIPTIONS.K8S.BTN_RESTART'|translate)}}
-                                            </button>
-                                            <span class="subscriptions-pod-error" *ngIf="getPodError(pod.namespace, pod.name)">
-                                                <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                                    <circle class="cursor-pointer" cx="12" cy="12" r="10"/>
-                                                    <line class="cursor-pointer" x1="12" y1="8" x2="12" y2="12"/>
-                                                    <line class="cursor-pointer" x1="12" y1="16" x2="12.01" y2="16"/>
-                                                </svg>
-                                                {{getPodError(pod.namespace, pod.name)}}
-                                            </span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -225,32 +210,7 @@
         </div>
     </div>
 </div>
-<div class="subscriptions-restart-overlay" *ngIf="restartModal.open" (click)="cancelRestartModal()">
-    <div class="subscriptions-restart-modal" (click)="$event.stopPropagation()">
-        <div class="subscriptions-restart-header">
-            <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline class="cursor-pointer" points="23 4 23 10 17 10"/>
-                <path class="cursor-pointer" d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-            </svg>
-            {{'PORTAL.SUBSCRIPTIONS.K8S.RESTART_TITLE'|translate}}
-        </div>
-        <p class="subscriptions-restart-body">
-            {{'PORTAL.SUBSCRIPTIONS.K8S.RESTART_BODY'|translate:{pod: restartModal.podName} }}
-        </p>
-        <div class="subscriptions-restart-actions">
-            <button class="subscriptions-restart-btn subscriptions-restart-btn--cancel cursor-pointer" (click)="cancelRestartModal()">
-                {{'PORTAL.COMMON.CANCEL'|translate}}
-            </button>
-            <button class="subscriptions-restart-btn subscriptions-restart-btn--confirm cursor-pointer" (click)="confirmRestart()">
-                <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <polyline class="cursor-pointer" points="23 4 23 10 17 10"/>
-                    <path class="cursor-pointer" d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-                </svg>
-                {{'PORTAL.SUBSCRIPTIONS.K8S.RESTART_BTN'|translate}}
-            </button>
-        </div>
-    </div>
-</div>
+
 <div class="subscriptions-log-overlay" *ngIf="logModal.open" (click)="closeLogs()">
     <div class="subscriptions-log-modal" (click)="$event.stopPropagation()">
         <div class="subscriptions-log-modal-header">

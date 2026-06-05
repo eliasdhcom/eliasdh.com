@@ -10,7 +10,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { CustomersService, Customer, CustomerWebsite } from '../../services/customers.service';
 import { PricingPlansService, PricingPlan } from '../../services/pricing-plans.service';
 import { StatusService, K8sPod } from '../../services/status.service';
-import { TranslateService } from '@ngx-translate/core';
 import { Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 
@@ -47,11 +46,6 @@ interface LogModalState {
     namespace: string;
 }
 
-interface RestartModalState {
-    open: boolean;
-    namespace: string;
-    podName: string;
-}
 
 @Component({
     selector: 'app-portal-subscriptions',
@@ -73,10 +67,7 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
 
     expandedSubIds = new Set<string>();
     nsPodsMap = new Map<string, NsPodsState>();
-    restartingPods = new Set<string>();
-    podErrors = new Map<string, string>();
     logModal: LogModalState = { open: false, loading: false, error: '', lines: [], podName: '', displayName: '', namespace: '' };
-    restartModal: RestartModalState = { open: false, namespace: '', podName: '' };
 
     private pendingHighlightId: string | null = null;
     private destroy$ = new Subject<void>();
@@ -90,8 +81,7 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
     constructor(
         private customersService: CustomersService,
         private pricingPlansService: PricingPlansService,
-        private statusService: StatusService,
-        private translate: TranslateService
+        private statusService: StatusService
     ) {}
 
     ngOnInit(): void {
@@ -341,57 +331,6 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
 
     closeLogs(): void {
         this.logModal.open = false;
-    }
-
-    openRestartModal(namespace: string, podName: string): void {
-        this.restartModal = { open: true, namespace, podName };
-    }
-
-    cancelRestartModal(): void {
-        this.restartModal = { open: false, namespace: '', podName: '' };
-    }
-
-    confirmRestart(): void {
-        const { namespace, podName } = this.restartModal;
-        this.cancelRestartModal();
-        const key = `${namespace}/${podName}`;
-        this.restartingPods.add(key);
-        this.podErrors.delete(key);
-        this.statusService.restartPod(namespace, podName).pipe(takeUntil(this.destroy$)).subscribe({
-            next: () => {
-                setTimeout(() => this.silentReloadPods(namespace), 3000);
-            },
-            error: () => {
-                this.restartingPods.delete(key);
-                this.podErrors.set(key, this.translate.instant('PORTAL.SUBSCRIPTIONS.K8S.RESTART_ERROR', { pod: podName }));
-                setTimeout(() => this.podErrors.delete(key), 5000);
-            }
-        });
-    }
-
-    private silentReloadPods(ns: string): void {
-        this.statusService.getNamespacePods(ns).pipe(takeUntil(this.destroy$)).subscribe({
-            next: res => {
-                const state = this.nsPodsMap.get(ns);
-                if (!state) return;
-                state.pods = res.data?.pods ?? [];
-                const newPodKeys = new Set(state.pods.map(p => `${p.namespace}/${p.name}`));
-                for (const k of this.restartingPods) {
-                    if (k.startsWith(ns + '/') && !newPodKeys.has(k)) {
-                        this.restartingPods.delete(k);
-                    }
-                }
-            },
-            error: () => {}
-        });
-    }
-
-    isPodRestarting(namespace: string, podName: string): boolean {
-        return this.restartingPods.has(`${namespace}/${podName}`);
-    }
-
-    getPodError(namespace: string, podName: string): string | null {
-        return this.podErrors.get(`${namespace}/${podName}`) ?? null;
     }
 
     getPodAge(createdAt: string): string {

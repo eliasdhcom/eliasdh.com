@@ -9,7 +9,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, interval } from 'rxjs';
 import { switchMap, startWith } from 'rxjs/operators';
 import { environment } from '../../environments/environment.development';
-import { AuthService } from './auth.service';
 
 export interface NodeCondition {
     type: string;
@@ -171,7 +170,7 @@ export interface StatusResponse {
 export class StatusService {
     private apiUrl = `${environment.eliasdhApiUrl}/api/v1/cluster`;
 
-    constructor(private http: HttpClient, private authService: AuthService) {}
+    constructor(private http: HttpClient) {}
 
     private getHeaders(): HttpHeaders {
         return new HttpHeaders({
@@ -180,12 +179,6 @@ export class StatusService {
         });
     }
 
-    private getAuthHeaders(): HttpHeaders {
-        const token = this.authService.getToken();
-        let h = new HttpHeaders({ 'x-api-key': environment.eliasdhApiKey, 'Content-Type': 'application/json' });
-        if (token) h = h.set('Authorization', `Bearer ${token}`);
-        return h;
-    }
 
     getOverview(): Observable<StatusOverviewResponse> {
         return this.http.get<StatusOverviewResponse>(
@@ -278,12 +271,7 @@ export class StatusService {
         return this.http.get<PodLogsResponse>(url, { headers: this.getHeaders() });
     }
 
-    restartPod(namespace: string, pod: string): Observable<{ success: boolean; data: { success: boolean; message: string } }> {
-        return this.http.delete<{ success: boolean; data: { success: boolean; message: string } }>(
-            `${this.apiUrl}/namespace/${namespace}/pods/${encodeURIComponent(pod)}`,
-            { headers: this.getAuthHeaders() }
-        );
-    }
+
 
     calculateMemoryUsage(allocatable: string, capacity: string): number {
         const allocatableBytes = this.parseMemory(allocatable);

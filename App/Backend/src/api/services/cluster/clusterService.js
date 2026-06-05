@@ -741,24 +741,6 @@ class ClusterService {
         }
     }
 
-    async restartPod(namespace, podName) {
-        if (!this.kubeEnabled) {
-            logger.info(`Mock restart: pod ${podName} in namespace ${namespace}`);
-            return { success: true, message: `Pod ${podName} restart simulated` };
-        }
-
-        try {
-            const coreApi = this.kc.makeApiClient(k8s.CoreV1Api);
-            await coreApi.deleteNamespacedPod(podName, namespace);
-            this.cache.delete(this.getCacheKey(`pods_${namespace}`));
-            logger.info(`Pod ${podName} in ${namespace} deleted - will be recreated by controller`);
-            return { success: true, message: `Pod ${podName} is restarting` };
-        } catch (error) {
-            logger.error(`Error restarting pod ${podName}: ${error.message}`);
-            throw error;
-        }
-    }
-
     async getNamespaceStats(namespace) {
         if (!this.kubeEnabled) {
             return this.getMockNamespaceStats(namespace);

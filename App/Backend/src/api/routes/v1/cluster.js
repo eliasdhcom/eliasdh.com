@@ -6,7 +6,6 @@
 
 const express = require('express');
 const clusterService = require('../../services/cluster/clusterService');
-const { jwtAuth } = require('../../../middleware/jwtAuth');
 const logger = require('../../../utils/logger');
 const router = express.Router();
 
@@ -143,23 +142,6 @@ router.get('/namespace/:namespace/pods/:pod/logs', async (req, res) => {
     } catch (error) {
         logger.error(`Pod logs error: ${error.message}`);
         res.status(500).json({ success: false, error: error.message || 'Failed to retrieve pod logs' });
-    }
-});
-
-router.delete('/namespace/:namespace/pods/:pod', jwtAuth, async (req, res) => {
-    try {
-        const { namespace, pod } = req.params;
-
-        if (!isValidNamespace(namespace)) return res.status(400).json({ success: false, error: 'Invalid namespace name' });
-        if (!isValidPodName(pod))         return res.status(400).json({ success: false, error: 'Invalid pod name' });
-
-        logger.info(`Restarting pod: ${pod} in ${namespace} — requested by ${req.user?.email}`);
-        const data = await clusterService.restartPod(namespace, pod);
-
-        res.status(200).json({ success: true, data });
-    } catch (error) {
-        logger.error(`Pod restart error: ${error.message}`);
-        res.status(500).json({ success: false, error: error.message || 'Failed to restart pod' });
     }
 });
 
