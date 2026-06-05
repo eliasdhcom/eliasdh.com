@@ -101,7 +101,7 @@
                         <span class="subscriptions-total-chip-freq">/{{getFrequencyShort(sub.frequency)}}</span>
                     </span>
                 </div>
-                <button class="subscriptions-toggle cursor-pointer" (click)="toggleK8sPanel(sub)" [class.subscriptions-toggle--open]="isExpanded(sub.id)">
+                <button *ngIf="sub.isLive" class="subscriptions-toggle cursor-pointer" (click)="toggleK8sPanel(sub)" [class.subscriptions-toggle--open]="isExpanded(sub.id)">
                     <svg class="subscriptions-toggle-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <circle class="cursor-pointer" cx="12" cy="12" r="10"/>
                         <line class="cursor-pointer" x1="2" y1="12" x2="22" y2="12"/>
@@ -264,7 +264,6 @@
                     <polyline class="cursor-pointer" points="14 2 14 8 20 8"/>
                 </svg>
                 <span>{{logModal.podName}}</span>
-                <code class="subscriptions-log-modal-ns">{{logModal.namespace}}</code>
             </div>
             <button class="subscriptions-log-close cursor-pointer" (click)="closeLogs()" title="Sluiten">
                 <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
