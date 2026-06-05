@@ -11,20 +11,12 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import bootstrap from './main.server';
 
-const engineCache = new Map<string, CommonEngine>();
-
-function getEngine(hostname: string): CommonEngine {
-    if (!engineCache.has(hostname)) {
-        engineCache.set(hostname, new CommonEngine({ allowedHosts: [hostname] }));
-    }
-    return engineCache.get(hostname)!;
-}
-
 export function app(): express.Express {
     const server = express();
     const serverDistFolder = dirname(fileURLToPath(import.meta.url));
     const browserDistFolder = resolve(serverDistFolder, '../browser');
     const indexHtml = join(serverDistFolder, 'index.server.html');
+    const commonEngine = new CommonEngine();
 
     server.set('view engine', 'html');
     server.set('views', browserDistFolder);
@@ -47,8 +39,7 @@ export function app(): express.Express {
 
     server.get('**', (req, res, next) => {
         const { protocol, originalUrl, baseUrl, headers } = req;
-        const hostname = req.hostname;
-        getEngine(hostname)
+        commonEngine
             .render({
                 bootstrap,
                 documentFilePath: indexHtml,
