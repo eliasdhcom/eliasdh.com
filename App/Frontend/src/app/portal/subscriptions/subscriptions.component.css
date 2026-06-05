@@ -722,8 +722,6 @@
 .subscriptions-pod-status--error     { color: #ef4444; }
 .subscriptions-pod-status--succeeded { color: #6366f1; }
 
-.subscriptions-pod-restarts { font-weight: 600; color: var(--secondary); }
-.subscriptions-pod-restarts--warn { color: #f59e0b; }
 
 .subscriptions-pod-age,
 .subscriptions-pod-node { color: var(--secondary); white-space: nowrap; }

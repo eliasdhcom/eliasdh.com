@@ -412,8 +412,19 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
         return 'subscriptions-pod-status--error';
     }
 
-    getPodRestarts(pod: K8sPod): number {
-        return pod.containerStatuses.reduce((sum, c) => sum + (c.restartCount ?? 0), 0);
+    getPodDisplayName(pod: K8sPod, allPods: K8sPod[]): string {
+        const classify = (name: string): 'Frontend' | 'Backend' => {
+            const n = name.toLowerCase();
+            if (/frontend|front-end/.test(n)) return 'Frontend';
+            if (/backend|back-end/.test(n)) return 'Backend';
+            return 'Backend';
+        };
+        const type = classify(pod.name);
+        const sameType = allPods
+            .filter(p => classify(p.name) === type)
+            .sort((a, b) => a.name.localeCompare(b.name));
+        const index = sameType.findIndex(p => p.name === pod.name);
+        return `${type} ${index + 1}`;
     }
 
     getPodContainerName(pod: K8sPod): string | undefined {

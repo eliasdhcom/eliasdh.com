@@ -167,7 +167,6 @@
                                     <tr>
                                         <th>{{'PORTAL.SUBSCRIPTIONS.K8S.COL_POD'|translate}}</th>
                                         <th>{{'PORTAL.SUBSCRIPTIONS.K8S.COL_STATUS'|translate}}</th>
-                                        <th>{{'PORTAL.SUBSCRIPTIONS.K8S.COL_RESTARTS'|translate}}</th>
                                         <th>{{'PORTAL.SUBSCRIPTIONS.K8S.COL_AGE'|translate}}</th>
                                         <th>{{'PORTAL.SUBSCRIPTIONS.K8S.COL_NODE'|translate}}</th>
                                         <th></th>
@@ -175,15 +174,12 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let pod of ns.pods">
-                                        <td class="subscriptions-pod-name" [title]="pod.name">{{pod.name}}</td>
+                                        <td class="subscriptions-pod-name" [title]="pod.name">{{getPodDisplayName(pod, ns.pods)}}</td>
                                         <td>
                                             <span class="subscriptions-pod-status" [ngClass]="getPodStatusClass(pod.status)">
                                                 <span class="subscriptions-dot" [ngClass]="getPodStatusClass(pod.status)"></span>
                                                 {{pod.status}}
                                             </span>
-                                        </td>
-                                        <td class="subscriptions-pod-restarts" [class.subscriptions-pod-restarts--warn]="getPodRestarts(pod) > 0">
-                                            {{getPodRestarts(pod)}}
                                         </td>
                                         <td class="subscriptions-pod-age">{{getPodAge(pod.createdAt)}}</td>
                                         <td class="subscriptions-pod-node">{{pod.node}}</td>

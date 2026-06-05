@@ -830,32 +830,32 @@ class ClusterService {
             total: 2,
             pods: [
                 {
-                    name: `${namespace}-app-7d4b9f-x2p9q`,
+                    name: `${namespace}-frontend-7d4b9f-x2p9q`,
                     namespace,
                     status: 'Running',
                     containerStatuses: [{
-                        name: 'app',
+                        name: 'frontend',
                         ready: true,
                         restartCount: 0,
-                        image: `ghcr.io/eliasdhteam/${namespace}:latest`,
+                        image: `ghcr.io/eliasdhteam/${namespace}-frontend:latest`,
                         state: { running: { startedAt: new Date(Date.now() - 172800000).toISOString() } }
                     }],
-                    labels: { app: namespace, tier: 'frontend' },
+                    labels: { app: `${namespace}-frontend`, tier: 'frontend' },
                     createdAt: new Date(Date.now() - 172800000).toISOString(),
                     node: 'worker-1'
                 },
                 {
-                    name: `${namespace}-db-0`,
+                    name: `${namespace}-backend-5df7c4-abc12`,
                     namespace,
                     status: 'Running',
                     containerStatuses: [{
-                        name: 'postgres',
+                        name: 'backend',
                         ready: true,
-                        restartCount: 1,
-                        image: 'postgres:15-alpine',
+                        restartCount: 0,
+                        image: `ghcr.io/eliasdhteam/${namespace}-backend:latest`,
                         state: { running: { startedAt: new Date(Date.now() - 604800000).toISOString() } }
                     }],
-                    labels: { app: `${namespace}-db`, tier: 'database' },
+                    labels: { app: `${namespace}-backend`, tier: 'backend' },
                     createdAt: new Date(Date.now() - 604800000).toISOString(),
                     node: 'worker-2'
                 }
