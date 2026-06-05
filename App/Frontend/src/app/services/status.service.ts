@@ -9,6 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, interval } from 'rxjs';
 import { switchMap, startWith } from 'rxjs/operators';
 import { environment } from '../../environments/environment.development';
+import { AuthService } from './auth.service';
 
 export interface NodeCondition {
     type: string;
@@ -99,6 +100,56 @@ export interface StatusOverviewResponse {
     data: StatusOverview;
 }
 
+export interface K8sContainerStatus {
+    name: string;
+    ready: boolean;
+    restartCount: number;
+    image: string;
+    imageID?: string;
+    state: any;
+}
+
+export interface K8sPod {
+    name: string;
+    namespace: string;
+    status: string;
+    containerStatuses: K8sContainerStatus[];
+    labels: { [key: string]: string };
+    createdAt: string;
+    node: string;
+}
+
+export interface NamespacePodsResponse {
+    success: boolean;
+    data: {
+        namespace: string;
+        total: number;
+        pods: K8sPod[];
+        timestamp: string;
+    };
+}
+
+export interface NamespaceStatsResponse {
+    success: boolean;
+    data: {
+        namespace: string;
+        pods: { total: number; running: number; pending: number; failed: number };
+        deployments: { total: number; ready: number };
+        timestamp: string;
+    };
+}
+
+export interface PodLogsResponse {
+    success: boolean;
+    data: {
+        podName: string;
+        namespace: string;
+        container: string | null;
+        lines: string[];
+        timestamp: string;
+    };
+}
+
 export interface StatusResponse {
     success: boolean;
     data: {
@@ -120,13 +171,20 @@ export interface StatusResponse {
 export class StatusService {
     private apiUrl = `${environment.eliasdhApiUrl}/api/v1/cluster`;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private authService: AuthService) {}
 
     private getHeaders(): HttpHeaders {
         return new HttpHeaders({
             'x-api-key': environment.eliasdhApiKey,
             'Content-Type': 'application/json'
         });
+    }
+
+    private getAuthHeaders(): HttpHeaders {
+        const token = this.authService.getToken();
+        let h = new HttpHeaders({ 'x-api-key': environment.eliasdhApiKey, 'Content-Type': 'application/json' });
+        if (token) h = h.set('Authorization', `Bearer ${token}`);
+        return h;
     }
 
     getOverview(): Observable<StatusOverviewResponse> {
@@ -183,7 +241,6 @@ export class StatusService {
 
         const str = String(cpu);
 
-        // Handle different CPU units from Metrics API
         if (str.endsWith('n')) return parseFloat(str) / 1000000000; // nanocores
         if (str.endsWith('u')) return parseFloat(str) / 1000000;    // microcores
         if (str.endsWith('m')) return parseFloat(str) / 1000;       // millicores
@@ -199,6 +256,33 @@ export class StatusService {
         const i = Math.floor(Math.log(bytes) / Math.log(k));
 
         return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+    }
+
+    getNamespacePods(namespace: string): Observable<NamespacePodsResponse> {
+        return this.http.get<NamespacePodsResponse>(
+            `${this.apiUrl}/namespace/${namespace}/pods`,
+            { headers: this.getHeaders() }
+        );
+    }
+
+    getNamespaceStats(namespace: string): Observable<NamespaceStatsResponse> {
+        return this.http.get<NamespaceStatsResponse>(
+            `${this.apiUrl}/namespace/${namespace}/stats`,
+            { headers: this.getHeaders() }
+        );
+    }
+
+    getPodLogs(namespace: string, pod: string, container?: string, lines: number = 200): Observable<PodLogsResponse> {
+        let url = `${this.apiUrl}/namespace/${namespace}/pods/${encodeURIComponent(pod)}/logs?lines=${lines}`;
+        if (container) url += `&container=${encodeURIComponent(container)}`;
+        return this.http.get<PodLogsResponse>(url, { headers: this.getHeaders() });
+    }
+
+    restartPod(namespace: string, pod: string): Observable<{ success: boolean; data: { success: boolean; message: string } }> {
+        return this.http.delete<{ success: boolean; data: { success: boolean; message: string } }>(
+            `${this.apiUrl}/namespace/${namespace}/pods/${encodeURIComponent(pod)}`,
+            { headers: this.getAuthHeaders() }
+        );
     }
 
     calculateMemoryUsage(allocatable: string, capacity: string): number {

@@ -716,6 +716,153 @@ class ClusterService {
             nodeStatuses: Object.fromEntries(this.nodeStatusHistory)
         };
     }
+
+    async getPodLogs(namespace, podName, container = null, tailLines = 200) {
+        if (!this.kubeEnabled) {
+            return this.getMockPodLogs(namespace, podName);
+        }
+
+        try {
+            const coreApi = this.kc.makeApiClient(k8s.CoreV1Api);
+            const response = await coreApi.readNamespacedPodLog(
+                podName, namespace,
+                container || undefined,
+                false, false, undefined, undefined,
+                false, undefined, tailLines, false
+            );
+            const logText = typeof response.body === 'string' ? response.body : '';
+            const lines = logText.split('\n').filter(l => l.trim());
+
+            logger.info(`Retrieved ${lines.length} log lines for pod ${podName} in ${namespace}`);
+            return { podName, namespace, container: container || null, lines, timestamp: new Date().toISOString() };
+        } catch (error) {
+            logger.error(`Error retrieving pod logs for ${podName}: ${error.message}`);
+            throw error;
+        }
+    }
+
+    async restartPod(namespace, podName) {
+        if (!this.kubeEnabled) {
+            logger.info(`Mock restart: pod ${podName} in namespace ${namespace}`);
+            return { success: true, message: `Pod ${podName} restart simulated` };
+        }
+
+        try {
+            const coreApi = this.kc.makeApiClient(k8s.CoreV1Api);
+            await coreApi.deleteNamespacedPod(podName, namespace);
+            this.cache.delete(this.getCacheKey(`pods_${namespace}`));
+            logger.info(`Pod ${podName} in ${namespace} deleted - will be recreated by controller`);
+            return { success: true, message: `Pod ${podName} is restarting` };
+        } catch (error) {
+            logger.error(`Error restarting pod ${podName}: ${error.message}`);
+            throw error;
+        }
+    }
+
+    async getNamespaceStats(namespace) {
+        if (!this.kubeEnabled) {
+            return this.getMockNamespaceStats(namespace);
+        }
+
+        try {
+            const coreApi = this.kc.makeApiClient(k8s.CoreV1Api);
+            const appsApi = this.kc.makeApiClient(k8s.AppsV1Api);
+
+            const [podsRes, deploymentsRes] = await Promise.all([
+                coreApi.listNamespacedPod(namespace),
+                appsApi.listNamespacedDeployment(namespace)
+            ]);
+
+            const pods = podsRes.body.items;
+            const deployments = deploymentsRes.body.items;
+
+            return {
+                namespace,
+                pods: {
+                    total:   pods.length,
+                    running: pods.filter(p => p.status.phase === 'Running').length,
+                    pending: pods.filter(p => p.status.phase === 'Pending').length,
+                    failed:  pods.filter(p => p.status.phase === 'Failed').length
+                },
+                deployments: {
+                    total: deployments.length,
+                    ready: deployments.filter(d => (d.status.readyReplicas || 0) >= (d.spec.replicas || 1)).length
+                },
+                timestamp: new Date().toISOString()
+            };
+        } catch (error) {
+            logger.error(`Error retrieving namespace stats for ${namespace}: ${error.message}`);
+            throw error;
+        }
+    }
+
+    getMockPodLogs(namespace, podName) {
+        return {
+            podName,
+            namespace,
+            container: null,
+            lines: [
+                `[2026-06-05T08:00:01Z] INFO  Starting application...`,
+                `[2026-06-05T08:00:01Z] INFO  Loading configuration from environment`,
+                `[2026-06-05T08:00:02Z] INFO  Database connection established`,
+                `[2026-06-05T08:00:02Z] INFO  Server listening on :3000`,
+                `[2026-06-05T10:15:44Z] INFO  GET /health 200 1ms`,
+                `[2026-06-05T10:20:11Z] INFO  GET /api/v1/customers 200 14ms`,
+                `[2026-06-05T11:05:33Z] WARN  Rate limit approached for 192.168.1.42`,
+                `[2026-06-05T11:30:00Z] INFO  Scheduled job: birthday check completed`
+            ],
+            timestamp: new Date().toISOString()
+        };
+    }
+
+    getMockNamespaceStats(namespace) {
+        return {
+            namespace,
+            pods:        { total: 2, running: 2, pending: 0, failed: 0 },
+            deployments: { total: 2, ready: 2 },
+            timestamp: new Date().toISOString()
+        };
+    }
+
+    getMockNamespacePods(namespace) {
+        return {
+            namespace,
+            total: 2,
+            pods: [
+                {
+                    name: `${namespace}-app-7d4b9f-x2p9q`,
+                    namespace,
+                    status: 'Running',
+                    containerStatuses: [{
+                        name: 'app',
+                        ready: true,
+                        restartCount: 0,
+                        image: `ghcr.io/eliasdhteam/${namespace}:latest`,
+                        state: { running: { startedAt: new Date(Date.now() - 172800000).toISOString() } }
+                    }],
+                    labels: { app: namespace, tier: 'frontend' },
+                    createdAt: new Date(Date.now() - 172800000).toISOString(),
+                    node: 'worker-1'
+                },
+                {
+                    name: `${namespace}-db-0`,
+                    namespace,
+                    status: 'Running',
+                    containerStatuses: [{
+                        name: 'postgres',
+                        ready: true,
+                        restartCount: 1,
+                        image: 'postgres:15-alpine',
+                        state: { running: { startedAt: new Date(Date.now() - 604800000).toISOString() } }
+                    }],
+                    labels: { app: `${namespace}-db`, tier: 'database' },
+                    createdAt: new Date(Date.now() - 604800000).toISOString(),
+                    node: 'worker-2'
+                }
+            ],
+            timestamp: new Date().toISOString()
+        };
+    }
 }
 
 module.exports = new ClusterService();

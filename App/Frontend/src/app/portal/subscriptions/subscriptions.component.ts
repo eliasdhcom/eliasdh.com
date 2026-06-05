@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CustomersService, Customer, CustomerWebsite } from '../../services/customers.service';
 import { PricingPlansService, PricingPlan } from '../../services/pricing-plans.service';
+import { StatusService, K8sPod } from '../../services/status.service';
+import { TranslateService } from '@ngx-translate/core';
 import { Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 
@@ -27,6 +29,29 @@ export interface SubscriptionGroup {
 
 const VAT_RATE = 0.21;
 
+interface NsPodsState {
+    loading: boolean;
+    error: string;
+    pods: K8sPod[];
+    statsLoading: boolean;
+    stats: { pods: { total: number; running: number; pending: number; failed: number }; deployments: { total: number; ready: number } } | null;
+}
+
+interface LogModalState {
+    open: boolean;
+    loading: boolean;
+    error: string;
+    lines: string[];
+    podName: string;
+    namespace: string;
+}
+
+interface RestartModalState {
+    open: boolean;
+    namespace: string;
+    podName: string;
+}
+
 @Component({
     selector: 'app-portal-subscriptions',
     standalone: true,
@@ -44,6 +69,14 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
     filterType: string | null = null;
     _highlightId: string | null = null;
     failedGroupLogos = new Set<string>();
+
+    expandedSubIds = new Set<string>();
+    nsPodsMap = new Map<string, NsPodsState>();
+    restartingPods = new Set<string>();
+    podErrors = new Map<string, string>();
+    logModal: LogModalState = { open: false, loading: false, error: '', lines: [], podName: '', namespace: '' };
+    restartModal: RestartModalState = { open: false, namespace: '', podName: '' };
+
     private pendingHighlightId: string | null = null;
     private destroy$ = new Subject<void>();
 
@@ -55,7 +88,9 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
 
     constructor(
         private customersService: CustomersService,
-        private pricingPlansService: PricingPlansService
+        private pricingPlansService: PricingPlansService,
+        private statusService: StatusService,
+        private translate: TranslateService
     ) {}
 
     ngOnInit(): void {
@@ -230,5 +265,164 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 80);
         setTimeout(() => { this._highlightId = null; }, 4000);
+    }
+
+    urlToNamespace(url: string): string {
+        return url
+            .replace(/^https?:\/\//i, '')
+            .replace(/\/.*$/, '')
+            .replace(/\./g, '')
+            .toLowerCase();
+    }
+
+    isExpanded(subId: string): boolean {
+        return this.expandedSubIds.has(subId);
+    }
+
+    toggleK8sPanel(sub: FlatSubscription): void {
+        if (this.expandedSubIds.has(sub.id)) {
+            this.expandedSubIds.delete(sub.id);
+            return;
+        }
+        this.expandedSubIds.add(sub.id);
+        const ns = this.urlToNamespace(sub.url);
+        if (!this.nsPodsMap.has(ns)) {
+            this.loadNsData(ns);
+        }
+    }
+
+    private loadNsData(ns: string): void {
+        this.nsPodsMap.set(ns, { loading: true, error: '', pods: [], statsLoading: true, stats: null });
+
+        this.statusService.getNamespacePods(ns).pipe(takeUntil(this.destroy$)).subscribe({
+            next: res => {
+                const state = this.nsPodsMap.get(ns)!;
+                state.loading = false;
+                state.pods = res.data?.pods ?? [];
+            },
+            error: () => {
+                const state = this.nsPodsMap.get(ns)!;
+                state.loading = false;
+                state.error = 'PORTAL.SUBSCRIPTIONS.K8S.PODS_LOAD_ERROR';
+            }
+        });
+
+        this.statusService.getNamespaceStats(ns).pipe(takeUntil(this.destroy$)).subscribe({
+            next: res => {
+                const state = this.nsPodsMap.get(ns)!;
+                state.statsLoading = false;
+                state.stats = res.data ? { pods: res.data.pods, deployments: res.data.deployments } : null;
+            },
+            error: () => {
+                const state = this.nsPodsMap.get(ns)!;
+                state.statsLoading = false;
+            }
+        });
+    }
+
+    getNsState(sub: FlatSubscription): NsPodsState | null {
+        return this.nsPodsMap.get(this.urlToNamespace(sub.url)) ?? null;
+    }
+
+    openLogs(namespace: string, podName: string, container?: string): void {
+        this.logModal = { open: true, loading: true, error: '', lines: [], podName, namespace };
+        this.statusService.getPodLogs(namespace, podName, container).pipe(takeUntil(this.destroy$)).subscribe({
+            next: res => {
+                this.logModal.loading = false;
+                this.logModal.lines = res.data?.lines ?? [];
+            },
+            error: () => {
+                this.logModal.loading = false;
+                this.logModal.error = 'PORTAL.SUBSCRIPTIONS.K8S.LOG_ERROR';
+            }
+        });
+    }
+
+    closeLogs(): void {
+        this.logModal.open = false;
+    }
+
+    openRestartModal(namespace: string, podName: string): void {
+        this.restartModal = { open: true, namespace, podName };
+    }
+
+    cancelRestartModal(): void {
+        this.restartModal = { open: false, namespace: '', podName: '' };
+    }
+
+    confirmRestart(): void {
+        const { namespace, podName } = this.restartModal;
+        this.cancelRestartModal();
+        const key = `${namespace}/${podName}`;
+        this.restartingPods.add(key);
+        this.podErrors.delete(key);
+        this.statusService.restartPod(namespace, podName).pipe(takeUntil(this.destroy$)).subscribe({
+            next: () => {
+                setTimeout(() => this.silentReloadPods(namespace), 3000);
+            },
+            error: () => {
+                this.restartingPods.delete(key);
+                this.podErrors.set(key, this.translate.instant('PORTAL.SUBSCRIPTIONS.K8S.RESTART_ERROR', { pod: podName }));
+                setTimeout(() => this.podErrors.delete(key), 5000);
+            }
+        });
+    }
+
+    private silentReloadPods(ns: string): void {
+        this.statusService.getNamespacePods(ns).pipe(takeUntil(this.destroy$)).subscribe({
+            next: res => {
+                const state = this.nsPodsMap.get(ns);
+                if (!state) return;
+                state.pods = res.data?.pods ?? [];
+                const newPodKeys = new Set(state.pods.map(p => `${p.namespace}/${p.name}`));
+                for (const k of this.restartingPods) {
+                    if (k.startsWith(ns + '/') && !newPodKeys.has(k)) {
+                        this.restartingPods.delete(k);
+                    }
+                }
+            },
+            error: () => {}
+        });
+    }
+
+    isPodRestarting(namespace: string, podName: string): boolean {
+        return this.restartingPods.has(`${namespace}/${podName}`);
+    }
+
+    getPodError(namespace: string, podName: string): string | null {
+        return this.podErrors.get(`${namespace}/${podName}`) ?? null;
+    }
+
+    getPodAge(createdAt: string): string {
+        if (!createdAt) return '—';
+        const diff = Date.now() - new Date(createdAt).getTime();
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        if (d > 0) return `${d}d`;
+        if (h > 0) return `${h}h`;
+        return `${m}m`;
+    }
+
+    getPodStatusClass(status: string): string {
+        const s = status?.toLowerCase() ?? '';
+        if (s === 'running') return 'subscriptions-pod-status--running';
+        if (s === 'pending') return 'subscriptions-pod-status--pending';
+        if (s === 'succeeded') return 'subscriptions-pod-status--succeeded';
+        return 'subscriptions-pod-status--error';
+    }
+
+    getPodRestarts(pod: K8sPod): number {
+        return pod.containerStatuses.reduce((sum, c) => sum + (c.restartCount ?? 0), 0);
+    }
+
+    getPodContainerName(pod: K8sPod): string | undefined {
+        return pod.containerStatuses[0]?.name;
+    }
+
+    reloadNsData(sub: FlatSubscription): void {
+        const ns = this.urlToNamespace(sub.url);
+        this.nsPodsMap.delete(ns);
+        this.loadNsData(ns);
     }
 }
