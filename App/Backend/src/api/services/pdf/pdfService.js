@@ -79,7 +79,7 @@ function fd(d) {
 async function generateAgreementPdf(customer, signatureDataUrl, signedAt) {
     return new Promise((resolve, reject) => {
         const chunks = [];
-        const doc = new PDFDocument({ size: 'A4', margin: M, info: { Title: 'Service Agreement — EliasDH' } });
+        const doc = new PDFDocument({ size: 'A4', margin: M, bufferPages: true, info: { Title: 'Service Agreement — EliasDH' } });
 
         doc.on('data', c => chunks.push(c));
         doc.on('end',  () => resolve(Buffer.concat(chunks)));
@@ -88,7 +88,6 @@ async function generateAgreementPdf(customer, signatureDataUrl, signedAt) {
         const today   = fd(signedAt ?? new Date());
         const contact = `${customer.firstName ?? ''} ${customer.lastName ?? ''}`.trim();
 
-        // ── Header banner ────────────────────────────────────────────────────
         doc.rect(0, 0, W, 85).fill(BLUE);
 
         const logoPath = path.join(__dirname, '../../../../Frontend/src/assets/media/images/logo.png');
@@ -102,7 +101,6 @@ async function generateAgreementPdf(customer, signatureDataUrl, signedAt) {
         doc.fillColor('white').fontSize(9).font('Helvetica').text('eliasdh.com', M + (usedLogo ? 50 : 0), 53);
         doc.fillColor('white').fontSize(18).font('Helvetica-Bold').text(T.TITLE, 0, 35, { align: 'right', width: W - M });
 
-        // ── FROM / CLIENT ────────────────────────────────────────────────────
         let y = 105;
         const col2 = M + CW / 2 + 10;
 
@@ -128,16 +126,13 @@ async function generateAgreementPdf(customer, signatureDataUrl, signedAt) {
         doc.text(`Date: ${today}`, M, y);
         y += 20;
 
-        // ── Divider ──────────────────────────────────────────────────────────
         doc.moveTo(M, y).lineTo(W - M, y).strokeColor('#d2d2d2').lineWidth(0.5).stroke();
         y += 10;
 
-        // ── Intro ────────────────────────────────────────────────────────────
         const intro = `${T.INTRO_BEFORE} ${today}${T.INTRO_BETWEEN} ${customer.name}${customer.vat ? `${T.INTRO_VAT} ${customer.vat}` : ''}${T.INTRO_AFTER}`;
         doc.fillColor(GREY).fontSize(8).font('Helvetica').text(intro, M, y, { width: CW });
         y = doc.y + 10;
 
-        // ── Helper: section title ────────────────────────────────────────────
         const addTitle = (title) => {
             if (y > 750) { doc.addPage(); y = M; }
             doc.fillColor(BLUE).fontSize(8.5).font('Helvetica-Bold').text(title, M, y, { width: CW });
@@ -150,12 +145,10 @@ async function generateAgreementPdf(customer, signatureDataUrl, signedAt) {
             y = doc.y + 4;
         };
 
-        // ── Article 1 ────────────────────────────────────────────────────────
         addTitle(T.ARTICLES[0].title);
         T.ARTICLES[0].paras.forEach(addPara);
         y += 4;
 
-        // ── Article 2 + subscription table ──────────────────────────────────
         addTitle(T.ARTICLES[1].title);
         addPara('2.1  The Client subscribes to the following subscription or custom arrangement with EliasDH:');
 
@@ -197,14 +190,12 @@ async function generateAgreementPdf(customer, signatureDataUrl, signedAt) {
         ].forEach(addPara);
         y += 4;
 
-        // ── Articles 3–10 ────────────────────────────────────────────────────
         for (let i = 2; i < T.ARTICLES.length; i++) {
             addTitle(T.ARTICLES[i].title);
             T.ARTICLES[i].paras.forEach(addPara);
             y += 4;
         }
 
-        // ── Signature section ────────────────────────────────────────────────
         const sigNeeded = 60 + (signatureDataUrl ? 50 : 30);
         if (y + sigNeeded > 780) { doc.addPage(); y = M; }
 
@@ -238,11 +229,11 @@ async function generateAgreementPdf(customer, signatureDataUrl, signedAt) {
             drawSignedBox(doc, sigX, y, sigColW, today);
         }
 
-        // ── Footer on all pages ──────────────────────────────────────────────
-        const totalPages = doc.bufferedPageRange ? doc.bufferedPageRange().count : 1;
+        const range = doc.bufferedPageRange();
+        const totalPages = range.count || 1;
         const footer = 'EliasDH BV  ·  VAT: BE1034925266  ·  info@eliasdh.com  ·  eliasdh.com';
         for (let pg = 0; pg < totalPages; pg++) {
-            doc.switchToPage(pg);
+            doc.switchToPage(range.start + pg);
             doc.moveTo(M, 820).lineTo(W - M, 820).strokeColor('#d2d2d2').lineWidth(0.5).stroke();
             doc.fillColor(LGREY).fontSize(7.5).font('Helvetica').text(footer, M, 825, { width: CW - 60 });
             doc.text(`Page ${pg + 1} / ${totalPages}`, M, 825, { width: CW, align: 'right' });
