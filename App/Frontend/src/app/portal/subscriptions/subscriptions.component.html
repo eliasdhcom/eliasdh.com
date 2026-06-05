@@ -184,7 +184,7 @@
                                         <td class="subscriptions-pod-age">{{getPodAge(pod.createdAt)}}</td>
                                         <td class="subscriptions-pod-node">{{pod.node}}</td>
                                         <td class="subscriptions-pod-actions">
-                                            <button class="subscriptions-action-btn subscriptions-action-btn--logs cursor-pointer" (click)="openLogs(pod.namespace, pod.name, getPodContainerName(pod))" [title]="'PORTAL.SUBSCRIPTIONS.K8S.BTN_LOGS'|translate">
+                                            <button class="subscriptions-action-btn subscriptions-action-btn--logs cursor-pointer" (click)="openLogs(pod.namespace, pod.name, getPodDisplayName(pod, ns.pods), getPodContainerName(pod))" [title]="'PORTAL.SUBSCRIPTIONS.K8S.BTN_LOGS'|translate">
                                                 <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                                     <path class="cursor-pointer" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                                                     <polyline class="cursor-pointer" points="14 2 14 8 20 8"/>
@@ -259,7 +259,7 @@
                     <path class="cursor-pointer" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                     <polyline class="cursor-pointer" points="14 2 14 8 20 8"/>
                 </svg>
-                <span>{{logModal.podName}}</span>
+                <span>{{logModal.displayName}}</span>
             </div>
             <button class="subscriptions-log-close cursor-pointer" (click)="closeLogs()" title="Sluiten">
                 <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

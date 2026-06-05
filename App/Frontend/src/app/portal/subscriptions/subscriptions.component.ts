@@ -43,6 +43,7 @@ interface LogModalState {
     error: string;
     lines: string[];
     podName: string;
+    displayName: string;
     namespace: string;
 }
 
@@ -74,7 +75,7 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
     nsPodsMap = new Map<string, NsPodsState>();
     restartingPods = new Set<string>();
     podErrors = new Map<string, string>();
-    logModal: LogModalState = { open: false, loading: false, error: '', lines: [], podName: '', namespace: '' };
+    logModal: LogModalState = { open: false, loading: false, error: '', lines: [], podName: '', displayName: '', namespace: '' };
     restartModal: RestartModalState = { open: false, namespace: '', podName: '' };
 
     private pendingHighlightId: string | null = null;
@@ -324,8 +325,8 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
         return this.nsPodsMap.get(this.urlToNamespace(sub.url)) ?? null;
     }
 
-    openLogs(namespace: string, podName: string, container?: string): void {
-        this.logModal = { open: true, loading: true, error: '', lines: [], podName, namespace };
+    openLogs(namespace: string, podName: string, displayName: string, container?: string): void {
+        this.logModal = { open: true, loading: true, error: '', lines: [], podName, displayName, namespace };
         this.statusService.getPodLogs(namespace, podName, container).pipe(takeUntil(this.destroy$)).subscribe({
             next: res => {
                 this.logModal.loading = false;
