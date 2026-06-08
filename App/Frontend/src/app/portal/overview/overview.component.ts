@@ -91,14 +91,14 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         .subscribe({
             next: ({ customers, statuses, plans }) => {
                 this.pricingPlansService.setPlanColors(plans.data ?? []);
-                this.computeStats(customers.data ?? [], statuses.data ?? []);
+                this.computeStats(customers.data ?? [], statuses.data ?? [], plans.data ?? []);
                 this.loading = false;
             },
             error: () => { this.loading = false; }
         });
     }
 
-    private computeStats(customers: Customer[], invoiceStatuses: InvoiceStatus[]): void {
+    private computeStats(customers: Customer[], invoiceStatuses: InvoiceStatus[], allPlans: { name: string }[] = []): void {
         const now          = new Date();
         const currentYear  = now.getFullYear();
         const currentMonth = now.getMonth();
@@ -228,15 +228,10 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
                 color: this.pricingPlansService.getPlanColor(type)
             }));
 
-        const coveredKeywords = new Set<string>();
-        for (const s of this.typeStats) {
-            for (const kw of this.STANDARD_TYPES.map(t => t.label.toLowerCase())) {
-                if (s.type.toLowerCase().includes(kw)) coveredKeywords.add(kw);
-            }
-        }
-        for (const { label } of this.STANDARD_TYPES) {
-            if (!coveredKeywords.has(label.toLowerCase())) {
-                this.typeStats.push({ type: label, count: 0, liveCount: 0, color: this.pricingPlansService.getPlanColor(label) });
+        const coveredNames = new Set(this.typeStats.map(s => s.type.toLowerCase()));
+        for (const plan of allPlans) {
+            if (!coveredNames.has(plan.name.toLowerCase())) {
+                this.typeStats.push({ type: plan.name, count: 0, liveCount: 0, color: this.pricingPlansService.getPlanColor(plan.name) });
             }
         }
         this.typeStats.sort((a, b) => {
@@ -289,15 +284,6 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         }
         return periods;
     }
-
-    private readonly STANDARD_TYPES: { label: string }[] = [
-        { label: 'Free'       },
-        { label: 'Basic'      },
-        { label: 'Startup'    },
-        { label: 'Growth'     },
-        { label: 'Business'   },
-        { label: 'Enterprise' },
-    ];
 
     formatCurrency(amount: number): string {
         return new Intl.NumberFormat('nl-BE', { style: 'currency', currency: 'EUR' }).format(amount);

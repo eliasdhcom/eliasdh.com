@@ -320,6 +320,28 @@
     text-decoration: underline;
 }
 
+.subscriptions-github-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    color: var(--text-muted, #888);
+    opacity: 0.7;
+    transition: opacity 0.15s, color 0.15s;
+    flex-shrink: 0;
+}
+
+.subscriptions-github-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.subscriptions-github-btn:hover {
+    opacity: 1;
+    color: var(--text, #1a1a1a);
+}
+
 .subscriptions-badge {
     display: inline-flex;
     align-items: center;

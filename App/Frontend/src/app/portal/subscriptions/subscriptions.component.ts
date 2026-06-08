@@ -258,6 +258,11 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
         setTimeout(() => { this._highlightId = null; }, 4000);
     }
 
+    getGitHubUrl(url: string): string {
+        const domain = url.replace(/^https?:\/\//i, '').replace(/\/.*$/, '');
+        return `https://github.com/eliasdhcom/${domain}`;
+    }
+
     urlToNamespace(url: string): string {
         return url
             .replace(/^https?:\/\//i, '')

@@ -95,11 +95,15 @@
     </div>
     <div class="logs-pagination" *ngIf="!loading && !error && totalPages > 1">
         <button class="logs-page-btn cursor-pointer" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline class="cursor-pointer" points="15 18 9 12 15 6"/>
+            </svg>
         </button>
         <button class="logs-page-btn cursor-pointer" *ngFor="let p of pageNumbers" [class.logs-page-btn--active]="p === currentPage" (click)="goToPage(p)">{{p}}</button>
         <button class="logs-page-btn cursor-pointer" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline class="cursor-pointer" points="9 18 15 12 9 6"/>
+            </svg>
         </button>
     </div>
 </div>
