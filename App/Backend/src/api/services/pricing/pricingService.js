@@ -7,12 +7,19 @@
 const { getDb } = require('../../../database/db');
 const logger    = require('../../../utils/logger');
 
+function parseJson(val, fallback) {
+    try { return val ? JSON.parse(val) : fallback; } catch { return fallback; }
+}
+
 function mapPlan(r) {
     return {
         id:           Number(r.id),
         name:         r.name,
         monthlyPrice: Number(r.monthly_price),
-        color:        r.color ?? '#cccccc'
+        color:        r.color ?? '#cccccc',
+        isBestSeller: Boolean(r.is_bestseller),
+        description:  typeof r.description === 'string' && r.description !== '{}' ? r.description : '',
+        bullets:      parseJson(r.bullets, [])
     };
 }
 
@@ -25,20 +32,31 @@ class PricingService {
     async create(data) {
         const db  = getDb();
         const res = await db.execute({
-            sql:  'INSERT INTO pricing_plans (name, monthly_price, color) VALUES (?, ?, ?)',
-            args: [data.name.trim(), Number(data.monthlyPrice ?? 0), data.color ?? '#cccccc']
+            sql:  'INSERT INTO pricing_plans (name, monthly_price, color, is_bestseller, description, bullets) VALUES (?, ?, ?, ?, ?, ?)',
+            args: [
+                data.name.trim(),
+                Number(data.monthlyPrice ?? 0),
+                data.color        ?? '#cccccc',
+                data.isBestSeller ? 1 : 0,
+                data.description ?? '',
+                JSON.stringify(data.bullets ?? [])
+            ]
         });
         const id = Number(res.lastInsertRowid);
         logger.info(`Pricing plan created: ${data.name}`);
-        return { id, name: data.name.trim(), monthlyPrice: Number(data.monthlyPrice ?? 0), color: data.color ?? '#cccccc' };
+        const { rows } = await db.execute({ sql: 'SELECT * FROM pricing_plans WHERE id = ?', args: [id] });
+        return mapPlan(rows[0]);
     }
 
     async update(id, data) {
         const db = getDb();
         const fields = [], args = [];
-        if (data.name         !== undefined) { fields.push('name = ?');          args.push(data.name.trim()); }
-        if (data.monthlyPrice !== undefined) { fields.push('monthly_price = ?'); args.push(Number(data.monthlyPrice)); }
-        if (data.color        !== undefined) { fields.push('color = ?');         args.push(data.color); }
+        if (data.name         !== undefined) { fields.push('name = ?');           args.push(data.name.trim()); }
+        if (data.monthlyPrice !== undefined) { fields.push('monthly_price = ?');  args.push(Number(data.monthlyPrice)); }
+        if (data.color        !== undefined) { fields.push('color = ?');          args.push(data.color); }
+        if (data.isBestSeller !== undefined) { fields.push('is_bestseller = ?');  args.push(data.isBestSeller ? 1 : 0); }
+        if (data.description  !== undefined) { fields.push('description = ?');    args.push(data.description ?? ''); }
+        if (data.bullets      !== undefined) { fields.push('bullets = ?');        args.push(JSON.stringify(data.bullets ?? [])); }
         if (!fields.length) throw new Error('No fields to update');
         args.push(id);
         await db.execute({ sql: `UPDATE pricing_plans SET ${fields.join(', ')} WHERE id = ?`, args });

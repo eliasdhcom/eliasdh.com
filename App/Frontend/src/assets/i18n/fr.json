@@ -414,7 +414,13 @@
         "NAME": "Nom",
         "NAME_PLACEHOLDER": "ex. Basic",
         "PRICE": "Prix mensuel (HT)",
-        "COLOR": "Couleur"
+        "COLOR": "Couleur",
+        "BESTSELLER": "Le plus populaire",
+        "BESTSELLER_LABEL": "Marquer comme plan le plus populaire",
+        "DESCRIPTION": "Description",
+        "DESCRIPTION_PLACEHOLDER": "Courte description du plan...",
+        "BULLETS": "Avantages (4 points)",
+        "BULLET_PLACEHOLDER": "Décrire un avantage..."
       },
       "DELETE": {
         "TITLE": "Supprimer le plan tarifaire",

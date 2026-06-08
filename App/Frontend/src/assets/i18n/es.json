@@ -414,7 +414,13 @@
         "NAME": "Nombre",
         "NAME_PLACEHOLDER": "ej. Basic",
         "PRICE": "Precio mensual (sin IVA)",
-        "COLOR": "Color"
+        "COLOR": "Color",
+        "BESTSELLER": "Más popular",
+        "BESTSELLER_LABEL": "Marcar como plan más popular",
+        "DESCRIPTION": "Descripción",
+        "DESCRIPTION_PLACEHOLDER": "Breve descripción del plan...",
+        "BULLETS": "Ventajas (4 puntos)",
+        "BULLET_PLACEHOLDER": "Describir una ventaja..."
       },
       "DELETE": {
         "TITLE": "Eliminar plan de precios",

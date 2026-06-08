@@ -33,7 +33,7 @@
         <div class="pricing-plans-card" *ngFor="let plan of plans">
             <div class="pricing-plans-card-color-bar" [style.background]="plan.color"></div>
             <div class="pricing-plans-card-body">
-                <div class="pricing-plans-card-name">{{plan.name}}</div>
+
                 <div class="pricing-plans-card-price">
                     <span class="pricing-plans-card-amount">{{formatCurrency(plan.monthlyPrice)}}</span>
                     <span class="pricing-plans-card-period">{{'PORTAL.PRICING.PER_MONTH'|translate}}</span>
@@ -76,22 +76,47 @@
             </button>
         </div>
         <div class="pricing-plans-modal-body">
-            <div class="pricing-plans-form-group">
-                <label class="pricing-plans-form-label">{{'PORTAL.PRICING.FORM.NAME'|translate}}</label>
-                <input class="pricing-plans-form-input cursor-text" type="text" [(ngModel)]="form.name" (input)="markTouched()" [placeholder]="'PORTAL.PRICING.FORM.NAME_PLACEHOLDER'|translate" maxlength="64"/>
-            </div>
-            <div class="pricing-plans-form-group">
-                <label class="pricing-plans-form-label">{{'PORTAL.PRICING.FORM.COLOR'|translate}}</label>
-                <div class="pricing-plans-color-wrap">
-                    <input class="pricing-plans-color-input cursor-pointer" type="color" [(ngModel)]="form.color" (input)="markTouched()"/>
-                    <span class="pricing-plans-color-preview" [style.background]="form.color" [style.color]="pricingService.getPlanTextColor(form.color)">{{form.name || 'Voorbeeld'}}</span>
+            <div class="pricing-plans-form-row">
+                <div class="pricing-plans-form-group pricing-plans-form-group--grow">
+                    <label class="pricing-plans-form-label">{{'PORTAL.PRICING.FORM.NAME'|translate}}</label>
+                    <input class="pricing-plans-form-input cursor-text" type="text" [(ngModel)]="form.name" (input)="markTouched()" [placeholder]="'PORTAL.PRICING.FORM.NAME_PLACEHOLDER'|translate" maxlength="64"/>
+                </div>
+                <div class="pricing-plans-form-group">
+                    <label class="pricing-plans-form-label">{{'PORTAL.PRICING.FORM.PRICE'|translate}}</label>
+                    <div class="pricing-plans-form-input-wrap">
+                        <span class="pricing-plans-form-prefix">&euro;</span>
+                        <input class="pricing-plans-form-input pricing-plans-form-input--price cursor-text" type="number" [(ngModel)]="form.monthlyPrice" (input)="markTouched()" min="0" step="1" [placeholder]="'0'"/>
+                    </div>
                 </div>
             </div>
+            <div class="pricing-plans-form-row pricing-plans-form-row--align">
+                <div class="pricing-plans-form-group">
+                    <label class="pricing-plans-form-label">{{'PORTAL.PRICING.FORM.COLOR'|translate}}</label>
+                    <div class="pricing-plans-color-wrap">
+                        <input class="pricing-plans-color-input cursor-pointer" type="color" [(ngModel)]="form.color" (input)="markTouched()"/>
+                        <span class="pricing-plans-color-preview" [style.background]="form.color" [style.color]="pricingService.getPlanTextColor(form.color)">{{form.name || 'Voorbeeld'}}</span>
+                    </div>
+                </div>
+                <div class="pricing-plans-form-group pricing-plans-form-group--checkbox">
+                    <label class="pricing-plans-form-label">{{'PORTAL.PRICING.FORM.BESTSELLER'|translate}}</label>
+                    <label class="pricing-plans-toggle cursor-pointer">
+                        <input class="cursor-pointer" type="checkbox" [(ngModel)]="form.isBestSeller" (change)="markTouched()"/>
+                        <span class="pricing-plans-toggle-slider cursor-pointer"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="pricing-plans-form-divider"></div>
             <div class="pricing-plans-form-group">
-                <label class="pricing-plans-form-label">{{'PORTAL.PRICING.FORM.PRICE'|translate}}</label>
-                <div class="pricing-plans-form-input-wrap">
-                    <span class="pricing-plans-form-prefix">&euro;</span>
-                    <input class="pricing-plans-form-input pricing-plans-form-input--price cursor-text" type="number" [(ngModel)]="form.monthlyPrice" (input)="markTouched()" min="0" step="1" [placeholder]="'0'"/>
+                <label class="pricing-plans-form-label">{{'PORTAL.PRICING.FORM.DESCRIPTION'|translate}}</label>
+                <textarea class="pricing-plans-form-textarea cursor-text" [(ngModel)]="form.description" (input)="markTouched()" rows="2" maxlength="200" [placeholder]="'PORTAL.PRICING.FORM.DESCRIPTION_PLACEHOLDER'|translate"></textarea>
+            </div>
+            <div class="pricing-plans-form-group">
+                <label class="pricing-plans-form-label">{{'PORTAL.PRICING.FORM.BULLETS'|translate}}</label>
+                <div class="pricing-plans-bullets-list">
+                    <div class="pricing-plans-bullet-row" *ngFor="let i of [0,1,2,3]">
+                        <span class="pricing-plans-bullet-num">{{i + 1}}</span>
+                        <input class="pricing-plans-form-input cursor-text" type="text" [(ngModel)]="form.bullets[i]" (input)="markTouched()" maxlength="120" [placeholder]="'PORTAL.PRICING.FORM.BULLET_PLACEHOLDER'|translate"/>
+                    </div>
                 </div>
             </div>
             <div class="pricing-plans-form-error" *ngIf="formError && !showDiscardConfirm">{{formError}}</div>

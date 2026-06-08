@@ -413,7 +413,13 @@
         "NAME": "Naam",
         "NAME_PLACEHOLDER": "bv. Basic",
         "PRICE": "Maandprijs (excl. BTW)",
-        "COLOR": "Kleur"
+        "COLOR": "Kleur",
+        "BESTSELLER": "Meest populair",
+        "BESTSELLER_LABEL": "Markeer als populairste keuze",
+        "DESCRIPTION": "Omschrijving",
+        "DESCRIPTION_PLACEHOLDER": "Korte omschrijving van het plan...",
+        "BULLETS": "Voordelen (4 punten)",
+        "BULLET_PLACEHOLDER": "Voordeel omschrijven..."
       },
       "DELETE": {
         "TITLE": "Tariefplan verwijderen",

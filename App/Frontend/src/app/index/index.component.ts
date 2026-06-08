@@ -12,8 +12,10 @@ import { RouterLink } from '@angular/router';
 import { LanguageService } from '../services/language.service';
 import { SharedModule } from '../shared/shared.module';
 import { CustomersService, Customer } from '../services/customers.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { PricingPlansService, PricingPlan } from '../services/pricing-plans.service';
+import { Subject, forkJoin } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 interface JoinCard {
     type: 'join';
@@ -67,15 +69,9 @@ type TeamMember = JoinCard | MemberCard;
 export class IndexComponent implements OnInit, OnDestroy {
     isYearlyPricing: boolean = false;
     isVatIncludedPricing: boolean = false;
+    pricingPlans: PricingPlan[] = [];
 
     private readonly vatRate: number = 0.21;
-    private readonly hostingPrices = {
-        basic: { monthly: 20, yearly: 220 },
-        growth: { monthly: 40, yearly: 440 },
-        startup: { monthly: 80, yearly: 880 },
-        business: { monthly: 160, yearly: 1760 },
-        enterprise: { monthly: 320, yearly: 3520 }
-    };
     
     showContactModal: boolean = false;
     contactSubject: string = '';
@@ -191,7 +187,8 @@ export class IndexComponent implements OnInit, OnDestroy {
     constructor(
         private languageService: LanguageService,
         private translate: TranslateService,
-        private customersService: CustomersService
+        private customersService: CustomersService,
+        private pricingPlansService: PricingPlansService
     ) { }
 
     ngOnInit(): void {
@@ -202,7 +199,7 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.calculateReviewsVisible();
         this.calculateYearsInBusiness();
         this.setupStatsObserver();
-        this.loadTrustedClients();
+        this.loadData();
     }
 
     ngOnDestroy(): void {
@@ -212,17 +209,19 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.destroy$.complete();
     }
 
-    private loadTrustedClients(): void {
-        this.customersService.getAllCustomers()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (response) => {
-                    this.trustedClients = (response.data ?? [])
-                        .filter(c => !c.isHQ)
-                        .sort((a, b) => a.id.localeCompare(b.id));
-                },
-                error: () => {}
-            });
+    private loadData(): void {
+        forkJoin({
+            customers: this.customersService.getAllCustomers().pipe(catchError(() => of({ data: [] as Customer[] }))),
+            plans:     this.pricingPlansService.getAll().pipe(catchError(() => of({ data: [] as PricingPlan[] })))
+        })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+            next: ({ customers, plans }) => {
+                this.trustedClients = (customers.data ?? []).filter(c => !c.isHQ).sort((a, b) => a.id.localeCompare(b.id));
+                this.pricingPlans   = (plans.data ?? []).filter(p => p.monthlyPrice > 0).sort((a, b) => a.monthlyPrice - b.monthlyPrice);
+            },
+            error: () => {}
+        });
     }
 
     @HostListener('window:resize')
@@ -381,20 +380,26 @@ export class IndexComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    getHostingPlanPrice(plan: 'basic' | 'growth' | 'startup' | 'business' | 'enterprise'): string {
-        const selectedPrice = this.isYearlyPricing ? this.hostingPrices[plan].yearly : this.hostingPrices[plan].monthly;
-        const finalPrice = this.isVatIncludedPricing ? selectedPrice * (1 + this.vatRate) : selectedPrice;
-        const periodKey = this.isYearlyPricing ? 'INDEX.PRICING-PERIOD-YEAR' : 'INDEX.PRICING-PERIOD-MONTH';
-        const period = this.translate.instant(periodKey);
-        const locale = this.getLocaleForCurrentLanguage();
+    getPlanPrice(plan: PricingPlan): string {
+        const monthly      = plan.monthlyPrice;
+        const yearly       = monthly * 11;
+        const selectedPrice = this.isYearlyPricing ? yearly : monthly;
+        const finalPrice    = this.isVatIncludedPricing ? selectedPrice * (1 + this.vatRate) : selectedPrice;
+        const periodKey     = this.isYearlyPricing ? 'INDEX.PRICING-PERIOD-YEAR' : 'INDEX.PRICING-PERIOD-MONTH';
+        const period        = this.translate.instant(periodKey);
+        const locale        = this.getLocaleForCurrentLanguage();
         const formattedPrice = new Intl.NumberFormat(locale, {
-            style: 'currency',
-            currency: 'EUR',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2
+            style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 2
         }).format(finalPrice);
-
         return `${formattedPrice}${period}`;
+    }
+
+    getPlanDescription(plan: PricingPlan): string {
+        return plan.description ?? '';
+    }
+
+    getPlanBullets(plan: PricingPlan): string[] {
+        return plan.bullets ?? [];
     }
 
     getPricingTaxHintKey(): string {

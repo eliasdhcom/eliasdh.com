@@ -15,6 +15,9 @@ export interface PricingPlan {
     name:         string;
     monthlyPrice: number;
     color:        string;
+    isBestSeller: boolean;
+    description:  string;
+    bullets:      string[];
 }
 
 const FALLBACK_COLORS: Record<string, string> = {

@@ -413,7 +413,13 @@
         "NAME": "Name",
         "NAME_PLACEHOLDER": "z.B. Basic",
         "PRICE": "Monatspreis (ohne MwSt.)",
-        "COLOR": "Farbe"
+        "COLOR": "Farbe",
+        "BESTSELLER": "Beliebteste Wahl",
+        "BESTSELLER_LABEL": "Als beliebtesten Plan markieren",
+        "DESCRIPTION": "Beschreibung",
+        "DESCRIPTION_PLACEHOLDER": "Kurze Beschreibung des Plans...",
+        "BULLETS": "Vorteile (4 Punkte)",
+        "BULLET_PLACEHOLDER": "Vorteil beschreiben..."
       },
       "DELETE": {
         "TITLE": "Preisplan löschen",

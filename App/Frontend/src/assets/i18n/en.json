@@ -414,7 +414,13 @@
         "NAME": "Name",
         "NAME_PLACEHOLDER": "e.g. Basic",
         "PRICE": "Monthly price (excl. VAT)",
-        "COLOR": "Color"
+        "COLOR": "Color",
+        "BESTSELLER": "Most popular",
+        "BESTSELLER_LABEL": "Mark as most popular plan",
+        "DESCRIPTION": "Description",
+        "DESCRIPTION_PLACEHOLDER": "Short description of the plan...",
+        "BULLETS": "Features (4 points)",
+        "BULLET_PLACEHOLDER": "Describe a feature..."
       },
       "DELETE": {
         "TITLE": "Delete pricing plan",

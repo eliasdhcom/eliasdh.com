@@ -109,193 +109,23 @@
             </section>
             <span class="index-pricing-badge" [class.visible]="isYearlyPricing">{{'INDEX.PRICING-SAVE' | translate}}</span>
             <section class="index-services-container-item">
-                <section class="index-services-box hosting-services">
+                <section class="index-services-box hosting-services" *ngFor="let plan of pricingPlans" [class.popular]="plan.isBestSeller">
+                    <span class="index-services-popular-badge" *ngIf="plan.isBestSeller">{{'INDEX.TRANSLATE-POPULAR' | translate}}</span>
                     <section class="index-services-box-header">
-                        <h4 class="index-services-plan-name">{{'INDEX.TRANSLATE16-1' | translate}}</h4>
-                        <p class="index-services-plan-price">{{getHostingPlanPrice('basic')}}</p>
-                        <p class="index-services-plan-tagline">{{'INDEX.TRANSLATE16-DESC' | translate}}</p>
+                        <h4 class="index-services-plan-name">{{plan.name}}</h4>
+                        <p class="index-services-plan-price">{{getPlanPrice(plan)}}</p>
+                        <p class="index-services-plan-tagline">{{getPlanDescription(plan)}}</p>
                     </section>
                     <section class="index-services-box-content">
                         <ul>
-                            <li>
+                            <li *ngFor="let bullet of getPlanBullets(plan)">
                                 <svg class="index-services-check" viewBox="0 0 16 16">
                                     <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
                                 </svg>
-                                {{'INDEX.TRANSLATE17' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE18' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE19' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE20' | translate}}
+                                {{bullet}}
                             </li>
                         </ul>
-                        <button class="global-button cursor-pointer" (click)="openContactModal('Hosting (Basic)')">
-                            <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
-                        </button>
-                    </section>
-                </section>
-                <section class="index-services-box hosting-services">
-                    <section class="index-services-box-header">
-                        <h4 class="index-services-plan-name">{{'INDEX.TRANSLATE60-1' | translate}}</h4>
-                        <p class="index-services-plan-price">{{getHostingPlanPrice('growth')}}</p>
-                        <p class="index-services-plan-tagline">{{'INDEX.TRANSLATE60-DESC' | translate}}</p>
-                    </section>
-                    <section class="index-services-box-content">
-                        <ul>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE61' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE62' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE63' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE64' | translate}}
-                            </li>
-                        </ul>
-                        <button class="global-button cursor-pointer" (click)="openContactModal('Hosting (Growth)')">
-                            <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
-                        </button>
-                    </section>
-                </section>
-                <section class="index-services-box hosting-services">
-                    <section class="index-services-box-header">
-                        <h4 class="index-services-plan-name">{{'INDEX.TRANSLATE21-1' | translate}}</h4>
-                        <p class="index-services-plan-price">{{getHostingPlanPrice('startup')}}</p>
-                        <p class="index-services-plan-tagline">{{'INDEX.TRANSLATE21-DESC' | translate}}</p>
-                    </section>
-                    <section class="index-services-box-content">
-                        <ul>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE22' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE23' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE24' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE25' | translate}}
-                            </li>
-                        </ul>
-                        <button class="global-button cursor-pointer" (click)="openContactModal('Hosting (Startup)')">
-                            <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
-                        </button>
-                    </section>
-                </section>
-                <section class="index-services-box hosting-services popular">
-                    <span class="index-services-popular-badge">{{'INDEX.TRANSLATE-POPULAR' | translate}}</span>
-                    <section class="index-services-box-header">
-                        <h4 class="index-services-plan-name">{{'INDEX.TRANSLATE26-1' | translate}}</h4>
-                        <p class="index-services-plan-price">{{getHostingPlanPrice('business')}}</p>
-                        <p class="index-services-plan-tagline">{{'INDEX.TRANSLATE26-DESC' | translate}}</p>
-                    </section>
-                    <section class="index-services-box-content">
-                        <ul>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE27' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE28' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE29' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE30' | translate}}
-                            </li>
-                        </ul>
-                        <button class="global-button cursor-pointer" (click)="openContactModal('Hosting (Business)')">
-                            <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
-                        </button>
-                    </section>
-                </section>
-                <section class="index-services-box hosting-services">
-                    <section class="index-services-box-header">
-                        <h4 class="index-services-plan-name">{{'INDEX.TRANSLATE31-1' | translate}}</h4>
-                        <p class="index-services-plan-price">{{getHostingPlanPrice('enterprise')}}</p>
-                        <p class="index-services-plan-tagline">{{'INDEX.TRANSLATE31-DESC' | translate}}</p>
-                    </section>
-                    <section class="index-services-box-content">
-                        <ul>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE32' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE33' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE34' | translate}}
-                            </li>
-                            <li>
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                                {{'INDEX.TRANSLATE35' | translate}}
-                            </li>
-                        </ul>
-                        <button class="global-button cursor-pointer" (click)="openContactModal('Hosting (Enterprise)')">
+                        <button class="global-button cursor-pointer" (click)="openContactModal('Hosting (' + plan.name + ')')">
                             <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
                         </button>
                     </section>

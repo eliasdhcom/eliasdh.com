@@ -17,6 +17,9 @@ interface PlanForm {
     name:         string;
     monthlyPrice: string;
     color:        string;
+    isBestSeller: boolean;
+    description:  string;
+    bullets:      [string, string, string, string];
 }
 
 @Component({
@@ -39,7 +42,7 @@ export class PortalPricingPlansComponent implements OnInit, OnDestroy {
     formTouched        = false;
     showDiscardConfirm = false;
     overlayMousedownIsBackdrop = false;
-    form: PlanForm = this.emptyForm();
+    form: PlanForm     = this.emptyForm();
 
     deleteConfirmId: number | null = null;
 
@@ -74,7 +77,9 @@ export class PortalPricingPlansComponent implements OnInit, OnDestroy {
             });
     }
 
-    private emptyForm(): PlanForm { return { name: '', monthlyPrice: '0', color: '#cccccc' }; }
+    private emptyForm(): PlanForm {
+        return { name: '', monthlyPrice: '0', color: '#cccccc', isBestSeller: false, description: '', bullets: ['', '', '', ''] };
+    }
 
     markTouched(): void { this.formTouched = true; }
 
@@ -89,9 +94,17 @@ export class PortalPricingPlansComponent implements OnInit, OnDestroy {
     }
 
     openEditForm(plan: PricingPlan): void {
-        this.isEditing          = true;
-        this.editingId          = plan.id;
-        this.form               = { name: plan.name, monthlyPrice: String(plan.monthlyPrice), color: plan.color ?? '#cccccc' };
+        this.isEditing  = true;
+        this.editingId  = plan.id;
+        const b = plan.bullets ?? [];
+        this.form = {
+            name:         plan.name,
+            monthlyPrice: String(plan.monthlyPrice),
+            color:        plan.color        ?? '#cccccc',
+            isBestSeller: plan.isBestSeller ?? false,
+            description:  plan.description  ?? '',
+            bullets:      [b[0] ?? '', b[1] ?? '', b[2] ?? '', b[3] ?? '']
+        };
         this.formError          = '';
         this.formTouched        = false;
         this.showDiscardConfirm = false;
@@ -121,7 +134,14 @@ export class PortalPricingPlansComponent implements OnInit, OnDestroy {
         this.formSaving = true;
         this.formError  = '';
 
-        const payload = { name: this.form.name.trim(), monthlyPrice: price, color: this.form.color || '#cccccc' };
+        const payload = {
+            name:         this.form.name.trim(),
+            monthlyPrice: price,
+            color:        this.form.color || '#cccccc',
+            isBestSeller: this.form.isBestSeller,
+            description:  this.form.description.trim(),
+            bullets:      this.form.bullets.map(b => b.trim()).filter(b => b)
+        };
         const req = this.isEditing
             ? this.pricingService.update(this.editingId, payload)
             : this.pricingService.create(payload);

@@ -177,6 +177,9 @@ async function initSchema() {
     try { await db.execute(`CREATE INDEX IF NOT EXISTS idx_logs_resource ON logs(resource)`); } catch (_) {}
     try { await db.execute(`ALTER TABLE customers ADD COLUMN agreement_signed_at TEXT`); } catch (_) {}
     try { await db.execute(`ALTER TABLE customers ADD COLUMN agreement_signature TEXT`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE pricing_plans ADD COLUMN is_bestseller INTEGER NOT NULL DEFAULT 0`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE pricing_plans ADD COLUMN description    TEXT    NOT NULL DEFAULT '{}'`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE pricing_plans ADD COLUMN bullets        TEXT    NOT NULL DEFAULT '{}'`); } catch (_) {}
 }
 
 module.exports = { getDb, initSchema };
