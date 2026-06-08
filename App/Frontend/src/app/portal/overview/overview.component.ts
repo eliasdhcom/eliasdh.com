@@ -239,7 +239,10 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
                 this.typeStats.push({ type: label, count: 0, liveCount: 0, color: this.pricingPlansService.getPlanColor(label) });
             }
         }
-        this.typeStats.sort((a, b) => this.getTypeOrder(a.type) - this.getTypeOrder(b.type));
+        this.typeStats.sort((a, b) => {
+            const priceDiff = this.pricingPlansService.getPlanPrice(a.type) - this.pricingPlansService.getPlanPrice(b.type);
+            return priceDiff !== 0 ? priceDiff : a.type.localeCompare(b.type);
+        });
     }
 
     private isFreeOrTodo(type: string): boolean {
@@ -295,16 +298,6 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         { label: 'Business'   },
         { label: 'Enterprise' },
     ];
-
-    private readonly TYPE_ORDER = ['free', 'basic', 'startup', 'growth', 'business', 'enterprise'];
-
-    private getTypeOrder(type: string): number {
-        const t = type.toLowerCase();
-        for (let i = 0; i < this.TYPE_ORDER.length; i++) {
-            if (t.includes(this.TYPE_ORDER[i])) return i;
-        }
-        return this.TYPE_ORDER.length;
-    }
 
     formatCurrency(amount: number): string {
         return new Intl.NumberFormat('nl-BE', { style: 'currency', currency: 'EUR' }).format(amount);

@@ -17,10 +17,8 @@ export interface PricingPlan {
     color:        string;
 }
 
-// Fallback colors for non-plan types (Custom, Todo, Domain)
 const FALLBACK_COLORS: Record<string, string> = {
     custom: '#bfe1f6',
-    todo:   '#4f94f0',
     domain: '#dbeafe',
 };
 
@@ -28,8 +26,8 @@ const FALLBACK_COLORS: Record<string, string> = {
 export class PricingPlansService {
     private readonly apiUrl = `${environment.eliasdhApiUrl}/api/v1/pricing`;
 
-    // Shared color cache — populated by any component that calls setPlanColors()
     private planColorCache = new Map<string, string>();
+    private planPriceCache = new Map<string, number>();
 
     constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -60,21 +58,25 @@ export class PricingPlansService {
         return this.http.delete<{ success: boolean }>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
     }
 
-    /** Call after loading plans to populate the shared color cache. */
     setPlanColors(plans: PricingPlan[]): void {
         this.planColorCache.clear();
+        this.planPriceCache.clear();
         for (const p of plans) {
             this.planColorCache.set(p.name.toLowerCase(), p.color ?? '#cccccc');
+            this.planPriceCache.set(p.name.toLowerCase(), p.monthlyPrice ?? 0);
         }
     }
 
-    /** Returns background color for a subscription type name. */
+    getPlanPrice(typeName: string): number {
+        const t = (typeName ?? '').toLowerCase();
+        return this.planPriceCache.has(t) ? this.planPriceCache.get(t)! : Infinity;
+    }
+
     getPlanColor(typeName: string): string {
         const t = (typeName ?? '').toLowerCase();
         return this.planColorCache.get(t) ?? FALLBACK_COLORS[t] ?? '#d0d0d0';
     }
 
-    /** Returns legible text color (black or white) for a given hex background. */
     getPlanTextColor(bgHex: string): string {
         if (!bgHex || bgHex.length < 4) return '#1a1a1a';
         const h = bgHex.replace('#', '');
@@ -84,7 +86,6 @@ export class PricingPlansService {
         return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.5 ? '#1a1a1a' : '#ffffff';
     }
 
-    /** Convenience: returns {background, color} style object for a subscription type. */
     getBadgeStyle(typeName: string): { background: string; color: string } {
         const bg = this.getPlanColor(typeName);
         return { background: bg, color: this.getPlanTextColor(bg) };
