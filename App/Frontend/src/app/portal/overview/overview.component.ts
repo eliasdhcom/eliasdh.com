@@ -10,8 +10,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { CustomersService, Customer, SubscriptionFrequency } from '../../services/customers.service';
 import { InvoicesService, InvoiceStatus } from '../../services/invoices.service';
 import { PricingPlansService } from '../../services/pricing-plans.service';
-import { Subject, forkJoin, of } from 'rxjs';
-import { takeUntil, catchError } from 'rxjs/operators';
+import { StatusService } from '../../services/status.service';
+import { Subject, forkJoin, of, interval } from 'rxjs';
+import { takeUntil, catchError, switchMap, startWith } from 'rxjs/operators';
 
 interface MonthBar {
     label: string;
@@ -62,15 +63,21 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
     chartMax              = 1;
     typeStats: TypeStat[] = [];
 
+    clusterLoading = true;
+    clusterMemoryStats: { percent: number; formatted: string } = { percent: 0, formatted: 'N/A' };
+    clusterCpuStats:    { percent: number; formatted: string } = { percent: 0, formatted: 'N/A' };
+    clusterStorageTotal = 'N/A';
+
     private destroy$ = new Subject<void>();
 
     constructor(
         private customersService: CustomersService,
         private invoicesService: InvoicesService,
-        readonly pricingPlansService: PricingPlansService
+        readonly pricingPlansService: PricingPlansService,
+        private statusService: StatusService
     ) {}
 
-    ngOnInit(): void  { this.loadData(); }
+    ngOnInit(): void  { this.loadData(); this.loadClusterData(); }
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
@@ -95,6 +102,37 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
                 this.loading = false;
             },
             error: () => { this.loading = false; }
+        });
+    }
+
+    loadClusterData(): void {
+        this.clusterLoading = true;
+        interval(15000).pipe(
+            startWith(0),
+            switchMap(() => this.statusService.getStatus().pipe(catchError(() => of(null)))),
+            takeUntil(this.destroy$)
+        ).subscribe(response => {
+            if (response?.data?.nodes?.nodes) {
+                const nodes = response.data.nodes.nodes;
+                let memUsed = 0, memCap = 0, cpuUsed = 0, cpuCap = 0, storageCap = 0;
+                for (const node of nodes) {
+                    if (node.usage?.memoryUsed)          memUsed    += this.statusService.parseMemory(node.usage.memoryUsed);
+                    if (node.resources?.memoryCapacity)  memCap     += this.statusService.parseMemory(node.resources.memoryCapacity);
+                    if (node.usage?.cpuUsed)             cpuUsed    += this.statusService.parseCpu(node.usage.cpuUsed);
+                    if (node.resources?.cpuCapacity)     cpuCap     += this.statusService.parseCpu(node.resources.cpuCapacity);
+                    if (node.resources?.storageCapacity) storageCap += this.statusService.parseMemory(node.resources.storageCapacity);
+                }
+                this.clusterMemoryStats = {
+                    percent:   memCap > 0 ? Math.round((memUsed / memCap) * 100) : 0,
+                    formatted: `${this.statusService.formatBytes(memUsed)} / ${this.statusService.formatBytes(memCap)}`
+                };
+                this.clusterCpuStats = {
+                    percent:   cpuCap > 0 ? Math.round((cpuUsed / cpuCap) * 100) : 0,
+                    formatted: `${(cpuUsed * 1000).toFixed(0)}m / ${(cpuCap * 1000).toFixed(0)}m`
+                };
+                this.clusterStorageTotal = storageCap > 0 ? this.statusService.formatBytes(storageCap) : 'N/A';
+            }
+            this.clusterLoading = false;
         });
     }
 
@@ -302,4 +340,10 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
     }
 
     get currentYear(): number { return new Date().getFullYear(); }
+
+    getUsageClass(pct: number): string {
+        if (pct < 70) return 'usage-low';
+        if (pct < 90) return 'usage-medium';
+        return 'usage-high';
+    }
 }

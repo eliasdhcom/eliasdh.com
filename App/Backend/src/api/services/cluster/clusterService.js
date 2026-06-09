@@ -362,7 +362,9 @@ class ClusterService {
                     cpuAllocatable: '7500m',
                     memoryAllocatable: '28Gi',
                     podsCapacity: '110',
-                    podsAllocatable: '110'
+                    podsAllocatable: '110',
+                    storageCapacity: '500Gi',
+                    storageAllocatable: '480Gi'
                 },
                 usage: {
                     cpuUsed: '320m',
@@ -373,12 +375,14 @@ class ClusterService {
                 allocatable: {
                     cpu: '7500m',
                     memory: '28Gi',
-                    pods: '110'
+                    pods: '110',
+                    'ephemeral-storage': '480Gi'
                 },
                 capacity: {
                     cpu: '8',
                     memory: '32Gi',
-                    pods: '110'
+                    pods: '110',
+                    'ephemeral-storage': '500Gi'
                 },
                 createdAt: new Date(Date.now() - 86400000).toISOString(),
                 labels: { 'node-role.kubernetes.io/control-plane': '' }
@@ -392,7 +396,9 @@ class ClusterService {
                     cpuAllocatable: '15500m',
                     memoryAllocatable: '59Gi',
                     podsCapacity: '110',
-                    podsAllocatable: '110'
+                    podsAllocatable: '110',
+                    storageCapacity: '1Ti',
+                    storageAllocatable: '950Gi'
                 },
                 usage: {
                     cpuUsed: '1250m',
@@ -403,12 +409,14 @@ class ClusterService {
                 allocatable: {
                     cpu: '15500m',
                     memory: '59Gi',
-                    pods: '110'
+                    pods: '110',
+                    'ephemeral-storage': '950Gi'
                 },
                 capacity: {
                     cpu: '16',
                     memory: '64Gi',
-                    pods: '110'
+                    pods: '110',
+                    'ephemeral-storage': '1Ti'
                 },
                 createdAt: new Date(Date.now() - 86400000).toISOString(),
                 labels: { 'node-role.kubernetes.io/worker': '' }
@@ -422,7 +430,9 @@ class ClusterService {
                     cpuAllocatable: '15200m',
                     memoryAllocatable: '57Gi',
                     podsCapacity: '110',
-                    podsAllocatable: '110'
+                    podsAllocatable: '110',
+                    storageCapacity: '1Ti',
+                    storageAllocatable: '940Gi'
                 },
                 usage: {
                     cpuUsed: '890m',
@@ -433,12 +443,14 @@ class ClusterService {
                 allocatable: {
                     cpu: '15200m',
                     memory: '57Gi',
-                    pods: '110'
+                    pods: '110',
+                    'ephemeral-storage': '940Gi'
                 },
                 capacity: {
                     cpu: '16',
                     memory: '64Gi',
-                    pods: '110'
+                    pods: '110',
+                    'ephemeral-storage': '1Ti'
                 },
                 createdAt: new Date(Date.now() - 172800000).toISOString(),
                 labels: { 'node-role.kubernetes.io/worker': '' }

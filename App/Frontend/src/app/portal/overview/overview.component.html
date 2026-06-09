@@ -148,5 +148,59 @@
                 </div>
             </div>
         </div>
+        <div class="overview-cluster-row">
+            <div class="overview-card overview-card--cluster">
+                <div class="overview-card-header">
+                    <h3 class="overview-card-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                        {{'PORTAL.OVERVIEW.CLUSTER_TITLE'|translate}}
+                    </h3>
+                    <span class="overview-cluster-live-badge" *ngIf="!clusterLoading">
+                        <span class="overview-cluster-dot"></span>
+                        {{'PORTAL.OVERVIEW.CLUSTER_LIVE'|translate}}
+                    </span>
+                </div>
+                <div class="overview-cluster-loading" *ngIf="clusterLoading">
+                    <div class="overview-skeleton" style="height:60px"></div>
+                    <div class="overview-skeleton" style="height:60px"></div>
+                    <div class="overview-skeleton" style="height:60px"></div>
+                </div>
+                <div class="overview-cluster-grid" *ngIf="!clusterLoading">
+                    <div class="overview-cluster-stat">
+                        <div class="overview-cluster-stat-header">
+                            <span class="overview-cluster-stat-name">{{'PORTAL.OVERVIEW.CLUSTER_RAM'|translate}}</span>
+                            <span class="overview-cluster-stat-pct" [ngClass]="getUsageClass(clusterMemoryStats.percent)">{{clusterMemoryStats.percent | number:'1.0-0'}}%</span>
+                        </div>
+                        <div class="overview-cluster-bar-wrap">
+                            <div class="overview-cluster-bar" [ngClass]="getUsageClass(clusterMemoryStats.percent)">
+                                <div class="overview-cluster-fill" [style.width.%]="clusterMemoryStats.percent"></div>
+                            </div>
+                        </div>
+                        <span class="overview-cluster-detail">{{clusterMemoryStats.formatted}}</span>
+                    </div>
+                    <div class="overview-cluster-stat">
+                        <div class="overview-cluster-stat-header">
+                            <span class="overview-cluster-stat-name">{{'PORTAL.OVERVIEW.CLUSTER_CPU'|translate}}</span>
+                            <span class="overview-cluster-stat-pct" [ngClass]="getUsageClass(clusterCpuStats.percent)">{{clusterCpuStats.percent | number:'1.0-0'}}%</span>
+                        </div>
+                        <div class="overview-cluster-bar-wrap">
+                            <div class="overview-cluster-bar" [ngClass]="getUsageClass(clusterCpuStats.percent)">
+                                <div class="overview-cluster-fill" [style.width.%]="clusterCpuStats.percent"></div>
+                            </div>
+                        </div>
+                        <span class="overview-cluster-detail">{{clusterCpuStats.formatted}}</span>
+                    </div>
+                    <div class="overview-cluster-stat overview-cluster-stat--storage">
+                        <div class="overview-cluster-stat-header">
+                            <span class="overview-cluster-stat-name">{{'PORTAL.OVERVIEW.CLUSTER_STORAGE'|translate}}</span>
+                        </div>
+                        <div class="overview-cluster-storage-total">{{clusterStorageTotal}}</div>
+                        <span class="overview-cluster-detail">{{'PORTAL.OVERVIEW.CLUSTER_CAPACITY'|translate}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </ng-container>
 </div>
