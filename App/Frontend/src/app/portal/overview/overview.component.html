@@ -171,8 +171,8 @@
                     <div class="overview-cluster-stat">
                         <div class="overview-cluster-stat-header">
                             <span class="overview-cluster-stat-name">{{'PORTAL.OVERVIEW.CLUSTER_RAM'|translate}}</span>
-                            <span class="overview-cluster-stat-pct" [ngClass]="getUsageClass(clusterMemoryStats.percent)">{{clusterMemoryStats.percent | number:'1.0-0'}}%</span>
                         </div>
+                        <span class="overview-cluster-stat-pct" [ngClass]="getUsageClass(clusterMemoryStats.percent)">{{clusterMemoryStats.percent | number:'1.0-0'}}%</span>
                         <div class="overview-cluster-bar-wrap">
                             <div class="overview-cluster-bar" [ngClass]="getUsageClass(clusterMemoryStats.percent)">
                                 <div class="overview-cluster-fill" [style.width.%]="clusterMemoryStats.percent"></div>
@@ -183,8 +183,8 @@
                     <div class="overview-cluster-stat">
                         <div class="overview-cluster-stat-header">
                             <span class="overview-cluster-stat-name">{{'PORTAL.OVERVIEW.CLUSTER_CPU'|translate}}</span>
-                            <span class="overview-cluster-stat-pct" [ngClass]="getUsageClass(clusterCpuStats.percent)">{{clusterCpuStats.percent | number:'1.0-0'}}%</span>
                         </div>
+                        <span class="overview-cluster-stat-pct" [ngClass]="getUsageClass(clusterCpuStats.percent)">{{clusterCpuStats.percent | number:'1.0-0'}}%</span>
                         <div class="overview-cluster-bar-wrap">
                             <div class="overview-cluster-bar" [ngClass]="getUsageClass(clusterCpuStats.percent)">
                                 <div class="overview-cluster-fill" [style.width.%]="clusterCpuStats.percent"></div>
