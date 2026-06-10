@@ -529,6 +529,76 @@
     transform-origin: center;
 }
 
+.invoices-due-chip {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 20px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+    border: 1px solid transparent;
+    flex-shrink: 0;
+}
+
+.invoices-due-chip--paid   { background: rgba(16,185,129,.12);  color: #059669; border-color: rgba(16,185,129,.25); }
+.invoices-due-chip--green  { background: rgba(16,185,129,.10);  color: #059669; border-color: rgba(16,185,129,.20); }
+.invoices-due-chip--orange { background: rgba(245,158,11,.12);  color: #d97706; border-color: rgba(245,158,11,.25); }
+.invoices-due-chip--red    { background: rgba(239,68,68,.10);   color: #dc2626; border-color: rgba(239,68,68,.22); }
+
+.invoices-period-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.invoices-period-track {
+    position: relative;
+    height: 6px;
+    background: rgba(128,128,128,.12);
+    border-radius: 3px;
+}
+
+.invoices-period-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 3px;
+    transition: width .5s ease;
+}
+
+.invoices-period-fill--paid,
+.invoices-period-fill--green  { background: linear-gradient(90deg, #10b981, #34d399); }
+.invoices-period-fill--orange { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.invoices-period-fill--red    { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+.invoices-period-today-dot {
+    position: absolute;
+    top: -3px;
+    bottom: -3px;
+    width: 2px;
+    border-radius: 1px;
+    transform: translateX(-50%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.invoices-period-today-dot--paid,
+.invoices-period-today-dot--green  { background: #10b981; }
+.invoices-period-today-dot--orange { background: #f59e0b; }
+.invoices-period-today-dot--red    { background: #ef4444; }
+
+.invoices-period-dates {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--secondary);
+    opacity: .75;
+    user-select: none;
+}
+
 .invoices-confirm-overlay {
     position: fixed;
     inset: 0;

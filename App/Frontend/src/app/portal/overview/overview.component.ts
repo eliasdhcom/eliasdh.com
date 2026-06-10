@@ -163,6 +163,8 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         this.inactiveCount = allWebsites.length - this.liveCount;
         this.totalWebsites = allWebsites.length;
 
+        const nextMonthEnd = new Date(now.getFullYear(), now.getMonth() + 2, 0, 23, 59, 59, 999);
+
         let mrrTotal = 0;
         for (const customer of nonHQ) {
             for (const website of (customer.websites ?? [])) {
@@ -195,7 +197,7 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
                 paid += amount;
                 paidCnt++;
                 monthlyPaidMap.set(monthKey, (monthlyPaidMap.get(monthKey) ?? 0) + amount);
-            } else {
+            } else if (start <= nextMonthEnd) {
                 outstanding += amount;
                 outstandingCnt++;
             }

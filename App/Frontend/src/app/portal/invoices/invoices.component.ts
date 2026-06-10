@@ -494,6 +494,57 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         return id.startsWith('domain:') ? id.slice('domain:'.length) : id;
     }
 
+    getDueDateStatus(inv: Invoice): string {
+        if (inv.paid) return 'paid';
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const due = new Date(inv.dueDate);
+        due.setHours(0, 0, 0, 0);
+        const days = Math.ceil((due.getTime() - today.getTime()) / 86400000);
+        if (days < 0) return 'red';
+        if (days <= 7) return 'orange';
+        return 'green';
+    }
+
+    getDueDateLabel(inv: Invoice): string {
+        if (inv.paid) return 'Betaald';
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const due = new Date(inv.dueDate);
+        due.setHours(0, 0, 0, 0);
+        const days = Math.ceil((due.getTime() - today.getTime()) / 86400000);
+        if (days < 0) return `${Math.abs(days)}d vervallen`;
+        if (days === 0) return 'Vandaag';
+        if (days === 1) return 'Morgen';
+        return `${days}d resterend`;
+    }
+
+    getPeriodProgress(inv: Invoice): number {
+        const now   = Date.now();
+        const start = inv.periodStart.getTime();
+        const end   = inv.periodEnd.getTime();
+        if (now <= start) return 0;
+        if (now >= end)   return 100;
+        return Math.round(((now - start) / (end - start)) * 100);
+    }
+
+    isTodayInPeriod(inv: Invoice): boolean {
+        const p = this.getPeriodProgress(inv);
+        return p > 0 && p < 100;
+    }
+
+    getPeriodStatus(inv: Invoice): string {
+        if (inv.paid) return 'paid';
+        const p = this.getPeriodProgress(inv);
+        if (p >= 90) return 'red';
+        if (p >= 70) return 'orange';
+        return 'green';
+    }
+
+    formatDateShort(date: Date): string {
+        return date.toLocaleDateString('nl-BE', { day: 'numeric', month: 'short' });
+    }
+
     formatCurrency(amount: number): string {
         return new Intl.NumberFormat('nl-BE', { style: 'currency', currency: 'EUR' }).format(amount);
     }

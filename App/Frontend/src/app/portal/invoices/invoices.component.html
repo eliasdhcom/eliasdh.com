@@ -102,8 +102,17 @@
                                 </svg>
                                 {{formatPeriod(inv.periodStart, inv.periodEnd, inv.frequency)}}
                             </span>
-                            <span class="invoices-meta-sep">·</span>
-                            <span class="invoices-meta-item invoices-meta-due">{{'PORTAL.INVOICES.DUE'|translate}} {{formatDate(inv.dueDate)}}</span>
+                            <span class="invoices-due-chip" [ngClass]="'invoices-due-chip--' + getDueDateStatus(inv)">{{getDueDateLabel(inv)}}</span>
+                        </div>
+                        <div class="invoices-period-row">
+                            <div class="invoices-period-track">
+                                <div class="invoices-period-fill" [ngClass]="'invoices-period-fill--' + getPeriodStatus(inv)" [style.width.%]="getPeriodProgress(inv)"></div>
+                                <div class="invoices-period-today-dot" [ngClass]="'invoices-period-today-dot--' + getPeriodStatus(inv)" *ngIf="isTodayInPeriod(inv)" [style.left.%]="getPeriodProgress(inv)"></div>
+                            </div>
+                            <div class="invoices-period-dates">
+                                <span>{{formatDateShort(inv.periodStart)}}</span>
+                                <span>{{formatDateShort(inv.periodEnd)}}</span>
+                            </div>
                         </div>
                     </div>
                     <div class="invoices-price-block">
