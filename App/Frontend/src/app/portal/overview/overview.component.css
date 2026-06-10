@@ -600,6 +600,10 @@
     .overview-cluster-stat-header {
         flex: 1;
         min-width: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 2px;
     }
 
     .overview-cluster-stat--storage .overview-cluster-stat-header {
