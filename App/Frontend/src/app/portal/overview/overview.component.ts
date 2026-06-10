@@ -21,7 +21,7 @@ interface MonthBar {
     outstandingAmount: number;
     isPast: boolean;
     isCurrent: boolean;
-    isFuture: boolean;
+    isForecast: boolean;
 }
 
 interface TypeStat {
@@ -141,9 +141,7 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         const currentYear  = now.getFullYear();
         const currentMonth = now.getMonth();
 
-        const endDate = new Date();
-        endDate.setMonth(endDate.getMonth() + 2, 0);
-        endDate.setHours(23, 59, 59, 999);
+        const endDate = new Date(now.getFullYear(), now.getMonth() + 7, 0, 23, 59, 59, 999);
 
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -236,7 +234,7 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         this.totalInvoicedAmount = paid + outstanding;
         this.totalInvoiceCount   = paidCnt + outstandingCnt;
 
-        this.monthBars = MONTH_LABELS.map((label, m) => {
+        const bars: MonthBar[] = MONTH_LABELS.map((label, m) => {
             const total = monthlyMap.get(`${currentYear}-${m}`) ?? 0;
             const paidM = monthlyPaidMap.get(`${currentYear}-${m}`) ?? 0;
             return {
@@ -244,12 +242,32 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
                 amount:            total,
                 paidAmount:        paidM,
                 outstandingAmount: Math.max(0, total - paidM),
-                isPast:    m < currentMonth,
-                isCurrent: m === currentMonth,
-                isFuture:  m > currentMonth
+                isPast:     m < currentMonth,
+                isCurrent:  m === currentMonth,
+                isForecast: m > currentMonth
             };
         });
-        this.chartMax = Math.max(...this.monthBars.map(b => b.amount), 1);
+
+        const forecastEnd = currentMonth + 6;
+        if (forecastEnd > 11) {
+            const nextYear   = currentYear + 1;
+            const extraCount = forecastEnd - 11;
+            for (let m = 0; m < extraCount; m++) {
+                const total = monthlyMap.get(`${nextYear}-${m}`) ?? 0;
+                bars.push({
+                    label:             `${MONTH_LABELS[m]} '${String(nextYear).slice(2)}`,
+                    amount:            total,
+                    paidAmount:        0,
+                    outstandingAmount: 0,
+                    isPast:            false,
+                    isCurrent:         false,
+                    isForecast:        true
+                });
+            }
+        }
+
+        this.monthBars = bars;
+        this.chartMax  = Math.max(...bars.map(b => b.amount), 1);
 
         const typeMap     = new Map<string, number>();
         const typeLiveMap = new Map<string, number>();
@@ -339,7 +357,10 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         return this.totalWebsites > 0 ? (count / this.totalWebsites) * 100 : 0;
     }
 
-    get currentYear(): number { return new Date().getFullYear(); }
+    get chartYearLabel(): string {
+        const y = new Date().getFullYear();
+        return new Date().getMonth() + 6 > 11 ? `${y} – ${y + 1}` : String(y);
+    }
 
     getUsageClass(pct: number): string {
         if (pct < 70) return 'usage-low';

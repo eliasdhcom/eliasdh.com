@@ -92,7 +92,7 @@
                             <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
                             <line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/>
                         </svg>
-                        {{'PORTAL.OVERVIEW.MONTHLY_REVENUE'|translate}} {{currentYear}}
+                        {{'PORTAL.OVERVIEW.MONTHLY_REVENUE'|translate}} {{chartYearLabel}}
                     </h3>
                     <span class="overview-card-sub">{{'PORTAL.OVERVIEW.CHART_SUB'|translate}}</span>
                 </div>
@@ -111,9 +111,9 @@
                         <div class="overview-chart-bars">
                             <div class="overview-bar-col" *ngFor="let bar of monthBars">
                                 <div class="overview-bar-track">
-                                    <div *ngIf="bar.isFuture" class="overview-bar overview-bar--future" [style.height.%]="getBarHeight(bar.amount)" [title]="bar.label + ': ' + formatCurrencyFull(bar.amount)">
+                                    <div *ngIf="bar.isForecast" class="overview-bar overview-bar--forecast" [style.height.%]="getBarHeight(bar.amount)" [title]="bar.label + ': ' + formatCurrencyFull(bar.amount)">
                                     </div>
-                                    <div *ngIf="!bar.isFuture" class="overview-bar overview-bar--stacked" [class.overview-bar--past]="bar.isPast" [class.overview-bar--current]="bar.isCurrent" [style.height.%]="getBarHeight(bar.amount)" [title]="bar.label + ' — Betaald: ' + formatCurrencyFull(bar.paidAmount) + ' · Openstaand: ' + formatCurrencyFull(bar.outstandingAmount)">
+                                    <div *ngIf="!bar.isForecast" class="overview-bar overview-bar--stacked" [class.overview-bar--past]="bar.isPast" [class.overview-bar--current]="bar.isCurrent" [style.height.%]="getBarHeight(bar.amount)" [title]="bar.label + ' — Betaald: ' + formatCurrencyFull(bar.paidAmount) + ' · Openstaand: ' + formatCurrencyFull(bar.outstandingAmount)">
                                         <div class="overview-bar-sub overview-bar-sub--outstanding" [style.flex]="bar.outstandingAmount"></div>
                                         <div class="overview-bar-sub overview-bar-sub--paid" [style.flex]="bar.paidAmount"></div>
                                     </div>

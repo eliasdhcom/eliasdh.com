@@ -254,7 +254,17 @@
 
 .overview-bar--past    { opacity: .6; }
 .overview-bar--current { box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 25%, transparent); }
-.overview-bar--future  { background: rgba(128,128,128,.25); opacity: .8; }
+.overview-bar--forecast {
+    background: repeating-linear-gradient(
+        -45deg,
+        color-mix(in srgb, var(--primary) 22%, transparent) 0px,
+        color-mix(in srgb, var(--primary) 22%, transparent) 3px,
+        transparent 3px,
+        transparent 7px
+    );
+    border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+    border-bottom: none;
+}
 
 .overview-bar--stacked {
     display: flex;
