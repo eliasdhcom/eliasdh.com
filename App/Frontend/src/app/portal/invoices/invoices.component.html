@@ -5,7 +5,9 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <polyline *ngIf="!paidConfirmCurrentState" points="20 6 9 17 4 12"/>
                 <ng-container *ngIf="paidConfirmCurrentState">
-                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
                 </ng-container>
             </svg>
             {{(paidConfirmCurrentState ? 'PORTAL.INVOICES.CONFIRM_TITLE_UNPAID' : 'PORTAL.INVOICES.CONFIRM_TITLE_PAID') | translate}}
@@ -104,7 +106,7 @@
                             </span>
                             <span class="invoices-due-chip" [ngClass]="'invoices-due-chip--' + getDueDateStatus(inv)">{{getDueDateLabel(inv)}}</span>
                         </div>
-                        <div class="invoices-period-row">
+                        <div class="invoices-period-row" *ngIf="!inv.paid">
                             <div class="invoices-period-track">
                                 <div class="invoices-period-fill" [ngClass]="'invoices-period-fill--' + getPeriodStatus(inv)" [style.width.%]="getPeriodProgress(inv)"></div>
                                 <div class="invoices-period-today-dot" [ngClass]="'invoices-period-today-dot--' + getPeriodStatus(inv)" *ngIf="isTodayInPeriod(inv)" [style.left.%]="getPeriodProgress(inv)"></div>
@@ -114,6 +116,27 @@
                                 <span>{{formatDateShort(inv.periodEnd)}}</span>
                             </div>
                         </div>
+                    </div>
+                    <div class="invoices-btn-col">
+                        <button class="invoices-paid-btn cursor-pointer" [class.invoices-paid-btn--paid]="inv.paid" (click)="requestTogglePaid(inv.id)" [title]="inv.paid ? ('PORTAL.INVOICES.MARK_UNPAID'|translate) : ('PORTAL.INVOICES.MARK_PAID'|translate)">
+                            <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polyline class="cursor-pointer" *ngIf="inv.paid" points="20 6 9 17 4 12"/>
+                                <circle class="cursor-pointer" *ngIf="!inv.paid" cx="12" cy="12" r="10"/>
+                                <line class="cursor-pointer" *ngIf="!inv.paid" x1="12" y1="8" x2="12" y2="12"/>
+                                <line class="cursor-pointer" *ngIf="!inv.paid" x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                        </button>
+                        <button class="invoices-pdf-btn cursor-pointer" (click)="downloadPdf(inv)" [disabled]="generatingPdfId === inv.id" [title]="'PORTAL.INVOICES.DOWNLOAD_PDF'|translate">
+                            <svg class="cursor-pointer" *ngIf="generatingPdfId !== inv.id" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path class="cursor-pointer" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline class="cursor-pointer" points="14 2 14 8 20 8"/>
+                                <line class="cursor-pointer" x1="12" y1="18" x2="12" y2="12"/>
+                                <polyline class="cursor-pointer" points="9 15 12 18 15 15"/>
+                            </svg>
+                            <svg *ngIf="generatingPdfId === inv.id" class="invoices-pdf-spinner cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                                <path class="cursor-pointer" d="M12 2a10 10 0 0 1 10 10"/>
+                            </svg>
+                        </button>
                     </div>
                     <div class="invoices-price-block">
                         <div class="invoices-price-row">
@@ -138,27 +161,6 @@
                             <span class="invoices-price-label">{{'PORTAL.INVOICES.TOTAL'|translate}}</span>
                             <span class="invoices-price-value">{{formatCurrency(inv.total)}}</span>
                         </div>
-                    </div>
-                    <div class="invoices-btn-col">
-                        <button class="invoices-paid-btn cursor-pointer" [class.invoices-paid-btn--paid]="inv.paid" (click)="requestTogglePaid(inv.id)" [title]="inv.paid ? ('PORTAL.INVOICES.MARK_UNPAID'|translate) : ('PORTAL.INVOICES.MARK_PAID'|translate)">
-                            <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <polyline class="cursor-pointer" *ngIf="inv.paid" points="20 6 9 17 4 12"/>
-                                <circle class="cursor-pointer" *ngIf="!inv.paid" cx="12" cy="12" r="10"/>
-                                <line class="cursor-pointer" *ngIf="!inv.paid" x1="12" y1="8" x2="12" y2="12"/>
-                                <line class="cursor-pointer" *ngIf="!inv.paid" x1="12" y1="16" x2="12.01" y2="16"/>
-                            </svg>
-                        </button>
-                        <button class="invoices-pdf-btn cursor-pointer" (click)="downloadPdf(inv)" [disabled]="generatingPdfId === inv.id" [title]="'PORTAL.INVOICES.DOWNLOAD_PDF'|translate">
-                            <svg class="cursor-pointer" *ngIf="generatingPdfId !== inv.id" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <path class="cursor-pointer" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline class="cursor-pointer" points="14 2 14 8 20 8"/>
-                                <line class="cursor-pointer" x1="12" y1="18" x2="12" y2="12"/>
-                                <polyline class="cursor-pointer" points="9 15 12 18 15 15"/>
-                            </svg>
-                            <svg *ngIf="generatingPdfId === inv.id" class="invoices-pdf-spinner cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-                                <path class="cursor-pointer" d="M12 2a10 10 0 0 1 10 10"/>
-                            </svg>
-                        </button>
                     </div>
                 </div>
             </div>

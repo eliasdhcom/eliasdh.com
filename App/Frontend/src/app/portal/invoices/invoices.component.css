@@ -487,9 +487,9 @@
 
 .invoices-btn-col {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 6px;
-    align-self: center;
+    align-self: flex-start;
     flex-shrink: 0;
 }
 
@@ -551,6 +551,7 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    margin-right: -96px;
 }
 
 .invoices-period-track {
@@ -731,6 +732,18 @@
         padding-right: 94px;
     }
 
+    .invoices-btn-col {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        flex-direction: row;
+        align-self: auto;
+    }
+
+    .invoices-period-row {
+        margin-right: -94px;
+    }
+
     .invoices-price-block {
         flex: 1 1 100%;
         max-width: 100%;
@@ -741,22 +754,6 @@
 
     .invoices-price-row {
         gap: 10px;
-    }
-
-    .invoices-pdf-btn {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-    }
-
-    .invoices-btn-col {
-        position: static;
-    }
-
-    .invoices-paid-btn {
-        position: absolute;
-        top: 12px;
-        right: 56px;
     }
 }
 
