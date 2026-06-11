@@ -299,6 +299,15 @@
                                 </svg>
                             </div>
                         </label>
+                        <div class="customers-form-field--toggle" style="margin-top:8px">
+                            <label class="customers-form-toggle cursor-pointer">
+                                <input type="checkbox" [(ngModel)]="form.showOnHomePage" (change)="markTouched()"/>
+                                <span class="customers-form-toggle-track cursor-pointer">
+                                    <span class="customers-form-toggle-thumb cursor-pointer"></span>
+                                </span>
+                                <span class="customers-form-toggle-label">{{'PORTAL.CUSTOMERS.FORM.SHOW_ON_HOME_PAGE'|translate}}</span>
+                            </label>
+                        </div>
                     </div>
                     <div class="customers-form-field customers-form-field--grow">
                         <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.COMPANY_NAME'|translate}} <span class="customers-form-required">*</span></label>

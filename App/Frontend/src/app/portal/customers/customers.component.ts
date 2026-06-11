@@ -51,16 +51,17 @@ interface DomainForm {
 }
 
 interface CustomerForm {
-    name:      string;
-    firstName: string;
-    lastName:  string;
-    email:     string;
-    phone:     string;
-    mobile:    string;
-    logo:      string;
-    locations: LocationForm[];
-    websites:  WebsiteForm[];
-    domains:   DomainForm[];
+    name:           string;
+    firstName:      string;
+    lastName:       string;
+    email:          string;
+    phone:          string;
+    mobile:         string;
+    logo:           string;
+    showOnHomePage:  boolean;
+    locations:      LocationForm[];
+    websites:       WebsiteForm[];
+    domains:        DomainForm[];
 }
 
 @Component({
@@ -217,7 +218,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     }
 
     private emptyForm(): CustomerForm {
-        return { name: '', firstName: '', lastName: '', email: '', phone: '', mobile: '', logo: '', locations: [], websites: [], domains: [] };
+        return { name: '', firstName: '', lastName: '', email: '', phone: '', mobile: '', logo: '', showOnHomePage: true, locations: [], websites: [], domains: [] };
     }
 
     private emptyDomain(): DomainForm {
@@ -252,13 +253,14 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         this.formTouched        = false;
         this.showDiscardConfirm = false;
         this.form = {
-            name:      customer.name,
-            firstName: customer.firstName ?? '',
-            lastName:  customer.lastName  ?? '',
-            email:     customer.email     ?? '',
-            phone:     customer.phone     ?? '',
-            mobile:    customer.mobile    ?? '',
-            logo:      customer.logo      ?? '',
+            name:          customer.name,
+            firstName:     customer.firstName ?? '',
+            lastName:      customer.lastName  ?? '',
+            email:         customer.email     ?? '',
+            phone:         customer.phone     ?? '',
+            mobile:        customer.mobile    ?? '',
+            logo:          customer.logo      ?? '',
+            showOnHomePage: customer.showOnHomePage !== false,
             locations: customer.locations.map(l => ({
                 street:     l.street,
                 number:     l.number,
@@ -352,13 +354,14 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         this.formError  = '';
 
         const payload: Partial<Customer> = {
-            name:      this.form.name.trim(),
-            firstName: this.form.firstName.trim(),
-            lastName:  this.form.lastName.trim(),
-            email:     this.form.email.trim(),
-            phone:     this.form.phone.trim(),
-            mobile:    this.form.mobile.trim(),
-            logo:      this.form.logo,
+            name:          this.form.name.trim(),
+            firstName:     this.form.firstName.trim(),
+            lastName:      this.form.lastName.trim(),
+            email:         this.form.email.trim(),
+            phone:         this.form.phone.trim(),
+            mobile:        this.form.mobile.trim(),
+            logo:          this.form.logo,
+            showOnHomePage: this.form.showOnHomePage,
             locations: this.form.locations.map(l => ({
                 street:     l.street.trim(),
                 number:     l.number.trim(),

@@ -217,7 +217,7 @@ export class IndexComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
             next: ({ customers, plans }) => {
-                this.trustedClients = (customers.data ?? []).filter(c => !c.isHQ).sort((a, b) => a.id.localeCompare(b.id));
+                this.trustedClients = (customers.data ?? []).filter(c => !c.isHQ && c.showOnHomePage !== false).sort((a, b) => a.id.localeCompare(b.id));
                 this.pricingPlans   = (plans.data ?? []).filter(p => p.monthlyPrice > 0).sort((a, b) => a.monthlyPrice - b.monthlyPrice);
             },
             error: () => {}

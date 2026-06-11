@@ -64,6 +64,7 @@ export interface Customer {
     mobile?:      string;
     vat?:         string | null;
     logo?:        string;
+    showOnHomePage?: boolean;
     socialLinks?: SocialLink[];
     websites:     CustomerWebsite[];
     locations:    CustomerLocation[];

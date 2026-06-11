@@ -153,6 +153,7 @@ function buildCustomer(row, locations, websites, domains) {
         phone:              row.phone       ?? undefined,
         mobile:             row.mobile      ?? undefined,
         logo:               row.logo        ?? undefined,
+        showOnHomePage:     row.show_on_home_page === 0 || row.show_on_home_page === 0n ? false : true,
         vat:                primaryLoc?.vat ?? null,
         address:            primaryLoc ? formatAddress(primaryLoc) : '',
         latitude:           primaryLoc?.latitude  ?? null,
@@ -336,8 +337,8 @@ class CustomersService {
         const db = getDb();
         const id = data.id || await getNextCustomerId(db);
         await db.execute({
-            sql:  `INSERT INTO customers (id, name, is_hq, first_name, last_name, email, phone, mobile, logo) VALUES (?, ?, 0, ?, ?, ?, ?, ?, ?)`,
-            args: [id, data.name, data.firstName ?? null, data.lastName ?? null, data.email ?? null, data.phone ?? null, data.mobile ?? null, data.logo ?? null]
+            sql:  `INSERT INTO customers (id, name, is_hq, first_name, last_name, email, phone, mobile, logo, show_on_home_page) VALUES (?, ?, 0, ?, ?, ?, ?, ?, ?, ?)`,
+            args: [id, data.name, data.firstName ?? null, data.lastName ?? null, data.email ?? null, data.phone ?? null, data.mobile ?? null, data.logo ?? null, data.showOnHomePage === false ? 0 : 1]
         });
         await insertLocations(db, id, data.locations);
         await insertWebsites(db, id, data.websites);
@@ -349,13 +350,14 @@ class CustomersService {
     async updateCustomer(id, data) {
         const db = getDb();
         const fields = [], args = [];
-        if (data.name      !== undefined) { fields.push('name = ?');       args.push(data.name); }
-        if (data.firstName !== undefined) { fields.push('first_name = ?'); args.push(data.firstName); }
-        if (data.lastName  !== undefined) { fields.push('last_name = ?');  args.push(data.lastName); }
-        if (data.email     !== undefined) { fields.push('email = ?');      args.push(data.email); }
-        if (data.phone     !== undefined) { fields.push('phone = ?');      args.push(data.phone); }
-        if (data.mobile    !== undefined) { fields.push('mobile = ?');     args.push(data.mobile); }
-        if (data.logo      !== undefined) { fields.push('logo = ?');       args.push(data.logo); }
+        if (data.name               !== undefined) { fields.push('name = ?');               args.push(data.name); }
+        if (data.firstName          !== undefined) { fields.push('first_name = ?');         args.push(data.firstName); }
+        if (data.lastName           !== undefined) { fields.push('last_name = ?');          args.push(data.lastName); }
+        if (data.email              !== undefined) { fields.push('email = ?');              args.push(data.email); }
+        if (data.phone              !== undefined) { fields.push('phone = ?');              args.push(data.phone); }
+        if (data.mobile             !== undefined) { fields.push('mobile = ?');             args.push(data.mobile); }
+        if (data.logo               !== undefined) { fields.push('logo = ?');               args.push(data.logo); }
+        if (data.showOnHomePage     !== undefined) { fields.push('show_on_home_page = ?');  args.push(data.showOnHomePage === false ? 0 : 1); }
         if (fields.length) {
             args.push(id);
             await db.execute({ sql: `UPDATE customers SET ${fields.join(', ')} WHERE id = ?`, args });
