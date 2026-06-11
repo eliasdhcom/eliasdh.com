@@ -471,7 +471,20 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         const file = (event.target as HTMLInputElement).files?.[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = () => { this.form.logo = reader.result as string; };
+        reader.onload = () => {
+            const img = new Image();
+            img.onload = () => {
+                const MAX = 256;
+                let w = img.width, h = img.height;
+                if (w > h) { if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; } }
+                else       { if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; } }
+                const canvas = document.createElement('canvas');
+                canvas.width = w; canvas.height = h;
+                canvas.getContext('2d')!.drawImage(img, 0, 0, w, h);
+                this.form.logo = canvas.toDataURL('image/webp', 0.85);
+            };
+            img.src = reader.result as string;
+        };
         reader.readAsDataURL(file);
     }
 
@@ -694,7 +707,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         this.agreementSigning = true;
         this.agreementError   = '';
         try {
-            const signatureDataUrl = this.sigCanvas!.toDataURL('image/png');
+            const signatureDataUrl = this.sigCanvas!.toDataURL('image/jpeg', 0.85);
             const pdfBase64 = await this.buildAgreementPdf(this.agreementCustomer, signatureDataUrl);
             this.agreementPdf = pdfBase64;
             this.customersService.signAgreement(this.agreementCustomer.id, signatureDataUrl)
