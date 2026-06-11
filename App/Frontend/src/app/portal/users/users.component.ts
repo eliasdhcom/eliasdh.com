@@ -257,6 +257,7 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
             company:   this.editedUser.company,
             phone:     this.editedUser.phone,
             birthDate: this.editedUser.birthDate,
+            netSalary: this.editedUser.netSalary ?? 0,
             ...(this.editedUser.avatar !== null ? { avatar: this.editedUser.avatar } : {})
         })
         .pipe(takeUntil(this.destroy$))
@@ -308,6 +309,11 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
         return isNaN(d.getTime()) ? dateStr : d.toLocaleDateString('nl-BE', { day: '2-digit', month: 'short', year: 'numeric' });
     }
 
+    isEmployee(role: string): boolean {
+        const r = (role ?? '').toLowerCase();
+        return r === 'admin' || r === 'employee';
+    }
+
     get activeCount(): number   { return this.users.filter(u => u.active).length; }
     get inactiveCount(): number { return this.users.filter(u => !u.active).length; }
 
@@ -344,6 +350,6 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
     }
 
     private emptyUser(): PortalUser {
-        return { id: 0, email: '', firstName: '', lastName: '', role: '', company: '', phone: '', birthDate: '', avatar: null, createdAt: '', active: true };
+        return { id: 0, email: '', firstName: '', lastName: '', role: '', company: '', phone: '', birthDate: '', avatar: null, createdAt: '', active: true, netSalary: 0 };
     }
 }

@@ -127,6 +127,77 @@
             <div class="analysis-section-header">
                 <h2 class="analysis-section-title">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    {{'PORTAL.ANALYSIS.PAYROLL_TITLE'|translate}}
+                </h2>
+                <div class="analysis-section-sub-group">
+                    <span class="analysis-section-sub">{{employees.length}} {{'PORTAL.ANALYSIS.PAYROLL_PERSONS'|translate}}</span>
+                    <span class="analysis-section-sub-sep" *ngIf="employees.length > 0">·</span>
+                    <span class="analysis-section-sub" *ngIf="employees.length > 0">{{'PORTAL.ANALYSIS.PAYROLL_TOTAL'|translate}}: {{fmt(totalAnnualPayrollCosts)}}{{'PORTAL.ANALYSIS.PER_YEAR'|translate}}</span>
+                </div>
+            </div>
+            <div class="analysis-payroll-note" *ngIf="employees.length === 0">
+                {{'PORTAL.ANALYSIS.PAYROLL_EMPTY'|translate}}
+            </div>
+            <div class="analysis-payroll-table" *ngIf="employees.length > 0">
+                <div class="analysis-payroll-header">
+                    <span>{{'PORTAL.ANALYSIS.PAYROLL_NAME'|translate}}</span>
+                    <span>{{'PORTAL.ANALYSIS.PAYROLL_ROLE'|translate}}</span>
+                    <span>{{'PORTAL.ANALYSIS.PAYROLL_NET'|translate}}</span>
+                    <span>{{'PORTAL.ANALYSIS.PAYROLL_GROSS'|translate}}</span>
+                    <span>RSZ ({{rates.rszEmployee | number:'1.2-2'}}%)</span>
+                    <span>BV ({{rates.bv | number:'1.0-2'}}%)</span>
+                    <span>{{'PORTAL.ANALYSIS.PAYROLL_RSZ_ER'|translate}} ({{rates.rszEmployer | number:'1.0-2'}}%)</span>
+                    <span>{{'PORTAL.ANALYSIS.PAYROLL_EMPLOYER_COST'|translate}}</span>
+                </div>
+                <div class="analysis-payroll-row" *ngFor="let e of employees">
+                    <div class="analysis-payroll-cell">
+                        <span class="analysis-payroll-cell-label">{{'PORTAL.ANALYSIS.PAYROLL_NAME'|translate}}</span>
+                        <span class="analysis-payroll-name">{{e.firstName}} {{e.lastName}}</span>
+                    </div>
+                    <div class="analysis-payroll-cell">
+                        <span class="analysis-payroll-cell-label">{{'PORTAL.ANALYSIS.PAYROLL_ROLE'|translate}}</span>
+                        <span class="analysis-payroll-role" [class.analysis-payroll-role--admin]="e.role.toLowerCase() === 'admin'" [class.analysis-payroll-role--employee]="e.role.toLowerCase() === 'employee'">{{e.role}}</span>
+                    </div>
+                    <div class="analysis-payroll-cell">
+                        <span class="analysis-payroll-cell-label">{{'PORTAL.ANALYSIS.PAYROLL_NET'|translate}}</span>
+                        <span class="analysis-payroll-amount">{{fmt(e.netSalary)}}</span>
+                    </div>
+                    <div class="analysis-payroll-cell">
+                        <span class="analysis-payroll-cell-label">{{'PORTAL.ANALYSIS.PAYROLL_GROSS'|translate}}</span>
+                        <span class="analysis-payroll-amount">{{fmt(grossSalary(e.netSalary))}}</span>
+                    </div>
+                    <div class="analysis-payroll-cell">
+                        <span class="analysis-payroll-cell-label">RSZ ({{rates.rszEmployee | number:'1.2-2'}}%)</span>
+                        <span class="analysis-payroll-amount analysis-payroll-amount--deduct">−{{fmt(rsz(e.netSalary))}}</span>
+                    </div>
+                    <div class="analysis-payroll-cell">
+                        <span class="analysis-payroll-cell-label">BV ({{rates.bv | number:'1.0-2'}}%)</span>
+                        <span class="analysis-payroll-amount analysis-payroll-amount--deduct">−{{fmt(bv(e.netSalary))}}</span>
+                    </div>
+                    <div class="analysis-payroll-cell">
+                        <span class="analysis-payroll-cell-label">{{'PORTAL.ANALYSIS.PAYROLL_RSZ_ER'|translate}} ({{rates.rszEmployer | number:'1.0-2'}}%)</span>
+                        <span class="analysis-payroll-amount analysis-payroll-amount--deduct">{{fmt(grossSalary(e.netSalary) * rates.rszEmployer / 100)}}</span>
+                    </div>
+                    <div class="analysis-payroll-cell">
+                        <span class="analysis-payroll-cell-label">{{'PORTAL.ANALYSIS.PAYROLL_EMPLOYER_COST'|translate}}</span>
+                        <span class="analysis-payroll-amount analysis-payroll-amount--total">{{fmt(employerCostMonthly(e.netSalary))}}</span>
+                    </div>
+                </div>
+                <div class="analysis-payroll-footer">
+                    <span class="analysis-payroll-footer-note">{{'PORTAL.ANALYSIS.PAYROLL_RATE_NOTE'|translate: {rsz: (rates.rszEmployee | number:'1.2-2'), bv: (rates.bv | number:'1.0-2'), er: (rates.rszEmployer | number:'1.0-2')} }}</span>
+                    <span class="analysis-payroll-footer-annual">{{'PORTAL.ANALYSIS.PAYROLL_ANNUAL'|translate}}: <strong>{{fmt(totalAnnualPayrollCosts)}}</strong></span>
+                </div>
+            </div>
+        </div>
+        <div class="analysis-section">
+            <div class="analysis-section-header">
+                <h2 class="analysis-section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <circle cx="12" cy="12" r="10"/>
                         <line x1="12" y1="8" x2="12" y2="12"/>
                         <line x1="12" y1="16" x2="12.01" y2="16"/>
@@ -143,6 +214,10 @@
                 <div class="analysis-summary-card analysis-summary-card--costs">
                     <span class="analysis-summary-label">{{'PORTAL.ANALYSIS.SUMMARY_COSTS'|translate}}</span>
                     <span class="analysis-summary-value">−{{fmt(totalAnnualCosts)}}</span>
+                </div>
+                <div class="analysis-summary-card analysis-summary-card--costs" *ngIf="totalAnnualPayrollCosts > 0">
+                    <span class="analysis-summary-label">{{'PORTAL.ANALYSIS.PAYROLL_TITLE'|translate}}</span>
+                    <span class="analysis-summary-value">−{{fmt(totalAnnualPayrollCosts)}}</span>
                 </div>
                 <div class="analysis-summary-card analysis-summary-card--gross">
                     <span class="analysis-summary-label">{{'PORTAL.ANALYSIS.GROSS'|translate}}</span>

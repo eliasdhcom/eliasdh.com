@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CustomersService, Customer } from '../../services/customers.service';
 import { CostsService, CostItem } from '../../services/costs.service';
+import { UsersService, PortalUser } from '../../services/users.service';
 import { Subject, forkJoin } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -18,6 +19,8 @@ const DOMAIN_EXCL = 8.26;
 const TAX_RATE    = 0.20;
 const WORK_HOURS  = 2080;
 const DAYS_YEAR   = 365;
+
+const RATES_DEFAULT = { rszEmployee: 13.07, bv: 25, rszEmployer: 25 };
 
 @Component({
     selector:    'app-portal-analysis',
@@ -31,16 +34,20 @@ export class PortalAnalysisComponent implements OnInit, OnDestroy {
     revenueExcl  = 0;
     revenueIncl  = 0;
 
-    costs: CostItem[] = [];
+    costs: CostItem[]  = [];
+    employees: PortalUser[] = [];
 
     savingIds  = new Set<number>();
     addingCost = false;
+
+    rates = { ...RATES_DEFAULT };
 
     private destroy$ = new Subject<void>();
 
     constructor(
         private customersService: CustomersService,
-        private costsService: CostsService
+        private costsService:     CostsService,
+        private usersService:     UsersService
     ) {}
 
     ngOnInit(): void { this.loadData(); }
@@ -50,13 +57,17 @@ export class PortalAnalysisComponent implements OnInit, OnDestroy {
         this.loading = true;
         forkJoin({
             customers: this.customersService.getAllCustomers(),
-            costs:     this.costsService.getAll()
+            costs:     this.costsService.getAll(),
+            users:     this.usersService.getAllUsers()
         })
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-            next: ({ customers, costs }) => {
+            next: ({ customers, costs, users }) => {
                 this.computeRevenue(customers.data ?? []);
-                this.costs  = costs.data ?? [];
+                this.costs     = costs.data ?? [];
+                this.employees = (users.data ?? []).filter(u =>
+                    u.active && (u.role.toLowerCase() === 'admin' || u.role.toLowerCase() === 'employee') && u.netSalary > 0
+                );
                 this.loading = false;
             },
             error: () => { this.loading = false; }
@@ -73,8 +84,7 @@ export class PortalAnalysisComponent implements OnInit, OnDestroy {
                 if (!website.isLive || !website.startDate) continue;
                 if (new Date(website.startDate) > today)   continue;
 
-                const isFree = website.subscriptionType.toLowerCase().includes('free') ||
-                               website.subscriptionType.toLowerCase().includes('todo');
+                const isFree = website.subscriptionType.toLowerCase().includes('free') || website.subscriptionType.toLowerCase().includes('todo');
 
                 if (website.payment > 0 && !isFree && website.frequency !== 'one-time') {
                     annualExcl += Math.max(0, website.payment - website.discount) * 12;
@@ -86,8 +96,6 @@ export class PortalAnalysisComponent implements OnInit, OnDestroy {
         this.revenueExcl = annualExcl;
         this.revenueIncl = annualExcl * (1 + VAT_RATE);
     }
-
-    // ── Totals ──────────────────────────────────────────────────────
 
     get totalAnnualCosts(): number {
         return this.costs.reduce((s, c) => s + this.annualCost(c), 0);
@@ -106,8 +114,6 @@ export class PortalAnalysisComponent implements OnInit, OnDestroy {
         if (c.frequency === 'quarterly') return c.amount * 4;
         return c.amount;
     }
-
-    // ── CRUD ────────────────────────────────────────────────────────
 
     addCost(): void {
         if (this.addingCost) return;
@@ -144,13 +150,38 @@ export class PortalAnalysisComponent implements OnInit, OnDestroy {
 
     isSaving(id: number): boolean { return this.savingIds.has(id); }
 
-    // ── Profit ──────────────────────────────────────────────────────
+    private get rszEmployeeFrac(): number  { return this.rates.rszEmployee / 100; }
+    private get bvFrac(): number           { return this.rates.bv           / 100; }
+    private get rszEmployerFrac(): number  { return this.rates.rszEmployer  / 100; }
+    private get netToGross(): number       { return 1 / ((1 - this.rszEmployeeFrac) * (1 - this.bvFrac)); }
 
-    get grossProfitYear(): number { return this.revenueExcl - this.totalAnnualCosts; }
+    grossSalary(netMonthly: number): number {
+        return netMonthly * this.netToGross;
+    }
+
+    rsz(netMonthly: number): number {
+        return this.grossSalary(netMonthly) * this.rszEmployeeFrac;
+    }
+
+    bv(netMonthly: number): number {
+        return (this.grossSalary(netMonthly) - this.rsz(netMonthly)) * this.bvFrac;
+    }
+
+    employerCostMonthly(netMonthly: number): number {
+        return this.grossSalary(netMonthly) * (1 + this.rszEmployerFrac);
+    }
+
+    employerCostAnnual(netMonthly: number): number {
+        return this.employerCostMonthly(netMonthly) * 12;
+    }
+
+    get totalAnnualPayrollCosts(): number {
+        return this.employees.reduce((s, e) => s + this.employerCostAnnual(e.netSalary), 0);
+    }
+
+    get grossProfitYear(): number { return this.revenueExcl - this.totalAnnualCosts - this.totalAnnualPayrollCosts; }
     get taxYear(): number          { return Math.max(0, this.grossProfitYear) * TAX_RATE; }
     get netProfitYear(): number    { return this.grossProfitYear - this.taxYear; }
-
-    // ── Per period ──────────────────────────────────────────────────
 
     revenueFor(divisor: number): number     { return this.revenueExcl / divisor; }
     revenueInclFor(divisor: number): number { return this.revenueIncl / divisor; }

@@ -22,6 +22,7 @@ export interface PortalUser {
     avatar:    string | null;
     createdAt: string;
     active:    boolean;
+    netSalary: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -75,6 +76,14 @@ export class UsersService {
     deleteUser(id: number): Observable<{ success: boolean }> {
         return this.http.delete<{ success: boolean }>(
             `${this.apiUrl}/${id}`,
+            { headers: this.getHeaders() }
+        );
+    }
+
+    updateSalary(id: number, netSalary: number): Observable<{ success: boolean }> {
+        return this.http.patch<{ success: boolean }>(
+            `${this.apiUrl}/${id}`,
+            { netSalary },
             { headers: this.getHeaders() }
         );
     }

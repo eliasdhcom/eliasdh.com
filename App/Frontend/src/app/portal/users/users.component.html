@@ -173,6 +173,14 @@
                 <label class="users-panel-label">{{'PORTAL.USERS.BIRTH_DATE'|translate}} <span class="users-panel-required" *ngIf="isCreating">*</span></label>
                 <input class="users-panel-input cursor-text" type="date" name="upf-birthdate" autocomplete="bday" [(ngModel)]="editedUser.birthDate" (ngModelChange)="markTouched()"/>
             </div>
+            <div class="users-panel-field users-panel-field--full" *ngIf="isEmployee(editedUser.role)">
+                <label class="users-panel-label">{{'PORTAL.USERS.NET_SALARY'|translate}}</label>
+                <div class="users-panel-salary-wrap">
+                    <span class="users-panel-salary-prefix">€</span>
+                    <input class="users-panel-input users-panel-salary-input cursor-text" type="number" name="upf-salary" min="0" step="0.01" [(ngModel)]="editedUser.netSalary" (ngModelChange)="markTouched()" [placeholder]="'PORTAL.USERS.NET_SALARY_HINT'|translate"/>
+                    <span class="users-panel-salary-suffix">{{'PORTAL.USERS.NET_SALARY_PERIOD'|translate}}</span>
+                </div>
+            </div>
         </div>
         </form>
         <ng-container *ngIf="!isCreating && selectedUser">

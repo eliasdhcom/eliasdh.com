@@ -442,6 +442,110 @@
     font-weight: 800;
 }
 
+.analysis-payroll-note {
+    font-size: 13px;
+    color: var(--secondary);
+    padding: 14px 0 2px;
+}
+
+.analysis-payroll-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(128,128,128,.12);
+    overflow: hidden;
+}
+
+.analysis-payroll-header,
+.analysis-payroll-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr repeat(6, 1fr);
+    gap: 0;
+    align-items: center;
+}
+
+.analysis-payroll-cell {
+    display: contents;
+}
+
+.analysis-payroll-cell-label {
+    display: none;
+}
+
+.analysis-payroll-header {
+    background: rgba(128,128,128,.06);
+    border-bottom: 1px solid rgba(128,128,128,.1);
+    padding: 8px 14px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--secondary);
+    gap: 8px;
+}
+
+.analysis-payroll-row {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(128,128,128,.07);
+    gap: 8px;
+    font-size: 13px;
+    transition: background 0.15s;
+}
+
+.analysis-payroll-row:last-child { border-bottom: none; }
+.analysis-payroll-row:hover { background: rgba(128,128,128,.035); }
+
+.analysis-payroll-name {
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.analysis-payroll-role {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 999px;
+    display: inline-block;
+    background: rgba(128,128,128,.1);
+    color: var(--secondary);
+}
+
+.analysis-payroll-role--admin    { background: rgba(139,92,246,.12); color: #7c3aed; }
+.analysis-payroll-role--employee { background: rgba(16,185,129,.12); color: #059669; }
+
+.analysis-payroll-amount {
+    text-align: left;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+}
+
+.analysis-payroll-amount--deduct { color: #ef4444; }
+.analysis-payroll-amount--total  { font-weight: 700; color: var(--primary); }
+
+.analysis-payroll-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: rgba(128,128,128,.04);
+    border-top: 1px solid rgba(128,128,128,.1);
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.analysis-payroll-footer-note {
+    font-size: 11px;
+    color: var(--secondary);
+}
+
+.analysis-payroll-footer-annual {
+    font-size: 13px;
+    color: var(--text);
+}
 /* Analysis */
 
 /* Media Queries */
@@ -454,6 +558,16 @@
     }
     .analysis-summary-card--net {
         grid-column: span 2;
+    }
+}
+
+@media (max-width: 900px) {
+    .analysis-payroll-table {
+        overflow-x: auto;
+    }
+    .analysis-payroll-header,
+    .analysis-payroll-row {
+        min-width: 680px;
     }
 }
 
@@ -476,6 +590,47 @@
     .analysis-costs-controls .analysis-input--amount { grid-column: 1 / 3; grid-row: 2; flex: unset; text-align: right; }
     .analysis-costs-controls .analysis-costs-annual  { display: none; }
     .analysis-costs-controls .analysis-btn-remove    { grid-column: 3; grid-row: 2; align-self: center; }
+
+    .analysis-payroll-table {
+        overflow-x: visible;
+    }
+    .analysis-payroll-header {
+        display: none;
+    }
+    .analysis-payroll-row {
+        display: flex;
+        flex-wrap: wrap;
+        min-width: unset;
+        padding: 12px 14px 4px;
+        border-bottom: 1px solid rgba(128,128,128,.1);
+    }
+    .analysis-payroll-row:last-child { border-bottom: none; }
+    .analysis-payroll-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        flex: 0 0 50%;
+        padding: 0 8px 10px 0;
+    }
+    .analysis-payroll-cell:nth-child(1),
+    .analysis-payroll-cell:nth-child(2) {
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(128,128,128,.07);
+        margin-bottom: 4px;
+    }
+    .analysis-payroll-cell-label {
+        display: block;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        color: var(--secondary);
+    }
+    .analysis-payroll-amount { text-align: left; }
+    .analysis-payroll-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 
 @media (max-width: 460px) {
@@ -487,6 +642,9 @@
     }
     .analysis-summary-card--net {
         grid-column: span 1;
+    }
+    .analysis-payroll-cell {
+        flex: 0 0 100%;
     }
 }
 
