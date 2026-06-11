@@ -259,7 +259,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
             email:         customer.email     ?? '',
             phone:         customer.phone     ?? '',
             mobile:        customer.mobile    ?? '',
-            logo:          customer.logo      ?? '',
+            logo:          '',
             showOnHomePage: customer.showOnHomePage !== false,
             locations: customer.locations.map(l => ({
                 street:     l.street,
@@ -291,6 +291,12 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
                 annualPrice: String(d.annualPrice)
             }))
         };
+        const existingLogo = customer.logo ?? '';
+        if (existingLogo.startsWith('data:')) {
+            this.compressDataUrl(existingLogo).then(c => { this.form.logo = c; });
+        } else {
+            this.form.logo = existingLogo;
+        }
         this.showForm = true;
     }
 
@@ -467,11 +473,8 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         if (event.target === event.currentTarget) this.cancelDelete();
     }
 
-    onLogoFileChange(event: Event): void {
-        const file = (event.target as HTMLInputElement).files?.[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = () => {
+    private compressDataUrl(dataUrl: string): Promise<string> {
+        return new Promise(resolve => {
             const img = new Image();
             img.onload = () => {
                 const MAX = 256;
@@ -481,9 +484,20 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
                 const canvas = document.createElement('canvas');
                 canvas.width = w; canvas.height = h;
                 canvas.getContext('2d')!.drawImage(img, 0, 0, w, h);
-                this.form.logo = canvas.toDataURL('image/webp', 0.85);
+                resolve(canvas.toDataURL('image/webp', 0.85));
             };
-            img.src = reader.result as string;
+            img.onerror = () => resolve(dataUrl);
+            img.src = dataUrl;
+        });
+    }
+
+    onLogoFileChange(event: Event): void {
+        const file = (event.target as HTMLInputElement).files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+            this.compressDataUrl(reader.result as string)
+                .then(compressed => { this.form.logo = compressed; });
         };
         reader.readAsDataURL(file);
     }
