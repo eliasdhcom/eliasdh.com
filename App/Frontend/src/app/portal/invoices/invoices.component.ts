@@ -179,6 +179,23 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
                 });
                 this.invoices.push(...replacements);
 
+                // Domain renewals: only show next-year invoice after the current paid period has expired
+                const activePaidDomainEnds = new Map<string, Date>();
+                for (const inv of this.invoices) {
+                    if (inv.paid && inv.invoiceType === 'domain') {
+                        const key = `${inv.customerId}_${inv.subscriptionId}`;
+                        const existing = activePaidDomainEnds.get(key);
+                        if (!existing || inv.periodEnd > existing) activePaidDomainEnds.set(key, inv.periodEnd);
+                    }
+                }
+                const nowDate = new Date();
+                this.invoices = this.invoices.filter(inv => {
+                    if (inv.paid || inv.invoiceType !== 'domain') return true;
+                    const key = `${inv.customerId}_${inv.subscriptionId}`;
+                    const paidEnd = activePaidDomainEnds.get(key);
+                    return !paidEnd || paidEnd < nowDate;
+                });
+
                 const customerMap = new Map((customers.data ?? []).map((c: Customer) => [c.id, c]));
                 for (const s of allStatuses) {
                     const key = `${s.customerId}_${s.subscriptionId}_${s.periodStart}_${s.invoiceType}_${s.frequency ?? ''}`;
@@ -191,6 +208,9 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
                     const customer = customerMap.get(s.customerId);
                     if (!customer) continue;
                     const website = (customer.websites ?? []).find((w: any) => w.id === s.subscriptionId);
+                    const domain  = s.invoiceType === 'domain'
+                        ? (customer.domains ?? []).find((d: any) => `domain:${String(d.id ?? 0).padStart(4, '0')}` === s.subscriptionId)
+                        : null;
 
                     const storedTotal    = s.amount ?? 0;
                     const storedVat      = parseFloat((storedTotal * 0.21 / 1.21).toFixed(2));
@@ -215,8 +235,8 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
                         customerAddress:   customer.address ?? '',
                         customerLocations: customer.locations ?? [],
                         subscriptionId:    s.subscriptionId,
-                        subscriptionName:  s.subscriptionName ?? website?.name ?? s.subscriptionId,
-                        subscriptionType:  s.subscriptionType ?? website?.subscriptionType ?? '',
+                        subscriptionName:  s.subscriptionName ?? website?.name ?? domain?.name ?? s.subscriptionId,
+                        subscriptionType:  s.subscriptionType ?? website?.subscriptionType ?? (domain ? 'Domain' : ''),
                         subscriptionUrl:   s.subscriptionUrl  ?? website?.url ?? '',
                         frequency:         freq as any,
                         payment:           storedSubtotal,

@@ -397,8 +397,32 @@ class CustomersService {
             logger.info(`Agreement reset for customer ${id}: subscription changed`);
         }
         if (data.domains !== undefined) {
-            await db.execute({ sql: 'DELETE FROM domain_names WHERE customer_id = ?', args: [id] });
-            await insertDomains(db, id, data.domains);
+            const incoming = data.domains ?? [];
+            const incomingIds = incoming.filter(d => d.id).map(d => Number(d.id));
+
+            const { rows: existingDomains } = await db.execute({
+                sql: 'SELECT id FROM domain_names WHERE customer_id = ?', args: [id]
+            });
+            for (const row of existingDomains) {
+                if (!incomingIds.includes(Number(row.id))) {
+                    await db.execute({ sql: 'DELETE FROM domain_names WHERE id = ?', args: [Number(row.id)] });
+                }
+            }
+
+            for (const d of incoming) {
+                if (d.id) {
+                    await db.execute({
+                        sql:  'UPDATE domain_names SET name = ?, renewal_date = ?, annual_price = ? WHERE id = ? AND customer_id = ?',
+                        args: [d.name ?? '', d.renewalDate ?? '', Number(d.annualPrice ?? 0), Number(d.id), id]
+                    });
+                } else {
+                    await db.execute({
+                        sql:  'INSERT INTO domain_names (customer_id, name, renewal_date, annual_price) VALUES (?, ?, ?, ?)',
+                        args: [id, d.name ?? '', d.renewalDate ?? '', Number(d.annualPrice ?? 0)]
+                    });
+                }
+            }
+
             await db.execute({ sql: `UPDATE customers SET agreement_signed_at = NULL, agreement_signature = NULL WHERE id = ?`, args: [id] });
             logger.info(`Agreement reset for customer ${id}: domain changed`);
         }
