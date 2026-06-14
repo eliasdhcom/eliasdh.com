@@ -179,23 +179,6 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
                 });
                 this.invoices.push(...replacements);
 
-                // Domain renewals: only show next-year invoice after the current paid period has expired
-                const activePaidDomainEnds = new Map<string, Date>();
-                for (const inv of this.invoices) {
-                    if (inv.paid && inv.invoiceType === 'domain') {
-                        const key = `${inv.customerId}_${inv.subscriptionId}`;
-                        const existing = activePaidDomainEnds.get(key);
-                        if (!existing || inv.periodEnd > existing) activePaidDomainEnds.set(key, inv.periodEnd);
-                    }
-                }
-                const nowDate = new Date();
-                this.invoices = this.invoices.filter(inv => {
-                    if (inv.paid || inv.invoiceType !== 'domain') return true;
-                    const key = `${inv.customerId}_${inv.subscriptionId}`;
-                    const paidEnd = activePaidDomainEnds.get(key);
-                    return !paidEnd || paidEnd < nowDate;
-                });
-
                 const customerMap = new Map((customers.data ?? []).map((c: Customer) => [c.id, c]));
                 for (const s of allStatuses) {
                     const key = `${s.customerId}_${s.subscriptionId}_${s.periodStart}_${s.invoiceType}_${s.frequency ?? ''}`;
@@ -247,6 +230,35 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
                         invoiceType:       s.invoiceType
                     });
                 }
+
+                const bestDomain = new Map<string, Invoice>();
+                for (const inv of this.invoices) {
+                    if (inv.invoiceType !== 'domain') continue;
+                    const key = `${inv.customerId}_${inv.subscriptionName}_${inv.periodStart.toISOString()}`;
+                    const existing = bestDomain.get(key);
+                    if (!existing || (inv.paid && !existing.paid)) bestDomain.set(key, inv);
+                }
+                this.invoices = this.invoices.filter(inv => {
+                    if (inv.invoiceType !== 'domain') return true;
+                    const key = `${inv.customerId}_${inv.subscriptionName}_${inv.periodStart.toISOString()}`;
+                    return bestDomain.get(key) === inv;
+                });
+
+                const activePaidDomainEnds = new Map<string, Date>();
+                for (const inv of this.invoices) {
+                    if (inv.paid && inv.invoiceType === 'domain') {
+                        const key = `${inv.customerId}_${inv.subscriptionName}`;
+                        const existing = activePaidDomainEnds.get(key);
+                        if (!existing || inv.periodEnd > existing) activePaidDomainEnds.set(key, inv.periodEnd);
+                    }
+                }
+                const nowDate = new Date();
+                this.invoices = this.invoices.filter(inv => {
+                    if (inv.paid || inv.invoiceType !== 'domain') return true;
+                    const key = `${inv.customerId}_${inv.subscriptionName}`;
+                    const paidEnd = activePaidDomainEnds.get(key);
+                    return !paidEnd || paidEnd < nowDate;
+                });
 
                 this.invoices.sort((a, b) => {
                     const byDate = a.issueDate.getTime() - b.issueDate.getTime();
