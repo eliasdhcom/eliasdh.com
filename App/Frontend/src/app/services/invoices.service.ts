@@ -11,14 +11,17 @@ import { environment } from '../../environments/environment.development';
 import { AuthService } from './auth.service';
 
 export interface InvoiceStatus {
-    customerId:     string;
-    subscriptionId: string;
-    periodStart:    string;
-    invoiceType:    'subscription' | 'domain';
-    paid:           boolean;
-    paidAt:         string | null;
-    amount:         number | null;
-    frequency:      string | null;
+    customerId:       string;
+    subscriptionId:   string;
+    periodStart:      string;
+    invoiceType:      'subscription' | 'domain';
+    paid:             boolean;
+    paidAt:           string | null;
+    amount:           number | null;
+    frequency:        string | null;
+    subscriptionName: string | null;
+    subscriptionType: string | null;
+    subscriptionUrl:  string | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -41,7 +44,7 @@ export class InvoicesService {
         );
     }
 
-    updateStatus(status: Omit<InvoiceStatus, 'paidAt' | 'frequency'>): Observable<{ success: boolean }> {
+    updateStatus(status: Omit<InvoiceStatus, 'paidAt'>): Observable<{ success: boolean }> {
         return this.http.patch<{ success: boolean }>(
             `${this.apiUrl}/status`,
             status,

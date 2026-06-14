@@ -9,31 +9,40 @@ const logger    = require('../../../utils/logger');
 
 async function getAllStatuses() {
     const { rows } = await getDb().execute(
-        'SELECT customer_id, subscription_id, period_start, invoice_type, paid, paid_at, amount, frequency FROM invoice_status'
+        'SELECT customer_id, subscription_id, period_start, invoice_type, paid, paid_at, amount, frequency, subscription_name, subscription_type, subscription_url FROM invoice_status'
     );
     return rows.map(r => ({
-        customerId:     r.customer_id,
-        subscriptionId: r.subscription_id,
-        periodStart:    r.period_start,
-        invoiceType:    r.invoice_type,
-        paid:           r.paid === 1 || r.paid === 1n,
-        paidAt:         r.paid_at,
-        amount:         r.amount    != null ? Number(r.amount) : null,
-        frequency:      r.frequency ?? null
+        customerId:       r.customer_id,
+        subscriptionId:   r.subscription_id,
+        periodStart:      r.period_start,
+        invoiceType:      r.invoice_type,
+        paid:             r.paid === 1 || r.paid === 1n,
+        paidAt:           r.paid_at,
+        amount:           r.amount    != null ? Number(r.amount) : null,
+        frequency:        r.frequency        ?? null,
+        subscriptionName: r.subscription_name ?? null,
+        subscriptionType: r.subscription_type ?? null,
+        subscriptionUrl:  r.subscription_url  ?? null
     }));
 }
 
-async function upsertStatus({ customerId, subscriptionId, periodStart, invoiceType, paid, amount }) {
+async function upsertStatus({ customerId, subscriptionId, periodStart, invoiceType, paid, amount, frequency, subscriptionName, subscriptionType, subscriptionUrl }) {
     logger.info(`Invoice status update: ${customerId}/${subscriptionId}/${periodStart}/${invoiceType} → paid=${paid}`);
     const paidAt = paid ? new Date().toISOString() : null;
     await getDb().execute({
-        sql: `INSERT INTO invoice_status (customer_id, subscription_id, period_start, invoice_type, paid, paid_at, amount)
-              VALUES (?, ?, ?, ?, ?, ?, ?)
+        sql: `INSERT INTO invoice_status (customer_id, subscription_id, period_start, invoice_type, paid, paid_at, amount, frequency, subscription_name, subscription_type, subscription_url)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
               ON CONFLICT(customer_id, subscription_id, period_start, invoice_type) DO UPDATE SET
-                  paid   = excluded.paid,
-                  paid_at = excluded.paid_at,
-                  amount  = CASE WHEN excluded.amount IS NOT NULL THEN excluded.amount ELSE invoice_status.amount END`,
-        args: [customerId, subscriptionId, periodStart, invoiceType, paid ? 1 : 0, paidAt, amount ?? null]
+                  paid              = excluded.paid,
+                  paid_at           = CASE WHEN excluded.paid = 1 AND invoice_status.paid = 0 THEN excluded.paid_at
+                                          WHEN excluded.paid = 0 THEN NULL
+                                          ELSE invoice_status.paid_at END,
+                  amount            = CASE WHEN excluded.amount            IS NOT NULL THEN excluded.amount            ELSE invoice_status.amount            END,
+                  frequency         = CASE WHEN excluded.frequency         IS NOT NULL THEN excluded.frequency         ELSE invoice_status.frequency         END,
+                  subscription_name = CASE WHEN excluded.subscription_name IS NOT NULL THEN excluded.subscription_name ELSE invoice_status.subscription_name END,
+                  subscription_type = CASE WHEN excluded.subscription_type IS NOT NULL THEN excluded.subscription_type ELSE invoice_status.subscription_type END,
+                  subscription_url  = CASE WHEN excluded.subscription_url  IS NOT NULL THEN excluded.subscription_url  ELSE invoice_status.subscription_url  END`,
+        args: [customerId, subscriptionId, periodStart, invoiceType, paid ? 1 : 0, paidAt, amount ?? null, frequency ?? null, subscriptionName ?? null, subscriptionType ?? null, subscriptionUrl ?? null]
     });
 }
 

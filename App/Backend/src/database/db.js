@@ -170,8 +170,21 @@ async function initSchema() {
     }
 
     // Migrations: add columns if they don't exist yet (added in later versions, so we don't want to break existing installations)
-    try { await db.execute(`ALTER TABLE invoice_status ADD COLUMN amount    REAL`); } catch (_) {}
-    try { await db.execute(`ALTER TABLE invoice_status ADD COLUMN frequency TEXT`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE invoice_status ADD COLUMN amount            REAL`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE invoice_status ADD COLUMN frequency         TEXT`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE invoice_status ADD COLUMN subscription_name TEXT`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE invoice_status ADD COLUMN subscription_type TEXT`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE invoice_status ADD COLUMN subscription_url  TEXT`); } catch (_) {}
+    // Backfill subscription metadata for paid invoices that predate these columns
+    try {
+        await db.execute(`
+            UPDATE invoice_status
+            SET subscription_name = (SELECT name             FROM websites WHERE websites.id = invoice_status.subscription_id),
+                subscription_type = (SELECT subscription_type FROM websites WHERE websites.id = invoice_status.subscription_id),
+                subscription_url  = (SELECT url              FROM websites WHERE websites.id = invoice_status.subscription_id)
+            WHERE paid = 1 AND subscription_type IS NULL AND invoice_type = 'subscription'
+        `);
+    } catch (_) {}
     try { await db.execute(`ALTER TABLE pricing_plans  ADD COLUMN color     TEXT NOT NULL DEFAULT '#cccccc'`); } catch (_) {}
     try { await db.execute(`ALTER TABLE logs ADD COLUMN resource TEXT`); } catch (_) {}
     try { await db.execute(`CREATE INDEX IF NOT EXISTS idx_logs_resource ON logs(resource)`); } catch (_) {}

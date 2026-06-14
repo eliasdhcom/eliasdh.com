@@ -107,51 +107,86 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
             next: ({ customers, statuses, plans }) => {
                 this.pricingPlansService.setPlanColors(plans.data ?? []);
                 const allStatuses: any[] = statuses.data ?? [];
-                const statusMap = new Map<string, { paid: boolean; amount: number | null; frequency: string | null }>(
+                const statusMap = new Map<string, { paid: boolean; amount: number | null; frequency: string | null; subscriptionName: string | null; subscriptionType: string | null; subscriptionUrl: string | null }>(
                     allStatuses.map((s: any) => [
-                        `${s.customerId}_${s.subscriptionId}_${s.periodStart}_${s.invoiceType}`,
-                        { paid: s.paid, amount: s.amount ?? null, frequency: s.frequency ?? null }
+                        `${s.customerId}_${s.subscriptionId}_${s.periodStart}_${s.invoiceType}_${s.frequency ?? ''}`,
+                        { paid: s.paid, amount: s.amount ?? null, frequency: s.frequency ?? null, subscriptionName: s.subscriptionName ?? null, subscriptionType: s.subscriptionType ?? null, subscriptionUrl: s.subscriptionUrl ?? null }
                     ])
                 );
 
-                // First day of current month — periods before this are frozen
                 const firstOfMonth = new Date();
                 firstOfMonth.setDate(1);
                 firstOfMonth.setHours(0, 0, 0, 0);
 
                 this.invoices = this.generateInvoices(customers.data ?? []);
 
-                // Apply statuses and override amounts for past periods
                 const generatedKeys = new Set<string>();
                 this.invoices.forEach(inv => {
-                    const key = `${inv.customerId}_${inv.subscriptionId}_${inv.periodStart.toISOString()}_${inv.invoiceType}`;
-                    generatedKeys.add(key);
-                    const stored = statusMap.get(key);
+                    const baseKey = `${inv.customerId}_${inv.subscriptionId}_${inv.periodStart.toISOString()}_${inv.invoiceType}`;
+                    generatedKeys.add(`${baseKey}_${inv.frequency}`);
+                    generatedKeys.add(`${baseKey}_`);
+                    const stored = statusMap.get(`${baseKey}_${inv.frequency}`) ?? statusMap.get(`${baseKey}_`);
                     if (stored) {
                         inv.paid = stored.paid;
-                        // Use stored amount for past periods (billing freeze)
-                        if (stored.amount !== null && inv.periodStart < firstOfMonth) {
-                            const storedTotal   = stored.amount;
-                            const storedVat     = parseFloat((storedTotal * 0.21 / 1.21).toFixed(2));
-                            const storedSubtotal = parseFloat((storedTotal - storedVat).toFixed(2));
-                            inv.total    = storedTotal;
-                            inv.vat      = storedVat;
-                            inv.subtotal = storedSubtotal;
-                            inv.payment  = storedSubtotal;
-                            inv.discount = 0;
+                        if (stored.paid) {
+                            if (stored.amount !== null) {
+                                const storedTotal    = stored.amount;
+                                const storedVat      = parseFloat((storedTotal * 0.21 / 1.21).toFixed(2));
+                                const storedSubtotal = parseFloat((storedTotal - storedVat).toFixed(2));
+                                inv.total    = storedTotal;
+                                inv.vat      = storedVat;
+                                inv.subtotal = storedSubtotal;
+                                inv.payment  = storedSubtotal;
+                                inv.discount = 0;
+                            }
+                            if (stored.frequency)                  inv.frequency        = stored.frequency as any;
+                            if (stored.subscriptionName != null)   inv.subscriptionName = stored.subscriptionName;
+                            if (stored.subscriptionType != null)   inv.subscriptionType = stored.subscriptionType;
+                            if (stored.subscriptionUrl  != null)   inv.subscriptionUrl  = stored.subscriptionUrl;
                         }
                     }
                 });
 
-                // Add orphaned historical snapshots (old billing structure, e.g. after frequency change)
+                const paidBaseKeys = new Set<string>(
+                    allStatuses
+                        .filter((s: any) => s.paid)
+                        .map((s: any) => `${s.customerId}_${s.subscriptionId}_${s.periodStart}_${s.invoiceType}`)
+                );
+                const paidRecordByBase = new Map<string, any>(
+                    allStatuses
+                        .filter((s: any) => s.paid)
+                        .map((s: any) => [`${s.customerId}_${s.subscriptionId}_${s.periodStart}_${s.invoiceType}`, s])
+                );
+                const genWindow = new Date();
+                genWindow.setMonth(genWindow.getMonth() + 2, 0);
+                genWindow.setHours(23, 59, 59, 999);
+                const replacements: Invoice[] = [];
+                this.invoices = this.invoices.filter(inv => {
+                    if (inv.paid) return true;
+                    const baseKey = `${inv.customerId}_${inv.subscriptionId}_${inv.periodStart.toISOString()}_${inv.invoiceType}`;
+                    if (!paidBaseKeys.has(baseKey)) return true;
+                    const paidRec   = paidRecordByBase.get(baseKey);
+                    const paidFreq  = paidRec?.frequency ?? inv.frequency;
+                    const paidEnd   = this.periodEndFromFreq(inv.periodStart, paidFreq);
+                    const nextStart = new Date(paidEnd.getFullYear(), paidEnd.getMonth() + 1, 1);
+                    if (nextStart <= genWindow) {
+                        const nextEnd = this.periodEndFromFreq(nextStart, inv.frequency);
+                        const due     = new Date(nextStart);
+                        due.setDate(due.getDate() + 30);
+                        replacements.push({ ...inv, id: '', number: 0, periodStart: nextStart, periodEnd: nextEnd, issueDate: new Date(nextStart), dueDate: due, paid: false });
+                    }
+                    return false;
+                });
+                this.invoices.push(...replacements);
+
                 const customerMap = new Map((customers.data ?? []).map((c: Customer) => [c.id, c]));
                 for (const s of allStatuses) {
-                    const key = `${s.customerId}_${s.subscriptionId}_${s.periodStart}_${s.invoiceType}`;
-                    if (generatedKeys.has(key)) continue;           // already shown
-                    if (s.amount === null && !s.paid) continue;     // no useful data
+                    const key = `${s.customerId}_${s.subscriptionId}_${s.periodStart}_${s.invoiceType}_${s.frequency ?? ''}`;
+                    if (generatedKeys.has(key)) continue;
+                    if (s.amount === null && !s.paid) continue;
                     const periodStart = new Date(s.periodStart);
                     if (isNaN(periodStart.getTime())) continue;
-                    if (periodStart >= firstOfMonth) continue;      // only show past periods
+                    if (periodStart >= firstOfMonth && !s.paid) continue;
 
                     const customer = customerMap.get(s.customerId);
                     if (!customer) continue;
@@ -180,9 +215,9 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
                         customerAddress:   customer.address ?? '',
                         customerLocations: customer.locations ?? [],
                         subscriptionId:    s.subscriptionId,
-                        subscriptionName:  website?.name ?? s.subscriptionId,
-                        subscriptionType:  website?.subscriptionType ?? '',
-                        subscriptionUrl:   website?.url ?? '',
+                        subscriptionName:  s.subscriptionName ?? website?.name ?? s.subscriptionId,
+                        subscriptionType:  s.subscriptionType ?? website?.subscriptionType ?? '',
+                        subscriptionUrl:   s.subscriptionUrl  ?? website?.url ?? '',
                         frequency:         freq as any,
                         payment:           storedSubtotal,
                         discount:          0,
@@ -193,7 +228,6 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
                     });
                 }
 
-                // Re-sort and re-number after adding orphans
                 this.invoices.sort((a, b) => {
                     const byDate = a.issueDate.getTime() - b.issueDate.getTime();
                     if (byDate !== 0) return byDate;
@@ -227,7 +261,6 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
     }
 
     private generateInvoices(customers: Customer[]): Invoice[] {
-        // Generate up to end of next month
         const endDate = new Date();
         endDate.setMonth(endDate.getMonth() + 2, 0);
         endDate.setHours(23, 59, 59, 999);
@@ -572,12 +605,16 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         if (!inv) return;
         inv.paid = !inv.paid;
         this.invoicesService.updateStatus({
-            customerId:     inv.customerId,
-            subscriptionId: inv.subscriptionId,
-            periodStart:    inv.periodStart.toISOString(),
-            invoiceType:    inv.invoiceType,
-            paid:           inv.paid,
-            amount:         inv.total
+            customerId:       inv.customerId,
+            subscriptionId:   inv.subscriptionId,
+            periodStart:      inv.periodStart.toISOString(),
+            invoiceType:      inv.invoiceType,
+            paid:             inv.paid,
+            amount:           inv.total,
+            frequency:        inv.frequency,
+            subscriptionName: inv.subscriptionName,
+            subscriptionType: inv.subscriptionType,
+            subscriptionUrl:  inv.subscriptionUrl
         }).pipe(takeUntil(this.destroy$)).subscribe();
     }
 
@@ -657,7 +694,6 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         const nameEn: Record<string, string> = { 'Domeinnaam': 'Domain name' };
         const itemName = nameEn[inv.subscriptionName] ?? inv.subscriptionName;
 
-        // ── Header band ──────────────────────────────────────────────
         doc.setFillColor(...P);
         doc.rect(0, 0, W, 32, 'F');
 
@@ -675,7 +711,6 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         doc.setFontSize(24); doc.setFont('helvetica', 'bold');
         doc.text('INVOICE', W - M, 18, { align: 'right' });
 
-        // ── From + Invoice details ───────────────────────────────────
         const col2X = M + CW / 2 + 8;
         let y = 42;
 
@@ -706,11 +741,9 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
             doc.text(val, W - M, ry, { align: 'right' }); ry += 5;
         }
 
-        // ── Divider ──────────────────────────────────────────────────
         y = 82;
         doc.setDrawColor(210, 210, 210); doc.line(M, y, W - M, y); y += 7;
 
-        // ── Bill to ──────────────────────────────────────────────────
         doc.setFontSize(7.5); doc.setFont('helvetica', 'bold'); doc.setTextColor(130, 130, 130);
         doc.text('BILL TO', M, y); y += 5;
         doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(20, 20, 20);
@@ -727,7 +760,6 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         }
         if (inv.customerVat) { doc.text(`VAT: ${inv.customerVat}`, M, y); y += 4; }
 
-        // ── Table ────────────────────────────────────────────────────
         y += 5;
         doc.setFillColor(241, 243, 248);
         doc.rect(M, y, CW, 8, 'F');
@@ -753,7 +785,6 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
 
         doc.setDrawColor(210, 210, 210); doc.line(M, y, W - M, y); y += 6;
 
-        // ── Totals ───────────────────────────────────────────────────
         const tX = W - M - 62, tVX = W - M;
 
         const addRow = (label: string, val: string) => {
@@ -782,7 +813,6 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         doc.text(fmt(inv.total), tVX, y + 6.5, { align: 'right' });
         y += 17;
 
-        // ── Footer ───────────────────────────────────────────────────
         doc.setDrawColor(210, 210, 210); doc.line(M, y, W - M, y); y += 6;
         doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(70, 70, 70);
         doc.text('Payment instructions:', M, y); y += 5;
