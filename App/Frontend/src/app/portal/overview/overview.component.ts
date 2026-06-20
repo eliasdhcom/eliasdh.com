@@ -7,7 +7,7 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-import { CustomersService, Customer, SubscriptionFrequency } from '../../services/customers.service';
+import { CustomersService, Customer } from '../../services/customers.service';
 import { InvoicesService, InvoiceStatus } from '../../services/invoices.service';
 import { PricingPlansService } from '../../services/pricing-plans.service';
 import { StatusService } from '../../services/status.service';
@@ -31,7 +31,6 @@ interface TypeStat {
     color: string;
 }
 
-const VAT_RATE = 0.21;
 const MONTH_LABELS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 @Component({
@@ -141,8 +140,6 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         const currentYear  = now.getFullYear();
         const currentMonth = now.getMonth();
 
-        const endDate = new Date(now.getFullYear(), now.getMonth() + 7, 0, 23, 59, 59, 999);
-
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
@@ -180,52 +177,24 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         this.mrr = mrrTotal;
         this.arr = mrrTotal * 12;
 
-        const paidKeys = new Set(
-            invoiceStatuses
-                .filter(s => s.paid)
-                .map(s => `${s.customerId}_${s.subscriptionId}_${s.periodStart}_${s.invoiceType}`)
-        );
-
         const monthlyMap     = new Map<string, number>();
         const monthlyPaidMap = new Map<string, number>();
         let paid = 0, paidCnt = 0, outstanding = 0, outstandingCnt = 0;
 
-        const addInvoice = (invoiceKey: string, start: Date, amount: number) => {
-            const monthKey = `${start.getFullYear()}-${start.getMonth()}`;
-            monthlyMap.set(monthKey, (monthlyMap.get(monthKey) ?? 0) + amount);
-            if (paidKeys.has(invoiceKey)) {
-                paid += amount;
+        for (const s of invoiceStatuses) {
+            if (s.amount == null) continue;
+            const d = new Date(s.periodStart);
+            if (isNaN(d.getTime())) continue;
+            const monthKey = `${d.getFullYear()}-${d.getMonth()}`;
+            if (s.paid) {
+                paid += s.amount;
                 paidCnt++;
-                monthlyPaidMap.set(monthKey, (monthlyPaidMap.get(monthKey) ?? 0) + amount);
-            } else if (start <= nextMonthEnd) {
-                outstanding += amount;
+                monthlyMap.set(monthKey,     (monthlyMap.get(monthKey)     ?? 0) + s.amount);
+                monthlyPaidMap.set(monthKey, (monthlyPaidMap.get(monthKey) ?? 0) + s.amount);
+            } else if (d <= nextMonthEnd) {
+                outstanding += s.amount;
                 outstandingCnt++;
-            }
-        };
-
-        for (const customer of nonHQ) {
-            for (const website of (customer.websites ?? [])) {
-                if (!website.startDate) continue;
-                const isFree = this.isFreeOrTodo(website.subscriptionType);
-                if (website.payment <= 0 || isFree) continue;
-
-                const m        = this.getMultiplier(website.frequency);
-                const subtotal = Math.max(0, website.payment - website.discount);
-                const amt      = subtotal * (1 + VAT_RATE) * m;
-                for (const { start } of this.getBillingPeriods(website.startDate, website.frequency, endDate)) {
-                    const k = `${customer.id}_${website.id}_${start.toISOString()}_subscription`;
-                    addInvoice(k, start, amt);
-                }
-            }
-
-            for (const domain of (customer.domains ?? [])) {
-                if (!domain.renewalDate || domain.annualPrice <= 0) continue;
-                const domainId = `domain:${String(domain.id ?? 0).padStart(4, '0')}`;
-                const amt      = +(domain.annualPrice * (1 + VAT_RATE)).toFixed(2);
-                for (const { start } of this.getBillingPeriods(domain.renewalDate, 'yearly', endDate)) {
-                    const k = `${customer.id}_${domainId}_${start.toISOString()}_domain`;
-                    addInvoice(k, start, amt);
-                }
+                monthlyMap.set(monthKey, (monthlyMap.get(monthKey) ?? 0) + s.amount);
             }
         }
 
@@ -300,47 +269,6 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
 
     private isFreeOrTodo(type: string): boolean {
         return type.toLowerCase().includes('free');
-    }
-
-    private getMultiplier(freq: string): number {
-        if (freq === 'yearly')    return 12;
-        if (freq === 'quarterly') return 3;
-        return 1;
-    }
-
-    private getBillingPeriods(startDateStr: string, frequency: SubscriptionFrequency, endDate: Date): { start: Date; end: Date }[] {
-        const periods: { start: Date; end: Date }[] = [];
-        const startDate = new Date(startDateStr);
-        if (isNaN(startDate.getTime())) return periods;
-
-        if (frequency === 'one-time') {
-            const end = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
-            if (startDate <= endDate) periods.push({ start: startDate, end });
-            return periods;
-        }
-
-        let cursor = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
-        while (cursor <= endDate) {
-            const periodStart = new Date(cursor);
-            let periodEnd: Date;
-            switch (frequency) {
-                case 'monthly':
-                    periodEnd = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0);
-                    cursor    = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
-                    break;
-                case 'quarterly':
-                    periodEnd = new Date(cursor.getFullYear(), cursor.getMonth() + 3, 0);
-                    cursor    = new Date(cursor.getFullYear(), cursor.getMonth() + 3, 1);
-                    break;
-                case 'yearly':
-                    periodEnd = new Date(cursor.getFullYear() + 1, cursor.getMonth(), 0);
-                    cursor    = new Date(cursor.getFullYear() + 1, cursor.getMonth(), 1);
-                    break;
-                default: return periods;
-            }
-            if (periodStart <= endDate) periods.push({ start: periodStart, end: periodEnd });
-        }
-        return periods;
     }
 
     formatCurrency(amount: number): string {
