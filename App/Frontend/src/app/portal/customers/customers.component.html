@@ -495,6 +495,12 @@
                                     <span class="customers-form-toggle-label">{{w.isLive ? ('PORTAL.CUSTOMERS.FORM.LIVE'|translate) : ('PORTAL.CUSTOMERS.FORM.INACTIVE'|translate)}}</span>
                                 </label>
                             </div>
+                            <div class="customers-form-field customers-form-field--full" *ngIf="form.locations.length > 1">
+                                <label class="customers-form-label">Locatie voor factuur</label>
+                                <select class="customers-form-select cursor-pointer" [(ngModel)]="w.invoiceLocationIndex">
+                                    <option class="cursor-pointer" *ngFor="let loc of form.locations; let li = index" [value]="li">Locatie {{li + 1}}: {{loc.street}} {{loc.number}}, {{loc.city}}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -539,9 +545,15 @@
                                 <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.PURCHASE_DATE'|translate}} <span class="customers-form-required">*</span></label>
                                 <input class="customers-form-input cursor-text" type="month" [(ngModel)]="d.renewalDate"/>
                             </div>
-                            <div class="customers-form-field customers-form-field--full">
+                            <div class="customers-form-field">
                                 <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.ANNUAL_PRICE'|translate}}</label>
                                 <input class="customers-form-input cursor-text" type="number" placeholder="0.00" min="0" step="0.01" [(ngModel)]="d.annualPrice"/>
+                            </div>
+                            <div class="customers-form-field" *ngIf="form.locations.length > 1">
+                                <label class="customers-form-label">Locatie voor factuur</label>
+                                <select class="customers-form-select cursor-pointer" [(ngModel)]="d.invoiceLocationIndex">
+                                    <option class="cursor-pointer" *ngFor="let loc of form.locations; let li = index" [value]="li">Locatie {{li + 1}}: {{loc.street}} {{loc.number}}, {{loc.city}}</option>
+                                </select>
                             </div>
                         </div>
                     </div>

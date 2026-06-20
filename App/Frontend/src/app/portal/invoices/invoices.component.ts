@@ -28,6 +28,7 @@ export interface Invoice {
     customerVat: string;
     customerAddress: string;
     customerLocations: CustomerLocation[];
+    invoiceLocationIndex: number;
     subscriptionId: string;
     subscriptionName: string;
     subscriptionType: string;
@@ -211,23 +212,24 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
                         dueDate: due,
                         periodStart,
                         periodEnd,
-                        customerId:        customer.id,
-                        customerName:      customer.name,
-                        customerLogo:      customer.logo,
-                        customerVat:       customer.vat ?? '',
-                        customerAddress:   customer.address ?? '',
-                        customerLocations: customer.locations ?? [],
-                        subscriptionId:    s.subscriptionId,
-                        subscriptionName:  s.subscriptionName ?? website?.name ?? domain?.name ?? s.subscriptionId,
-                        subscriptionType:  s.subscriptionType ?? website?.subscriptionType ?? (domain ? 'Domain' : ''),
-                        subscriptionUrl:   s.subscriptionUrl  ?? website?.url ?? '',
-                        frequency:         freq as any,
-                        payment:           storedSubtotal,
-                        discount:          0,
-                        subtotal:          storedSubtotal,
-                        vat:               storedVat,
-                        total:             storedTotal,
-                        invoiceType:       s.invoiceType
+                        customerId:           customer.id,
+                        customerName:         customer.name,
+                        customerLogo:         customer.logo,
+                        customerVat:          customer.vat ?? '',
+                        customerAddress:      customer.address ?? '',
+                        customerLocations:    customer.locations ?? [],
+                        invoiceLocationIndex: website?.invoiceLocationIndex ?? domain?.invoiceLocationIndex ?? 0,
+                        subscriptionId:       s.subscriptionId,
+                        subscriptionName:     s.subscriptionName ?? website?.name ?? domain?.name ?? s.subscriptionId,
+                        subscriptionType:     s.subscriptionType ?? website?.subscriptionType ?? (domain ? 'Domain' : ''),
+                        subscriptionUrl:      s.subscriptionUrl  ?? website?.url ?? '',
+                        frequency:            freq as any,
+                        payment:              storedSubtotal,
+                        discount:             0,
+                        subtotal:             storedSubtotal,
+                        vat:                  storedVat,
+                        total:                storedTotal,
+                        invoiceType:          s.invoiceType
                     });
                 }
 
@@ -327,22 +329,23 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
                     due.setDate(due.getDate() + 30);
                     raw.push({
                         ...customerBase,
-                        subscriptionId:   website.id,
-                        subscriptionUrl:  website.url,
-                        issueDate:        new Date(start),
-                        dueDate:          due,
-                        periodStart:      start,
-                        periodEnd:        end,
-                        subscriptionName: website.name,
-                        subscriptionType: website.subscriptionType,
-                        frequency:        website.frequency,
-                        payment:          periodicPayment,
-                        discount:         periodicDiscount,
-                        subtotal:         periodicSubtotal,
-                        vat:              periodicVat,
-                        total:            periodicTotal,
-                        invoiceType:      'subscription',
-                        paid:             false
+                        subscriptionId:       website.id,
+                        subscriptionUrl:      website.url,
+                        issueDate:            new Date(start),
+                        dueDate:              due,
+                        periodStart:          start,
+                        periodEnd:            end,
+                        subscriptionName:     website.name,
+                        subscriptionType:     website.subscriptionType,
+                        frequency:            website.frequency,
+                        payment:              periodicPayment,
+                        discount:             periodicDiscount,
+                        subtotal:             periodicSubtotal,
+                        vat:                  periodicVat,
+                        total:                periodicTotal,
+                        invoiceType:          'subscription',
+                        paid:                 false,
+                        invoiceLocationIndex: website.invoiceLocationIndex ?? 0
                     });
                 }
             }
@@ -357,22 +360,23 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
                     due.setDate(due.getDate() + 30);
                     raw.push({
                         ...customerBase,
-                        subscriptionId:   `domain:${String(domain.id ?? 0).padStart(4, '0')}`,
-                        subscriptionUrl:  '',
-                        issueDate:        new Date(start),
-                        dueDate:          due,
-                        periodStart:      start,
-                        periodEnd:        end,
-                        subscriptionName: domain.name,
-                        subscriptionType: 'Domain',
-                        frequency:        'yearly',
-                        payment:          domain.annualPrice,
-                        discount:         0,
-                        subtotal:         domain.annualPrice,
-                        vat:              vatAmt,
+                        subscriptionId:       `domain:${String(domain.id ?? 0).padStart(4, '0')}`,
+                        subscriptionUrl:      '',
+                        issueDate:            new Date(start),
+                        dueDate:              due,
+                        periodStart:          start,
+                        periodEnd:            end,
+                        subscriptionName:     domain.name,
+                        subscriptionType:     'Domain',
+                        frequency:            'yearly',
+                        payment:              domain.annualPrice,
+                        discount:             0,
+                        subtotal:             domain.annualPrice,
+                        vat:                  vatAmt,
                         total,
-                        invoiceType:      'domain',
-                        paid:             false
+                        invoiceType:          'domain',
+                        paid:                 false,
+                        invoiceLocationIndex: domain.invoiceLocationIndex ?? 0
                     });
                 }
             }
@@ -782,7 +786,7 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         doc.text(inv.customerName, M, y); y += 5;
         doc.setFontSize(8.5); doc.setFont('helvetica', 'normal'); doc.setTextColor(70, 70, 70);
 
-        const loc = inv.customerLocations?.[0];
+        const loc = inv.customerLocations?.[inv.invoiceLocationIndex] ?? inv.customerLocations?.[0];
         if (loc) {
             doc.text(`${loc.street} ${loc.number}`, M, y); y += 4;
             doc.text(`${loc.postalCode} ${loc.city}`, M, y); y += 4;
@@ -790,7 +794,8 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         } else if (inv.customerAddress) {
             doc.text(inv.customerAddress, M, y); y += 4;
         }
-        if (inv.customerVat) { doc.text(`VAT: ${inv.customerVat}`, M, y); y += 4; }
+        const vatToShow = loc?.vat || inv.customerVat;
+        if (vatToShow) { doc.text(`VAT: ${vatToShow}`, M, y); y += 4; }
 
         y += 5;
         doc.setFillColor(241, 243, 248);

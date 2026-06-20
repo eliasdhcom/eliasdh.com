@@ -112,28 +112,30 @@ function mapLocation(loc, socialLinks) {
 function mapWebsite(w) {
     const subtotal = Math.max(0, Number(w.payment) - Number(w.discount));
     return {
-        id:               w.id,
-        name:             w.name,
-        url:              w.url,
-        subscriptionType: w.subscription_type,
-        isLive:           w.is_live === 1 || w.is_live === 1n,
-        startDate:        w.start_date,
-        frequency:        w.frequency,
-        payment:          Number(w.payment),
-        discount:         Number(w.discount),
-        subtotal:         parseFloat(subtotal.toFixed(2)),
-        vat:              parseFloat((subtotal * VAT_RATE).toFixed(2)),
-        total:            parseFloat((subtotal * (1 + VAT_RATE)).toFixed(2)),
-        visitors:         Number(w.visitors ?? 0)
+        id:                   w.id,
+        name:                 w.name,
+        url:                  w.url,
+        subscriptionType:     w.subscription_type,
+        isLive:               w.is_live === 1 || w.is_live === 1n,
+        startDate:            w.start_date,
+        frequency:            w.frequency,
+        payment:              Number(w.payment),
+        discount:             Number(w.discount),
+        subtotal:             parseFloat(subtotal.toFixed(2)),
+        vat:                  parseFloat((subtotal * VAT_RATE).toFixed(2)),
+        total:                parseFloat((subtotal * (1 + VAT_RATE)).toFixed(2)),
+        visitors:             Number(w.visitors ?? 0),
+        invoiceLocationIndex: Number(w.invoice_location_index ?? 0)
     };
 }
 
 function mapDomain(d) {
     return {
-        id:          Number(d.id),
-        name:        d.name,
-        renewalDate: d.renewal_date,
-        annualPrice: Number(d.annual_price)
+        id:                   Number(d.id),
+        name:                 d.name,
+        renewalDate:          d.renewal_date,
+        annualPrice:          Number(d.annual_price),
+        invoiceLocationIndex: Number(d.invoice_location_index ?? 0)
     };
 }
 
@@ -280,8 +282,8 @@ async function insertLocations(db, customerId, locations) {
 async function insertDomains(db, customerId, domains) {
     for (const d of (domains ?? [])) {
         await db.execute({
-            sql:  'INSERT INTO domain_names (customer_id, name, renewal_date, annual_price) VALUES (?, ?, ?, ?)',
-            args: [customerId, d.name ?? '', d.renewalDate ?? '', Number(d.annualPrice ?? 0)]
+            sql:  'INSERT INTO domain_names (customer_id, name, renewal_date, annual_price, invoice_location_index) VALUES (?, ?, ?, ?, ?)',
+            args: [customerId, d.name ?? '', d.renewalDate ?? '', Number(d.annualPrice ?? 0), Number(d.invoiceLocationIndex ?? 0)]
         });
     }
 }
@@ -290,17 +292,18 @@ async function insertWebsites(db, customerId, websites) {
     for (const w of (websites ?? [])) {
         const wId = w.id || await getNextWebsiteId(db);
         await db.execute({
-            sql:  `INSERT OR IGNORE INTO websites (id, customer_id, name, url, subscription_type, is_live, start_date, frequency, payment, discount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            sql:  `INSERT OR IGNORE INTO websites (id, customer_id, name, url, subscription_type, is_live, start_date, frequency, payment, discount, invoice_location_index) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             args: [
                 wId, customerId,
-                w.name             ?? '',
-                w.url              ?? '',
-                w.subscriptionType ?? 'Free',
-                w.isLive           ? 1 : 0,
-                w.startDate        ?? null,
-                w.frequency        ?? 'monthly',
-                Number(w.payment   ?? 0),
-                Number(w.discount  ?? 0)
+                w.name                ?? '',
+                w.url                 ?? '',
+                w.subscriptionType    ?? 'Free',
+                w.isLive              ? 1 : 0,
+                w.startDate           ?? null,
+                w.frequency           ?? 'monthly',
+                Number(w.payment      ?? 0),
+                Number(w.discount     ?? 0),
+                Number(w.invoiceLocationIndex ?? 0)
             ]
         });
     }
@@ -412,13 +415,13 @@ class CustomersService {
             for (const d of incoming) {
                 if (d.id) {
                     await db.execute({
-                        sql:  'UPDATE domain_names SET name = ?, renewal_date = ?, annual_price = ? WHERE id = ? AND customer_id = ?',
-                        args: [d.name ?? '', d.renewalDate ?? '', Number(d.annualPrice ?? 0), Number(d.id), id]
+                        sql:  'UPDATE domain_names SET name = ?, renewal_date = ?, annual_price = ?, invoice_location_index = ? WHERE id = ? AND customer_id = ?',
+                        args: [d.name ?? '', d.renewalDate ?? '', Number(d.annualPrice ?? 0), Number(d.invoiceLocationIndex ?? 0), Number(d.id), id]
                     });
                 } else {
                     await db.execute({
-                        sql:  'INSERT INTO domain_names (customer_id, name, renewal_date, annual_price) VALUES (?, ?, ?, ?)',
-                        args: [id, d.name ?? '', d.renewalDate ?? '', Number(d.annualPrice ?? 0)]
+                        sql:  'INSERT INTO domain_names (customer_id, name, renewal_date, annual_price, invoice_location_index) VALUES (?, ?, ?, ?, ?)',
+                        args: [id, d.name ?? '', d.renewalDate ?? '', Number(d.annualPrice ?? 0), Number(d.invoiceLocationIndex ?? 0)]
                     });
                 }
             }

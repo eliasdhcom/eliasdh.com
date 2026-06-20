@@ -26,19 +26,20 @@ export interface CustomerLocation {
 export type SubscriptionFrequency = 'monthly' | 'quarterly' | 'yearly' | 'one-time';
 
 export interface CustomerWebsite {
-    id:               string;
-    name:             string;
-    url:              string;
-    subscriptionType: string;
-    isLive:           boolean;
-    startDate:        string;
-    frequency:        SubscriptionFrequency;
-    payment:          number;
-    discount:         number;
-    subtotal:         number;
-    vat:              number;
-    total:            number;
-    visitors?:        number;
+    id:                   string;
+    name:                 string;
+    url:                  string;
+    subscriptionType:     string;
+    isLive:               boolean;
+    startDate:            string;
+    frequency:            SubscriptionFrequency;
+    payment:              number;
+    discount:             number;
+    subtotal:             number;
+    vat:                  number;
+    total:                number;
+    visitors?:            number;
+    invoiceLocationIndex?: number;
 }
 
 export interface SocialLink {
@@ -47,10 +48,11 @@ export interface SocialLink {
 }
 
 export interface CustomerDomain {
-    id?:         number;
-    name:        string;
-    renewalDate: string;
-    annualPrice: number;
+    id?:                  number;
+    name:                 string;
+    renewalDate:          string;
+    annualPrice:          number;
+    invoiceLocationIndex?: number;
 }
 
 export interface Customer {

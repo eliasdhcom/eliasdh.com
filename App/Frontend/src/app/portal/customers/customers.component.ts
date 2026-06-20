@@ -33,21 +33,23 @@ interface LocationForm {
 }
 
 interface WebsiteForm {
-    id:               string;
-    name:             string;
-    url:              string;
-    subscriptionType: string;
-    isLive:           boolean;
-    startDate:        string;
-    frequency:        string;
-    payment:          string;
-    discount:         string;
+    id:                   string;
+    name:                 string;
+    url:                  string;
+    subscriptionType:     string;
+    isLive:               boolean;
+    startDate:            string;
+    frequency:            string;
+    payment:              string;
+    discount:             string;
+    invoiceLocationIndex: number;
 }
 
 interface DomainForm {
-    name:        string;
-    renewalDate: string;
-    annualPrice: string;
+    name:                 string;
+    renewalDate:          string;
+    annualPrice:          string;
+    invoiceLocationIndex: number;
 }
 
 interface CustomerForm {
@@ -222,7 +224,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     }
 
     private emptyDomain(): DomainForm {
-        return { name: '', renewalDate: '', annualPrice: '0' };
+        return { name: '', renewalDate: '', annualPrice: '0', invoiceLocationIndex: 0 };
     }
 
     private emptyLocation(): LocationForm {
@@ -230,7 +232,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     }
 
     private emptyWebsite(): WebsiteForm {
-        return { id: '', name: '', url: '', subscriptionType: 'Free', isLive: false, startDate: '', frequency: 'monthly', payment: String(this.subscriptionPrices['Free']), discount: '0' };
+        return { id: '', name: '', url: '', subscriptionType: 'Free', isLive: false, startDate: '', frequency: 'monthly', payment: String(this.subscriptionPrices['Free']), discount: '0', invoiceLocationIndex: 0 };
     }
 
     markTouched(): void { this.formTouched = true; }
@@ -273,22 +275,24 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
                 socialLinks: (l.socialLinks ?? []).map(s => ({ type: s.type, url: s.url }))
             })),
             websites: customer.websites.map(w => ({
-                id:               w.id,
-                name:             w.name,
-                url:              w.url,
-                subscriptionType: w.subscriptionType,
-                isLive:           w.isLive,
-                frequency:        w.frequency,
-                payment:          w.subscriptionType !== 'Custom' && w.subscriptionType in this.subscriptionPrices
-                                    ? String(this.subscriptionPrices[w.subscriptionType])
-                                    : String(w.payment),
-                discount:         String(w.discount),
-                startDate:        w.startDate ? w.startDate.slice(0, 7) : ''
+                id:                   w.id,
+                name:                 w.name,
+                url:                  w.url,
+                subscriptionType:     w.subscriptionType,
+                isLive:               w.isLive,
+                frequency:            w.frequency,
+                payment:              w.subscriptionType !== 'Custom' && w.subscriptionType in this.subscriptionPrices
+                                          ? String(this.subscriptionPrices[w.subscriptionType])
+                                          : String(w.payment),
+                discount:             String(w.discount),
+                startDate:            w.startDate ? w.startDate.slice(0, 7) : '',
+                invoiceLocationIndex: w.invoiceLocationIndex ?? 0
             })),
             domains: (customer.domains ?? []).map(d => ({
-                name:        d.name,
-                renewalDate: d.renewalDate ? d.renewalDate.slice(0, 7) : '',
-                annualPrice: String(d.annualPrice)
+                name:                 d.name,
+                renewalDate:          d.renewalDate ? d.renewalDate.slice(0, 7) : '',
+                annualPrice:          String(d.annualPrice),
+                invoiceLocationIndex: d.invoiceLocationIndex ?? 0
             }))
         };
         const existingLogo = customer.logo ?? '';
@@ -380,23 +384,25 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
                 socialLinks: l.socialLinks.filter(s => s.url.trim()) as SocialLink[]
             }) as CustomerLocation),
             websites: this.form.websites.map(w => ({
-                id:               w.id || '',
-                name:             w.name.trim(),
-                url:              w.url.trim(),
-                subscriptionType: w.subscriptionType,
-                isLive:           w.isLive,
-                startDate:        w.startDate ? `${w.startDate}-01` : undefined,
-                frequency:        w.frequency as any,
-                payment:          Number(w.payment) || 0,
-                discount:         Number(w.discount) || 0,
-                subtotal: 0, vat: 0, total: 0
+                id:                   w.id || '',
+                name:                 w.name.trim(),
+                url:                  w.url.trim(),
+                subscriptionType:     w.subscriptionType,
+                isLive:               w.isLive,
+                startDate:            w.startDate ? `${w.startDate}-01` : undefined,
+                frequency:            w.frequency as any,
+                payment:              Number(w.payment) || 0,
+                discount:             Number(w.discount) || 0,
+                subtotal: 0, vat: 0, total: 0,
+                invoiceLocationIndex: w.invoiceLocationIndex
             }) as CustomerWebsite),
             domains: this.form.domains.map(d => ({
-                name:        d.name.trim(),
-                renewalDate: d.renewalDate ? `${d.renewalDate}-01` : '',
-                annualPrice: Number(d.annualPrice) || 0,
-                discount:    0,
-                autoRenew:   true
+                name:                 d.name.trim(),
+                renewalDate:          d.renewalDate ? `${d.renewalDate}-01` : '',
+                annualPrice:          Number(d.annualPrice) || 0,
+                discount:             0,
+                autoRenew:            true,
+                invoiceLocationIndex: d.invoiceLocationIndex
             }) as CustomerDomain)
         };
 

@@ -212,6 +212,8 @@ async function initSchema() {
     try { await db.execute(`ALTER TABLE pricing_plans ADD COLUMN bullets        TEXT    NOT NULL DEFAULT '{}'`); } catch (_) {}
     try { await db.execute(`ALTER TABLE users ADD COLUMN net_salary REAL NOT NULL DEFAULT 0`); } catch (_) {}
     try { await db.execute(`ALTER TABLE customers ADD COLUMN show_on_home_page INTEGER NOT NULL DEFAULT 1`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE websites     ADD COLUMN invoice_location_index INTEGER NOT NULL DEFAULT 0`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE domain_names ADD COLUMN invoice_location_index INTEGER NOT NULL DEFAULT 0`); } catch (_) {}
 }
 
 module.exports = { getDb, initSchema };
