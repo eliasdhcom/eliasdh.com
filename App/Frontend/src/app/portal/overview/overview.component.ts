@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CustomersService, Customer } from '../../services/customers.service';
 import { InvoicesService, InvoiceStatus } from '../../services/invoices.service';
+import { InvoiceBuilderService } from '../../services/invoice-builder.service';
 import { PricingPlansService } from '../../services/pricing-plans.service';
 import { StatusService } from '../../services/status.service';
 import { Subject, forkJoin, of, interval } from 'rxjs';
@@ -72,6 +73,7 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
     constructor(
         private customersService: CustomersService,
         private invoicesService: InvoicesService,
+        private invoiceBuilderService: InvoiceBuilderService,
         readonly pricingPlansService: PricingPlansService,
         private statusService: StatusService
     ) {}
@@ -160,8 +162,6 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         this.inactiveCount = allWebsites.length - this.liveCount;
         this.totalWebsites = allWebsites.length;
 
-        const nextMonthEnd = new Date(now.getFullYear(), now.getMonth() + 2, 0, 23, 59, 59, 999);
-
         let mrrTotal = 0;
         for (const customer of nonHQ) {
             for (const website of (customer.websites ?? [])) {
@@ -181,20 +181,18 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         const monthlyPaidMap = new Map<string, number>();
         let paid = 0, paidCnt = 0, outstanding = 0, outstandingCnt = 0;
 
-        for (const s of invoiceStatuses) {
-            if (s.amount == null) continue;
-            const d = new Date(s.periodStart);
-            if (isNaN(d.getTime())) continue;
-            const monthKey = `${d.getFullYear()}-${d.getMonth()}`;
-            if (s.paid) {
-                paid += s.amount;
+        const allInvoices = this.invoiceBuilderService.buildInvoices(customers, invoiceStatuses);
+        for (const inv of allInvoices) {
+            const monthKey = `${inv.issueDate.getFullYear()}-${inv.issueDate.getMonth()}`;
+            if (inv.paid) {
+                paid += inv.total;
                 paidCnt++;
-                monthlyMap.set(monthKey,     (monthlyMap.get(monthKey)     ?? 0) + s.amount);
-                monthlyPaidMap.set(monthKey, (monthlyPaidMap.get(monthKey) ?? 0) + s.amount);
-            } else if (d <= nextMonthEnd) {
-                outstanding += s.amount;
+                monthlyMap.set(monthKey,     (monthlyMap.get(monthKey)     ?? 0) + inv.total);
+                monthlyPaidMap.set(monthKey, (monthlyPaidMap.get(monthKey) ?? 0) + inv.total);
+            } else {
+                outstanding += inv.total;
                 outstandingCnt++;
-                monthlyMap.set(monthKey, (monthlyMap.get(monthKey) ?? 0) + s.amount);
+                monthlyMap.set(monthKey, (monthlyMap.get(monthKey) ?? 0) + inv.total);
             }
         }
 
