@@ -385,6 +385,7 @@
   },
   "PORTAL": {
     "LANG": { "TITLE": "Taal" },
+    "THEME": { "LIGHT": "Overschakelen naar licht thema", "DARK": "Overschakelen naar donker thema" },
     "COMMON": { "SAVE": "Opslaan", "SAVING": "Opslaan...", "CANCEL": "Annuleren", "DELETE": "Verwijderen", "DELETING": "Bezig...", "CLOSE": "Sluiten", "RETRY": "Opnieuw proberen", "EDIT": "Bewerken", "ACTIVE": "Actief", "INACTIVE": "Inactief", "ALL": "Alle", "DISCARD": { "QUESTION": "Wil je de wijzigingen verwerpen?", "KEEP": "Bewaren", "DISCARD": "Verwerpen" } },
     "NAV": { "OVERVIEW": "Overzicht", "CUSTOMERS": "Klanten", "SUBSCRIPTIONS": "Abonnementen", "INVOICES": "Facturen", "USERS": "Gebruikers", "ANALYSIS": "Analyse", "PRICING": "Tariefplannen", "LOGS": "Logs", "COMPANY": "Bedrijf", "LOGOUT": "Afmelden" },
     "DASHBOARD": { "USER_PROFILE": "Gebruikersprofiel", "FIRST_NAME": "Voornaam", "LAST_NAME": "Achternaam", "COMPANY": "Bedrijf", "PHONE": "Telefoon", "EMAIL": "E-mailadres", "BIRTH_DATE": "Geboortedatum", "ROLE": "Rol", "EXPAND_SIDEBAR": "Zijbalk uitklappen", "COLLAPSE_SIDEBAR": "Zijbalk inklappen", "TOGGLE_MENU": "Menu openen/sluiten" },

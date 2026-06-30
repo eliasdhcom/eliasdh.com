@@ -386,6 +386,7 @@
   },
   "PORTAL": {
     "LANG": { "TITLE": "Langue" },
+    "THEME": { "LIGHT": "Passer au thème clair", "DARK": "Passer au thème sombre" },
     "COMMON": { "SAVE": "Enregistrer", "SAVING": "Enregistrement...", "CANCEL": "Annuler", "DELETE": "Supprimer", "DELETING": "En cours...", "CLOSE": "Fermer", "RETRY": "Réessayer", "EDIT": "Modifier", "ACTIVE": "Actif", "INACTIVE": "Inactif", "ALL": "Tous", "DISCARD": { "QUESTION": "Abandonner les modifications ?", "KEEP": "Continuer", "DISCARD": "Abandonner" } },
     "NAV": { "OVERVIEW": "Aperçu", "CUSTOMERS": "Clients", "SUBSCRIPTIONS": "Abonnements", "INVOICES": "Factures", "USERS": "Utilisateurs", "ANALYSIS": "Analyse", "PRICING": "Tarifs", "LOGS": "Journaux", "COMPANY": "Société", "LOGOUT": "Déconnexion" },
     "DASHBOARD": { "USER_PROFILE": "Profil utilisateur", "FIRST_NAME": "Prénom", "LAST_NAME": "Nom", "COMPANY": "Entreprise", "PHONE": "Téléphone", "EMAIL": "Adresse e-mail", "BIRTH_DATE": "Date de naissance", "ROLE": "Rôle", "EXPAND_SIDEBAR": "Développer la barre latérale", "COLLAPSE_SIDEBAR": "Réduire la barre latérale", "TOGGLE_MENU": "Ouvrir/fermer le menu" },
