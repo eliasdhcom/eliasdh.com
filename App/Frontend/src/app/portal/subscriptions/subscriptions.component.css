@@ -456,6 +456,14 @@
     display: none;
 }
 
+.subscriptions-mobile-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .subscriptions-mobile-top {
     display: flex;
     align-items: center;

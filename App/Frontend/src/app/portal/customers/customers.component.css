@@ -1530,6 +1530,16 @@
         font-size: 14px;
     }
 
+    .customers-card-row-top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+    }
+
+    .customers-card-company-name {
+        max-width: 100%;
+    }
+
     .customers-card-meta-item {
         font-size: 11px;
         max-width: 200px;
