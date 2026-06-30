@@ -12,6 +12,7 @@ import { AuthService } from './auth.service';
 
 export interface CustomerLocation {
     id?:         number;
+    name?:       string;
     street:      string;
     number:      string;
     postalCode:  string;
@@ -127,6 +128,13 @@ export class CustomersService {
 
     deleteCustomer(id: string): Observable<{ success: boolean }> {
         return this.http.delete<{ success: boolean }>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
+    }
+
+    lookupVat(country: string, vat: string): Observable<{ success: boolean; data: { valid: boolean; name: string; address: string } | null }> {
+        return this.http.get<{ success: boolean; data: { valid: boolean; name: string; address: string } | null }>(
+            `${this.apiUrl}/vat-lookup/${encodeURIComponent(country)}/${encodeURIComponent(vat)}`,
+            { headers: this.getAuthHeaders() }
+        );
     }
 
     signAgreement(id: string, signature: string): Observable<{ success: boolean; signedAt: string }> {

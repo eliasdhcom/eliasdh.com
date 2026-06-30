@@ -7,6 +7,7 @@
 const express         = require('express');
 const { body, param, validationResult } = require('express-validator');
 const customerService = require('../../services/customers/customersService');
+const vatLookupService = require('../../services/customers/vatLookupService');
 const { jwtAuth }     = require('../../../middleware/jwtAuth');
 const logsService     = require('../../services/logs/logsService');
 const mailerService   = require('../../services/mailer/mailerService');
@@ -29,6 +30,19 @@ router.get('/', async (req, res) => {
         res.status(500).json({ success: false, error: err.message });
     }
 });
+
+router.get('/vat-lookup/:country/:vat',
+    jwtAuth,
+    async (req, res) => {
+        try {
+            const result = await vatLookupService.lookup(req.params.country, req.params.vat);
+            res.json({ success: true, data: result });
+        } catch (err) {
+            logger.error(`VAT lookup error: ${err.message}`);
+            res.status(500).json({ success: false, error: err.message });
+        }
+    }
+);
 
 router.get('/:id', async (req, res) => {
     try {

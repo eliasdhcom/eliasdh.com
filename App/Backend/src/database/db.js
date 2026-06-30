@@ -38,6 +38,7 @@ async function initSchema() {
         `CREATE TABLE IF NOT EXISTS customer_locations (
             id          INTEGER PRIMARY KEY AUTOINCREMENT,
             customer_id TEXT NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
+            name        TEXT,
             street      TEXT,
             number      TEXT,
             postal_code TEXT,
@@ -214,6 +215,7 @@ async function initSchema() {
     try { await db.execute(`ALTER TABLE customers ADD COLUMN show_on_home_page INTEGER NOT NULL DEFAULT 1`); } catch (_) {}
     try { await db.execute(`ALTER TABLE websites     ADD COLUMN invoice_location_index INTEGER NOT NULL DEFAULT 0`); } catch (_) {}
     try { await db.execute(`ALTER TABLE domain_names ADD COLUMN invoice_location_index INTEGER NOT NULL DEFAULT 0`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE customer_locations ADD COLUMN name TEXT`); } catch (_) {}
 }
 
 module.exports = { getDb, initSchema };

@@ -368,6 +368,19 @@
                             </button>
                         </div>
                         <div class="customers-form-grid">
+                            <div class="customers-form-field customers-form-field--full">
+                                <label class="customers-form-label">
+                                    {{'PORTAL.CUSTOMERS.FORM.LOCATION_NAME'|translate}}
+                                    <span class="customers-form-autofill-badge" *ngIf="vatAutoFilled[li]" [title]="'PORTAL.CUSTOMERS.FORM.AUTO_FILLED_TOOLTIP'|translate">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                        {{'PORTAL.CUSTOMERS.FORM.AUTO_FILLED'|translate}}
+                                    </span>
+                                </label>
+                                <input class="customers-form-input cursor-text" type="text" placeholder="bv. EliasDH BV" [(ngModel)]="loc.name" (input)="onLocationNameInput(li)"/>
+                                <span class="customers-form-field-hint">{{'PORTAL.CUSTOMERS.FORM.LOCATION_NAME_HINT'|translate}}</span>
+                            </div>
                             <div class="customers-form-field customers-form-field--street">
                                 <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.STREET'|translate}} <span class="customers-form-required">*</span></label>
                                 <input class="customers-form-input cursor-text" type="text" placeholder="Hoofdstraat" [(ngModel)]="loc.street" (blur)="onAddressBlur(loc, li)"/>
@@ -386,11 +399,16 @@
                             </div>
                             <div class="customers-form-field">
                                 <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.COUNTRY'|translate}} <span class="customers-form-required">*</span></label>
-                                <input class="customers-form-input cursor-text" type="text" placeholder="Belgium" [(ngModel)]="loc.country" (blur)="onAddressBlur(loc, li)"/>
+                                <select class="customers-form-select cursor-pointer" [(ngModel)]="loc.country" (change)="onAddressBlur(loc, li)">
+                                    <option class="cursor-pointer" *ngFor="let c of countries" [value]="c">{{c}}</option>
+                                </select>
                             </div>
                             <div class="customers-form-field">
                                 <label class="customers-form-label">{{'PORTAL.CUSTOMERS.FORM.VAT'|translate}}</label>
-                                <input class="customers-form-input cursor-text" type="text" placeholder="BE 0123.456.789" [(ngModel)]="loc.vat"/>
+                                <div class="customers-form-input-wrap">
+                                    <input class="customers-form-input cursor-text" type="text" placeholder="BE 0123.456.789" [(ngModel)]="loc.vat" (blur)="onVatBlur(loc, li)"/>
+                                    <svg *ngIf="vatLookupLoading[li]" class="customers-form-input-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-opacity="0.3"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+                                </div>
                             </div>
                         </div>
                         <div class="customers-form-socials">
@@ -569,8 +587,18 @@
                     <button class="customers-modal-btn customers-modal-btn--discard cursor-pointer" type="button" (click)="confirmDiscard()">{{'PORTAL.COMMON.DISCARD.DISCARD'|translate}}</button>
                 </div>
             </div>
-            <p class="customers-form-error" *ngIf="formError && !showDiscardConfirm">{{formError}}</p>
-            <div class="customers-modal-footer-actions" *ngIf="!showDiscardConfirm">
+            <div class="customers-agreement-reset-confirm" *ngIf="showAgreementResetConfirm">
+                <span class="customers-agreement-reset-question">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    {{'PORTAL.CUSTOMERS.FORM.AGREEMENT_RESET_WARNING'|translate}}
+                </span>
+                <div class="customers-discard-actions">
+                    <button class="customers-modal-btn customers-modal-btn--cancel cursor-pointer" type="button" (click)="cancelAgreementReset()">{{'PORTAL.CUSTOMERS.FORM.AGREEMENT_RESET_CANCEL'|translate}}</button>
+                    <button class="customers-modal-btn customers-modal-btn--save cursor-pointer" type="button" (click)="confirmAgreementReset()" [disabled]="formSaving">{{'PORTAL.CUSTOMERS.FORM.AGREEMENT_RESET_CONFIRM'|translate}}</button>
+                </div>
+            </div>
+            <p class="customers-form-error" *ngIf="formError && !showDiscardConfirm && !showAgreementResetConfirm">{{formError}}</p>
+            <div class="customers-modal-footer-actions" *ngIf="!showDiscardConfirm && !showAgreementResetConfirm">
                 <button class="customers-modal-btn customers-modal-btn--cancel cursor-pointer" type="button" (click)="requestClose()" [disabled]="formSaving">{{'PORTAL.CUSTOMERS.FORM.CANCEL'|translate}}</button>
                 <button class="customers-modal-btn customers-modal-btn--save cursor-pointer" type="button" (click)="submitForm()" [disabled]="formSaving">
                     <svg *ngIf="formSaving" class="customers-form-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-opacity="0.3"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>

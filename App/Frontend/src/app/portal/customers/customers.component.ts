@@ -21,6 +21,7 @@ interface SocialLinkForm {
 }
 
 interface LocationForm {
+    name:        string;
     street:      string;
     number:      string;
     postalCode:  string;
@@ -97,10 +98,15 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     subscriptionTypes: string[]            = ['Free', 'Basic', 'Growth', 'Startup', 'Business', 'Enterprise', 'Custom'];
     readonly frequencies                   = ['monthly', 'quarterly', 'yearly', 'one-time'];
     readonly socialTypes                   = ['facebook', 'instagram', 'linkedin', 'twitter', 'tiktok', 'youtube', 'github'];
+    readonly countries                     = ['Belgium', 'Netherlands', 'France', 'Luxembourg', 'Spain', 'Germany'];
     subscriptionPrices: Record<string, number> = { Free: 0, Custom: 0 };
     private pricingPlans: PricingPlan[]    = [];
 
     geocodingLoading: boolean[] = [];
+    vatLookupLoading: boolean[] = [];
+    vatAutoFilled:    boolean[] = [];
+    editingAgreementSignedAt: string | null = null;
+    showAgreementResetConfirm = false;
 
     // ── Agreement modal state ─────────────────────────────────────────────────
     agreementCustomer     : Customer | null = null;
@@ -228,7 +234,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
     }
 
     private emptyLocation(): LocationForm {
-        return { street: '', number: '', postalCode: '', city: '', country: 'Belgium', vat: '', latitude: '', longitude: '', socialLinks: [] };
+        return { name: '', street: '', number: '', postalCode: '', city: '', country: 'Belgium', vat: '', latitude: '', longitude: '', socialLinks: [] };
     }
 
     private emptyWebsite(): WebsiteForm {
@@ -244,6 +250,9 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         this.formError          = '';
         this.formTouched        = false;
         this.showDiscardConfirm = false;
+        this.showAgreementResetConfirm = false;
+        this.editingAgreementSignedAt  = null;
+        this.vatAutoFilled       = [];
         this.showForm           = true;
     }
 
@@ -254,6 +263,9 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         this.formError          = '';
         this.formTouched        = false;
         this.showDiscardConfirm = false;
+        this.showAgreementResetConfirm = false;
+        this.editingAgreementSignedAt  = customer.agreementSignedAt ?? null;
+        this.vatAutoFilled       = [];
         this.form = {
             name:          customer.name,
             firstName:     customer.firstName ?? '',
@@ -264,6 +276,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
             logo:          '',
             showOnHomePage: customer.showOnHomePage !== false,
             locations: customer.locations.map(l => ({
+                name:       l.name ?? '',
                 street:     l.street,
                 number:     l.number,
                 postalCode: l.postalCode,
@@ -281,9 +294,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
                 subscriptionType:     w.subscriptionType,
                 isLive:               w.isLive,
                 frequency:            w.frequency,
-                payment:              w.subscriptionType !== 'Custom' && w.subscriptionType in this.subscriptionPrices
-                                          ? String(this.subscriptionPrices[w.subscriptionType])
-                                          : String(w.payment),
+                payment:              w.subscriptionType !== 'Custom' && w.subscriptionType in this.subscriptionPrices ? String(this.subscriptionPrices[w.subscriptionType]) : String(w.payment),
                 discount:             String(w.discount),
                 startDate:            w.startDate ? w.startDate.slice(0, 7) : '',
                 invoiceLocationIndex: w.invoiceLocationIndex ?? 0
@@ -323,6 +334,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
         this.formError          = '';
         this.formTouched        = false;
         this.showDiscardConfirm = false;
+        this.showAgreementResetConfirm = false;
     }
 
     submitForm(): void {
@@ -360,6 +372,24 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
             if (!d.renewalDate)    { this.formError = this.translate.instant('PORTAL.CUSTOMERS.FORM.ERR_DOM_RENEWAL', { n }); return; }
         }
 
+        if (this.isEditing && this.editingAgreementSignedAt && !this.showAgreementResetConfirm) {
+            this.showAgreementResetConfirm = true;
+            return;
+        }
+
+        this.performSave();
+    }
+
+    confirmAgreementReset(): void {
+        this.showAgreementResetConfirm = false;
+        this.performSave();
+    }
+
+    cancelAgreementReset(): void {
+        this.showAgreementResetConfirm = false;
+    }
+
+    private performSave(): void {
         this.formSaving = true;
         this.formError  = '';
 
@@ -373,6 +403,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
             logo:          this.form.logo,
             showOnHomePage: this.form.showOnHomePage,
             locations: this.form.locations.map(l => ({
+                name:       l.name.trim(),
                 street:     l.street.trim(),
                 number:     l.number.trim(),
                 postalCode: l.postalCode.trim(),
@@ -418,7 +449,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
             },
             error: (err) => {
                 this.formSaving = false;
-                this.formError  = err?.error?.error ?? 'Er is een fout opgetreden.';
+                this.formError  = err?.error?.error ?? 'An error has occurred.';
             }
         });
     }
@@ -539,6 +570,34 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
             })
             .catch(() => {})
             .finally(() => { this.geocodingLoading[index] = false; });
+    }
+
+    private isBelgium(country: string): boolean {
+        return country === 'Belgium';
+    }
+
+    onVatBlur(loc: LocationForm, index: number): void {
+        if (!loc.vat.trim() || !this.isBelgium(loc.country)) return;
+        if (this.vatLookupLoading[index]) return;
+        const digits = loc.vat.replace(/[^0-9]/g, '');
+        if (digits.length !== 10) return;
+        this.vatLookupLoading[index] = true;
+        this.customersService.lookupVat('BE', digits)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (r) => {
+                    if (r.data?.valid && r.data.name && !loc.name.trim()) {
+                        loc.name = r.data.name;
+                        this.vatAutoFilled[index] = true;
+                    }
+                    this.vatLookupLoading[index] = false;
+                },
+                error: () => { this.vatLookupLoading[index] = false; }
+            });
+    }
+
+    onLocationNameInput(index: number): void {
+        this.vatAutoFilled[index] = false;
     }
 
     openAgreementModal(customer: Customer, event: Event): void {

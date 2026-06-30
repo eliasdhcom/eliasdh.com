@@ -97,6 +97,7 @@ async function getNextWebsiteId(db) {
 function mapLocation(loc, socialLinks) {
     return {
         id:         Number(loc.id),
+        name:       loc.name ?? '',
         street:     loc.street,
         number:     loc.number,
         postalCode: loc.postal_code,
@@ -255,9 +256,10 @@ async function fetchSingleCustomerData(db, customerId) {
 async function insertLocations(db, customerId, locations) {
     for (const loc of (locations ?? [])) {
         const locRes = await db.execute({
-            sql:  `INSERT INTO customer_locations (customer_id, street, number, postal_code, city, country, vat, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            sql:  `INSERT INTO customer_locations (customer_id, name, street, number, postal_code, city, country, vat, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             args: [
                 customerId,
+                loc.name        ?? '',
                 loc.street      ?? '',
                 loc.number      ?? '',
                 loc.postalCode  ?? '',
