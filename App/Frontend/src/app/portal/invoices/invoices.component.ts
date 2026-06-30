@@ -32,6 +32,7 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
     error = '';
     searchQuery = '';
     filterYear: number | 'all' = 'all';
+    filterQuarter: number | 'all' = 'all';
     filterMonth: number | 'all' = 'all';
     availableYears: number[] = [];
     generatingPdfId: string | null = null;
@@ -85,9 +86,14 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         });
     }
 
+    private getQuarter(date: Date): number {
+        return Math.floor(date.getMonth() / 3) + 1;
+    }
+
     get filteredInvoices(): Invoice[] {
         return this.invoices.filter(inv => {
             if (this.filterYear !== 'all' && inv.issueDate.getFullYear() !== this.filterYear) return false;
+            if (this.filterQuarter !== 'all' && this.getQuarter(inv.issueDate) !== this.filterQuarter) return false;
             if (this.filterMonth !== 'all' && inv.issueDate.getMonth() + 1 !== this.filterMonth) return false;
             if (!this.searchQuery.trim()) return true;
             const q = this.searchQuery.toLowerCase();
@@ -120,11 +126,23 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         return groups;
     }
 
-    get availableMonths(): number[] {
-        const base = this.filterYear === 'all'
+    private get yearBase(): Invoice[] {
+        return this.filterYear === 'all'
             ? this.invoices
             : this.invoices.filter(i => i.issueDate.getFullYear() === this.filterYear);
-        return [...new Set(base.map(i => i.issueDate.getMonth() + 1))].sort((a, b) => a - b);
+    }
+
+    private get quarterBase(): Invoice[] {
+        const base = this.yearBase;
+        return this.filterQuarter === 'all' ? base : base.filter(i => this.getQuarter(i.issueDate) === this.filterQuarter);
+    }
+
+    get availableQuarters(): number[] {
+        return [...new Set(this.yearBase.map(i => this.getQuarter(i.issueDate)))].sort((a, b) => a - b);
+    }
+
+    get availableMonths(): number[] {
+        return [...new Set(this.quarterBase.map(i => i.issueDate.getMonth() + 1))].sort((a, b) => a - b);
     }
 
     get totalRevenue(): number {
@@ -135,11 +153,12 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         return this.invoices.filter(i => i.issueDate.getFullYear() === year).length;
     }
 
+    getQuarterCount(quarter: number): number {
+        return this.yearBase.filter(i => this.getQuarter(i.issueDate) === quarter).length;
+    }
+
     getMonthCount(month: number): number {
-        const base = this.filterYear === 'all'
-            ? this.invoices
-            : this.invoices.filter(i => i.issueDate.getFullYear() === this.filterYear);
-        return base.filter(i => i.issueDate.getMonth() + 1 === month).length;
+        return this.quarterBase.filter(i => i.issueDate.getMonth() + 1 === month).length;
     }
 
     get allAllPaid(): boolean {
@@ -159,19 +178,22 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         return this.invoices.filter(i => i.issueDate.getFullYear() === year && !i.paid).length;
     }
 
+    isQuarterAllPaid(quarter: number): boolean {
+        const inv = this.yearBase.filter(i => this.getQuarter(i.issueDate) === quarter);
+        return inv.length > 0 && inv.every(i => i.paid);
+    }
+
+    getQuarterUnpaidCount(quarter: number): number {
+        return this.yearBase.filter(i => this.getQuarter(i.issueDate) === quarter && !i.paid).length;
+    }
+
     isMonthAllPaid(month: number): boolean {
-        const base = this.filterYear === 'all'
-            ? this.invoices
-            : this.invoices.filter(i => i.issueDate.getFullYear() === this.filterYear);
-        const inv = base.filter(i => i.issueDate.getMonth() + 1 === month);
+        const inv = this.quarterBase.filter(i => i.issueDate.getMonth() + 1 === month);
         return inv.length > 0 && inv.every(i => i.paid);
     }
 
     getMonthUnpaidCount(month: number): number {
-        const base = this.filterYear === 'all'
-            ? this.invoices
-            : this.invoices.filter(i => i.issueDate.getFullYear() === this.filterYear);
-        return base.filter(i => i.issueDate.getMonth() + 1 === month && !i.paid).length;
+        return this.quarterBase.filter(i => i.issueDate.getMonth() + 1 === month && !i.paid).length;
     }
 
     getMonthName(month: number): string {
@@ -182,9 +204,20 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         this.searchQuery = (event.target as HTMLInputElement).value;
     }
 
+    private autoSelectSingleMonth(): void {
+        const months = this.availableMonths;
+        this.filterMonth = months.length === 1 ? months[0] : 'all';
+    }
+
     setYearFilter(year: number | 'all'): void {
         this.filterYear = year;
-        this.filterMonth = 'all';
+        this.filterQuarter = 'all';
+        this.autoSelectSingleMonth();
+    }
+
+    setQuarterFilter(quarter: number | 'all'): void {
+        this.filterQuarter = quarter;
+        this.autoSelectSingleMonth();
     }
 
     setMonthFilter(month: number | 'all'): void {
@@ -428,11 +461,11 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
 
         doc.setFontSize(7.5); doc.setFont('helvetica', 'bold'); doc.setTextColor(130, 130, 130);
         doc.text('BILL TO', M, y); y += 5;
-        doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(20, 20, 20);
-        doc.text(inv.customerName, M, y); y += 5;
-        doc.setFontSize(8.5); doc.setFont('helvetica', 'normal'); doc.setTextColor(70, 70, 70);
-
         const loc = inv.customerLocations?.[inv.invoiceLocationIndex] ?? inv.customerLocations?.[0];
+        const billToName = loc?.name || inv.customerName;
+        doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(20, 20, 20);
+        doc.text(billToName, M, y); y += 5;
+        doc.setFontSize(8.5); doc.setFont('helvetica', 'normal'); doc.setTextColor(70, 70, 70);
         if (loc) {
             doc.text(`${loc.street} ${loc.number}`, M, y); y += 4;
             doc.text(`${loc.postalCode} ${loc.city}`, M, y); y += 4;

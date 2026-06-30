@@ -224,6 +224,7 @@
                         <div class="customers-locations-list">
                             <div class="customers-location-item" *ngFor="let loc of customer.locations">
                                 <div class="customers-location-address">
+                                    <span class="customers-location-name" *ngIf="loc.name">{{loc.name}}</span>
                                     <span class="customers-location-street">{{loc.street}} {{loc.number}}</span>
                                     <span class="customers-location-city">{{loc.postalCode}} {{loc.city}}</span>
                                     <div class="customers-location-socials" *ngIf="loc.socialLinks?.length">

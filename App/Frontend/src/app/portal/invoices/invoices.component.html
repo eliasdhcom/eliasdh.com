@@ -32,7 +32,15 @@
                     {{year}} <span class="invoices-filter-count cursor-pointer" [class.invoices-filter-count--paid]="isYearAllPaid(year)" [class.invoices-filter-count--unpaid]="!isYearAllPaid(year)">{{isYearAllPaid(year) ? getYearCount(year) : getYearUnpaidCount(year)}}</span>
                 </button>
             </div>
-            <div class="invoices-filters invoices-filters--months" *ngIf="filterYear !== 'all' && availableMonths.length > 1">
+            <div class="invoices-filters invoices-filters--quarters" *ngIf="filterYear !== 'all' && availableQuarters.length > 1">
+                <button class="invoices-filter-btn cursor-pointer" [class.invoices-filter-btn--active]="filterQuarter === 'all'" (click)="setQuarterFilter('all')">
+                    {{'PORTAL.INVOICES.ALL_QUARTERS'|translate}}
+                </button>
+                <button class="invoices-filter-btn cursor-pointer" *ngFor="let q of availableQuarters" [class.invoices-filter-btn--active]="filterQuarter === q" (click)="setQuarterFilter(q)">
+                    Q{{q}} <span class="invoices-filter-count cursor-pointer" [class.invoices-filter-count--paid]="isQuarterAllPaid(q)" [class.invoices-filter-count--unpaid]="!isQuarterAllPaid(q)">{{isQuarterAllPaid(q) ? getQuarterCount(q) : getQuarterUnpaidCount(q)}}</span>
+                </button>
+            </div>
+            <div class="invoices-filters invoices-filters--months" *ngIf="filterYear !== 'all' && availableMonths.length > 0">
                 <button class="invoices-filter-btn cursor-pointer" [class.invoices-filter-btn--active]="filterMonth === 'all'" (click)="setMonthFilter('all')">
                     {{'PORTAL.INVOICES.ALL_MONTHS'|translate}}
                 </button>

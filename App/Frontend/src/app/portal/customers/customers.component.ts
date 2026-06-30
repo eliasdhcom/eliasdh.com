@@ -586,7 +586,7 @@ export class PortalCustomersComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (r) => {
-                    if (r.data?.valid && r.data.name && !loc.name.trim()) {
+                    if (r.data?.valid && r.data.name && (!loc.name.trim() || this.vatAutoFilled[index])) {
                         loc.name = r.data.name;
                         this.vatAutoFilled[index] = true;
                     }
