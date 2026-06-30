@@ -6,7 +6,7 @@
 
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CustomersService } from '../../services/customers.service';
 import { InvoicesService } from '../../services/invoices.service';
 import { InvoiceBuilderService, Invoice, InvoiceGroup } from '../../services/invoice-builder.service';
@@ -39,6 +39,9 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
     failedGroupLogos = new Set<string>();
     paidConfirmId: string | null = null;
     paidConfirmCurrentState = false;
+    showVatModal = false;
+    vatYear = 0;
+    vatQuarter = 0;
     private destroy$ = new Subject<void>();
 
     constructor(
@@ -47,7 +50,8 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         private invoiceBuilderService: InvoiceBuilderService,
         private cdr: ChangeDetectorRef,
         readonly pricingPlansService: PricingPlansService,
-        private logsService: LogsService
+        private logsService: LogsService,
+        private translate: TranslateService
     ) {}
 
     ngOnInit(): void {
@@ -287,6 +291,97 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
         if (p >= 90) return 'red';
         if (p >= 70) return 'orange';
         return 'green';
+    }
+
+    private isQuarterComplete(year: number, quarter: number): boolean {
+        return new Date() > new Date(year, quarter * 3, 0, 23, 59, 59, 999);
+    }
+
+    private invoicesForYearQuarter(year: number, quarter: number): Invoice[] {
+        return this.invoices.filter(i =>
+            i.issueDate.getFullYear() === year && this.getQuarter(i.issueDate) === quarter
+        );
+    }
+
+    get vatModalAvailableYears(): number[] {
+        return [...new Set(this.invoices.map(i => i.issueDate.getFullYear()))]
+            .filter(y => [1,2,3,4].some(q => this.invoicesForYearQuarter(y, q).length > 0))
+            .sort((a, b) => b - a);
+    }
+
+    vatModalQuartersForYear(year: number): number[] {
+        return [1,2,3,4].filter(q => this.invoicesForYearQuarter(year, q).length > 0);
+    }
+
+    getVatQuarterStatus(year: number, quarter: number): 'ready' | 'ended-unpaid' | 'ongoing-paid' | 'ongoing-unpaid' {
+        const ended   = this.isQuarterComplete(year, quarter);
+        const invs    = this.invoicesForYearQuarter(year, quarter);
+        const allPaid = invs.length > 0 && invs.every(i => i.paid);
+        const anyUnpaid = invs.some(i => !i.paid);
+        if (ended  && allPaid)  return 'ready';
+        if (ended  && anyUnpaid) return 'ended-unpaid';
+        if (!ended && !anyUnpaid) return 'ongoing-paid';
+        return 'ongoing-unpaid';
+    }
+
+    get vatCurrentStatus(): 'ready' | 'ended-unpaid' | 'ongoing-paid' | 'ongoing-unpaid' {
+        return this.getVatQuarterStatus(this.vatYear, this.vatQuarter);
+    }
+
+    openVatModal(): void {
+        const years = this.vatModalAvailableYears;
+        if (!years.length) return;
+        this.vatYear = years[0];
+        const qs = this.vatModalQuartersForYear(this.vatYear);
+        this.vatQuarter = qs[qs.length - 1] ?? 0;
+        this.showVatModal = true;
+    }
+
+    closeVatModal(): void { this.showVatModal = false; }
+
+    get vatEmptyText(): string {
+        return this.translate.instant('PORTAL.INVOICES.VAT.EMPTY', { q: this.vatQuarter, year: this.vatYear });
+    }
+
+    get vatNoteText(): string {
+        return this.translate.instant('PORTAL.INVOICES.VAT.NOTE', { q: this.vatQuarter, year: this.vatYear });
+    }
+
+    setVatYear(year: number): void {
+        this.vatYear = year;
+        const qs = this.vatModalQuartersForYear(year);
+        this.vatQuarter = qs[qs.length - 1] ?? 0;
+    }
+
+    get vatInvoices(): Invoice[] {
+        if (!this.vatYear || !this.vatQuarter) return [];
+        return this.invoicesForYearQuarter(this.vatYear, this.vatQuarter);
+    }
+
+    get vatByCustomer(): { customerId: string; customerName: string; invoiceCount: number; subtotal: number; vat: number; total: number }[] {
+        const map = new Map<string, { customerId: string; customerName: string; invoiceCount: number; subtotal: number; vat: number; total: number }>();
+        for (const inv of this.vatInvoices) {
+            if (!map.has(inv.customerId))
+                map.set(inv.customerId, { customerId: inv.customerId, customerName: inv.customerName, invoiceCount: 0, subtotal: 0, vat: 0, total: 0 });
+            const row = map.get(inv.customerId)!;
+            row.invoiceCount++;
+            row.subtotal = parseFloat((row.subtotal + inv.subtotal).toFixed(2));
+            row.vat      = parseFloat((row.vat      + inv.vat    ).toFixed(2));
+            row.total    = parseFloat((row.total    + inv.total  ).toFixed(2));
+        }
+        return Array.from(map.values()).sort((a, b) => a.customerId.localeCompare(b.customerId));
+    }
+
+    get vatTotals(): { invoiceCount: number; subtotal: number; vat: number; total: number } {
+        return this.vatByCustomer.reduce(
+            (acc, r) => ({
+                invoiceCount: acc.invoiceCount + r.invoiceCount,
+                subtotal:     parseFloat((acc.subtotal + r.subtotal).toFixed(2)),
+                vat:          parseFloat((acc.vat      + r.vat     ).toFixed(2)),
+                total:        parseFloat((acc.total    + r.total   ).toFixed(2))
+            }),
+            { invoiceCount: 0, subtotal: 0, vat: 0, total: 0 }
+        );
     }
 
     formatDateShort(date: Date): string {

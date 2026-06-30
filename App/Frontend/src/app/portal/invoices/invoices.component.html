@@ -50,6 +50,13 @@
             </div>
         </div>
         <div class="invoices-top-right">
+            <button class="invoices-vat-btn cursor-pointer" *ngIf="!loading && invoices.length > 0" (click)="openVatModal()" [title]="'PORTAL.INVOICES.VAT.BTN_TOOLTIP'|translate">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                </svg>
+                BTW-aangifte
+            </button>
             <div class="invoices-revenue-badge" *ngIf="!loading && filteredInvoices.length > 0">
                 {{formatCurrency(totalRevenue)}}
             </div>
@@ -172,6 +179,119 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="invoices-vat-overlay" *ngIf="showVatModal" (click)="closeVatModal()">
+    <div class="invoices-vat-modal" (click)="$event.stopPropagation()">
+        <div class="invoices-vat-modal-header">
+            <div class="invoices-vat-modal-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                </svg>
+                {{'PORTAL.INVOICES.VAT.TITLE'|translate}} — Q{{vatQuarter}} {{vatYear}}
+            </div>
+            <button class="invoices-vat-close cursor-pointer" (click)="closeVatModal()" [attr.aria-label]="'PORTAL.COMMON.CLOSE'|translate">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div class="invoices-vat-selectors">
+            <div class="invoices-filters">
+                <button class="invoices-filter-btn cursor-pointer" *ngFor="let y of vatModalAvailableYears" [class.invoices-filter-btn--active]="vatYear === y" (click)="setVatYear(y)">{{y}}</button>
+            </div>
+            <div class="invoices-filters">
+                <button class="invoices-filter-btn cursor-pointer" *ngFor="let q of vatModalQuartersForYear(vatYear)" [class.invoices-filter-btn--active]="vatQuarter === q" (click)="vatQuarter = q">
+                    <span class="invoices-vat-qdot" [ngClass]="'invoices-vat-qdot--' + getVatQuarterStatus(vatYear, q)"></span>Q{{q}}
+                </button>
+            </div>
+        </div>
+        <div class="invoices-vat-body">
+            <div class="invoices-vat-status-banner" *ngIf="vatInvoices.length > 0" [ngClass]="'invoices-vat-status-banner--' + vatCurrentStatus">
+                <ng-container [ngSwitch]="vatCurrentStatus">
+                    <ng-container *ngSwitchCase="'ready'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>{{'PORTAL.INVOICES.VAT.STATUS_READY'|translate}}</span>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'ended-unpaid'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        <span>{{'PORTAL.INVOICES.VAT.STATUS_ENDED_UNPAID'|translate}}</span>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'ongoing-paid'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span>{{'PORTAL.INVOICES.VAT.STATUS_ONGOING_PAID'|translate}}</span>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'ongoing-unpaid'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span>{{'PORTAL.INVOICES.VAT.STATUS_ONGOING_UNPAID'|translate}}</span>
+                    </ng-container>
+                </ng-container>
+            </div>
+            <div class="invoices-vat-empty" *ngIf="vatInvoices.length === 0">{{vatEmptyText}}</div>
+            <ng-container *ngIf="vatInvoices.length > 0">
+                <p class="invoices-vat-section-label">{{'PORTAL.INVOICES.VAT.SECTION_DETAIL'|translate}}</p>
+                <div class="invoices-vat-table-wrap">
+                    <table class="invoices-vat-table">
+                        <thead><tr>
+                            <th>{{'PORTAL.INVOICES.VAT.COL_CUSTOMER'|translate}}</th>
+                            <th class="invoices-vat-col-num">{{'PORTAL.INVOICES.VAT.COL_INVOICES'|translate}}</th>
+                            <th class="invoices-vat-col-amount">{{'PORTAL.INVOICES.VAT.COL_BASE'|translate}}</th>
+                            <th class="invoices-vat-col-amount">{{'PORTAL.INVOICES.VAT.COL_VAT'|translate}}</th>
+                            <th class="invoices-vat-col-amount">{{'PORTAL.INVOICES.VAT.COL_TOTAL'|translate}}</th>
+                        </tr></thead>
+                        <tbody>
+                            <tr *ngFor="let row of vatByCustomer">
+                                <td><span class="invoices-vat-customer-name">{{row.customerName}}</span> <span class="invoices-vat-customer-id">#{{row.customerId}}</span></td>
+                                <td class="invoices-vat-col-num">{{row.invoiceCount}}</td>
+                                <td class="invoices-vat-col-amount">{{formatCurrency(row.subtotal)}}</td>
+                                <td class="invoices-vat-col-amount invoices-vat-col-vat">{{formatCurrency(row.vat)}}</td>
+                                <td class="invoices-vat-col-amount invoices-vat-col-total">{{formatCurrency(row.total)}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot><tr>
+                            <td>{{'PORTAL.INVOICES.VAT.ROW_TOTAL'|translate}}</td>
+                            <td class="invoices-vat-col-num">{{vatTotals.invoiceCount}}</td>
+                            <td class="invoices-vat-col-amount">{{formatCurrency(vatTotals.subtotal)}}</td>
+                            <td class="invoices-vat-col-amount invoices-vat-col-vat">{{formatCurrency(vatTotals.vat)}}</td>
+                            <td class="invoices-vat-col-amount invoices-vat-col-total">{{formatCurrency(vatTotals.total)}}</td>
+                        </tr></tfoot>
+                    </table>
+                </div>
+                <p class="invoices-vat-section-label">{{'PORTAL.INVOICES.VAT.SECTION_SUMMARY'|translate}}</p>
+                <div class="invoices-vat-roosters">
+                    <div class="invoices-vat-rooster">
+                        <span class="invoices-vat-rooster-nr">03</span>
+                        <div class="invoices-vat-rooster-info">
+                            <span class="invoices-vat-rooster-name">{{'PORTAL.INVOICES.VAT.R03_NAME'|translate}}</span>
+                            <span class="invoices-vat-rooster-desc">{{'PORTAL.INVOICES.VAT.R03_DESC'|translate}}</span>
+                        </div>
+                        <span class="invoices-vat-rooster-amount">{{formatCurrency(vatTotals.subtotal)}}</span>
+                    </div>
+                    <div class="invoices-vat-rooster invoices-vat-rooster--accent">
+                        <span class="invoices-vat-rooster-nr">54</span>
+                        <div class="invoices-vat-rooster-info">
+                            <span class="invoices-vat-rooster-name">{{'PORTAL.INVOICES.VAT.R54_NAME'|translate}}</span>
+                            <span class="invoices-vat-rooster-desc">{{'PORTAL.INVOICES.VAT.R54_DESC'|translate}}</span>
+                        </div>
+                        <span class="invoices-vat-rooster-amount">{{formatCurrency(vatTotals.vat)}}</span>
+                    </div>
+                    <div class="invoices-vat-rooster invoices-vat-rooster--total">
+                        <span class="invoices-vat-rooster-nr">71</span>
+                        <div class="invoices-vat-rooster-info">
+                            <span class="invoices-vat-rooster-name">{{'PORTAL.INVOICES.VAT.R71_NAME'|translate}}</span>
+                            <span class="invoices-vat-rooster-desc">{{'PORTAL.INVOICES.VAT.R71_DESC'|translate}}</span>
+                        </div>
+                        <span class="invoices-vat-rooster-amount invoices-vat-rooster-amount--total">{{formatCurrency(vatTotals.vat)}}</span>
+                    </div>
+                </div>
+                <p class="invoices-vat-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    {{vatNoteText}}
+                </p>
+            </ng-container>
         </div>
     </div>
 </div>
