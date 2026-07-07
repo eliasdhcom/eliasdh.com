@@ -5,6 +5,7 @@
 **/
 
 const dayjs  = require('dayjs');
+const cron   = require('node-cron');
 const { getDb } = require('../../../database/db');
 const logger    = require('../../../utils/logger');
 const mailer    = require('../mailer/mailerService');
@@ -35,7 +36,6 @@ function buildBirthdayBody(name, age) {
     `;
 }
 
-// In-memory deduplication: tracks which user IDs got a mail today
 const _sentToday   = new Set();
 let   _lastRunDate = '';
 
@@ -83,12 +83,10 @@ async function checkAndSendBirthdays() {
 }
 
 function startBirthdayScheduler() {
-    checkAndSendBirthdays().catch(err => logger.error('Birthday check failed:', err.message));
-    setInterval(
-        () => checkAndSendBirthdays().catch(err => logger.error('Birthday check failed:', err.message)),
-        24 * 60 * 60 * 1000
-    );
-    logger.info('Birthday scheduler started (daily).');
+    cron.schedule('0 8 * * *', () => {
+        checkAndSendBirthdays().catch(err => logger.error('Birthday check failed:', err.message));
+    }, { timezone: 'Europe/Brussels' });
+    logger.info('Birthday scheduler started (daily at 08:00 Europe/Brussels).');
 }
 
 module.exports = { startBirthdayScheduler };
