@@ -16,7 +16,7 @@
                 <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.REVENUE_SUB'|translate}}</span>
             </div>
             <div class="analysis-period-grid">
-                <div class="analysis-period-card" *ngFor="let p of periods">
+                <div class="analysis-period-card" [class.analysis-period-card--month]="p.divisor === 12" *ngFor="let p of periods">
                     <span class="analysis-period-label">{{p.label}}</span>
                     <span class="analysis-period-note">{{p.note}}</span>
                     <div class="analysis-period-values">
@@ -44,7 +44,7 @@
                 <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.PROFIT_SUB'|translate}}</span>
             </div>
             <div class="analysis-period-grid">
-                <div class="analysis-period-card" *ngFor="let p of periods">
+                <div class="analysis-period-card" [class.analysis-period-card--month]="p.divisor === 12" *ngFor="let p of periods">
                     <span class="analysis-period-label">{{p.label}}</span>
                     <span class="analysis-period-note">{{p.note}}</span>
                     <div class="analysis-period-values">

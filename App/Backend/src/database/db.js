@@ -164,6 +164,20 @@ async function initSchema() {
             created_at TEXT DEFAULT (datetime('now'))
         )`,
         `CREATE INDEX IF NOT EXISTS idx_push_subscriptions_user_id ON push_subscriptions(user_id)`,
+        `CREATE TABLE IF NOT EXISTS password_entries (
+            id           INTEGER PRIMARY KEY AUTOINCREMENT,
+            service_name TEXT NOT NULL,
+            login_url    TEXT,
+            email        TEXT,
+            username     TEXT,
+            password_enc TEXT NOT NULL,
+            has_2fa      INTEGER NOT NULL DEFAULT 0,
+            created_by   INTEGER REFERENCES users(id) ON DELETE SET NULL,
+            updated_by   INTEGER REFERENCES users(id) ON DELETE SET NULL,
+            created_at   TEXT DEFAULT (datetime('now')),
+            updated_at   TEXT DEFAULT (datetime('now'))
+        )`,
+        `CREATE INDEX IF NOT EXISTS idx_password_entries_service ON password_entries(service_name)`,
     ];
 
     for (const sql of stmts) {

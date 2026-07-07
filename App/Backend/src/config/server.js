@@ -44,6 +44,12 @@ const contactLimiter = rateLimit({
     message: { error: { message: 'Too many contact requests, please try again later' } },
 });
 
+const vaultVerifyLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 min
+    max: 10,
+    message: { error: { message: 'Too many vault unlock attempts, please try again later' } },
+});
+
 app.use(limiter);
 app.use(express.json({ limit: '10mb' }));
 
@@ -55,6 +61,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/v1/contact', contactLimiter);
+app.use('/api/v1/passwords/verify', vaultVerifyLimiter);
 
 app.use('/api', routes);
 app.use(errorHandler);

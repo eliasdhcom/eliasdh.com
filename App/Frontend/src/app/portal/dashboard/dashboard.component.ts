@@ -17,6 +17,7 @@ import { PortalAnalysisComponent } from '../analysis/analysis.component';
 import { PortalUsersComponent } from '../users/users.component';
 import { PortalPricingPlansComponent } from '../pricing-plans/pricing-plans.component';
 import { PortalLogsComponent } from '../logs/logs.component';
+import { PortalPasswordsComponent } from '../passwords/passwords.component';
 import { PortalCompanyComponent } from '../company/company.component';
 import { UsersService } from '../../services/users.service';
 import { ThemeService } from '../../services/theme.service';
@@ -27,7 +28,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-    imports: [CommonModule, SharedModule, TranslatePipe, PortalOverviewComponent, PortalCustomersComponent, PortalSubscriptionsComponent, PortalInvoicesComponent, PortalAnalysisComponent, PortalUsersComponent, PortalPricingPlansComponent, PortalLogsComponent, PortalCompanyComponent],
+    imports: [CommonModule, SharedModule, TranslatePipe, PortalOverviewComponent, PortalCustomersComponent, PortalSubscriptionsComponent, PortalInvoicesComponent, PortalAnalysisComponent, PortalUsersComponent, PortalPricingPlansComponent, PortalLogsComponent, PortalPasswordsComponent, PortalCompanyComponent],
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css']
 })
@@ -114,7 +115,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.pwaPrompt.userChoice.then(() => { this.pwaPrompt = null; });
     }
 
-    private readonly adminViews = ['customers','subscriptions','invoices','users','analysis','pricing','logs','settings'];
+    private readonly adminViews = ['customers','subscriptions','invoices','users','analysis','pricing','logs','passwords','settings'];
 
     navigateTo(view: string): void {
         if (!this.isAdmin && this.adminViews.includes(view)) return;
@@ -174,6 +175,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             analysis:      'PORTAL.NAV.ANALYSIS',
             pricing:       'PORTAL.NAV.PRICING',
             logs:          'PORTAL.NAV.LOGS',
+            passwords:     'PORTAL.NAV.PASSWORDS',
             settings:      'PORTAL.NAV.COMPANY'
         };
         return this.translate.instant(keys[this.currentView] ?? 'PORTAL.NAV.OVERVIEW');

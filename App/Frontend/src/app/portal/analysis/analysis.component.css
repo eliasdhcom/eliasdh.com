@@ -637,6 +637,9 @@
     .analysis-period-grid {
         grid-template-columns: 1fr;
     }
+    .analysis-period-card:not(.analysis-period-card--month) {
+        display: none;
+    }
     .analysis-summary-grid {
         grid-template-columns: 1fr;
     }

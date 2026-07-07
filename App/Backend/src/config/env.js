@@ -14,5 +14,6 @@ module.exports = {
         eliasdhAPIKey: process.env.ELIASDH_API_KEY,
         jwtSecret:     process.env.JWT_SECRET     || 'fallback-secret-change-me',
         jwtExpiresIn:  process.env.JWT_EXPIRES_IN || '8h',
+        vaultEncryptionKey: process.env.VAULT_ENCRYPTION_KEY,
     },
 };
