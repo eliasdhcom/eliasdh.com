@@ -9,6 +9,7 @@ const { param, validationResult } = require('express-validator');
 const costsService = require('../../services/costs/costsService');
 const logsService  = require('../../services/logs/logsService');
 const { jwtAuth }  = require('../../../middleware/jwtAuth');
+const { requireAdmin } = require('../../../middleware/requireAdmin');
 const logger       = require('../../../utils/logger');
 const router       = express.Router();
 
@@ -32,7 +33,7 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.post('/', jwtAuth, async (req, res, next) => {
+router.post('/', jwtAuth, requireAdmin, async (req, res, next) => {
     try {
         const cost = await costsService.create(req.body);
         const freq = FREQ_LABELS[cost.frequency] ?? cost.frequency;
@@ -50,6 +51,7 @@ router.post('/', jwtAuth, async (req, res, next) => {
 
 router.put('/:id',
     jwtAuth,
+    requireAdmin,
     param('id').isInt(),
     async (req, res, next) => {
         try {
@@ -84,6 +86,7 @@ router.put('/:id',
 
 router.delete('/:id',
     jwtAuth,
+    requireAdmin,
     param('id').isInt(),
     async (req, res, next) => {
         try {

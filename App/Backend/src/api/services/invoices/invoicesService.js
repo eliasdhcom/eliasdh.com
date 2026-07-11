@@ -7,11 +7,10 @@
 const { getDb } = require('../../../database/db');
 const logger    = require('../../../utils/logger');
 
-async function getAllStatuses() {
-    const { rows } = await getDb().execute(
-        'SELECT customer_id, subscription_id, period_start, invoice_type, paid, paid_at, amount, frequency, subscription_name, subscription_type, subscription_url FROM invoice_status'
-    );
-    return rows.map(r => ({
+const STATUS_COLUMNS = 'customer_id, subscription_id, period_start, invoice_type, paid, paid_at, amount, frequency, subscription_name, subscription_type, subscription_url';
+
+function mapStatusRow(r) {
+    return {
         customerId:       r.customer_id,
         subscriptionId:   r.subscription_id,
         periodStart:      r.period_start,
@@ -23,7 +22,12 @@ async function getAllStatuses() {
         subscriptionName: r.subscription_name ?? null,
         subscriptionType: r.subscription_type ?? null,
         subscriptionUrl:  r.subscription_url  ?? null
-    }));
+    };
+}
+
+async function getAllStatuses() {
+    const { rows } = await getDb().execute(`SELECT ${STATUS_COLUMNS} FROM invoice_status`);
+    return rows.map(mapStatusRow);
 }
 
 async function upsertStatus({ customerId, subscriptionId, periodStart, invoiceType, paid, amount, frequency, subscriptionName, subscriptionType, subscriptionUrl }) {

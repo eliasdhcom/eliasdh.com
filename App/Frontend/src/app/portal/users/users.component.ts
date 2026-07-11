@@ -11,6 +11,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { UsersService, PortalUser } from '../../services/users.service';
 import { CustomersService, Customer } from '../../services/customers.service';
 import { LogsService } from '../../services/logs.service';
+import { AuthService } from '../../services/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -48,11 +49,17 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
     constructor(
         private usersService:    UsersService,
         private customersService: CustomersService,
-        private logsService:     LogsService
+        private logsService:     LogsService,
+        private authService:     AuthService
     ) {}
+
+    get isReadOnly(): boolean {
+        return (this.authService.getUser()?.role ?? '').toLowerCase() === 'customer';
+    }
 
     ngOnInit(): void {
         this.loadUsers();
+        if (this.isReadOnly) return;
         this.customersService.getAllCustomers()
             .pipe(takeUntil(this.destroy$))
             .subscribe({ next: r => { this.customers = (r.data ?? []).sort((a, b) => a.name.localeCompare(b.name)); } });
@@ -90,6 +97,7 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
     }
 
     onAvatarFileChange(event: Event): void {
+        if (this.isReadOnly) return;
         const file = (event.target as HTMLInputElement).files?.[0];
         if (!file) return;
         this.resizeImage(file, 200).then(dataUrl => {
@@ -128,6 +136,7 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
     markTouched(): void { this.formTouched = true; }
 
     openCreatePanel(): void {
+        if (this.isReadOnly) return;
         this.isCreating         = true;
         this.selectedUser       = null;
         this.editedUser         = this.emptyUser();
@@ -170,11 +179,11 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
         this.showDiscardConfirm = false;
     }
 
-    openDeleteConfirm(): void  { this.deleteConfirmOpen = true; }
+    openDeleteConfirm(): void  { if (!this.isReadOnly) this.deleteConfirmOpen = true; }
     cancelDeleteConfirm(): void { this.deleteConfirmOpen = false; }
 
     executeDelete(): void {
-        if (!this.selectedUser || this.deleting) return;
+        if (this.isReadOnly || !this.selectedUser || this.deleting) return;
         this.deleting  = true;
         this.saveError = '';
         this.usersService.deleteUser(this.selectedUser.id)
@@ -195,7 +204,7 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
     }
 
     saveUser(): void {
-        if (this.saving) return;
+        if (this.isReadOnly || this.saving) return;
         this.isCreating ? this.doCreate() : this.doUpdate();
     }
 
@@ -221,15 +230,16 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
         this.saving    = true;
         this.saveError = '';
         this.usersService.createUser({
-            email:     this.editedUser.email,
-            password:  this.newPassword,
-            firstName: this.editedUser.firstName,
-            lastName:  this.editedUser.lastName,
-            role:      this.editedUser.role || 'user',
-            company:   this.editedUser.company,
-            phone:     this.editedUser.phone,
-            birthDate: this.editedUser.birthDate,
-            avatar:    this.editedUser.avatar ?? undefined
+            email:      this.editedUser.email,
+            password:   this.newPassword,
+            firstName:  this.editedUser.firstName,
+            lastName:   this.editedUser.lastName,
+            role:       this.editedUser.role || 'user',
+            company:    this.editedUser.company,
+            phone:      this.editedUser.phone,
+            birthDate:  this.editedUser.birthDate,
+            avatar:     this.editedUser.avatar ?? undefined,
+            customerId: this.resolveCustomerId(this.editedUser.company)
         })
         .pipe(takeUntil(this.destroy$))
         .subscribe({
@@ -250,14 +260,15 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
         this.saving    = true;
         this.saveError = '';
         this.usersService.updateUser(this.selectedUser.id, {
-            firstName: this.editedUser.firstName,
-            lastName:  this.editedUser.lastName,
-            email:     this.editedUser.email,
-            role:      this.editedUser.role,
-            company:   this.editedUser.company,
-            phone:     this.editedUser.phone,
-            birthDate: this.editedUser.birthDate,
-            netSalary: this.editedUser.netSalary ?? 0,
+            firstName:  this.editedUser.firstName,
+            lastName:   this.editedUser.lastName,
+            email:      this.editedUser.email,
+            role:       this.editedUser.role,
+            company:    this.editedUser.company,
+            phone:      this.editedUser.phone,
+            birthDate:  this.editedUser.birthDate,
+            netSalary:  this.editedUser.netSalary ?? 0,
+            customerId: this.resolveCustomerId(this.editedUser.company),
             ...(this.editedUser.avatar !== null ? { avatar: this.editedUser.avatar } : {})
         })
         .pipe(takeUntil(this.destroy$))
@@ -278,6 +289,7 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
 
     toggleActive(user: PortalUser, event: Event): void {
         event.stopPropagation();
+        if (this.isReadOnly) return;
         const newActive = !user.active;
         user.active = newActive;
         if (this.selectedUser?.id === user.id) this.editedUser.active = newActive;
@@ -307,6 +319,10 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
         }
         const d = new Date(dateStr);
         return isNaN(d.getTime()) ? dateStr : d.toLocaleDateString('nl-BE', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    private resolveCustomerId(companyName: string): string | null {
+        return this.customers.find(c => c.name === companyName)?.id ?? null;
     }
 
     isEmployee(role: string): boolean {

@@ -9,6 +9,7 @@ const { body, param, validationResult } = require('express-validator');
 const pricingService = require('../../services/pricing/pricingService');
 const logsService    = require('../../services/logs/logsService');
 const { jwtAuth }    = require('../../../middleware/jwtAuth');
+const { requireAdmin } = require('../../../middleware/requireAdmin');
 const logger         = require('../../../utils/logger');
 const router         = express.Router();
 
@@ -31,6 +32,7 @@ router.get('/', async (req, res, next) => {
 
 router.post('/',
     jwtAuth,
+    requireAdmin,
     body('name').notEmpty().isString().trim(),
     body('monthlyPrice').isNumeric(),
     body('color').optional().isString().matches(/^#[0-9a-fA-F]{6}$/),
@@ -56,6 +58,7 @@ router.post('/',
 
 router.put('/:id',
     jwtAuth,
+    requireAdmin,
     param('id').isInt(),
     async (req, res, next) => {
         try {
@@ -78,6 +81,7 @@ router.put('/:id',
 
 router.delete('/:id',
     jwtAuth,
+    requireAdmin,
     param('id').isInt(),
     async (req, res, next) => {
         try {

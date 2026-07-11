@@ -234,6 +234,8 @@ async function initSchema() {
     try { await db.execute(`ALTER TABLE websites     ADD COLUMN invoice_location_index INTEGER NOT NULL DEFAULT 0`); } catch (_) {}
     try { await db.execute(`ALTER TABLE domain_names ADD COLUMN invoice_location_index INTEGER NOT NULL DEFAULT 0`); } catch (_) {}
     try { await db.execute(`ALTER TABLE customer_locations ADD COLUMN name TEXT`); } catch (_) {}
+    try { await db.execute(`ALTER TABLE users ADD COLUMN customer_id TEXT REFERENCES customers(id)`); } catch (_) {}
+    try { await db.execute(`CREATE INDEX IF NOT EXISTS idx_users_customer_id ON users(customer_id)`); } catch (_) {}
 }
 
 module.exports = { getDb, initSchema };

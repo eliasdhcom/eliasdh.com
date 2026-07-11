@@ -9,6 +9,7 @@ const { body, param, validationResult } = require('express-validator');
 const customerService = require('../../services/customers/customersService');
 const vatLookupService = require('../../services/customers/vatLookupService');
 const { jwtAuth }     = require('../../../middleware/jwtAuth');
+const { requireAdmin } = require('../../../middleware/requireAdmin');
 const logsService     = require('../../services/logs/logsService');
 const mailerService   = require('../../services/mailer/mailerService');
 const logger          = require('../../../utils/logger');
@@ -55,6 +56,7 @@ router.get('/:id', async (req, res) => {
 
 router.post('/',
     jwtAuth,
+    requireAdmin,
     body('name').notEmpty().isString().trim(),
     async (req, res, next) => {
         try {
@@ -78,6 +80,7 @@ router.post('/',
 
 router.put('/:id',
     jwtAuth,
+    requireAdmin,
     param('id').notEmpty(),
     async (req, res, next) => {
         try {
@@ -101,6 +104,7 @@ router.put('/:id',
 
 router.delete('/:id',
     jwtAuth,
+    requireAdmin,
     param('id').notEmpty(),
     async (req, res, next) => {
         try {
@@ -123,6 +127,7 @@ router.delete('/:id',
 
 router.post('/:id/agreement/sign',
     jwtAuth,
+    requireAdmin,
     param('id').notEmpty(),
     body('signature').notEmpty().isString(),
     async (req, res, next) => {

@@ -11,18 +11,19 @@ import { environment } from '../../environments/environment.development';
 import { AuthService } from './auth.service';
 
 export interface PortalUser {
-    id:        number;
-    email:     string;
-    firstName: string;
-    lastName:  string;
-    role:      string;
-    company:   string;
-    phone:     string;
-    birthDate: string;
-    avatar:    string | null;
-    createdAt: string;
-    active:    boolean;
-    netSalary: number;
+    id:          number;
+    email:       string;
+    firstName:   string;
+    lastName:    string;
+    role:        string;
+    company:     string;
+    phone:       string;
+    birthDate:   string;
+    avatar:      string | null;
+    createdAt:   string;
+    active:      boolean;
+    netSalary:   number;
+    customerId?: string | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -58,6 +59,7 @@ export class UsersService {
     createUser(data: {
         email: string; password: string; firstName: string; lastName: string;
         role: string; company: string; phone: string; birthDate: string; avatar?: string;
+        customerId?: string | null;
     }): Observable<{ success: boolean; data: PortalUser }> {
         return this.http.post<{ success: boolean; data: PortalUser }>(
             this.apiUrl,

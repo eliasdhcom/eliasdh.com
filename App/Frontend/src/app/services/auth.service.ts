@@ -12,14 +12,15 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 
 export interface AuthUser {
-    id?:       number;
-    firstName: string;
-    lastName:  string;
-    email:     string;
-    role:      string;
-    company:   string;
-    phone:     string;
-    birthDate: string;
+    id?:         number;
+    firstName:   string;
+    lastName:    string;
+    email:       string;
+    role:        string;
+    company:     string;
+    phone:       string;
+    birthDate:   string;
+    customerId?: string | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -142,13 +143,18 @@ export class AuthService {
             role:      payload.role      ?? '',
             company:   payload.company   ?? '',
             phone:     payload.phone     ?? '',
-            birthDate: payload.birthDate ?? ''
+            birthDate: payload.birthDate ?? '',
+            customerId: payload.customerId ?? null
         };
     }
 
     isStaff(user: AuthUser | null): boolean {
         const role = (user?.role ?? '').toLowerCase();
         return role === 'admin' || role === 'employee';
+    }
+
+    isCustomer(user: AuthUser | null): boolean {
+        return (user?.role ?? '').toLowerCase() === 'customer';
     }
 
     async getLiveLocationPermission(): Promise<string> {

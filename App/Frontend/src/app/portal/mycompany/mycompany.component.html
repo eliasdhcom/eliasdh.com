@@ -1,0 +1,102 @@
+<!--Author EliasDH Team-->
+<div class="mycompany-container">
+    <div class="mycompany-loading" *ngIf="loading">
+        <div class="mycompany-skeleton" *ngFor="let i of [1,2,3]"></div>
+    </div>
+    <div class="mycompany-error-state" *ngIf="!loading && error">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <p>{{error}}</p>
+        <button class="mycompany-retry-btn cursor-pointer" (click)="load()">{{'PORTAL.COMMON.RETRY'|translate}}</button>
+    </div>
+    <ng-container *ngIf="!loading && !error && customer">
+        <header class="mycompany-header">
+            <img *ngIf="customer.logo" class="mycompany-logo" [src]="customer.logo" [alt]="customer.name"/>
+            <div class="mycompany-header-info">
+                <h2 class="mycompany-name">{{customer.name}}</h2>
+                <span class="mycompany-id">{{'PORTAL.MY_COMPANY.CUSTOMER_ID'|translate}}: {{customer.id}}</span>
+            </div>
+        </header>
+        <p class="mycompany-empty-hint" *ngIf="groups.length === 0">{{'PORTAL.MY_COMPANY.NO_LOCATIONS'|translate}}</p>
+        <section class="mycompany-location" *ngFor="let g of groups; let li = index">
+            <h3 class="mycompany-location-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                </svg>
+                {{g.location.name || (('PORTAL.MY_COMPANY.LOCATION_N'|translate) + ' ' + (li + 1))}}
+            </h3>
+            <p class="mycompany-location-address">{{formatAddress(g.location)}}</p>
+            <p class="mycompany-location-vat" *ngIf="g.location.vat">{{'PORTAL.MY_COMPANY.VAT'|translate}}: {{g.location.vat}}</p>
+            <div class="mycompany-block" *ngIf="g.websites.length">
+                <h4 class="mycompany-block-title">{{'PORTAL.MY_COMPANY.SUBSCRIPTIONS'|translate}}</h4>
+                <div class="mycompany-list">
+                    <div class="mycompany-row" *ngFor="let w of g.websites.slice(0, g.visible.websites)">
+                        <div class="mycompany-row-main">
+                            <span class="mycompany-row-name">{{w.name}}</span>
+                            <a class="mycompany-row-url cursor-pointer" *ngIf="w.url" [href]="toHref(w.url)" target="_blank" rel="noopener noreferrer">{{w.url}}</a>
+                        </div>
+                        <div class="mycompany-row-meta">
+                            <span class="mycompany-status-chip" [class.mycompany-status-chip--live]="w.isLive" [class.mycompany-status-chip--offline]="!w.isLive">
+                                {{w.isLive ? ('PORTAL.MY_COMPANY.LIVE'|translate) : ('PORTAL.MY_COMPANY.OFFLINE'|translate)}}
+                            </span>
+                            <span class="mycompany-row-type" [ngStyle]="getBadgeStyle(w.subscriptionType)">{{w.subscriptionType}}</span>
+                            <span class="mycompany-row-price">{{formatCurrency(w.total)}} <small>/ {{formatFrequency(w.frequency)}}</small></span>
+                        </div>
+                    </div>
+                </div>
+                <button class="mycompany-more-btn cursor-pointer" *ngIf="g.websites.length > g.visible.websites" (click)="showMore(g, 'websites')">
+                    {{'PORTAL.MY_COMPANY.SHOW_MORE'|translate}} ({{g.websites.length - g.visible.websites}})
+                </button>
+            </div>
+            <div class="mycompany-block" *ngIf="g.domains.length">
+                <h4 class="mycompany-block-title">{{'PORTAL.MY_COMPANY.DOMAINS'|translate}}</h4>
+                <div class="mycompany-list">
+                    <div class="mycompany-row" *ngFor="let d of g.domains.slice(0, g.visible.domains)">
+                        <div class="mycompany-row-main">
+                            <span class="mycompany-row-name">{{d.name}}</span>
+                        </div>
+                        <div class="mycompany-row-meta">
+                            <span class="mycompany-row-renewal">{{'PORTAL.MY_COMPANY.RENEWAL'|translate}}: {{d.renewalDate}}</span>
+                            <span class="mycompany-row-price">{{formatCurrency(d.annualPrice)}} <small>/ {{'PORTAL.MY_COMPANY.YEARLY'|translate}}</small></span>
+                        </div>
+                    </div>
+                </div>
+                <button class="mycompany-more-btn cursor-pointer" *ngIf="g.domains.length > g.visible.domains" (click)="showMore(g, 'domains')">
+                    {{'PORTAL.MY_COMPANY.SHOW_MORE'|translate}} ({{g.domains.length - g.visible.domains}})
+                </button>
+            </div>
+            <div class="mycompany-block" *ngIf="g.invoices.length">
+                <h4 class="mycompany-block-title">{{'PORTAL.MY_COMPANY.INVOICES'|translate}}</h4>
+                <div class="mycompany-list">
+                    <div class="mycompany-row" *ngFor="let inv of g.invoices.slice(0, g.visible.invoices)">
+                        <div class="mycompany-row-main">
+                            <span class="mycompany-row-name">{{inv.subscriptionName}}</span>
+                            <span class="mycompany-row-invnum">#{{inv.id}}</span>
+                            <span class="mycompany-row-period">{{formatDate(inv.periodStart)}} — {{formatDate(inv.periodEnd)}}</span>
+                        </div>
+                        <div class="mycompany-row-meta">
+                            <span class="mycompany-status-chip" [class.mycompany-status-chip--live]="inv.paid" [class.mycompany-status-chip--offline]="!inv.paid">
+                                {{inv.paid ? ('PORTAL.MY_COMPANY.PAID'|translate) : ('PORTAL.MY_COMPANY.OUTSTANDING'|translate)}}
+                            </span>
+                            <span class="mycompany-row-price">{{formatCurrency(inv.total)}}</span>
+                            <button class="mycompany-pdf-btn cursor-pointer" type="button" (click)="downloadPdf(inv)" [disabled]="generatingPdfId === inv.id" [title]="'PORTAL.MY_COMPANY.DOWNLOAD_PDF'|translate">
+                                <svg *ngIf="generatingPdfId !== inv.id" class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path class="cursor-pointer" d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline class="cursor-pointer" points="7 10 12 15 17 10"/>
+                                    <line class="cursor-pointer" x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                <svg *ngIf="generatingPdfId === inv.id" class="mycompany-pdf-spinner cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                                    <path class="cursor-pointer" d="M12 2a10 10 0 0 1 10 10"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button class="mycompany-more-btn cursor-pointer" *ngIf="g.invoices.length > g.visible.invoices" (click)="showMore(g, 'invoices')">
+                    {{'PORTAL.MY_COMPANY.SHOW_MORE'|translate}} ({{g.invoices.length - g.visible.invoices}})
+                </button>
+            </div>
+        </section>
+    </ng-container>
+</div>

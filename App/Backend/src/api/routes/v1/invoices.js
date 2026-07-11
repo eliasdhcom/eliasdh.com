@@ -8,6 +8,7 @@ const express          = require('express');
 const { body, validationResult } = require('express-validator');
 const invoicesService  = require('../../services/invoices/invoicesService');
 const { jwtAuth }      = require('../../../middleware/jwtAuth');
+const { requireAdmin } = require('../../../middleware/requireAdmin');
 const logsService      = require('../../services/logs/logsService');
 const pushService      = require('../../services/push/pushService');
 
@@ -31,6 +32,7 @@ router.get('/status', async (req, res, next) => {
 
 router.patch('/status',
     jwtAuth,
+    requireAdmin,
     body('customerId').notEmpty(),
     body('subscriptionId').notEmpty(),
     body('periodStart').notEmpty(),

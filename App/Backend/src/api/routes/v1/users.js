@@ -7,6 +7,7 @@
 const express              = require('express');
 const { param, body, validationResult } = require('express-validator');
 const { jwtAuth }          = require('../../../middleware/jwtAuth');
+const { requireAdmin }     = require('../../../middleware/requireAdmin');
 const usersService         = require('../../services/users/usersService');
 const notificationService  = require('../../services/notifications/notificationService');
 const logsService          = require('../../services/logs/logsService');
@@ -14,6 +15,12 @@ const logsService          = require('../../services/logs/logsService');
 const router = express.Router();
 
 router.use(jwtAuth);
+
+const requireAdminOrSelf = (req, res, next) => {
+    if ((req.user?.role ?? '').toLowerCase() === 'admin') return next();
+    if (req.user?.id === Number(req.params.id)) return next();
+    return res.status(403).json({ success: false, error: 'Access denied.' });
+};
 
 const logActor = req => ({
     userId:    req.user?.id,
@@ -24,14 +31,20 @@ const logActor = req => ({
 
 router.get('/', async (req, res, next) => {
     try {
-        const users = await usersService.getAllUsers();
-        res.json({ success: true, data: users });
+        const role = (req.user?.role ?? '').toLowerCase();
+        if (role === 'admin') {
+            return res.json({ success: true, data: await usersService.getAllUsers() });
+        }
+        if (role === 'customer' && req.user?.customerId) {
+            return res.json({ success: true, data: await usersService.getUsersByCustomer(req.user.customerId) });
+        }
+        return res.status(403).json({ success: false, error: 'Access denied.' });
     } catch (err) {
         next(err);
     }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', requireAdminOrSelf, async (req, res, next) => {
     try {
         const id = Number(req.params.id);
         if (!Number.isInteger(id) || id < 1) {
@@ -46,6 +59,7 @@ router.get('/:id', async (req, res, next) => {
 });
 
 router.post('/',
+    requireAdmin,
     body('email').isEmail().trim(),
     body('password').isLength({ min: 8 }),
     body('firstName').optional().isString().trim(),
@@ -54,6 +68,7 @@ router.post('/',
     body('company').optional().isString().trim(),
     body('phone').optional().isString().trim(),
     body('birthDate').optional().isString().trim(),
+    body('customerId').optional({ nullable: true }).isString(),
     async (req, res, next) => {
         try {
             const errors = validationResult(req);
@@ -79,6 +94,7 @@ router.post('/',
 );
 
 router.patch('/:id/active',
+    requireAdmin,
     param('id').isInt({ min: 1 }),
     body('active').isBoolean(),
     async (req, res, next) => {
@@ -101,6 +117,7 @@ router.patch('/:id/active',
 );
 
 router.patch('/:id',
+    requireAdmin,
     param('id').isInt({ min: 1 }),
     body('firstName').optional().isString().trim(),
     body('lastName').optional().isString().trim(),
@@ -110,6 +127,7 @@ router.patch('/:id',
     body('phone').optional().isString().trim(),
     body('birthDate').optional().isString().trim(),
     body('avatar').optional({ nullable: true }).isString(),
+    body('customerId').optional({ nullable: true }).isString(),
     async (req, res, next) => {
         try {
             const errors = validationResult(req);
@@ -141,6 +159,7 @@ router.patch('/:id',
 );
 
 router.delete('/:id',
+    requireAdmin,
     param('id').isInt({ min: 1 }),
     async (req, res, next) => {
         try {

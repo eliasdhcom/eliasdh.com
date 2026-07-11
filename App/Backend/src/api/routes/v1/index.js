@@ -18,6 +18,7 @@ const costsRoutes     = require('./costs');
 const logsRoutes      = require('./logs');
 const pushRoutes      = require('./push');
 const passwordsRoutes = require('./passwords');
+const portalRoutes    = require('./portal');
 
 const router = express.Router();
 
@@ -34,5 +35,6 @@ router.use('/costs',     costsRoutes);
 router.use('/logs',      logsRoutes);
 router.use('/push',      pushRoutes);
 router.use('/passwords', passwordsRoutes);
+router.use('/portal',    portalRoutes);
 
 module.exports = router;

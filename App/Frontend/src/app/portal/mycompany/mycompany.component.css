@@ -1,0 +1,202 @@
+/**
+    * @author EliasDH Team
+    * @see https://eliasdh.com
+    * @since 11/07/2026
+**/
+
+/* My Company */
+.mycompany-container {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    max-width: 860px;
+}
+
+@keyframes mycompany-shimmer {
+    0%   { background-position: 200% center; }
+    100% { background-position: -200% center; }
+}
+
+.mycompany-loading { display: flex; flex-direction: column; gap: 10px; }
+.mycompany-skeleton {
+    height: 90px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, rgba(128, 128, 128, 0.06) 25%, rgba(128, 128, 128, 0.12) 50%, rgba(128, 128, 128, 0.06) 75%);
+    background-size: 400% 100%;
+    animation: mycompany-shimmer 1.6s ease-in-out infinite;
+}
+
+.mycompany-error-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 40px;
+    text-align: center;
+    color: var(--secondary);
+}
+.mycompany-error-state svg { width: 40px; height: 40px; color: #ef4444; opacity: 0.8; }
+.mycompany-error-state p   { font-size: 14px; margin: 0; color: var(--text); }
+
+.mycompany-retry-btn {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    background: none;
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    transition: background 0.2s, border-color 0.2s;
+}
+.mycompany-retry-btn:hover { background: rgba(128, 128, 128, 0.06); border-color: var(--primary); }
+
+.mycompany-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.mycompany-logo {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    flex-shrink: 0;
+}
+.mycompany-header-info { display: flex; flex-direction: column; gap: 3px; }
+.mycompany-name { margin: 0; font-size: 20px; font-weight: 700; color: var(--text); }
+.mycompany-id { font-size: 12px; color: var(--secondary); font-variant-numeric: tabular-nums; }
+
+.mycompany-empty-hint {
+    font-size: 13px;
+    color: var(--secondary);
+    font-style: italic;
+    margin: 0;
+}
+
+.mycompany-location {
+    border: 1px solid rgba(128, 128, 128, 0.14);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: rgba(128, 128, 128, 0.02);
+}
+
+.mycompany-location-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+.mycompany-location-title svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+.mycompany-location-address { font-size: 13px; color: var(--text); margin: 0; }
+.mycompany-location-vat     { font-size: 12px; color: var(--secondary); margin: 0 0 6px; }
+
+.mycompany-block { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.mycompany-block-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--secondary);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.mycompany-more-btn {
+    align-self: flex-start;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(128, 128, 128, 0.22);
+    background: none;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    transition: background 0.15s, border-color 0.15s;
+}
+.mycompany-more-btn:hover { background: color-mix(in srgb, var(--primary) 8%, transparent); border-color: var(--primary); }
+
+.mycompany-list { display: flex; flex-direction: column; gap: 6px; }
+
+.mycompany-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    background: var(--background);
+    border: 1px solid rgba(128, 128, 128, 0.12);
+    flex-wrap: wrap;
+}
+
+.mycompany-row-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.mycompany-row-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.mycompany-row-invnum { font-size: 11px; font-weight: 400; color: var(--secondary); }
+.mycompany-row-url, .mycompany-row-period, .mycompany-row-renewal {
+    font-size: 12px;
+    color: var(--secondary);
+}
+.mycompany-row-url { text-decoration: none; }
+.mycompany-row-url:hover { text-decoration: underline; color: var(--primary); }
+
+.mycompany-row-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+.mycompany-row-type {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.mycompany-row-price { font-size: 13px; font-weight: 600; color: var(--text); }
+.mycompany-row-price small { font-weight: 400; color: var(--secondary); }
+
+.mycompany-status-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.mycompany-status-chip--live    { background: rgba(16, 185, 129, 0.12); color: #10b981; }
+.mycompany-status-chip--offline { background: rgba(239, 68, 68, 0.1);  color: #ef4444; }
+
+@keyframes mycompany-pdf-spin { to { transform: rotate(360deg); } }
+
+.mycompany-pdf-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    border: 1px solid rgba(128, 128, 128, 0.22);
+    background: var(--background);
+    color: var(--secondary);
+    flex-shrink: 0;
+    transition: border-color 0.15s, color 0.15s;
+}
+.mycompany-pdf-btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+.mycompany-pdf-btn:disabled { opacity: 0.6; }
+.mycompany-pdf-btn svg { width: 14px; height: 14px; }
+.mycompany-pdf-spinner { animation: mycompany-pdf-spin 0.8s linear infinite; }
+/* My Company */

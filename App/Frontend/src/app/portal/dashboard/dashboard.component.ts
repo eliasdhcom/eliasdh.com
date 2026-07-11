@@ -19,6 +19,7 @@ import { PortalPricingPlansComponent } from '../pricing-plans/pricing-plans.comp
 import { PortalLogsComponent } from '../logs/logs.component';
 import { PortalPasswordsComponent } from '../passwords/passwords.component';
 import { PortalCompanyComponent } from '../company/company.component';
+import { PortalMyCompanyComponent } from '../mycompany/mycompany.component';
 import { UsersService } from '../../services/users.service';
 import { ThemeService } from '../../services/theme.service';
 import { PushService } from '../../services/push.service';
@@ -28,7 +29,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-    imports: [CommonModule, SharedModule, TranslatePipe, PortalOverviewComponent, PortalCustomersComponent, PortalSubscriptionsComponent, PortalInvoicesComponent, PortalAnalysisComponent, PortalUsersComponent, PortalPricingPlansComponent, PortalLogsComponent, PortalPasswordsComponent, PortalCompanyComponent],
+    imports: [CommonModule, SharedModule, TranslatePipe, PortalOverviewComponent, PortalCustomersComponent, PortalSubscriptionsComponent, PortalInvoicesComponent, PortalAnalysisComponent, PortalUsersComponent, PortalPricingPlansComponent, PortalLogsComponent, PortalPasswordsComponent, PortalCompanyComponent, PortalMyCompanyComponent],
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css']
 })
@@ -46,7 +47,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     pwaPrompt:    any  = null;
     pwaInstalled       = false;
 
-    langDropdownOpen  = false;
+    langDropdownOpen     = false;
+    contactDropdownOpen  = false;
     currentLanguage   = 'nl';
     readonly languages = [
         { code: 'nl', name: 'Nederlands' },
@@ -79,6 +81,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.pushService.subscribe().catch(() => {});
         this.currentLanguage = this.translate.currentLang ?? localStorage.getItem('language') ?? 'nl';
         this.user = this.authService.getUser() ?? { firstName: 'Unknown', lastName: '', email: '', role: '', company: '', phone: '', birthDate: '' };
+        if (this.isCustomer) this.currentView = 'mycompany';
         if (this.user.id && Number.isInteger(this.user.id) && this.user.id > 0) {
             this.usersService.getUserById(this.user.id)
                 .pipe(takeUntil(this.destroy$))
@@ -91,6 +94,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         this.user.company     = r.data.company   || this.user.company;
                         this.user.phone       = r.data.phone     || this.user.phone;
                         this.user.birthDate   = r.data.birthDate || this.user.birthDate;
+                        this.user.customerId  = r.data.customerId ?? this.user.customerId;
                     }
                 }});
         }
@@ -116,9 +120,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     private readonly adminViews = ['customers','subscriptions','invoices','users','analysis','pricing','logs','passwords','settings'];
+    private readonly customerViews = ['mycompany','users'];
 
     navigateTo(view: string): void {
-        if (!this.isAdmin && this.adminViews.includes(view)) return;
+        if (this.isCustomer) {
+            if (!this.customerViews.includes(view)) return;
+        } else if (!this.isAdmin && this.adminViews.includes(view)) {
+            return;
+        }
         this.highlightedSubscriptionId = null;
         this.currentView = view;
         if (this.mobileMenuOpen) this.mobileMenuOpen = false;
@@ -158,6 +167,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return (this.user.role ?? '').toLowerCase() === 'admin';
     }
 
+    get isCustomer(): boolean {
+        return (this.user.role ?? '').toLowerCase() === 'customer';
+    }
+
     getRoleClass(role: string): string {
         const r = (role ?? '').toLowerCase();
         if (r === 'admin')    return 'role--admin';
@@ -168,6 +181,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     getViewTitle(): string {
         const keys: Record<string, string> = {
             overview:      'PORTAL.NAV.OVERVIEW',
+            'mycompany':   'PORTAL.NAV.MY_COMPANY',
             customers:     'PORTAL.NAV.CUSTOMERS',
             subscriptions: 'PORTAL.NAV.SUBSCRIPTIONS',
             invoices:      'PORTAL.NAV.INVOICES',
@@ -183,7 +197,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     toggleLangDropdown(event: Event): void {
         event.stopPropagation();
+        this.contactDropdownOpen = false;
         this.langDropdownOpen = !this.langDropdownOpen;
+    }
+
+    toggleContactDropdown(event: Event): void {
+        event.stopPropagation();
+        this.langDropdownOpen = false;
+        this.contactDropdownOpen = !this.contactDropdownOpen;
     }
 
     changeLanguage(code: string): void {
@@ -196,5 +217,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     @HostListener('document:click')
     onDocumentClick(): void {
         if (this.langDropdownOpen) this.langDropdownOpen = false;
+        if (this.contactDropdownOpen) this.contactDropdownOpen = false;
     }
 }

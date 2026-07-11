@@ -33,7 +33,8 @@ async function login(email, password) {
         role:      user.role,
         company:   user.company   ?? '',
         phone:     user.phone     ?? '',
-        birthDate: user.birth_date ?? ''
+        birthDate: user.birth_date ?? '',
+        customerId: user.customer_id ?? null
     };
 
     const token = jwt.sign(payload, config.jwtSecret, { expiresIn: config.jwtExpiresIn });
