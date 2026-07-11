@@ -367,7 +367,7 @@
     "LOCATION": {
       "TITLE": "Ubicación",
       "BLOCKED": "El acceso a la ubicación está bloqueado en tu navegador. Actívalo a través de la configuración del sitio (Configuración del sitio → Ubicación → Permitir) y recarga la página.",
-      "UNAVAILABLE": "La ubicación está permitida, pero no se pudo determinar. Comprueba que los servicios de ubicación estén activados en tu dispositivo/sistema operativo (p. ej. Windows: Configuración → Privacidad → Ubicación). ¿Usas esto como aplicación instalada (PWA)? Windows la trata como una app independiente y puede requerir su propio permiso de ubicación además del navegador. Luego inténtalo de nuevo.",
+      "UNAVAILABLE": "La ubicación está permitida, pero no se pudo determinar. ¿Usas esto como aplicación instalada (PWA en Windows, Android o iOS)? Tu dispositivo suele tratar la app instalada como una aplicación independiente con su propio permiso de ubicación, separado del navegador. Comprueba el permiso de ubicación de esta app específica en la configuración del sistema (Windows: Configuración → Privacidad → Ubicación; Android: Configuración → Aplicaciones → esta app → Permisos → Ubicación) e inténtalo de nuevo.",
       "BTN_ENABLE": "Activar ubicación",
       "BTN_RETRY": "Reintentar"
     },

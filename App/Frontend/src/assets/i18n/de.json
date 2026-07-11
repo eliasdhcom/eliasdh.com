@@ -366,7 +366,7 @@
     "LOCATION": {
       "TITLE": "Standort",
       "BLOCKED": "Der Standortzugriff ist in Ihrem Browser blockiert. Aktivieren Sie ihn über die Website-Einstellungen (Website-Einstellungen → Standort → Zulassen) und laden Sie die Seite neu.",
-      "UNAVAILABLE": "Standortzugriff ist erlaubt, konnte aber nicht ermittelt werden. Prüfen Sie, ob die Standortdienste auf Ihrem Gerät/Betriebssystem aktiviert sind (z. B. Windows: Einstellungen → Datenschutz → Standort). Nutzen Sie dies als installierte App (PWA)? Windows behandelt sie als eigenständige App und verlangt möglicherweise eine eigene Standortberechtigung zusätzlich zum Browser. Versuchen Sie es danach erneut.",
+      "UNAVAILABLE": "Standortzugriff ist erlaubt, konnte aber nicht ermittelt werden. Nutzen Sie dies als installierte App (PWA unter Windows, Android oder iOS)? Ihr Gerät behandelt die installierte App oft als eigenständige Anwendung mit eigener Standortberechtigung, getrennt von Ihrem Browser. Prüfen Sie die Standortberechtigung für diese spezifische App in den Systemeinstellungen (Windows: Einstellungen → Datenschutz → Standort; Android: Einstellungen → Apps → diese App → Berechtigungen → Standort) und versuchen Sie es erneut.",
       "BTN_ENABLE": "Standort aktivieren",
       "BTN_RETRY": "Erneut versuchen"
     },
