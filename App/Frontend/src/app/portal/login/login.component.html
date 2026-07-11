@@ -22,28 +22,59 @@
                     <path d="M 4 16 L 4 16 L 13 11 A 5 5 90 0 0 4 16 M 5 19 L 17 12 A 1 1 0 0 0 0 18 L -5 21 C -13 4 16 -13 24 13 L 10 20 Z Z M -3 24 L 2 21 C 11 28 16 19 23 17 C 24 17 18 41 -3 24" filter="url(#glow)"/>
                 </svg>
             </div>
-            <div class="login-notif-gate" *ngIf="notifPermission !== 'granted'">
+            <div class="login-notif-gate" *ngIf="awaitingStaffPermissions">
                 <div class="login-notif-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
                     </svg>
                 </div>
-                <h2 class="login-notif-title">{{'LOGIN.NOTIF.TITLE' | translate}}</h2>
-                <p class="login-notif-desc" *ngIf="notifPermission === 'default'">
-                    {{'LOGIN.NOTIF.DESC' | translate}}
-                </p>
-                <div class="login-notif-blocked" *ngIf="notifPermission === 'denied'">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    <p>{{'LOGIN.NOTIF.BLOCKED' | translate}}</p>
-                </div>
-                <button *ngIf="notifPermission === 'default'" class="login-button login-notif-btn cursor-pointer" type="button" (click)="requestNotifPermission()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;margin-right:8px">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                    </svg>
-                    {{'LOGIN.NOTIF.BTN_ENABLE' | translate}}
-                </button>
+                <h2 class="login-notif-title">{{'LOGIN.STAFF_GATE.TITLE' | translate}}</h2>
+                <p class="login-notif-desc">{{'LOGIN.STAFF_GATE.DESC' | translate}}</p>
+
+                <ng-container [ngSwitch]="notifPermission">
+                    <div class="login-permission-ok" *ngSwitchCase="'granted'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>{{'LOGIN.NOTIF.TITLE' | translate}}</span>
+                    </div>
+                    <div class="login-notif-blocked" *ngSwitchCase="'denied'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <p>{{'LOGIN.NOTIF.BLOCKED' | translate}}</p>
+                    </div>
+                    <button *ngSwitchDefault class="login-button login-notif-btn cursor-pointer" type="button" (click)="requestNotifPermission()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;margin-right:8px">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        </svg>
+                        {{'LOGIN.NOTIF.BTN_ENABLE' | translate}}
+                    </button>
+                </ng-container>
+
+                <ng-container [ngSwitch]="locationPermission">
+                    <div class="login-permission-ok" *ngSwitchCase="'granted'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>{{'LOGIN.LOCATION.TITLE' | translate}}</span>
+                    </div>
+                    <div class="login-notif-blocked" *ngSwitchCase="'denied'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <p>{{'LOGIN.LOCATION.BLOCKED' | translate}}</p>
+                    </div>
+                    <div class="login-notif-blocked" *ngSwitchCase="'unavailable'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <p>{{'LOGIN.LOCATION.UNAVAILABLE' | translate}}</p>
+                    </div>
+                    <button *ngSwitchCase="'unavailable'" class="login-button login-notif-btn cursor-pointer" type="button" (click)="requestLocationPermission()">
+                        {{'LOGIN.LOCATION.BTN_RETRY' | translate}}
+                    </button>
+                    <button *ngSwitchDefault class="login-button login-notif-btn cursor-pointer" type="button" (click)="requestLocationPermission()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;margin-right:8px">
+                            <path d="M12 21s-7-6.4-7-11.5A7 7 0 0 1 19 9.5C19 14.6 12 21 12 21z"/>
+                            <circle cx="12" cy="9.5" r="2.5"/>
+                        </svg>
+                        {{'LOGIN.LOCATION.BTN_ENABLE' | translate}}
+                    </button>
+                </ng-container>
+
                 <button *ngIf="pwaPrompt" class="login-notif-pwa-btn cursor-pointer" type="button" (click)="installPwa()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:15px;height:15px;margin-right:7px">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -53,7 +84,7 @@
                     {{'LOGIN.NOTIF.BTN_INSTALL' | translate}}
                 </button>
             </div>
-            <div class="login-form-wrapper" [class.login-form-hidden]="showForgotPassword || notifPermission !== 'granted'">
+            <div class="login-form-wrapper" [class.login-form-hidden]="awaitingStaffPermissions || showForgotPassword">
                 <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
                     <h2 class="login-form-title">{{'LOGIN.TRANSLATE20' | translate}}</h2>
                     <div class="login-form-group">
@@ -98,7 +129,7 @@
                     </button>
                 </div>
             </div>
-            <div class="login-form-wrapper" [class.login-form-hidden]="!showForgotPassword || forgotStep !== 1 || notifPermission !== 'granted'">
+            <div class="login-form-wrapper" [class.login-form-hidden]="awaitingStaffPermissions || !showForgotPassword || forgotStep !== 1">
                 <form [formGroup]="forgotPasswordForm" (ngSubmit)="onForgotPassword()" class="login-form">
                     <h2 class="login-form-title">{{'LOGIN.TRANSLATE16' | translate}}</h2>
                     <p class="login-form-description">{{'LOGIN.TRANSLATE21' | translate}}</p>
@@ -123,7 +154,7 @@
                     </button>
                 </form>
             </div>
-            <div class="login-form-wrapper" [class.login-form-hidden]="!showForgotPassword || forgotStep !== 2 || notifPermission !== 'granted'">
+            <div class="login-form-wrapper" [class.login-form-hidden]="awaitingStaffPermissions || !showForgotPassword || forgotStep !== 2">
                 <form [formGroup]="codeForm" (ngSubmit)="onVerifyCode()" class="login-form">
                     <h2 class="login-form-title">{{'LOGIN.RESET_CODE_TITLE' | translate}}</h2>
                     <p class="login-form-description">{{'LOGIN.RESET_CODE_DESC' | translate}} <strong>{{resetEmail}}</strong></p>
@@ -147,7 +178,7 @@
                     </button>
                 </form>
             </div>
-            <div class="login-form-wrapper" [class.login-form-hidden]="!showForgotPassword || forgotStep !== 3 || notifPermission !== 'granted'">
+            <div class="login-form-wrapper" [class.login-form-hidden]="awaitingStaffPermissions || !showForgotPassword || forgotStep !== 3">
                 <form [formGroup]="newPasswordForm" (ngSubmit)="onResetPassword()" class="login-form" *ngIf="!resetSuccess">
                     <h2 class="login-form-title">{{'LOGIN.RESET_PW_TITLE' | translate}}</h2>
                     <div class="login-form-group">

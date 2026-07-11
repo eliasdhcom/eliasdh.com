@@ -295,32 +295,13 @@
     "ERROR_GENERIC": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
   },
   "STATUS": {
-    "TRANSLATE1": "Infrastrukturstatus",
-    "TRANSLATE2": "Zurück",
-    "TRANSLATE3": "Infrastrukturdaten werden geladen...",
-    "TRANSLATE4": "Cluster-Gesundheit",
-    "TRANSLATE5": "Gesunde Knoten",
-    "TRANSLATE6": "Laufende Pods",
-    "TRANSLATE7": "Bereite Bereitstellungen",
-    "TRANSLATE8": "% Betriebsbereit",
-    "TRANSLATE9": "Laufen",
-    "TRANSLATE10": "Ausstehend",
-    "TRANSLATE11": "Knoten",
-    "TRANSLATE12": "Bereit",
-    "TRANSLATE13": "Nicht bereit",
-    "TRANSLATE14": "Aktualisiert",
-    "TRANSLATE15": "Knotendetails",
-    "TRANSLATE16": "Speicher",
-    "TRANSLATE17": "CPU",
-    "TRANSLATE18": "Verwendet",
-    "TRANSLATE19": "Bedingungen",
-    "TRANSLATE20": "Erstellt",
-    "TRANSLATE21": "Knotenname",
-    "TRANSLATE22": "Status",
-    "TRANSLATE23": "Zurück",
-    "TRANSLATE24": "Weiter",
-    "TRANSLATE25": "Seite",
-    "TRANSLATE26": "Keine Knoten verfügbar"
+    "TITLE": "Infrastrukturstatus",
+    "BACK": "Zurück",
+    "LOADING": "Status wird geprüft...",
+    "ALL_OPERATIONAL": "Alle Systeme funktionieren einwandfrei",
+    "DEGRADED": "Einige Systeme haben Probleme",
+    "NODES_HEALTHY": "gesunde Nodes",
+    "UPDATED": "Zuletzt geprüft"
   },
   "CONTACTBAR": {
       "CALL": "Rufen Sie uns an",
@@ -375,12 +356,23 @@
     "RESET_PW_BTN": "Passwort festlegen",
     "RESET_SUCCESS": "Passwort erfolgreich geändert. Weiterleitung...",
     "NOTIF": {
-      "TITLE": "Benachrichtigungen erforderlich",
+      "TITLE": "Benachrichtigungen",
       "DESC": "Aktivieren Sie Benachrichtigungen, um auf das EliasDH-Portal zuzugreifen. Sie werden beim Einloggen und über wichtige Updates informiert.",
       "BLOCKED": "Benachrichtigungen sind in Ihrem Browser blockiert. Aktivieren Sie sie über die Website-Einstellungen (Website-Einstellungen → Benachrichtigungen → Zulassen) und laden Sie die Seite neu.",
       "BTN_ENABLE": "Benachrichtigungen aktivieren",
       "BTN_INSTALL": "App installieren",
       "BTN_INSTALL_HINT": "Installieren Sie die App auf Ihrem Gerät"
+    },
+    "LOCATION": {
+      "TITLE": "Standort",
+      "BLOCKED": "Der Standortzugriff ist in Ihrem Browser blockiert. Aktivieren Sie ihn über die Website-Einstellungen (Website-Einstellungen → Standort → Zulassen) und laden Sie die Seite neu.",
+      "UNAVAILABLE": "Standortzugriff ist erlaubt, konnte aber nicht ermittelt werden. Prüfen Sie, ob die Standortdienste auf Ihrem Gerät/Betriebssystem aktiviert sind (z. B. Windows: Einstellungen → Datenschutz → Standort) und versuchen Sie es erneut.",
+      "BTN_ENABLE": "Standort aktivieren",
+      "BTN_RETRY": "Erneut versuchen"
+    },
+    "STAFF_GATE": {
+      "TITLE": "Benachrichtigungen und Standort erforderlich",
+      "DESC": "Als Mitarbeiter oder Admin benötigen Sie sowohl Benachrichtigungen als auch Standortzugriff, um das Portal zu nutzen."
     }
   },
   "PORTAL": {
@@ -401,7 +393,7 @@
       "VAT": { "TITLE": "MwSt-Erklärung", "BTN_TOOLTIP": "MwSt-Erklärung erstellen", "SECTION_DETAIL": "Detaillierte Übersicht", "SECTION_SUMMARY": "MwSt-Erklärung Zusammenfassung", "COL_CUSTOMER": "Kunde", "COL_INVOICES": "Rechnungen", "COL_BASE": "Umsatz ohne MwSt.", "COL_VAT": "MwSt. (21%)", "COL_TOTAL": "Gesamt inkl. MwSt.", "ROW_TOTAL": "Gesamt", "R03_NAME": "Dienstleistungen zu 21% — Bemessungsgrundlage", "R03_DESC": "Umsatz ohne MwSt. für erbrachte digitale Dienstleistungen", "R54_NAME": "Geschuldete MwSt. auf Dienstleistungen zu 21%", "R54_DESC": "MwSt. auf fakturierte Dienstleistungen", "R71_NAME": "An den Staat zu zahlen", "R71_DESC": "Gesamte geschuldete MwSt. (keine abzugsfähige MwSt. enthalten)", "NOTE": "Enthält alle fakturierten Dienstleistungen in Q{{q}} {{year}}, unabhängig vom Zahlungsstatus (Erklärung auf Rechnungsbasis). Abzugsfähige MwSt. auf Einkäufe ist nicht enthalten.", "EMPTY": "Keine Rechnungen gefunden für Q{{q}} {{year}}.", "STATUS_READY": "Zur Erklärung bereit — Quartal abgeschlossen, alle Rechnungen bezahlt.", "STATUS_ENDED_UNPAID": "Quartal abgeschlossen, aber noch ausstehende Rechnungen. Vor der Erklärung nachverfolgen.", "STATUS_ONGOING_PAID": "Alle Rechnungen bezahlt, aber das Quartal läuft noch — es können weitere Rechnungen hinzukommen.", "STATUS_ONGOING_UNPAID": "Quartal läuft noch und es gibt offene Rechnungen — die Erklärung ist noch nicht vollständig." } },
     "USERS": { "EMPTY": "Keine Benutzer gefunden.", "RETRY": "Erneut versuchen", "LOAD_ERROR": "Benutzer konnten nicht geladen werden.", "ACTIVE": "aktiv", "INACTIVE": "inaktiv", "NEW": "Neuer Benutzer", "SEARCH": "Suche nach Name, E-Mail oder Rolle...", "CREATED_AT": "Registriert am", "ACTIVATE": "Benutzer aktivieren", "DEACTIVATE": "Benutzer deaktivieren", "NEW_TITLE": "Neuer Benutzer", "FILL_DATA": "Daten eingeben", "EDIT_DATA": "Daten bearbeiten", "PHOTO_ADD": "Klicken um Foto hinzuzufügen", "PHOTO_CHANGE": "Klicken um Foto zu ändern", "FIRST_NAME": "Vorname", "LAST_NAME": "Nachname", "EMAIL": "E-Mail-Adresse", "PASSWORD": "Passwort", "PASSWORD_HINT": "Mind. 8 Zeichen, Ziffer & Sonderzeichen", "ROLE": "Rolle", "CHOOSE_ROLE": "— Rolle wählen —", "PHONE": "Telefon", "PHONE_HINT": "Telefonnummer", "COMPANY": "Unternehmen", "CHOOSE_COMPANY": "— Unternehmen wählen —", "BIRTH_DATE": "Geburtsdatum", "NET_SALARY": "Nettogehalt", "NET_SALARY_HINT": "0,00", "NET_SALARY_PERIOD": "/Monat", "INFO": "Info", "ID": "ID", "STATUS": "Status", "SAVE": "Speichern", "SAVING": "Verarbeitung...", "CANCEL": "Abbrechen", "DELETE_TITLE": "Benutzer löschen", "DELETE_CONFIRM": "Möchten Sie", "DELETE_CONFIRM_SUFFIX": "wirklich löschen? Dies kann nicht rückgängig gemacht werden.", "DELETE": "Löschen", "SAVE_CONTACT": "Zu Kontakten hinzufügen" },
     "ANALYSIS": { "REVENUE_TITLE": "Umsatzanalyse", "REVENUE_SUB": "Ohne MwSt. · basierend auf aktiven Abonnements", "PROFIT_TITLE": "Gewinnanalyse", "PROFIT_SUB": "Körperschaftsteuer 20%", "COSTS_TITLE": "Kosten", "FIXED": "Fix", "FIXED_YEAR": "Fix:", "VARIABLE": "Variabel", "VARIABLE_YEAR": "Variabel:", "TOTAL_YEAR": "Gesamt:", "TOTAL": "Gesamt", "PER_YEAR": "/Jahr", "COST_NAME": "Kostenname", "ADD_COST": "Kosten hinzufügen", "REMOVE_COST": "Entfernen", "REVENUE_EXCL": "Umsatz ohne MwSt.", "REVENUE_INCL": "Umsatz inkl. MwSt.", "GROSS": "Bruttogewinn", "TAX": "Steuer (20%)", "NET": "Nettogewinn", "SUMMARY_TITLE": "Jahresübersicht", "SUMMARY_SUB": "Ohne MwSt.", "SUMMARY_REVENUE": "Umsatz", "SUMMARY_COSTS": "Gesamtkosten", "SUMMARY_GROSS": "Bruttogewinn", "SUMMARY_TAX": "Körperschaftsteuer (20%)", "SUMMARY_NET": "Nettogewinn nach Steuern", "FREQ_MONTHLY": "Monatlich", "FREQ_QUARTERLY": "Vierteljährlich", "FREQ_YEARLY": "Jährlich", "PAYROLL_TITLE": "Personal", "PAYROLL_PERSONS": "Mitarbeiter in Festanstellung", "PAYROLL_TOTAL": "Gesamte Lohnkosten", "PAYROLL_EMPTY": "Keine Mitarbeiter in Festanstellung. Legen Sie ein Nettogehalt für Admin- oder Employee-Benutzer fest.", "PAYROLL_NAME": "Name", "PAYROLL_ROLE": "Rolle", "PAYROLL_NET": "Netto/Monat", "PAYROLL_GROSS": "Brutto/Monat", "PAYROLL_RSZ_EMP": "SV (13,07%)", "PAYROLL_BV": "LSt (25%)", "PAYROLL_RSZ_ER": "AG-Beitrag", "PAYROLL_EMPLOYER_COST": "AG-Kosten/Monat", "PAYROLL_RATE_NOTE": "Sätze: AN-SV {{rsz}}% · LSt {{bv}}% · AG-SV {{er}}% (vereinfacht)", "PAYROLL_ANNUAL": "Jährliche Gesamtlohnkosten", "RATES_LABEL": "Sätze", "RATE_RSZ_EMP": "AN-Sozialversicherung", "RATE_BV": "Lohnsteuer", "RATE_RSZ_ER": "AG-Sozialversicherung", "RATES_RESET": "Standardsätze wiederherstellen" },
-    "LOGS": { "SEARCH": "Protokolle durchsuchen...", "ALL_ACTIONS": "Alle Aktionen", "ALL_RESOURCES": "Alle Ressourcen", "DATE_FROM": "Von Datum", "DATE_TO": "Bis Datum", "CLEAR": "Filter löschen", "RECORDS": "Einträge", "PAGE": "Seite", "EMPTY": "Keine Protokolle gefunden.", "RETRY": "Erneut versuchen", "COL_TIME": "Zeitstempel", "COL_USER": "Benutzer", "COL_ACTION": "Aktion", "COL_RESOURCE": "Ressource", "COL_DETAILS": "Details", "COL_IP": "IP-Adresse", "CLEAR_ALL": "Alle Protokolle löschen", "CLEAR_ALL_CONFIRM": "Dadurch werden alle Protokolleinträge dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.", "CLEAR_ALL_BTN": "Alle löschen", "DANGER_TITLE": "Gefahrenbereich", "DANGER_DESC": "Einmal gelöschte Protokolle können nicht wiederhergestellt werden." },
+    "LOGS": { "SEARCH": "Protokolle durchsuchen...", "ALL_ACTIONS": "Alle Aktionen", "ALL_RESOURCES": "Alle Ressourcen", "DATE_FROM": "Von Datum", "DATE_TO": "Bis Datum", "CLEAR": "Filter löschen", "RECORDS": "Einträge", "PAGE": "Seite", "EMPTY": "Keine Protokolle gefunden.", "RETRY": "Erneut versuchen", "COL_TIME": "Zeitstempel", "COL_USER": "Benutzer", "COL_ACTION": "Aktion", "COL_RESOURCE": "Ressource", "COL_DETAILS": "Details", "COL_IP": "IP-Adresse", "COL_LOCATION": "Standort", "CLEAR_ALL": "Alle Protokolle löschen", "CLEAR_ALL_CONFIRM": "Dadurch werden alle Protokolleinträge dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.", "CLEAR_ALL_BTN": "Alle löschen", "DANGER_TITLE": "Gefahrenbereich", "DANGER_DESC": "Einmal gelöschte Protokolle können nicht wiederhergestellt werden." },
     "PASSWORDS": { "SEARCH": "Nach Dienst suchen...", "NEW": "Neuer Eintrag", "NEW_TITLE": "Neuer Passworteintrag", "EDIT_TITLE": "Passworteintrag bearbeiten", "EMPTY": "Keine Passworteinträge gefunden.", "SERVICE_NAME": "Dienstname", "LOGIN_URL": "Login-URL", "EMAIL": "E-Mail", "USERNAME": "Benutzername", "PASSWORD": "Passwort", "PASSWORD_KEEP_HINT": "Leer lassen, um aktuelles Passwort zu behalten", "HAS_2FA": "Zwei-Faktor-Authentifizierung", "TWOFA_ON": "2FA an", "TWOFA_OFF": "2FA aus", "REVEAL": "Passwort anzeigen", "HIDE": "Passwort verbergen", "COPY": "Kopieren", "COPIED": "Kopiert!", "GENERATE": "Passwort generieren", "STRENGTH_WEAK": "Schwach", "STRENGTH_FAIR": "Mittel", "STRENGTH_STRONG": "Stark", "VAULT_LOCKED": "Tresor gesperrt", "VAULT_LOCKED_TITLE": "Tresor gesperrt", "VAULT_PROMPT": "Gib dein Kontopasswort erneut ein, um den Tresor für 5 Minuten zu entsperren.", "VAULT_UNLOCK_BTN": "Entsperren", "VAULT_UNLOCKED_FOR": "Tresor entsperrt — sperrt in", "VAULT_LOCK_NOW": "Jetzt sperren", "LAST_UPDATED": "Zuletzt aktualisiert", "UPDATED_BY": "Aktualisiert von", "DELETE_CONFIRM": "Bist du sicher, dass du löschen möchtest:" },
     "COMPANY": { "SECTION_COMPANY": "Unternehmensdaten", "SAVED": "Unternehmensdaten gespeichert.", "SAVE": "Änderungen speichern", "ERR_NAME": "Unternehmensname ist erforderlich.", "ERR_LOGO": "Logo ist erforderlich.", "ERR_EMAIL": "E-Mail-Adresse ist erforderlich." },
     "PRICING": {

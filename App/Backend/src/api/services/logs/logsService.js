@@ -9,11 +9,11 @@ const logger    = require('../../../utils/logger');
 
 const MAX_RECORDS = Number(process.env.MAX_LOG_RECORDS ?? 500);
 
-async function addLog({ userId, userEmail, userName, action, resource, resourceId, details, ipAddress } = {}) {
+async function addLog({ userId, userEmail, userName, action, resource, resourceId, details, ipAddress, latitude, longitude } = {}) {
     const db = getDb();
     try {
         await db.execute({
-            sql:  `INSERT INTO logs (user_id, user_email, user_name, action, resource, resource_id, details, ip_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            sql:  `INSERT INTO logs (user_id, user_email, user_name, action, resource, resource_id, details, ip_address, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             args: [
                 userId     ?? null,
                 userEmail  ?? null,
@@ -22,7 +22,9 @@ async function addLog({ userId, userEmail, userName, action, resource, resourceI
                 resource   ?? null,
                 resourceId != null ? String(resourceId) : null,
                 details    != null ? (typeof details === 'object' ? JSON.stringify(details) : String(details)) : null,
-                ipAddress  ?? null
+                ipAddress  ?? null,
+                latitude   ?? null,
+                longitude  ?? null
             ]
         });
         await db.execute({
@@ -32,6 +34,15 @@ async function addLog({ userId, userEmail, userName, action, resource, resourceI
     } catch (err) {
         logger.error(`[logs] Failed to write log entry: ${err.message}`);
     }
+}
+
+async function updateLastLoginLocation(userId, latitude, longitude) {
+    const db = getDb();
+    await db.execute({
+        sql:  `UPDATE logs SET latitude = ?, longitude = ?
+               WHERE id = (SELECT id FROM logs WHERE user_id = ? AND action = 'LOGIN' ORDER BY id DESC LIMIT 1)`,
+        args: [latitude, longitude, userId]
+    });
 }
 
 async function getLogs({ action, resource, userId, search, dateFrom, dateTo, limit = 100, offset = 0 } = {}) {
@@ -76,6 +87,8 @@ function mapLog(row) {
         resourceId: row.resource_id ?? null,
         details:    row.details     ?? null,
         ipAddress:  row.ip_address  ?? null,
+        latitude:   row.latitude  != null ? Number(row.latitude)  : null,
+        longitude:  row.longitude != null ? Number(row.longitude) : null,
         createdAt:  row.created_at
     };
 }
@@ -85,4 +98,4 @@ async function clearLogs() {
     await db.execute({ sql: `DELETE FROM logs`, args: [] });
 }
 
-module.exports = { addLog, getLogs, clearLogs };
+module.exports = { addLog, getLogs, clearLogs, updateLastLoginLocation };

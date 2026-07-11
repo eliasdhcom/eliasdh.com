@@ -20,6 +20,8 @@ export interface LogEntry {
     resourceId: string | null;
     details:    string | null;
     ipAddress:  string | null;
+    latitude:   number | null;
+    longitude:  number | null;
     createdAt:  string;
 }
 

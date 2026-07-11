@@ -227,6 +227,18 @@
 .logs-cell-action { white-space: nowrap; }
 .logs-cell-details { max-width: 200px; word-break: break-word; }
 .logs-cell-ip    { font-size: 11px; color: var(--secondary); white-space: nowrap; }
+.logs-cell-location { font-size: 11px; white-space: nowrap; }
+
+.logs-location-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+.logs-location-link:hover { text-decoration: underline; }
+.logs-location-link svg   { width: 14px; height: 14px; flex-shrink: 0; }
 
 .logs-user-name  { display: block; font-weight: 600; color: var(--text); }
 .logs-user-email { display: block; font-size: 11px; color: var(--secondary); }
@@ -275,6 +287,7 @@
 .logs-card-user    { font-size: 13px; font-weight: 600; color: var(--text); }
 .logs-card-details { font-size: 12px; color: var(--text); }
 .logs-card-ip      { font-size: 11px; color: var(--secondary); }
+.logs-card-location { font-size: 11px; margin-top: 2px; }
 
 .logs-pagination {
     display: flex; align-items: center;
@@ -306,6 +319,7 @@
 
 @media (max-width: 540px) {
     .logs-col-details,
-    .logs-col-ip { display: none; }
+    .logs-col-ip,
+    .logs-col-location { display: none; }
 }
 /* Logs */

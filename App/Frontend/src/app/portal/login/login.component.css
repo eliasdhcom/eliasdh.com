@@ -530,6 +530,32 @@
     line-height: 1.55;
 }
 
+.login-permission-ok {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(16, 185, 129, 0.18);
+    border: 1px solid rgba(110, 231, 183, 0.35);
+    border-radius: 10px;
+    padding: 10px 14px;
+    width: 100%;
+    max-width: 320px;
+    box-sizing: border-box;
+}
+
+.login-permission-ok svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: #6ee7b7;
+}
+
+.login-permission-ok span {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #6ee7b7;
+}
+
 .login-notif-btn {
     display: inline-flex;
     align-items: center;

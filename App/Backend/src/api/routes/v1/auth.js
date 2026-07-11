@@ -53,6 +53,23 @@ router.post('/login',
     }
 );
 
+router.post('/login-location',
+    jwtAuth,
+    body('latitude').isFloat({ min: -90, max: 90 }),
+    body('longitude').isFloat({ min: -180, max: 180 }),
+    async (req, res, next) => {
+        try {
+            if (!validationResult(req).isEmpty()) {
+                return res.status(400).json({ success: false, error: 'Invalid coordinates.' });
+            }
+            await logsService.updateLastLoginLocation(req.user.id, Number(req.body.latitude), Number(req.body.longitude));
+            res.json({ success: true });
+        } catch (err) {
+            next(err);
+        }
+    }
+);
+
 router.post('/logout', jwtAuth, async (req, res, next) => {
     try {
         logsService.addLog({

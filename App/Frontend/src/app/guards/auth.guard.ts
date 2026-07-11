@@ -8,20 +8,30 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-export const authGuard: CanActivateFn = () => {
+export const authGuard: CanActivateFn = async () => {
     const authService = inject(AuthService);
     const router = inject(Router);
 
-    if (authService.isAuthenticated()) return true;
+    if (!authService.isAuthenticated()) return router.createUrlTree(['/login']);
 
-    return router.createUrlTree(['/login']);
-};
-
-export const loggedInGuard: CanActivateFn = () => {
-    const authService = inject(AuthService);
-    const router = inject(Router);
-
-    if (authService.isAuthenticated()) return router.createUrlTree(['/dashboard']);
+    const user = authService.getUser();
+    if (authService.isStaff(user) && !(await authService.hasStaffPermissionsGranted())) {
+        return router.createUrlTree(['/login']);
+    }
 
     return true;
+};
+
+export const loggedInGuard: CanActivateFn = async () => {
+    const authService = inject(AuthService);
+    const router = inject(Router);
+
+    if (!authService.isAuthenticated()) return true;
+
+    const user = authService.getUser();
+    if (authService.isStaff(user) && !(await authService.hasStaffPermissionsGranted())) {
+        return true;
+    }
+
+    return router.createUrlTree(['/dashboard']);
 };

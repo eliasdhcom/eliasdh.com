@@ -38,6 +38,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     notifPermission: string = 'default';
+    locationPermission: string = 'prompt';
+    awaitingStaffPermissions = false;
     isAndroid = false;
     pwaPrompt: any = null;
     private readonly onPwaPrompt = (e: Event) => { e.preventDefault(); this.pwaPrompt = e; };
@@ -93,13 +95,37 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.translateService.get('LOGIN.TRANSLATE1').pipe(takeUntil(this.destroy$)).subscribe();
-        if (typeof Notification === 'undefined') {
-            this.notifPermission = 'granted';
+        this.notifPermission = this.authService.getLiveNotificationPermission();
+        if (navigator.permissions?.query) {
+            navigator.permissions.query({ name: 'geolocation' as PermissionName })
+                .then(status => {
+                    this.locationPermission = status.state;
+                    status.onchange = () => {
+                        this.locationPermission = status.state;
+                        this.tryProceedAfterGate();
+                    };
+                    this.checkAlreadyAuthenticated();
+                })
+                .catch(() => {
+                    this.locationPermission = 'prompt';
+                    this.checkAlreadyAuthenticated();
+                });
         } else {
-            this.notifPermission = Notification.permission;
+            this.locationPermission = navigator.geolocation ? 'prompt' : 'denied';
+            this.checkAlreadyAuthenticated();
         }
         this.isAndroid = /Android/i.test(navigator.userAgent);
         window.addEventListener('beforeinstallprompt', this.onPwaPrompt);
+    }
+
+    private checkAlreadyAuthenticated(): void {
+        if (!this.authService.isAuthenticated()) return;
+        const user = this.authService.getUser();
+        if (this.authService.isStaff(user) && (this.notifPermission !== 'granted' || this.locationPermission !== 'granted')) {
+            this.awaitingStaffPermissions = true;
+            return;
+        }
+        this.router.navigate(['/dashboard']);
     }
 
     ngOnDestroy(): void {
@@ -168,6 +194,45 @@ export class LoginComponent implements OnInit, OnDestroy {
     async requestNotifPermission(): Promise<void> {
         const perm = await Notification.requestPermission();
         this.notifPermission = perm;
+        this.tryProceedAfterGate();
+    }
+
+    requestLocationPermission(): void {
+        if (!navigator.geolocation) {
+            this.locationPermission = 'denied';
+            return;
+        }
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                this.locationPermission = 'granted';
+                this.sendLoginLocation(position.coords.latitude, position.coords.longitude);
+                this.tryProceedAfterGate();
+            },
+            (error) => {
+                this.locationPermission = error.code === error.PERMISSION_DENIED ? 'denied' : 'unavailable';
+            },
+            { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 }
+        );
+    }
+
+    private sendLoginLocation(latitude: number, longitude: number): void {
+        this.authService.recordLoginLocation(latitude, longitude).catch(() => { });
+    }
+
+    private captureAndSendCurrentLocation(): void {
+        if (!navigator.geolocation) return;
+        navigator.geolocation.getCurrentPosition(
+            (position) => this.sendLoginLocation(position.coords.latitude, position.coords.longitude),
+            () => { },
+            { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 }
+        );
+    }
+
+    private tryProceedAfterGate(): void {
+        if (this.awaitingStaffPermissions && this.notifPermission === 'granted' && this.locationPermission === 'granted') {
+            this.awaitingStaffPermissions = false;
+            this.router.navigate(['/dashboard']);
+        }
     }
 
     async installPwa(): Promise<void> {
@@ -187,8 +252,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         const success = await this.authService.login(email, password);
 
         if (success) {
+            const user = this.authService.getUser();
             try {
-                const user = this.authService.getUser();
                 if (typeof Notification !== 'undefined' && Notification.permission === 'granted' && user) {
                     new Notification('EliasDH Portal', {
                         body: `Welcome back, ${user.firstName} ${user.lastName}! You have successfully logged in.`,
@@ -196,6 +261,17 @@ export class LoginComponent implements OnInit, OnDestroy {
                     });
                 }
             } catch { }
+
+            if (this.authService.isStaff(user)) {
+                this.notifPermission = this.authService.getLiveNotificationPermission();
+                this.locationPermission = await this.authService.getLiveLocationPermission();
+                if (this.notifPermission !== 'granted' || this.locationPermission !== 'granted') {
+                    this.submitting = false;
+                    this.awaitingStaffPermissions = true;
+                    return;
+                }
+                this.captureAndSendCurrentLocation();
+            }
             this.router.navigate(['/dashboard']);
         } else {
             this.submitting = false;

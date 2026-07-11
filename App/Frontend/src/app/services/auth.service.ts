@@ -82,6 +82,21 @@ export class AuthService {
         }
     }
 
+    async recordLoginLocation(latitude: number, longitude: number): Promise<void> {
+        const token = this.getToken();
+        if (!token || !isPlatformBrowser(this.platformId)) return;
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'x-api-key':    environment.eliasdhApiKey,
+            'Authorization': `Bearer ${token}`
+        });
+        try {
+            await firstValueFrom(
+                this.http.post(`${environment.eliasdhApiUrl}/api/v1/auth/login-location`, { latitude, longitude }, { headers })
+            );
+        } catch { }
+    }
+
     logout(): void {
         const token = this.getToken();
         if (token && isPlatformBrowser(this.platformId)) {
@@ -129,6 +144,33 @@ export class AuthService {
             phone:     payload.phone     ?? '',
             birthDate: payload.birthDate ?? ''
         };
+    }
+
+    isStaff(user: AuthUser | null): boolean {
+        const role = (user?.role ?? '').toLowerCase();
+        return role === 'admin' || role === 'employee';
+    }
+
+    async getLiveLocationPermission(): Promise<string> {
+        if (!isPlatformBrowser(this.platformId)) return 'denied';
+        if (!navigator.permissions?.query) return navigator.geolocation ? 'prompt' : 'denied';
+        try {
+            const status = await navigator.permissions.query({ name: 'geolocation' as PermissionName });
+            return status.state;
+        } catch {
+            return 'prompt';
+        }
+    }
+
+    getLiveNotificationPermission(): string {
+        if (!isPlatformBrowser(this.platformId) || typeof Notification === 'undefined') return 'granted';
+        return Notification.permission;
+    }
+
+    async hasStaffPermissionsGranted(): Promise<boolean> {
+        const notifOk = this.getLiveNotificationPermission() === 'granted';
+        const locationOk = (await this.getLiveLocationPermission()) === 'granted';
+        return notifOk && locationOk;
     }
 
     private _decodePayload(token: string): any {

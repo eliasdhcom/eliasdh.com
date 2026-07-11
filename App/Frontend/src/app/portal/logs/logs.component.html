@@ -62,6 +62,7 @@
                     <th>{{'PORTAL.LOGS.COL_ACTION'|translate}}</th>
                     <th class="logs-col-details">{{'PORTAL.LOGS.COL_DETAILS'|translate}}</th>
                     <th class="logs-col-ip">{{'PORTAL.LOGS.COL_IP'|translate}}</th>
+                    <th class="logs-col-location">{{'PORTAL.LOGS.COL_LOCATION'|translate}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -76,6 +77,13 @@
                     </td>
                     <td class="logs-cell-details logs-col-details">{{log.details || '—'}}</td>
                     <td class="logs-cell-ip logs-col-ip">{{log.ipAddress || '—'}}</td>
+                    <td class="logs-cell-location logs-col-location">
+                        <a *ngIf="log.latitude != null && log.longitude != null" class="logs-location-link cursor-pointer" [href]="mapsUrl(log)" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            {{log.latitude!.toFixed(5)}}, {{log.longitude!.toFixed(5)}}
+                        </a>
+                        <span *ngIf="log.latitude == null || log.longitude == null">—</span>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -90,6 +98,10 @@
                 <span class="logs-card-user">{{log.userName || log.userEmail || '—'}}</span>
                 <span class="logs-card-details" *ngIf="log.details">{{log.details}}</span>
                 <span class="logs-card-ip" *ngIf="log.ipAddress">{{log.ipAddress}}</span>
+                <a class="logs-card-location logs-location-link cursor-pointer" *ngIf="log.latitude != null && log.longitude != null" [href]="mapsUrl(log)" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    {{log.latitude!.toFixed(5)}}, {{log.longitude!.toFixed(5)}}
+                </a>
             </div>
         </div>
     </div>

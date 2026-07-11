@@ -68,6 +68,30 @@ router.get('/pods', async (req, res) => {
     }
 });
 
+router.get('/health', async (req, res) => {
+    try {
+        logger.info('Fetching cluster health summary');
+        const overview = await clusterService.getClusterOverview();
+
+        res.status(200).json({
+            success: true,
+            data: {
+                healthy: overview.clusterHealth.nodesHealthy,
+                status: overview.clusterHealth.status,
+                nodesReady: overview.nodes.ready,
+                nodesTotal: overview.nodes.total,
+                timestamp: overview.timestamp
+            }
+        });
+    } catch (error) {
+        logger.error(`Cluster health error: ${error.message}`);
+        res.status(500).json({
+            success: false,
+            error: error.message || 'Failed to retrieve cluster health'
+        });
+    }
+});
+
 router.get('/status', async (req, res) => {
     try {
         logger.info('Fetching full cluster status');

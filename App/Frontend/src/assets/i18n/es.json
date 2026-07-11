@@ -296,32 +296,13 @@
     "ERROR_GENERIC": "Algo salió mal. Por favor inténtalo de nuevo."
   },
   "STATUS": {
-    "TRANSLATE1": "Estado de la Infraestructura",
-    "TRANSLATE2": "Atrás",
-    "TRANSLATE3": "Cargando datos de infraestructura...",
-    "TRANSLATE4": "Estado del Clúster",
-    "TRANSLATE5": "Nodos Saludables",
-    "TRANSLATE6": "Pods en Ejecución",
-    "TRANSLATE7": "Despliegues Listos",
-    "TRANSLATE8": "% Operativo",
-    "TRANSLATE9": "En Ejecución",
-    "TRANSLATE10": "Pendiente",
-    "TRANSLATE11": "Nodos",
-    "TRANSLATE12": "Listo",
-    "TRANSLATE13": "No Listo",
-    "TRANSLATE14": "Actualizado",
-    "TRANSLATE15": "Detalles del Nodo",
-    "TRANSLATE16": "Memoria",
-    "TRANSLATE17": "CPU",
-    "TRANSLATE18": "Usado",
-    "TRANSLATE19": "Condiciones",
-    "TRANSLATE20": "Creado",
-    "TRANSLATE21": "Nombre del Nodo",
-    "TRANSLATE22": "Estado",
-    "TRANSLATE23": "Anterior",
-    "TRANSLATE24": "Siguiente",
-    "TRANSLATE25": "Página",
-    "TRANSLATE26": "No hay nodos disponibles"
+    "TITLE": "Estado de la infraestructura",
+    "BACK": "Volver",
+    "LOADING": "Comprobando el estado...",
+    "ALL_OPERATIONAL": "Todos los sistemas operativos",
+    "DEGRADED": "Algunos sistemas presentan problemas",
+    "NODES_HEALTHY": "nodos saludables",
+    "UPDATED": "Última comprobación"
   },
   "CONTACTBAR": {
       "CALL": "Llámanos",
@@ -376,12 +357,23 @@
     "RESET_PW_BTN": "Establecer contraseña",
     "RESET_SUCCESS": "Contraseña cambiada con éxito. Redirigiendo...",
     "NOTIF": {
-      "TITLE": "Notificaciones requeridas",
+      "TITLE": "Notificaciones",
       "DESC": "Activa las notificaciones para acceder al portal EliasDH. Serás notificado cuando inicies sesión y sobre actualizaciones importantes.",
       "BLOCKED": "Las notificaciones están bloqueadas en tu navegador. Actívalas a través de la configuración del sitio (Configuración del sitio → Notificaciones → Permitir) y recarga la página.",
       "BTN_ENABLE": "Activar notificaciones",
       "BTN_INSTALL": "Instalar aplicación",
       "BTN_INSTALL_HINT": "Instala la aplicación en tu dispositivo"
+    },
+    "LOCATION": {
+      "TITLE": "Ubicación",
+      "BLOCKED": "El acceso a la ubicación está bloqueado en tu navegador. Actívalo a través de la configuración del sitio (Configuración del sitio → Ubicación → Permitir) y recarga la página.",
+      "UNAVAILABLE": "La ubicación está permitida, pero no se pudo determinar. Comprueba que los servicios de ubicación estén activados en tu dispositivo/sistema operativo (p. ej. Windows: Configuración → Privacidad → Ubicación) e inténtalo de nuevo.",
+      "BTN_ENABLE": "Activar ubicación",
+      "BTN_RETRY": "Reintentar"
+    },
+    "STAFF_GATE": {
+      "TITLE": "Notificaciones y ubicación requeridas",
+      "DESC": "Como miembro del personal o administrador, necesitas tanto notificaciones como acceso a la ubicación para usar el portal."
     }
   },
   "PORTAL": {
@@ -402,7 +394,7 @@
       "VAT": { "TITLE": "Declaración IVA", "BTN_TOOLTIP": "Preparar declaración IVA", "SECTION_DETAIL": "Resumen detallado", "SECTION_SUMMARY": "Resumen declaración IVA", "COL_CUSTOMER": "Cliente", "COL_INVOICES": "Facturas", "COL_BASE": "Ingresos excl. IVA", "COL_VAT": "IVA (21%)", "COL_TOTAL": "Total incl. IVA", "ROW_TOTAL": "Total", "R03_NAME": "Servicios al 21% — base imponible", "R03_DESC": "Ingresos excl. IVA por servicios digitales prestados", "R54_NAME": "IVA devengado sobre servicios al 21%", "R54_DESC": "IVA repercutido sobre servicios facturados", "R71_NAME": "Importe a pagar al Estado", "R71_DESC": "IVA total devengado (IVA deducible no incluido)", "NOTE": "Contiene todos los servicios facturados en Q{{q}} {{year}}, independientemente del estado de pago (declaración en base a facturas). IVA deducible en compras no incluido.", "EMPTY": "No se encontraron facturas para Q{{q}} {{year}}.", "STATUS_READY": "Listo para declarar — trimestre cerrado, todas las facturas pagadas.", "STATUS_ENDED_UNPAID": "Trimestre cerrado, pero aún hay facturas pendientes. Regularizar antes de declarar.", "STATUS_ONGOING_PAID": "Todas las facturas pagadas, pero el trimestre sigue en curso — pueden añadirse más facturas.", "STATUS_ONGOING_UNPAID": "Trimestre en curso con facturas pendientes — la declaración aún no está completa." } },
     "USERS": { "EMPTY": "No se encontraron usuarios.", "RETRY": "Reintentar", "LOAD_ERROR": "No se pudieron cargar los usuarios.", "ACTIVE": "activo", "INACTIVE": "inactivo", "NEW": "Nuevo usuario", "SEARCH": "Buscar por nombre, correo o rol...", "CREATED_AT": "Registrado el", "ACTIVATE": "Activar usuario", "DEACTIVATE": "Desactivar usuario", "NEW_TITLE": "Nuevo usuario", "FILL_DATA": "Rellenar datos", "EDIT_DATA": "Editar datos", "PHOTO_ADD": "Haz clic para añadir foto", "PHOTO_CHANGE": "Haz clic para cambiar foto", "FIRST_NAME": "Nombre", "LAST_NAME": "Apellido", "EMAIL": "Correo electrónico", "PASSWORD": "Contraseña", "PASSWORD_HINT": "Mín. 8 caracteres, dígito y carácter especial", "ROLE": "Rol", "CHOOSE_ROLE": "— Elegir rol —", "PHONE": "Teléfono", "PHONE_HINT": "Número de teléfono", "COMPANY": "Empresa", "CHOOSE_COMPANY": "— Elegir empresa —", "BIRTH_DATE": "Fecha de nacimiento", "NET_SALARY": "Salario neto", "NET_SALARY_HINT": "0,00", "NET_SALARY_PERIOD": "/mes", "INFO": "Info", "ID": "ID", "STATUS": "Estado", "SAVE": "Guardar", "SAVING": "Procesando...", "CANCEL": "Cancelar", "DELETE_TITLE": "Eliminar usuario", "DELETE_CONFIRM": "¿Estás seguro de que quieres eliminar a", "DELETE_CONFIRM_SUFFIX": "? Esta acción no se puede deshacer.", "DELETE": "Eliminar", "SAVE_CONTACT": "Añadir a contactos" },
     "ANALYSIS": { "REVENUE_TITLE": "Análisis de ingresos", "REVENUE_SUB": "Sin IVA · basado en suscripciones activas", "PROFIT_TITLE": "Análisis de beneficios", "PROFIT_SUB": "Impuesto de sociedades 20%", "COSTS_TITLE": "Costos", "FIXED": "Fijo", "FIXED_YEAR": "Fijo:", "VARIABLE": "Variable", "VARIABLE_YEAR": "Variable:", "TOTAL_YEAR": "Total:", "TOTAL": "Total", "PER_YEAR": "/año", "COST_NAME": "Nombre del costo", "ADD_COST": "Añadir costo", "REMOVE_COST": "Eliminar", "REVENUE_EXCL": "Ingresos sin IVA", "REVENUE_INCL": "Ingresos con IVA", "GROSS": "Beneficio bruto", "TAX": "Impuesto (20%)", "NET": "Beneficio neto", "SUMMARY_TITLE": "Resumen anual", "SUMMARY_SUB": "Sin IVA", "SUMMARY_REVENUE": "Ingresos", "SUMMARY_COSTS": "Costos totales", "SUMMARY_GROSS": "Beneficio bruto", "SUMMARY_TAX": "Impuesto de sociedades (20%)", "SUMMARY_NET": "Beneficio neto después de impuestos", "FREQ_MONTHLY": "Mensual", "FREQ_QUARTERLY": "Trimestral", "FREQ_YEARLY": "Anual", "PAYROLL_TITLE": "Personal", "PAYROLL_PERSONS": "empleados en nómina", "PAYROLL_TOTAL": "Coste salarial total", "PAYROLL_EMPTY": "No hay empleados en nómina. Establezca un salario neto para usuarios Admin o Employee.", "PAYROLL_NAME": "Nombre", "PAYROLL_ROLE": "Rol", "PAYROLL_NET": "Neto/mes", "PAYROLL_GROSS": "Bruto/mes", "PAYROLL_RSZ_EMP": "SS (13,07%)", "PAYROLL_BV": "IRPF (25%)", "PAYROLL_RSZ_ER": "SS empleador", "PAYROLL_EMPLOYER_COST": "Coste empleador/mes", "PAYROLL_RATE_NOTE": "Tasas: SS empleado {{rsz}}% · IRPF {{bv}}% · SS empleador {{er}}% (simplificado)", "PAYROLL_ANNUAL": "Coste salarial anual total", "RATES_LABEL": "Tasas", "RATE_RSZ_EMP": "SS empleado", "RATE_BV": "Retención IRPF", "RATE_RSZ_ER": "SS empleador", "RATES_RESET": "Restaurar valores por defecto" },
-    "LOGS": { "SEARCH": "Buscar en registros...", "ALL_ACTIONS": "Todas las acciones", "ALL_RESOURCES": "Todos los recursos", "DATE_FROM": "Desde", "DATE_TO": "Hasta", "CLEAR": "Limpiar filtros", "RECORDS": "registros", "PAGE": "Página", "EMPTY": "No se encontraron registros.", "RETRY": "Reintentar", "COL_TIME": "Marca de tiempo", "COL_USER": "Usuario", "COL_ACTION": "Acción", "COL_RESOURCE": "Recurso", "COL_DETAILS": "Detalles", "COL_IP": "Dirección IP", "CLEAR_ALL": "Borrar todos los registros", "CLEAR_ALL_CONFIRM": "Esto eliminará permanentemente todos los registros. Esta acción no se puede deshacer.", "CLEAR_ALL_BTN": "Borrar todo", "DANGER_TITLE": "Zona de peligro", "DANGER_DESC": "Una vez eliminados, los registros no se pueden recuperar." },
+    "LOGS": { "SEARCH": "Buscar en registros...", "ALL_ACTIONS": "Todas las acciones", "ALL_RESOURCES": "Todos los recursos", "DATE_FROM": "Desde", "DATE_TO": "Hasta", "CLEAR": "Limpiar filtros", "RECORDS": "registros", "PAGE": "Página", "EMPTY": "No se encontraron registros.", "RETRY": "Reintentar", "COL_TIME": "Marca de tiempo", "COL_USER": "Usuario", "COL_ACTION": "Acción", "COL_RESOURCE": "Recurso", "COL_DETAILS": "Detalles", "COL_IP": "Dirección IP", "COL_LOCATION": "Ubicación", "CLEAR_ALL": "Borrar todos los registros", "CLEAR_ALL_CONFIRM": "Esto eliminará permanentemente todos los registros. Esta acción no se puede deshacer.", "CLEAR_ALL_BTN": "Borrar todo", "DANGER_TITLE": "Zona de peligro", "DANGER_DESC": "Una vez eliminados, los registros no se pueden recuperar." },
     "PASSWORDS": { "SEARCH": "Buscar por servicio...", "NEW": "Nueva entrada", "NEW_TITLE": "Nueva contraseña", "EDIT_TITLE": "Editar contraseña", "EMPTY": "No se encontraron entradas.", "SERVICE_NAME": "Nombre del servicio", "LOGIN_URL": "URL de acceso", "EMAIL": "Correo electrónico", "USERNAME": "Nombre de usuario", "PASSWORD": "Contraseña", "PASSWORD_KEEP_HINT": "Deja en blanco para conservar la contraseña actual", "HAS_2FA": "Autenticación de dos factores", "TWOFA_ON": "2FA activo", "TWOFA_OFF": "2FA inactivo", "REVEAL": "Mostrar contraseña", "HIDE": "Ocultar contraseña", "COPY": "Copiar", "COPIED": "¡Copiado!", "GENERATE": "Generar contraseña", "STRENGTH_WEAK": "Débil", "STRENGTH_FAIR": "Aceptable", "STRENGTH_STRONG": "Fuerte", "VAULT_LOCKED": "Bóveda bloqueada", "VAULT_LOCKED_TITLE": "Bóveda bloqueada", "VAULT_PROMPT": "Vuelve a introducir tu contraseña de cuenta para desbloquear la bóveda durante 5 minutos.", "VAULT_UNLOCK_BTN": "Desbloquear", "VAULT_UNLOCKED_FOR": "Bóveda desbloqueada — se bloquea en", "VAULT_LOCK_NOW": "Bloquear ahora", "LAST_UPDATED": "Última actualización", "UPDATED_BY": "Actualizado por", "DELETE_CONFIRM": "¿Seguro que quieres eliminar:" },
     "COMPANY": { "SECTION_COMPANY": "Datos de empresa", "SAVED": "Datos de empresa guardados.", "SAVE": "Guardar cambios", "ERR_NAME": "El nombre de la empresa es obligatorio.", "ERR_LOGO": "El logotipo es obligatorio.", "ERR_EMAIL": "La dirección de correo es obligatoria." },
     "PRICING": {

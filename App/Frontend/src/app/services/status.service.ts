@@ -99,6 +99,19 @@ export interface StatusOverviewResponse {
     data: StatusOverview;
 }
 
+export interface HealthSummary {
+    healthy: boolean;
+    status: string;
+    nodesReady: number;
+    nodesTotal: number;
+    timestamp: string;
+}
+
+export interface HealthSummaryResponse {
+    success: boolean;
+    data: HealthSummary;
+}
+
 export interface K8sContainerStatus {
     name: string;
     ready: boolean;
@@ -198,6 +211,20 @@ export class StatusService {
         return this.http.get<StatusResponse>(
             `${this.apiUrl}/status`,
             { headers: this.getHeaders() }
+        );
+    }
+
+    getHealth(): Observable<HealthSummaryResponse> {
+        return this.http.get<HealthSummaryResponse>(
+            `${this.apiUrl}/health`,
+            { headers: this.getHeaders() }
+        );
+    }
+
+    getHealthRefreshing(): Observable<HealthSummaryResponse> {
+        return interval(15000).pipe(
+            startWith(0),
+            switchMap(() => this.getHealth())
         );
     }
 

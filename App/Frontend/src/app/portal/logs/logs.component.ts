@@ -111,6 +111,10 @@ export class PortalLogsComponent implements OnInit, OnDestroy {
             });
     }
 
+    mapsUrl(log: LogEntry): string {
+        return `https://www.google.com/maps?q=${log.latitude},${log.longitude}`;
+    }
+
     actionClass(action: string): string {
         switch (action) {
             case 'LOGIN':          return 'logs-badge--login';
