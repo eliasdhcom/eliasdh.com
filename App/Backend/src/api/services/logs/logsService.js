@@ -12,6 +12,20 @@ const MAX_RECORDS = Number(process.env.MAX_LOG_RECORDS ?? 500);
 async function addLog({ userId, userEmail, userName, action, resource, resourceId, details, ipAddress, latitude, longitude } = {}) {
     const db = getDb();
     try {
+        let lat = latitude  ?? null;
+        let lng = longitude ?? null;
+
+        if ((lat == null || lng == null) && userId) {
+            const { rows: lastLoc } = await db.execute({
+                sql:  `SELECT latitude, longitude FROM logs WHERE user_id = ? AND latitude IS NOT NULL AND longitude IS NOT NULL ORDER BY id DESC LIMIT 1`,
+                args: [userId]
+            });
+            if (lastLoc[0]) {
+                lat = lastLoc[0].latitude;
+                lng = lastLoc[0].longitude;
+            }
+        }
+
         await db.execute({
             sql:  `INSERT INTO logs (user_id, user_email, user_name, action, resource, resource_id, details, ip_address, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             args: [
@@ -23,8 +37,8 @@ async function addLog({ userId, userEmail, userName, action, resource, resourceI
                 resourceId != null ? String(resourceId) : null,
                 details    != null ? (typeof details === 'object' ? JSON.stringify(details) : String(details)) : null,
                 ipAddress  ?? null,
-                latitude   ?? null,
-                longitude  ?? null
+                lat,
+                lng
             ]
         });
         await db.execute({
