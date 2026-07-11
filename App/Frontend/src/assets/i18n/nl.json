@@ -366,7 +366,7 @@
     "LOCATION": {
       "TITLE": "Locatie",
       "BLOCKED": "Locatietoegang is geblokkeerd in je browser. Schakel ze in via je browserinstellingen (Site-instellingen → Locatie → Toestaan) en herlaad de pagina.",
-      "UNAVAILABLE": "Locatie is toegestaan, maar kon niet bepaald worden. Controleer of locatievoorzieningen zijn ingeschakeld op je toestel/besturingssysteem (bv. Windows: Instellingen → Privacy → Locatie) en probeer opnieuw.",
+      "UNAVAILABLE": "Locatie is toegestaan, maar kon niet bepaald worden. Controleer of locatievoorzieningen zijn ingeschakeld op je toestel/besturingssysteem (bv. Windows: Instellingen → Privacy → Locatie). Gebruik je dit als geïnstalleerde app (PWA)? Windows behandelt die als aparte app en vereist mogelijk een eigen locatietoestemming naast je browser. Probeer daarna opnieuw.",
       "BTN_ENABLE": "Locatie inschakelen",
       "BTN_RETRY": "Opnieuw proberen"
     },

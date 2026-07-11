@@ -367,7 +367,7 @@
     "LOCATION": {
       "TITLE": "Localisation",
       "BLOCKED": "L'accès à la localisation est bloqué dans votre navigateur. Activez-le via les paramètres du site (Paramètres du site → Localisation → Autoriser) et rechargez la page.",
-      "UNAVAILABLE": "La localisation est autorisée, mais n'a pas pu être déterminée. Vérifiez que les services de localisation sont activés sur votre appareil/système (ex. Windows : Paramètres → Confidentialité → Localisation) et réessayez.",
+      "UNAVAILABLE": "La localisation est autorisée, mais n'a pas pu être déterminée. Vérifiez que les services de localisation sont activés sur votre appareil/système (ex. Windows : Paramètres → Confidentialité → Localisation). Utilisez-vous ceci en tant qu'application installée (PWA) ? Windows la traite comme une application distincte et peut nécessiter sa propre autorisation de localisation en plus de celle du navigateur. Réessayez ensuite.",
       "BTN_ENABLE": "Activer la localisation",
       "BTN_RETRY": "Réessayer"
     },

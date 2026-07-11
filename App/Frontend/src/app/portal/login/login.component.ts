@@ -104,26 +104,26 @@ export class LoginComponent implements OnInit, OnDestroy {
                         this.locationPermission = status.state;
                         this.tryProceedAfterGate();
                     };
-                    this.checkAlreadyAuthenticated();
                 })
-                .catch(() => {
-                    this.locationPermission = 'prompt';
-                    this.checkAlreadyAuthenticated();
-                });
+                .catch(() => { this.locationPermission = 'prompt'; });
         } else {
             this.locationPermission = navigator.geolocation ? 'prompt' : 'denied';
-            this.checkAlreadyAuthenticated();
         }
+        this.checkAlreadyAuthenticated();
         this.isAndroid = /Android/i.test(navigator.userAgent);
         window.addEventListener('beforeinstallprompt', this.onPwaPrompt);
     }
 
-    private checkAlreadyAuthenticated(): void {
+    private async checkAlreadyAuthenticated(): Promise<void> {
         if (!this.authService.isAuthenticated()) return;
         const user = this.authService.getUser();
-        if (this.authService.isStaff(user) && (this.notifPermission !== 'granted' || this.locationPermission !== 'granted')) {
-            this.awaitingStaffPermissions = true;
-            return;
+        if (this.authService.isStaff(user)) {
+            const location = await this.tryGetCurrentLocation();
+            this.locationPermission = location.coords ? 'granted' : location.state;
+            if (this.notifPermission !== 'granted' || this.locationPermission !== 'granted') {
+                this.awaitingStaffPermissions = true;
+                return;
+            }
         }
         this.router.navigate(['/dashboard']);
     }
@@ -219,15 +219,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authService.recordLoginLocation(latitude, longitude).catch(() => { });
     }
 
-    private captureAndSendCurrentLocation(): void {
-        if (!navigator.geolocation) return;
-        navigator.geolocation.getCurrentPosition(
-            (position) => this.sendLoginLocation(position.coords.latitude, position.coords.longitude),
-            () => { },
-            { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 }
-        );
-    }
-
     private tryProceedAfterGate(): void {
         if (this.awaitingStaffPermissions && this.notifPermission === 'granted' && this.locationPermission === 'granted') {
             this.awaitingStaffPermissions = false;
@@ -242,6 +233,26 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (outcome === 'accepted') this.pwaPrompt = null;
     }
 
+    /**
+     * Never trust the Permissions API state alone: an installed PWA on Windows is a distinct
+     * app identity for OS-level location access, so a site permission of 'granted' can still
+     * silently fail to produce a position. Always attempt a real getCurrentPosition() and treat
+     * that outcome as the source of truth.
+     */
+    private async tryGetCurrentLocation(): Promise<{ coords: { latitude: number; longitude: number } | null; state: string }> {
+        if (!navigator.geolocation) return { coords: null, state: 'denied' };
+        const permState = await this.authService.getLiveLocationPermission();
+        if (permState !== 'granted') return { coords: null, state: permState };
+
+        return new Promise(resolve => {
+            navigator.geolocation.getCurrentPosition(
+                (position) => resolve({ coords: { latitude: position.coords.latitude, longitude: position.coords.longitude }, state: 'granted' }),
+                (error) => resolve({ coords: null, state: error.code === error.PERMISSION_DENIED ? 'denied' : 'unavailable' }),
+                { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
+            );
+        });
+    }
+
     async onLogin(): Promise<void> {
         if (this.loginForm.invalid) return;
 
@@ -249,7 +260,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.loginError = '';
 
         const { email, password } = this.loginForm.value;
-        const success = await this.authService.login(email, password);
+        // Send coordinates together with the login request itself (when already known) so the
+        // location ends up on the exact same log entry in one request, instead of a follow-up
+        // call that could be load-balanced to a different backend instance in production.
+        const location = await this.tryGetCurrentLocation();
+        const success = await this.authService.login(email, password, location.coords?.latitude, location.coords?.longitude);
 
         if (success) {
             const user = this.authService.getUser();
@@ -264,13 +279,12 @@ export class LoginComponent implements OnInit, OnDestroy {
 
             if (this.authService.isStaff(user)) {
                 this.notifPermission = this.authService.getLiveNotificationPermission();
-                this.locationPermission = await this.authService.getLiveLocationPermission();
+                this.locationPermission = location.coords ? 'granted' : location.state;
                 if (this.notifPermission !== 'granted' || this.locationPermission !== 'granted') {
                     this.submitting = false;
                     this.awaitingStaffPermissions = true;
                     return;
                 }
-                this.captureAndSendCurrentLocation();
             }
             this.router.navigate(['/dashboard']);
         } else {

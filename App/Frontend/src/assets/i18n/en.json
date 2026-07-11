@@ -367,7 +367,7 @@
     "LOCATION": {
       "TITLE": "Location",
       "BLOCKED": "Location access is blocked in your browser. Enable it via your browser settings (Site settings → Location → Allow) and reload the page.",
-      "UNAVAILABLE": "Location is allowed, but could not be determined. Check that location services are enabled on your device/OS (e.g. Windows: Settings → Privacy → Location) and try again.",
+      "UNAVAILABLE": "Location is allowed, but could not be determined. Check that location services are enabled on your device/OS (e.g. Windows: Settings → Privacy → Location). Using this as an installed app (PWA)? Windows treats it as a separate app and may require its own location permission besides your browser's. Then try again.",
       "BTN_ENABLE": "Enable location",
       "BTN_RETRY": "Try again"
     },

@@ -15,12 +15,17 @@ const router = express.Router();
 router.post('/login',
     body('email').isEmail().trim(),
     body('password').notEmpty(),
+    body('latitude').optional({ nullable: true }).isFloat({ min: -90, max: 90 }),
+    body('longitude').optional({ nullable: true }).isFloat({ min: -180, max: 180 }),
     async (req, res, next) => {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({ success: false, error: 'Invalid input.' });
             }
+
+            const latitude  = req.body.latitude  != null ? Number(req.body.latitude)  : null;
+            const longitude = req.body.longitude != null ? Number(req.body.longitude) : null;
 
             const result = await authService.login(req.body.email, req.body.password);
             if (!result) {
@@ -44,7 +49,9 @@ router.post('/login',
                 action:    'LOGIN',
                 resource:  'auth',
                 details:   'Successfully logged in',
-                ipAddress: req.ip
+                ipAddress: req.ip,
+                latitude,
+                longitude
             });
             res.json({ success: true, token: result.token, data: result.user });
         } catch (err) {

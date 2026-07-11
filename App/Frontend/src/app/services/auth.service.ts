@@ -65,12 +65,12 @@ export class AuthService {
         } catch { return false; }
     }
 
-    async login(email: string, password: string): Promise<boolean> {
+    async login(email: string, password: string, latitude?: number, longitude?: number): Promise<boolean> {
         try {
             const res = await firstValueFrom(
                 this.http.post<{ success: boolean; token: string; data: AuthUser }>(
                     `${environment.eliasdhApiUrl}/api/v1/auth/login`,
-                    { email: email.trim(), password }
+                    { email: email.trim(), password, latitude: latitude ?? null, longitude: longitude ?? null }
                 )
             );
             if (res?.success && res.token && isPlatformBrowser(this.platformId)) {
