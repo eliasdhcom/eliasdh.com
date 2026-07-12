@@ -218,28 +218,13 @@
     "TRANSLATE2": "Diese Domain gehört und wird vom EliasDH-Team verwaltet.",
     "TRANSLATE3": "Für weitere Informationen kontaktieren Sie uns bitte unter "
   },
-  "BLOG": {
-    "TRANSLATE1": "Blog",
-    "TRANSLATE2": "Zurück",
-    "TRANSLATE3": "Blog",
-    "TRANSLATE4": "Einblicke, Tutorials und Updates vom EliasDH-Team über Webentwicklung, Hosting und Technologie.",
-    "TRANSLATE5": "Mehr Lesen",
-    "TRANSLATE6": "Keine Blogbeiträge gefunden.",
-    "TRANSLATE7": "Artikel",
-    "TRANSLATE8": "Zurück zum Blog",
-    "TRANSLATE9": "Zurück zu allen Beiträgen",
-    "TRANSLATE10": "Teilen:",
-    "TRANSLATE11": "Seite",
-    "TRANSLATE12": "Vorherige",
-    "TRANSLATE13": "Nächste",
-    "TRANSLATE14": "EliasDH - Blog",
-    "TRANSLATE15": "Bleiben Sie auf dem Laufenden mit den neuesten Einblicken, Tutorials und Neuigkeiten über Webentwicklung, Hosting und Technologie vom EliasDH-Team."
+  "COMMON": {
+    "BACK": "Zurück"
   },
   "FOOTER": {
     "TRANSLATE1": "Politik",
     "TRANSLATE2": "Karte",
     "TRANSLATE3": "Status",
-    "TRANSLATE4": "Kontakt",
     "TRANSLATE5": "Recht",
     "TRANSLATE6": "Entworfen vom EliasDH-Team",
     "TRANSLATE7": " EliasDH. ",

@@ -178,18 +178,6 @@ const CUSTOMERS = [
     }
 ];
 
-function loadBlogPosts() {
-    const dataDir = path.join(__dirname, '../data');
-    const posts   = [];
-    for (const file of fs.readdirSync(dataDir)) {
-        if (!file.endsWith('.json')) continue;
-        try { posts.push(JSON.parse(fs.readFileSync(path.join(dataDir, file), 'utf8'))); }
-        catch {}
-    }
-    posts.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
-    return posts;
-}
-
 async function seed() {
     await initSchema();
     const db = getDb();
@@ -234,13 +222,6 @@ async function seed() {
                     args: [w.id, c.id, w.name, w.url, w.subscription_type, w.is_live, w.start_date, w.frequency, payment, w.discount ?? 0]
                 });
             }
-        }
-
-        for (const post of loadBlogPosts()) {
-            await db.execute({
-                sql:  'INSERT OR IGNORE INTO blog_posts (slug, title, excerpt, content, author, published_at, reading_time) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                args: [post.slug, post.title, post.excerpt ?? null, JSON.stringify(post.content), post.author ?? null, post.publishedAt ?? null, post.readingTime ?? null]
-            });
         }
     }
 

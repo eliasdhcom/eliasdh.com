@@ -219,28 +219,13 @@
     "TRANSLATE2": "This domain is owned and managed by the EliasDH Team.",
     "TRANSLATE3": "For more information, please contact us at "
   },
-  "BLOG": {
-    "TRANSLATE1": "Blog",
-    "TRANSLATE2": "Back",
-    "TRANSLATE3": "Blog",
-    "TRANSLATE4": "Insights, tutorials, and updates from the EliasDH team about web development, hosting, and technology.",
-    "TRANSLATE5": "Read More",
-    "TRANSLATE6": "No blog posts found.",
-    "TRANSLATE7": "Article",
-    "TRANSLATE8": "Back to Blog",
-    "TRANSLATE9": "Back to all posts",
-    "TRANSLATE10": "Share:",
-    "TRANSLATE11": "Page",
-    "TRANSLATE12": "Previous",
-    "TRANSLATE13": "Next",
-    "TRANSLATE14": "EliasDH - Blog",
-    "TRANSLATE15": "Stay updated with the latest insights, tutorials, and news about web development, hosting, and technology from the EliasDH team."
+  "COMMON": {
+    "BACK": "Back"
   },
   "FOOTER": {
     "TRANSLATE1": "Policy",
     "TRANSLATE2": "Map",
     "TRANSLATE3": "Status",
-    "TRANSLATE4": "Blog",
     "TRANSLATE5": "Legal",
     "TRANSLATE6": "Designed by the EliasDH Team",
     "TRANSLATE7": " EliasDH. ",

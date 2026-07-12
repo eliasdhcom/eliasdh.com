@@ -72,16 +72,6 @@ async function initSchema() {
             name          TEXT UNIQUE NOT NULL,
             monthly_price REAL NOT NULL DEFAULT 0
         )`,
-        `CREATE TABLE IF NOT EXISTS blog_posts (
-            id           INTEGER PRIMARY KEY AUTOINCREMENT,
-            slug         TEXT UNIQUE NOT NULL,
-            title        TEXT NOT NULL,
-            excerpt      TEXT,
-            content      TEXT NOT NULL,
-            author       TEXT,
-            published_at TEXT,
-            reading_time INTEGER
-        )`,
         `CREATE TABLE IF NOT EXISTS users (
             id            INTEGER PRIMARY KEY AUTOINCREMENT,
             email         TEXT UNIQUE NOT NULL,
