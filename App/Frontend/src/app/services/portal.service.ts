@@ -5,12 +5,18 @@
 **/
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { AuthService } from './auth.service';
 import { Customer } from './customers.service';
 import { Invoice } from './invoice-builder.service';
+
+export interface PortalCompany {
+    id:   string;
+    name: string;
+    logo: string | null;
+}
 
 /** Same shape as `Invoice`, but as received over HTTP: date fields are ISO strings, not `Date` instances. */
 export type PortalMeInvoice = Omit<Invoice, 'issueDate' | 'dueDate' | 'periodStart' | 'periodEnd'> & {
@@ -38,9 +44,18 @@ export class PortalService {
         return headers;
     }
 
-    getMe(): Observable<{ success: boolean; data: PortalMe }> {
+    getMe(customerId?: string | null): Observable<{ success: boolean; data: PortalMe }> {
+        let params = new HttpParams();
+        if (customerId) params = params.set('customerId', customerId);
         return this.http.get<{ success: boolean; data: PortalMe }>(
             `${this.apiUrl}/me`,
+            { headers: this.getHeaders(), params }
+        );
+    }
+
+    getCompanies(): Observable<{ success: boolean; data: PortalCompany[] }> {
+        return this.http.get<{ success: boolean; data: PortalCompany[] }>(
+            `${this.apiUrl}/companies`,
             { headers: this.getHeaders() }
         );
     }

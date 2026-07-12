@@ -17,6 +17,9 @@ const jwtAuth = (req, res, next) => {
         return res.status(401).json({ success: false, error: 'Session expired, please log in again.' });
     }
     req.user = payload;
+    req.user.customerIds = Array.isArray(payload.customerIds)
+        ? payload.customerIds
+        : (payload.customerId ? [payload.customerId] : []);
     next();
 };
 

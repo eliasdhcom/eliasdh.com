@@ -23,6 +23,8 @@ import { PortalMyCompanyComponent } from '../mycompany/mycompany.component';
 import { UsersService } from '../../services/users.service';
 import { ThemeService } from '../../services/theme.service';
 import { PushService } from '../../services/push.service';
+import { CompanyContextService } from '../../services/company-context.service';
+import { PortalCompany } from '../../services/portal.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -49,6 +51,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     langDropdownOpen     = false;
     contactDropdownOpen  = false;
+    companyDropdownOpen  = false;
+    companies: PortalCompany[] = [];
+    selectedCompanyId: string | null = null;
     currentLanguage   = 'nl';
     readonly languages = [
         { code: 'nl', name: 'Nederlands' },
@@ -63,7 +68,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         private usersService: UsersService,
         private translate: TranslateService,
         public themeService: ThemeService,
-        private pushService: PushService
+        private pushService: PushService,
+        public companyContextService: CompanyContextService
     ) {}
 
     private readonly onBeforeInstallPrompt = (e: Event) => { e.preventDefault(); this.pwaPrompt = e; };
@@ -87,15 +93,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({ next: r => {
                     if (r.data) {
-                        this.userAvatar       = r.data.avatar    ?? null;
-                        this.user.role        = r.data.role      || this.user.role;
-                        this.user.firstName   = r.data.firstName || this.user.firstName;
-                        this.user.lastName    = r.data.lastName  || this.user.lastName;
-                        this.user.company     = r.data.company   || this.user.company;
-                        this.user.phone       = r.data.phone     || this.user.phone;
-                        this.user.birthDate   = r.data.birthDate || this.user.birthDate;
-                        this.user.customerId  = r.data.customerId ?? this.user.customerId;
+                        this.userAvatar        = r.data.avatar    ?? null;
+                        this.user.role         = r.data.role      || this.user.role;
+                        this.user.firstName    = r.data.firstName || this.user.firstName;
+                        this.user.lastName     = r.data.lastName  || this.user.lastName;
+                        this.user.company      = r.data.company   || this.user.company;
+                        this.user.phone        = r.data.phone     || this.user.phone;
+                        this.user.birthDate    = r.data.birthDate || this.user.birthDate;
+                        this.user.customerId   = r.data.customerId  ?? this.user.customerId;
+                        this.user.customerIds  = r.data.customerIds ?? this.user.customerIds;
                     }
+                    if (this.isCustomer) this.initCompanySwitcher();
                 }});
         }
         this.usersService.avatarUpdated$
@@ -198,13 +206,41 @@ export class DashboardComponent implements OnInit, OnDestroy {
     toggleLangDropdown(event: Event): void {
         event.stopPropagation();
         this.contactDropdownOpen = false;
+        this.companyDropdownOpen = false;
         this.langDropdownOpen = !this.langDropdownOpen;
     }
 
     toggleContactDropdown(event: Event): void {
         event.stopPropagation();
         this.langDropdownOpen = false;
+        this.companyDropdownOpen = false;
         this.contactDropdownOpen = !this.contactDropdownOpen;
+    }
+
+    toggleCompanyDropdown(event: Event): void {
+        event.stopPropagation();
+        this.langDropdownOpen = false;
+        this.contactDropdownOpen = false;
+        this.companyDropdownOpen = !this.companyDropdownOpen;
+    }
+
+    private initCompanySwitcher(): void {
+        this.companyContextService.companies$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(companies => this.companies = companies);
+        this.companyContextService.selectedCustomerId$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(id => this.selectedCompanyId = id);
+        this.companyContextService.init();
+    }
+
+    get selectedCompanyName(): string {
+        return this.companies.find(c => c.id === this.selectedCompanyId)?.name ?? '';
+    }
+
+    selectCompany(id: string): void {
+        this.companyContextService.selectCompany(id);
+        this.companyDropdownOpen = false;
     }
 
     changeLanguage(code: string): void {
@@ -218,5 +254,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     onDocumentClick(): void {
         if (this.langDropdownOpen) this.langDropdownOpen = false;
         if (this.contactDropdownOpen) this.contactDropdownOpen = false;
+        if (this.companyDropdownOpen) this.companyDropdownOpen = false;
     }
 }

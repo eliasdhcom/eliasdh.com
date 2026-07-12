@@ -165,12 +165,29 @@
                 <label class="users-panel-label">{{'PORTAL.USERS.PHONE'|translate}} <span class="users-panel-required" *ngIf="isCreating">*</span></label>
                 <input class="users-panel-input cursor-text" type="tel" name="upf-phone" autocomplete="tel" [(ngModel)]="editedUser.phone" (ngModelChange)="markTouched()" [placeholder]="'PORTAL.USERS.PHONE_HINT'|translate" [disabled]="isReadOnly"/>
             </div>
-            <div class="users-panel-field">
+            <div class="users-panel-field" *ngIf="!isCustomerRole(editedUser.role)">
                 <label class="users-panel-label">{{'PORTAL.USERS.COMPANY'|translate}} <span class="users-panel-required" *ngIf="isCreating">*</span></label>
                 <select class="users-panel-input users-panel-select cursor-pointer" name="upf-company" [(ngModel)]="editedUser.company" (ngModelChange)="markTouched()" [disabled]="isReadOnly">
                     <option value="">{{'PORTAL.USERS.CHOOSE_COMPANY'|translate}}</option>
                     <option class="cursor-pointer" *ngFor="let c of customers" [value]="c.name">{{c.name}}</option>
                 </select>
+            </div>
+            <div class="users-panel-field users-panel-field--full" *ngIf="isCustomerRole(editedUser.role) && !isReadOnly">
+                <label class="users-panel-label">{{'PORTAL.USERS.COMPANIES'|translate}} <span class="users-panel-required" *ngIf="isCreating">*</span></label>
+                <div class="users-panel-company-list">
+                    <label class="users-panel-company-option cursor-pointer" *ngFor="let c of customers" [class.users-panel-company-option--selected]="isCompanySelected(c.id)">
+                        <input class="users-panel-company-checkbox" type="checkbox" [checked]="isCompanySelected(c.id)" (change)="toggleCompany(c.id)"/>
+                        <span class="cursor-pointer">{{c.name}}</span>
+                    </label>
+                    <p class="users-panel-company-empty" *ngIf="!customers.length">{{'PORTAL.USERS.COMPANIES_EMPTY'|translate}}</p>
+                </div>
+            </div>
+            <div class="users-panel-field users-panel-field--full" *ngIf="isCustomerRole(editedUser.role) && isReadOnly">
+                <label class="users-panel-label">{{'PORTAL.USERS.COMPANIES'|translate}}</label>
+                <div class="users-panel-company-list users-panel-company-list--readonly">
+                    <span class="users-panel-company-chip" *ngFor="let c of selectedCompanies">{{c.name}}</span>
+                    <p class="users-panel-company-empty" *ngIf="!selectedCompanies.length">{{'PORTAL.USERS.COMPANIES_EMPTY'|translate}}</p>
+                </div>
             </div>
             <div class="users-panel-field">
                 <label class="users-panel-label">{{'PORTAL.USERS.BIRTH_DATE'|translate}} <span class="users-panel-required" *ngIf="isCreating">*</span></label>

@@ -5,25 +5,26 @@
 **/
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { AuthService } from './auth.service';
 
 export interface PortalUser {
-    id:          number;
-    email:       string;
-    firstName:   string;
-    lastName:    string;
-    role:        string;
-    company:     string;
-    phone:       string;
-    birthDate:   string;
-    avatar:      string | null;
-    createdAt:   string;
-    active:      boolean;
-    netSalary:   number;
-    customerId?: string | null;
+    id:           number;
+    email:        string;
+    firstName:    string;
+    lastName:     string;
+    role:         string;
+    company:      string;
+    phone:        string;
+    birthDate:    string;
+    avatar:       string | null;
+    createdAt:    string;
+    active:       boolean;
+    netSalary:    number;
+    customerId?:  string | null;
+    customerIds?: string[] | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -41,10 +42,12 @@ export class UsersService {
         return headers;
     }
 
-    getAllUsers(): Observable<{ success: boolean; data: PortalUser[] }> {
+    getAllUsers(customerId?: string | null): Observable<{ success: boolean; data: PortalUser[] }> {
+        let params = new HttpParams();
+        if (customerId) params = params.set('customerId', customerId);
         return this.http.get<{ success: boolean; data: PortalUser[] }>(
             this.apiUrl,
-            { headers: this.getHeaders() }
+            { headers: this.getHeaders(), params }
         );
     }
 
@@ -59,7 +62,7 @@ export class UsersService {
     createUser(data: {
         email: string; password: string; firstName: string; lastName: string;
         role: string; company: string; phone: string; birthDate: string; avatar?: string;
-        customerId?: string | null;
+        customerIds?: string[] | null;
     }): Observable<{ success: boolean; data: PortalUser }> {
         return this.http.post<{ success: boolean; data: PortalUser }>(
             this.apiUrl,

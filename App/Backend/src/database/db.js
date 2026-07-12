@@ -86,6 +86,13 @@ async function initSchema() {
             active        INTEGER NOT NULL DEFAULT 1,
             created_at    TEXT DEFAULT (datetime('now'))
         )`,
+        `CREATE TABLE IF NOT EXISTS user_customers (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            customer_id TEXT NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
+            created_at  TEXT DEFAULT (datetime('now')),
+            UNIQUE(user_id, customer_id)
+        )`,
         `CREATE TABLE IF NOT EXISTS domain_names (
             id           INTEGER PRIMARY KEY AUTOINCREMENT,
             customer_id  TEXT NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
@@ -130,6 +137,8 @@ async function initSchema() {
         `CREATE INDEX IF NOT EXISTS idx_invoice_status_lookup           ON invoice_status(customer_id, subscription_id, period_start, invoice_type)`,
         `CREATE INDEX IF NOT EXISTS idx_analysis_costs_sort             ON analysis_costs(sort_order)`,
         `CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_user_id   ON password_reset_tokens(user_id)`,
+        `CREATE INDEX IF NOT EXISTS idx_user_customers_user_id          ON user_customers(user_id)`,
+        `CREATE INDEX IF NOT EXISTS idx_user_customers_customer_id      ON user_customers(customer_id)`,
         `CREATE TABLE IF NOT EXISTS logs (
             id          INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id     INTEGER,
@@ -226,6 +235,12 @@ async function initSchema() {
     try { await db.execute(`ALTER TABLE customer_locations ADD COLUMN name TEXT`); } catch (_) {}
     try { await db.execute(`ALTER TABLE users ADD COLUMN customer_id TEXT REFERENCES customers(id)`); } catch (_) {}
     try { await db.execute(`CREATE INDEX IF NOT EXISTS idx_users_customer_id ON users(customer_id)`); } catch (_) {}
+    try {
+        await db.execute(`
+            INSERT OR IGNORE INTO user_customers (user_id, customer_id)
+            SELECT id, customer_id FROM users WHERE customer_id IS NOT NULL AND customer_id != ''
+        `);
+    } catch (_) {}
 }
 
 module.exports = { getDb, initSchema };

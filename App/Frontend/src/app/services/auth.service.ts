@@ -12,15 +12,16 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 
 export interface AuthUser {
-    id?:         number;
-    firstName:   string;
-    lastName:    string;
-    email:       string;
-    role:        string;
-    company:     string;
-    phone:       string;
-    birthDate:   string;
-    customerId?: string | null;
+    id?:          number;
+    firstName:    string;
+    lastName:     string;
+    email:        string;
+    role:         string;
+    company:      string;
+    phone:        string;
+    birthDate:    string;
+    customerId?:  string | null;
+    customerIds?: string[] | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -111,6 +112,7 @@ export class AuthService {
         }
         if (isPlatformBrowser(this.platformId)) {
             sessionStorage.removeItem(this.TOKEN_KEY);
+            sessionStorage.removeItem('eliasdh_selected_company');
         }
         this.router.navigate(['/login']);
     }
@@ -135,6 +137,9 @@ export class AuthService {
         if (!token) return null;
         const payload = this._decodePayload(token);
         if (!payload || payload.exp <= Math.floor(Date.now() / 1000)) return null;
+        const customerIds: string[] = Array.isArray(payload.customerIds)
+            ? payload.customerIds
+            : (payload.customerId ? [payload.customerId] : []);
         return {
             id:        payload.id,
             firstName: payload.firstName ?? '',
@@ -144,7 +149,8 @@ export class AuthService {
             company:   payload.company   ?? '',
             phone:     payload.phone     ?? '',
             birthDate: payload.birthDate ?? '',
-            customerId: payload.customerId ?? null
+            customerId:  payload.customerId ?? customerIds[0] ?? null,
+            customerIds: customerIds
         };
     }
 

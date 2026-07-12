@@ -171,6 +171,30 @@
                         </li>
                     </ul>
                 </div>
+                <div class="dashboard-company-switcher-wrap" *ngIf="isCustomer && companies.length > 1" [class.dashboard-company-switcher-wrap--many]="companies.length > 4">
+                    <div class="dashboard-company-switcher" [title]="'PORTAL.SWITCHER.TITLE' | translate">
+                        <button
+                            *ngFor="let c of companies"
+                            class="dashboard-company-pill cursor-pointer"
+                            [class.dashboard-company-pill--selected]="c.id === selectedCompanyId"
+                            (click)="selectCompany(c.id)"
+                            type="button">
+                            {{c.name}}
+                        </button>
+                    </div>
+                    <div class="dashboard-company-dropdown">
+                        <button class="dashboard-header-icon-btn dashboard-company-dropdown-btn cursor-pointer" (click)="toggleCompanyDropdown($event)" [title]="'PORTAL.SWITCHER.TITLE' | translate">
+                            <span class="cursor-pointer dashboard-header-company-name">{{selectedCompanyName}}</span>
+                            <svg class="cursor-pointer" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                <path class="cursor-pointer" d="M4.646 6.646a.5.5 0 0 1 .708 0L8 9.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </button>
+                        <ul class="dashboard-lang-menu" *ngIf="companyDropdownOpen" (click)="$event.stopPropagation()">
+                            <li *ngFor="let c of companies" [class.dashboard-lang-active]="c.id === selectedCompanyId" (click)="selectCompany(c.id)" class="cursor-pointer">{{c.name}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <span *ngIf="isCustomer && companies.length === 1" class="dashboard-header-company-name cursor-default">{{selectedCompanyName}}</span>
                 <div class="dashboard-lang-dropdown">
                     <button class="dashboard-header-icon-btn cursor-pointer" (click)="toggleLangDropdown($event)" [title]="'PORTAL.LANG.TITLE' | translate">
                         <svg class="cursor-pointer" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">

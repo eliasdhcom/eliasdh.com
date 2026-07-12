@@ -13,8 +13,9 @@ import { Invoice } from '../../services/invoice-builder.service';
 import { InvoicePdfService } from '../../services/invoice-pdf.service';
 import { LogsService } from '../../services/logs.service';
 import { PricingPlansService } from '../../services/pricing-plans.service';
+import { CompanyContextService } from '../../services/company-context.service';
 import { Subject, forkJoin, of } from 'rxjs';
-import { takeUntil, catchError } from 'rxjs/operators';
+import { takeUntil, catchError, skip } from 'rxjs/operators';
 
 type ListSection = 'websites' | 'domains' | 'invoices';
 
@@ -50,10 +51,16 @@ export class PortalMyCompanyComponent implements OnInit, OnDestroy {
         private invoicePdfService: InvoicePdfService,
         private logsService: LogsService,
         readonly pricingPlansService: PricingPlansService,
+        private companyContextService: CompanyContextService,
         private cdr: ChangeDetectorRef
     ) {}
 
-    ngOnInit(): void { this.load(); }
+    ngOnInit(): void {
+        this.load();
+        this.companyContextService.selectedCustomerId$
+            .pipe(skip(1), takeUntil(this.destroy$))
+            .subscribe(() => this.load());
+    }
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
@@ -62,8 +69,9 @@ export class PortalMyCompanyComponent implements OnInit, OnDestroy {
     load(): void {
         this.loading = true;
         this.error   = '';
+        const customerId = this.companyContextService.selectedCustomerId$.value;
         forkJoin({
-            me:    this.portalService.getMe(),
+            me:    this.portalService.getMe(customerId),
             plans: this.pricingPlansService.getAll().pipe(catchError(() => of({ success: true, data: [] as any[] })))
         })
             .pipe(takeUntil(this.destroy$))

@@ -9,11 +9,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UsersService, PortalUser } from '../../services/users.service';
-import { CustomersService, Customer } from '../../services/customers.service';
+import { CustomersService } from '../../services/customers.service';
 import { LogsService } from '../../services/logs.service';
 import { AuthService } from '../../services/auth.service';
+import { CompanyContextService } from '../../services/company-context.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, skip } from 'rxjs/operators';
+
+interface CompanyOption {
+    id:   string;
+    name: string;
+}
 
 @Component({
     selector: 'app-portal-users',
@@ -24,7 +30,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class PortalUsersComponent implements OnInit, OnDestroy {
     users:       PortalUser[] = [];
-    customers:   Customer[]  = [];
+    customers:   CompanyOption[] = [];
     loading      = true;
     error        = '';
     searchQuery  = '';
@@ -50,7 +56,8 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
         private usersService:    UsersService,
         private customersService: CustomersService,
         private logsService:     LogsService,
-        private authService:     AuthService
+        private authService:     AuthService,
+        private companyContextService: CompanyContextService
     ) {}
 
     get isReadOnly(): boolean {
@@ -59,7 +66,17 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.loadUsers();
-        if (this.isReadOnly) return;
+        if (this.isReadOnly) {
+            this.companyContextService.companies$
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(companies => {
+                    this.customers = [...companies].sort((a, b) => a.name.localeCompare(b.name));
+                });
+            this.companyContextService.selectedCustomerId$
+                .pipe(skip(1), takeUntil(this.destroy$))
+                .subscribe(() => this.loadUsers());
+            return;
+        }
         this.customersService.getAllCustomers()
             .pipe(takeUntil(this.destroy$))
             .subscribe({ next: r => { this.customers = (r.data ?? []).sort((a, b) => a.name.localeCompare(b.name)); } });
@@ -72,7 +89,8 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
     loadUsers(): void {
         this.loading = true;
         this.error   = '';
-        this.usersService.getAllUsers()
+        const customerId = this.isReadOnly ? this.companyContextService.selectedCustomerId$.value : null;
+        this.usersService.getAllUsers(customerId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next:  r => { this.users = r.data ?? []; this.loading = false; },
@@ -229,17 +247,18 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
         }
         this.saving    = true;
         this.saveError = '';
+        this.syncCompanyName();
         this.usersService.createUser({
-            email:      this.editedUser.email,
-            password:   this.newPassword,
-            firstName:  this.editedUser.firstName,
-            lastName:   this.editedUser.lastName,
-            role:       this.editedUser.role || 'user',
-            company:    this.editedUser.company,
-            phone:      this.editedUser.phone,
-            birthDate:  this.editedUser.birthDate,
-            avatar:     this.editedUser.avatar ?? undefined,
-            customerId: this.resolveCustomerId(this.editedUser.company)
+            email:       this.editedUser.email,
+            password:    this.newPassword,
+            firstName:   this.editedUser.firstName,
+            lastName:    this.editedUser.lastName,
+            role:        this.editedUser.role || 'user',
+            company:     this.editedUser.company,
+            phone:       this.editedUser.phone,
+            birthDate:   this.editedUser.birthDate,
+            avatar:      this.editedUser.avatar ?? undefined,
+            customerIds: this.isCustomerRole(this.editedUser.role) ? (this.editedUser.customerIds ?? []) : []
         })
         .pipe(takeUntil(this.destroy$))
         .subscribe({
@@ -259,16 +278,17 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
         if (!this.selectedUser) return;
         this.saving    = true;
         this.saveError = '';
+        this.syncCompanyName();
         this.usersService.updateUser(this.selectedUser.id, {
-            firstName:  this.editedUser.firstName,
-            lastName:   this.editedUser.lastName,
-            email:      this.editedUser.email,
-            role:       this.editedUser.role,
-            company:    this.editedUser.company,
-            phone:      this.editedUser.phone,
-            birthDate:  this.editedUser.birthDate,
-            netSalary:  this.editedUser.netSalary ?? 0,
-            customerId: this.resolveCustomerId(this.editedUser.company),
+            firstName:   this.editedUser.firstName,
+            lastName:    this.editedUser.lastName,
+            email:       this.editedUser.email,
+            role:        this.editedUser.role,
+            company:     this.editedUser.company,
+            phone:       this.editedUser.phone,
+            birthDate:   this.editedUser.birthDate,
+            netSalary:   this.editedUser.netSalary ?? 0,
+            customerIds: this.isCustomerRole(this.editedUser.role) ? (this.editedUser.customerIds ?? []) : [],
             ...(this.editedUser.avatar !== null ? { avatar: this.editedUser.avatar } : {})
         })
         .pipe(takeUntil(this.destroy$))
@@ -321,13 +341,39 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
         return isNaN(d.getTime()) ? dateStr : d.toLocaleDateString('nl-BE', { day: '2-digit', month: 'short', year: 'numeric' });
     }
 
-    private resolveCustomerId(companyName: string): string | null {
-        return this.customers.find(c => c.name === companyName)?.id ?? null;
-    }
-
     isEmployee(role: string): boolean {
         const r = (role ?? '').toLowerCase();
         return r === 'admin' || r === 'employee';
+    }
+
+    isCustomerRole(role: string): boolean {
+        return (role ?? '').toLowerCase() === 'customer';
+    }
+
+    isCompanySelected(id: string): boolean {
+        return (this.editedUser.customerIds ?? []).includes(id);
+    }
+
+    get selectedCompanies(): CompanyOption[] {
+        const ids = this.editedUser.customerIds ?? [];
+        return this.customers.filter(c => ids.includes(c.id));
+    }
+
+    toggleCompany(id: string): void {
+        if (this.isReadOnly) return;
+        const current = this.editedUser.customerIds ?? [];
+        this.editedUser.customerIds = current.includes(id)
+            ? current.filter(c => c !== id)
+            : [...current, id];
+        this.markTouched();
+    }
+
+    private syncCompanyName(): void {
+        if (!this.isCustomerRole(this.editedUser.role)) return;
+        this.editedUser.company = (this.editedUser.customerIds ?? [])
+            .map(id => this.customers.find(c => c.id === id)?.name)
+            .filter((name): name is string => !!name)
+            .join(', ');
     }
 
     get activeCount(): number   { return this.users.filter(u => u.active).length; }
@@ -366,6 +412,6 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
     }
 
     private emptyUser(): PortalUser {
-        return { id: 0, email: '', firstName: '', lastName: '', role: '', company: '', phone: '', birthDate: '', avatar: null, createdAt: '', active: true, netSalary: 0 };
+        return { id: 0, email: '', firstName: '', lastName: '', role: '', company: '', phone: '', birthDate: '', avatar: null, createdAt: '', active: true, netSalary: 0, customerIds: [] };
     }
 }

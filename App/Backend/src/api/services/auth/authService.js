@@ -25,6 +25,12 @@ async function login(email, password) {
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return null;
 
+    const { rows: custRows } = await getDb().execute({
+        sql:  'SELECT customer_id FROM user_customers WHERE user_id = ? ORDER BY customer_id',
+        args: [Number(user.id)]
+    });
+    const customerIds = custRows.map(r => r.customer_id);
+
     const payload = {
         id:        Number(user.id),
         email:     user.email,
@@ -34,7 +40,8 @@ async function login(email, password) {
         company:   user.company   ?? '',
         phone:     user.phone     ?? '',
         birthDate: user.birth_date ?? '',
-        customerId: user.customer_id ?? null
+        customerId:  customerIds[0] ?? null,
+        customerIds: customerIds
     };
 
     const token = jwt.sign(payload, config.jwtSecret, { expiresIn: config.jwtExpiresIn });

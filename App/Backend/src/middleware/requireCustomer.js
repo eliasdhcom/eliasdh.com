@@ -5,7 +5,7 @@
 **/
 
 const requireCustomer = (req, res, next) => {
-    if ((req.user?.role ?? '').toLowerCase() !== 'customer' || !req.user?.customerId) {
+    if ((req.user?.role ?? '').toLowerCase() !== 'customer' || !req.user?.customerIds?.length) {
         return res.status(403).json({ success: false, error: 'Access denied.' });
     }
     next();

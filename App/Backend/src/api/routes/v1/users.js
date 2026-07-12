@@ -8,6 +8,7 @@ const express              = require('express');
 const { param, body, validationResult } = require('express-validator');
 const { jwtAuth }          = require('../../../middleware/jwtAuth');
 const { requireAdmin }     = require('../../../middleware/requireAdmin');
+const { resolveSelectedCustomer } = require('../../../middleware/resolveSelectedCustomer');
 const usersService         = require('../../services/users/usersService');
 const notificationService  = require('../../services/notifications/notificationService');
 const logsService          = require('../../services/logs/logsService');
@@ -35,8 +36,10 @@ router.get('/', async (req, res, next) => {
         if (role === 'admin') {
             return res.json({ success: true, data: await usersService.getAllUsers() });
         }
-        if (role === 'customer' && req.user?.customerId) {
-            return res.json({ success: true, data: await usersService.getUsersByCustomer(req.user.customerId) });
+        if (role === 'customer') {
+            const customerId = resolveSelectedCustomer(req);
+            if (!customerId) return res.status(403).json({ success: false, error: 'Access denied.' });
+            return res.json({ success: true, data: await usersService.getUsersByCustomer(customerId) });
         }
         return res.status(403).json({ success: false, error: 'Access denied.' });
     } catch (err) {
@@ -68,7 +71,8 @@ router.post('/',
     body('company').optional().isString().trim(),
     body('phone').optional().isString().trim(),
     body('birthDate').optional().isString().trim(),
-    body('customerId').optional({ nullable: true }).isString(),
+    body('customerIds').optional({ nullable: true }).isArray(),
+    body('customerIds.*').isString(),
     async (req, res, next) => {
         try {
             const errors = validationResult(req);
@@ -127,7 +131,8 @@ router.patch('/:id',
     body('phone').optional().isString().trim(),
     body('birthDate').optional().isString().trim(),
     body('avatar').optional({ nullable: true }).isString(),
-    body('customerId').optional({ nullable: true }).isString(),
+    body('customerIds').optional({ nullable: true }).isArray(),
+    body('customerIds.*').isString(),
     async (req, res, next) => {
         try {
             const errors = validationResult(req);
@@ -138,7 +143,8 @@ router.patch('/:id',
 
             const fieldLabels = {
                 firstName: 'first name', lastName: 'last name', email: 'email',
-                role: 'role', company: 'company', phone: 'phone', birthDate: 'birth date', avatar: 'avatar'
+                role: 'role', company: 'company', phone: 'phone', birthDate: 'birth date', avatar: 'avatar',
+                customerIds: 'companies'
             };
             const changed = Object.keys(req.body)
                 .map(k => fieldLabels[k] ?? k)
