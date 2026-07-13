@@ -275,8 +275,8 @@ export class PortalInvoicesComponent implements OnInit, OnDestroy {
 
     getPeriodProgress(inv: Invoice): number {
         const now   = Date.now();
-        const start = inv.periodStart.getTime();
-        const end   = inv.periodEnd.getTime();
+        const start = inv.issueDate.getTime();
+        const end   = inv.dueDate.getTime();
         if (now <= start) return 0;
         if (now >= end)   return 100;
         return Math.round(((now - start) / (end - start)) * 100);

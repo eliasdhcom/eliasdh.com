@@ -127,8 +127,8 @@
                                 <div class="invoices-period-today-dot" [ngClass]="'invoices-period-today-dot--' + getPeriodStatus(inv)" *ngIf="isTodayInPeriod(inv)" [style.left.%]="getPeriodProgress(inv)"></div>
                             </div>
                             <div class="invoices-period-dates">
-                                <span>{{formatDateShort(inv.periodStart)}}</span>
-                                <span>{{formatDateShort(inv.periodEnd)}}</span>
+                                <span>{{formatDateShort(inv.issueDate)}}</span>
+                                <span>{{formatDateShort(inv.dueDate)}}</span>
                             </div>
                         </div>
                     </div>
