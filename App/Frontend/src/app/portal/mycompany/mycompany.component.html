@@ -32,6 +32,7 @@
                 </ul>
             </div>
         </header>
+        <p class="mycompany-vat-note">{{'PORTAL.MY_COMPANY.VAT_NOTE'|translate}}</p>
         <p class="mycompany-empty-hint" *ngIf="groups.length === 0">{{'PORTAL.MY_COMPANY.NO_LOCATIONS'|translate}}</p>
         <section class="mycompany-location" *ngFor="let g of groups; let li = index">
             <h3 class="mycompany-location-title">

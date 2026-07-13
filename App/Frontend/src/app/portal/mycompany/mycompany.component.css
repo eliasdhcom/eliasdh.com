@@ -121,6 +121,13 @@
     margin: 0;
 }
 
+.mycompany-vat-note {
+    font-size: 10px;
+    color: var(--secondary);
+    opacity: 0.75;
+    margin: -12px 0 0;
+}
+
 .mycompany-location {
     border: 1px solid rgba(128, 128, 128, 0.14);
     border-radius: 12px;

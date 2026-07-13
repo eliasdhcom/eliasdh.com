@@ -19,8 +19,6 @@ import { takeUntil, catchError, skip } from 'rxjs/operators';
 
 type ListSection = 'websites' | 'domains' | 'invoices';
 
-const VAT_RATE = 0.21;
-
 interface LocationGroup {
     location:  CustomerLocation;
     websites:  CustomerWebsite[];
@@ -132,7 +130,7 @@ export class PortalMyCompanyComponent implements OnInit, OnDestroy {
     getWebsiteTotal(w: CustomerWebsite): number {
         const subtotal   = Math.max(0, w.payment - w.discount);
         const multiplier = w.frequency === 'yearly' ? 12 : w.frequency === 'quarterly' ? 3 : 1;
-        return subtotal * (1 + VAT_RATE) * multiplier;
+        return subtotal * multiplier;
     }
 
     frequencyKey(freq: string): string {
