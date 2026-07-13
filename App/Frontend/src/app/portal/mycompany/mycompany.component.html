@@ -55,7 +55,7 @@
                                 {{w.isLive ? ('PORTAL.MY_COMPANY.LIVE'|translate) : ('PORTAL.MY_COMPANY.OFFLINE'|translate)}}
                             </span>
                             <span class="mycompany-row-type" [ngStyle]="getBadgeStyle(w.subscriptionType)">{{w.subscriptionType}}</span>
-                            <span class="mycompany-row-price">{{formatCurrency(w.total)}} <small>/ {{formatFrequency(w.frequency)}}</small></span>
+                            <span class="mycompany-row-price">{{formatCurrency(getWebsiteTotal(w))}} <small>/ {{('PORTAL.MY_COMPANY.' + frequencyKey(w.frequency))|translate}}</small></span>
                         </div>
                     </div>
                 </div>

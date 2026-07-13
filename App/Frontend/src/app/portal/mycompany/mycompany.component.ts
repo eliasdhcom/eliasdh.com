@@ -19,6 +19,8 @@ import { takeUntil, catchError, skip } from 'rxjs/operators';
 
 type ListSection = 'websites' | 'domains' | 'invoices';
 
+const VAT_RATE = 0.21;
+
 interface LocationGroup {
     location:  CustomerLocation;
     websites:  CustomerWebsite[];
@@ -127,9 +129,15 @@ export class PortalMyCompanyComponent implements OnInit, OnDestroy {
         return date.toLocaleDateString('nl-BE', { day: '2-digit', month: 'short', year: 'numeric' });
     }
 
-    formatFrequency(freq: string): string {
-        const labels: Record<string, string> = { monthly: 'maandelijks', quarterly: 'per kwartaal', yearly: 'jaarlijks', 'one-time': 'eenmalig' };
-        return labels[freq] ?? freq;
+    getWebsiteTotal(w: CustomerWebsite): number {
+        const subtotal   = Math.max(0, w.payment - w.discount);
+        const multiplier = w.frequency === 'yearly' ? 12 : w.frequency === 'quarterly' ? 3 : 1;
+        return subtotal * (1 + VAT_RATE) * multiplier;
+    }
+
+    frequencyKey(freq: string): string {
+        const keys: Record<string, string> = { monthly: 'MONTHLY', quarterly: 'QUARTERLY', yearly: 'YEARLY', 'one-time': 'ONE_TIME' };
+        return keys[freq] ?? 'MONTHLY';
     }
 
     getBadgeStyle(type: string) { return this.pricingPlansService.getBadgeStyle(type); }
