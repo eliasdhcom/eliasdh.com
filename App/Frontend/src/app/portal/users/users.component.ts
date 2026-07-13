@@ -228,8 +228,9 @@ export class PortalUsersComponent implements OnInit, OnDestroy {
 
     private doCreate(): void {
         const u = this.editedUser;
+        const hasCompany = this.isCustomerRole(u.role) ? (u.customerIds ?? []).length > 0 : !!u.company;
         if (!u.firstName || !u.lastName || !u.email || !this.newPassword ||
-            !u.role || !u.phone || !u.company || !u.birthDate) {
+            !u.role || !u.phone || !hasCompany || !u.birthDate) {
             this.saveError = 'Vul alle verplichte velden in.';
             return;
         }

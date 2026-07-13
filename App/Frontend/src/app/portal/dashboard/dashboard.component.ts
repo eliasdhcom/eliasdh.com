@@ -24,7 +24,6 @@ import { UsersService } from '../../services/users.service';
 import { ThemeService } from '../../services/theme.service';
 import { PushService } from '../../services/push.service';
 import { CompanyContextService } from '../../services/company-context.service';
-import { PortalCompany } from '../../services/portal.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -51,9 +50,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     langDropdownOpen     = false;
     contactDropdownOpen  = false;
-    companyDropdownOpen  = false;
-    companies: PortalCompany[] = [];
-    selectedCompanyId: string | null = null;
     currentLanguage   = 'nl';
     readonly languages = [
         { code: 'nl', name: 'Nederlands' },
@@ -69,7 +65,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         private translate: TranslateService,
         public themeService: ThemeService,
         private pushService: PushService,
-        public companyContextService: CompanyContextService
+        private companyContextService: CompanyContextService
     ) {}
 
     private readonly onBeforeInstallPrompt = (e: Event) => { e.preventDefault(); this.pwaPrompt = e; };
@@ -103,7 +99,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         this.user.customerId   = r.data.customerId  ?? this.user.customerId;
                         this.user.customerIds  = r.data.customerIds ?? this.user.customerIds;
                     }
-                    if (this.isCustomer) this.initCompanySwitcher();
+                    if (this.isCustomer) this.companyContextService.init();
                 }});
         }
         this.usersService.avatarUpdated$
@@ -206,41 +202,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     toggleLangDropdown(event: Event): void {
         event.stopPropagation();
         this.contactDropdownOpen = false;
-        this.companyDropdownOpen = false;
         this.langDropdownOpen = !this.langDropdownOpen;
     }
 
     toggleContactDropdown(event: Event): void {
         event.stopPropagation();
         this.langDropdownOpen = false;
-        this.companyDropdownOpen = false;
         this.contactDropdownOpen = !this.contactDropdownOpen;
-    }
-
-    toggleCompanyDropdown(event: Event): void {
-        event.stopPropagation();
-        this.langDropdownOpen = false;
-        this.contactDropdownOpen = false;
-        this.companyDropdownOpen = !this.companyDropdownOpen;
-    }
-
-    private initCompanySwitcher(): void {
-        this.companyContextService.companies$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(companies => this.companies = companies);
-        this.companyContextService.selectedCustomerId$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(id => this.selectedCompanyId = id);
-        this.companyContextService.init();
-    }
-
-    get selectedCompanyName(): string {
-        return this.companies.find(c => c.id === this.selectedCompanyId)?.name ?? '';
-    }
-
-    selectCompany(id: string): void {
-        this.companyContextService.selectCompany(id);
-        this.companyDropdownOpen = false;
     }
 
     changeLanguage(code: string): void {
@@ -254,6 +222,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
     onDocumentClick(): void {
         if (this.langDropdownOpen) this.langDropdownOpen = false;
         if (this.contactDropdownOpen) this.contactDropdownOpen = false;
-        if (this.companyDropdownOpen) this.companyDropdownOpen = false;
     }
 }

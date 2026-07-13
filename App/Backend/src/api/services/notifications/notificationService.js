@@ -64,6 +64,7 @@ class NotificationService {
     }
 
     async sendWelcomeEmail(user) {
+        const companies = (user.company ?? '').split(',').map(c => c.trim()).filter(Boolean);
         const body = `
             <h2 style="color:#1a1a2e;margin:0 0 10px 0;font-size:22px;">Welcome, ${user.firstName}!</h2>
             <p style="color:#555;font-size:15px;line-height:1.6;margin:0 0 20px 0;">
@@ -72,7 +73,7 @@ class NotificationService {
             ${mailer.infoTable([
                 ['Email address', user.email],
                 ['Role',          user.role],
-                ['Company',       user.company]
+                [companies.length > 1 ? 'Companies' : 'Company', companies.length > 1 ? companies.join('<br>') : user.company]
             ])}
             <p style="color:#555;font-size:15px;line-height:1.6;margin:20px 0;">
                 To set your password, click the button below to go to the login page and then click <strong>"Forgot Password"</strong>. You will receive a code by email to set a new password.

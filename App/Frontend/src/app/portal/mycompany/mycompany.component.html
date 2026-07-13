@@ -13,9 +13,23 @@
     <ng-container *ngIf="!loading && !error && customer">
         <header class="mycompany-header">
             <img *ngIf="customer.logo" class="mycompany-logo" [src]="customer.logo" [alt]="customer.name"/>
-            <div class="mycompany-header-info">
+            <div class="mycompany-header-info" *ngIf="companies.length &lt;= 1">
                 <h2 class="mycompany-name">{{customer.name}}</h2>
                 <span class="mycompany-id">{{'PORTAL.MY_COMPANY.CUSTOMER_ID'|translate}}: {{customer.id}}</span>
+            </div>
+            <div class="mycompany-switcher" *ngIf="companies.length > 1">
+                <button class="mycompany-header-info mycompany-switcher-btn cursor-pointer" (click)="toggleCompanyDropdown($event)" [title]="'PORTAL.SWITCHER.TITLE'|translate" type="button">
+                    <h2 class="mycompany-name cursor-pointer">
+                        {{customer.name}}
+                        <svg class="mycompany-switcher-chevron cursor-pointer" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                            <path class="cursor-pointer" d="M4.646 6.646a.5.5 0 0 1 .708 0L8 9.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                    </h2>
+                    <span class="mycompany-id cursor-pointer">{{'PORTAL.MY_COMPANY.CUSTOMER_ID'|translate}}: {{customer.id}}</span>
+                </button>
+                <ul class="mycompany-switcher-menu" *ngIf="companyDropdownOpen" (click)="$event.stopPropagation()">
+                    <li *ngFor="let c of companies" [class.mycompany-switcher-active]="c.id === customer.id" (click)="selectCompany(c.id)" class="cursor-pointer">{{c.name}}</li>
+                </ul>
             </div>
         </header>
         <p class="mycompany-empty-hint" *ngIf="groups.length === 0">{{'PORTAL.MY_COMPANY.NO_LOCATIONS'|translate}}</p>

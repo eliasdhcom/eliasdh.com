@@ -4,10 +4,10 @@
     * @since 11/07/2026
 **/
 
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-import { PortalService, PortalMeInvoice } from '../../services/portal.service';
+import { PortalService, PortalMeInvoice, PortalCompany } from '../../services/portal.service';
 import { Customer, CustomerLocation, CustomerWebsite, CustomerDomain } from '../../services/customers.service';
 import { Invoice } from '../../services/invoice-builder.service';
 import { InvoicePdfService } from '../../services/invoice-pdf.service';
@@ -44,6 +44,9 @@ export class PortalMyCompanyComponent implements OnInit, OnDestroy {
     groups:   LocationGroup[] = [];
     generatingPdfId: string | null = null;
 
+    companies: PortalCompany[] = [];
+    companyDropdownOpen = false;
+
     private destroy$ = new Subject<void>();
 
     constructor(
@@ -60,6 +63,10 @@ export class PortalMyCompanyComponent implements OnInit, OnDestroy {
         this.companyContextService.selectedCustomerId$
             .pipe(skip(1), takeUntil(this.destroy$))
             .subscribe(() => this.load());
+        this.companyContextService.companies$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(companies => this.companies = companies);
+        this.companyContextService.init();
     }
     ngOnDestroy(): void {
         this.destroy$.next();
@@ -126,6 +133,21 @@ export class PortalMyCompanyComponent implements OnInit, OnDestroy {
     }
 
     getBadgeStyle(type: string) { return this.pricingPlansService.getBadgeStyle(type); }
+
+    toggleCompanyDropdown(event: Event): void {
+        event.stopPropagation();
+        this.companyDropdownOpen = !this.companyDropdownOpen;
+    }
+
+    selectCompany(id: string): void {
+        this.companyContextService.selectCompany(id);
+        this.companyDropdownOpen = false;
+    }
+
+    @HostListener('document:click')
+    onDocumentClick(): void {
+        if (this.companyDropdownOpen) this.companyDropdownOpen = false;
+    }
 
     showMore(group: LocationGroup, section: ListSection): void {
         group.visible[section] += PAGE_SIZE;
