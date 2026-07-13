@@ -436,7 +436,9 @@ class CustomersService {
     }
 
     async deleteCustomer(id) {
-        await getDb().execute({ sql: 'DELETE FROM customers WHERE id = ?', args: [id] });
+        const db = getDb();
+        await db.execute({ sql: 'UPDATE users SET customer_id = NULL WHERE customer_id = ?', args: [id] });
+        await db.execute({ sql: 'DELETE FROM customers WHERE id = ?', args: [id] });
         logger.info(`Customer deleted: ${id}`);
     }
 
