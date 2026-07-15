@@ -8,7 +8,7 @@ const express              = require('express');
 const customersService     = require('../../services/customers/customersService');
 const invoicesService      = require('../../services/invoices/invoicesService');
 const invoiceBuilderService = require('../../services/invoices/invoiceBuilderService');
-const trafficSamplerService = require('../../services/metrics/trafficSamplerService');
+const trafficService = require('../../services/metrics/trafficService');
 const { jwtAuth }          = require('../../../middleware/jwtAuth');
 const { requireCustomer }  = require('../../../middleware/requireCustomer');
 const { resolveSelectedCustomer } = require('../../../middleware/resolveSelectedCustomer');
@@ -50,7 +50,7 @@ router.get('/websites/:websiteId/traffic', async (req, res, next) => {
         const owns = (customer.websites ?? []).some(w => w.id === websiteId);
         if (!owns) return res.status(403).json({ success: false, error: 'Access denied.' });
 
-        const points = await trafficSamplerService.getHistory(websiteId, range);
+        const points = await trafficService.getHistory(websiteId, range);
         res.json({ success: true, data: { websiteId, range, points } });
     } catch (err) {
         if (err.message?.includes('not found')) {

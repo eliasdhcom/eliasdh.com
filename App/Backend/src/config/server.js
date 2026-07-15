@@ -15,7 +15,6 @@ const { server: config } = require('./env');
 const logger = require('../utils/logger');
 const clusterService  = require('../api/services/cluster/clusterService');
 const { startBirthdayScheduler } = require('../api/services/birthday/birthdayService');
-const { startTrafficSampler } = require('../api/services/metrics/trafficSamplerService');
 const { getDb, initSchema } = require('../database/db');
 const bcrypt = require('bcryptjs');
 const app = express();
@@ -183,7 +182,6 @@ const startServer = async () => {
 
         clusterService.startNodeMonitoring();
         startBirthdayScheduler();
-        startTrafficSampler();
     });
 };
 

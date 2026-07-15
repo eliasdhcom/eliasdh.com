@@ -8,7 +8,4 @@ module.exports = {
     customers: {
         customersService: require('./customers/customersService'),
     },
-    metrics: {
-        metricsService: require('./metrics/metricsService'),
-    },
 };
