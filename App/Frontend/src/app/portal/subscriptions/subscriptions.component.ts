@@ -10,6 +10,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { CustomersService, Customer, CustomerWebsite } from '../../services/customers.service';
 import { PricingPlansService, PricingPlan } from '../../services/pricing-plans.service';
 import { StatusService, K8sPod } from '../../services/status.service';
+import { TrafficPoint, TrafficRange } from '../../services/portal.service';
+import { TrafficChartComponent } from '../../shared/traffic-chart/traffic-chart.component';
 import { Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 
@@ -46,11 +48,17 @@ interface LogModalState {
     namespace: string;
 }
 
+interface TrafficState {
+    open:    boolean;
+    loading: boolean;
+    range:   TrafficRange;
+    points:  TrafficPoint[];
+}
 
 @Component({
     selector: 'app-portal-subscriptions',
     standalone: true,
-    imports: [CommonModule, TranslatePipe],
+    imports: [CommonModule, TranslatePipe, TrafficChartComponent],
     templateUrl: './subscriptions.component.html',
     styleUrls: ['./subscriptions.component.css']
 })
@@ -68,6 +76,7 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
     expandedSubIds = new Set<string>();
     nsPodsMap = new Map<string, NsPodsState>();
     logModal: LogModalState = { open: false, loading: false, error: '', lines: [], podName: '', displayName: '', namespace: '' };
+    traffic = new Map<string, TrafficState>();
 
     private pendingHighlightId: string | null = null;
     private destroy$ = new Subject<void>();
@@ -170,6 +179,14 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
 
     get availableTypeTotal(): number {
         return this.availableTypes.reduce((sum, t) => sum + t.count, 0);
+    }
+
+    trackByGroup(_index: number, group: SubscriptionGroup): string {
+        return group.customerId;
+    }
+
+    trackBySub(_index: number, sub: FlatSubscription): string {
+        return sub.id;
     }
 
     get groupedFilteredSubscriptions(): SubscriptionGroup[] {
@@ -380,5 +397,43 @@ export class PortalSubscriptionsComponent implements OnInit, OnDestroy {
         const ns = this.urlToNamespace(sub.url);
         this.nsPodsMap.delete(ns);
         this.loadNsData(ns);
+    }
+
+    trafficState(sub: FlatSubscription): TrafficState {
+        let state = this.traffic.get(sub.id);
+        if (!state) {
+            state = { open: false, loading: false, range: '7d', points: [] };
+            this.traffic.set(sub.id, state);
+        }
+        return state;
+    }
+
+    toggleTraffic(sub: FlatSubscription): void {
+        const state = this.trafficState(sub);
+        state.open = !state.open;
+        if (state.open && !state.points.length) this.loadTraffic(sub, state.range);
+    }
+
+    onTrafficRangeChange(sub: FlatSubscription, range: TrafficRange): void {
+        const state = this.trafficState(sub);
+        state.range = range;
+        this.loadTraffic(sub, range);
+    }
+
+    private loadTraffic(sub: FlatSubscription, range: TrafficRange): void {
+        const state = this.trafficState(sub);
+        state.loading = true;
+        this.customersService.getWebsiteTraffic(sub.id, range)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: res => {
+                    state.points = res.data?.points ?? [];
+                    state.loading = false;
+                },
+                error: () => {
+                    state.points = [];
+                    state.loading = false;
+                }
+            });
     }
 }

@@ -44,7 +44,7 @@
         <p>{{'PORTAL.SUBSCRIPTIONS.EMPTY'|translate}}</p>
     </div>
     <div class="subscriptions-list" *ngIf="!loading && !error && filteredSubscriptions.length > 0">
-        <div class="subscriptions-group" *ngFor="let group of groupedFilteredSubscriptions">
+        <div class="subscriptions-group" *ngFor="let group of groupedFilteredSubscriptions; trackBy: trackByGroup">
             <div class="subscriptions-group-header">
                 <div class="subscriptions-group-logo">
                     <img *ngIf="showGroupLogo(group)" class="subscriptions-group-logo-img" [src]="group.customerLogo" [alt]="group.customerName" (error)="handleGroupLogoError(group.customerId)"/>
@@ -54,7 +54,7 @@
                 <span class="subscriptions-group-id">#{{group.customerId}}</span>
                 <span class="subscriptions-group-count">{{group.items.length}} {{group.items.length !== 1 ? ('PORTAL.SUBSCRIPTIONS.SUBSCRIPTIONS'|translate) : ('PORTAL.SUBSCRIPTIONS.SUBSCRIPTION'|translate)}}</span>
             </div>
-            <div class="subscriptions-card" [id]="'sub-' + sub.id" [class.subscriptions-card--highlighted]="_highlightId === sub.id" *ngFor="let sub of group.items">
+            <div class="subscriptions-card" [id]="'sub-' + sub.id" [class.subscriptions-card--highlighted]="_highlightId === sub.id" *ngFor="let sub of group.items; trackBy: trackBySub">
                 <div class="subscriptions-card-header">
                     <div class="subscriptions-status-dot" [class.subscriptions-status-dot--live]="sub.isLive" [title]="sub.isLive ? ('PORTAL.COMMON.ACTIVE'|translate) : ('PORTAL.COMMON.INACTIVE'|translate)"></div>
                     <div class="subscriptions-card-info">
@@ -66,6 +66,9 @@
                             <span class="subscriptions-frequency-badge cursor-default">
                                 {{getFrequencyLabel(sub.frequency)}}
                             </span>
+                            <button class="subscriptions-traffic-toggle cursor-pointer" type="button" *ngIf="sub.isLive" (click)="toggleTraffic(sub)">
+                                {{(trafficState(sub).open ? 'PORTAL.MY_COMPANY.TRAFFIC_HIDE' : 'PORTAL.MY_COMPANY.TRAFFIC_SHOW')|translate}}
+                            </button>
                         </div>
                         <div class="subscriptions-card-row-meta">
                             <span class="subscriptions-meta-item subscriptions-meta-id">#{{sub.id}}</span>
@@ -117,6 +120,14 @@
                         {{formatCurrency(getTotal(sub))}}
                         <span class="subscriptions-total-chip-freq">/{{getFrequencyShort(sub.frequency)}}</span>
                     </span>
+                </div>
+                <div class="subscriptions-traffic-panel" *ngIf="sub.isLive && trafficState(sub).open">
+                    <app-traffic-chart
+                        [loading]="trafficState(sub).loading"
+                        [range]="trafficState(sub).range"
+                        [points]="trafficState(sub).points"
+                        (rangeChange)="onTrafficRangeChange(sub, $event)">
+                    </app-traffic-chart>
                 </div>
                 <button *ngIf="sub.isLive" class="subscriptions-toggle cursor-pointer" (click)="toggleK8sPanel(sub)" [class.subscriptions-toggle--open]="isExpanded(sub.id)">
                     <svg class="subscriptions-toggle-icon cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

@@ -1,5 +1,5 @@
 <!--Author EliasDH Team-->
-<div class="traffic-chart">
+<div class="traffic-chart" #rootEl>
     <div class="traffic-chart-toolbar">
         <span class="traffic-chart-total" *ngIf="!loading && hasData">{{ total | number }} {{ 'PORTAL.MY_COMPANY.TRAFFIC_REQUESTS' | translate }}</span>
         <div class="traffic-chart-ranges">
@@ -16,7 +16,7 @@
 
     <div class="traffic-chart-body" *ngIf="!loading && hasData">
         <svg #svgEl class="traffic-chart-svg" [attr.viewBox]="'0 0 ' + width + ' ' + height"
-             preserveAspectRatio="none" (pointermove)="onPointerMove($event)" (pointerleave)="onPointerLeave()">
+             (pointermove)="onPointerMove($event)" (pointerleave)="onPointerLeave()">
             <line *ngFor="let tick of yTicks" class="traffic-chart-gridline"
                   [attr.x1]="plotLeft" [attr.x2]="plotRight" [attr.y1]="tick.y" [attr.y2]="tick.y"></line>
             <text *ngFor="let tick of yTicks" class="traffic-chart-tick-label" x="2" [attr.y]="tick.y + 3">{{ formatTick(tick.value) }}</text>

@@ -561,6 +561,26 @@
     gap: 10px;
 }
 
+.subscriptions-traffic-toggle {
+    padding: 2px 9px;
+    border-radius: 20px;
+    border: 1px solid rgba(128, 128, 128, 0.22);
+    background: none;
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 600;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: background 0.15s, border-color 0.15s;
+}
+.subscriptions-traffic-toggle:hover { background: color-mix(in srgb, var(--primary) 8%, transparent); border-color: var(--primary); }
+
+.subscriptions-traffic-panel {
+    border-top: 1px solid rgba(128, 128, 128, 0.1);
+    background: rgba(128, 128, 128, 0.02);
+    padding: 12px 16px 14px;
+}
+
 .subscriptions-stats-bar {
     display: flex;
     align-items: center;

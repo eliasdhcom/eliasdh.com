@@ -5,10 +5,11 @@
 **/
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { AuthService } from './auth.service';
+import type { TrafficPoint, TrafficRange } from './portal.service';
 
 export interface CustomerLocation {
     id?:         number;
@@ -134,6 +135,15 @@ export class CustomersService {
             `${this.apiUrl}/${id}/agreement/sign`,
             { signature },
             { headers: this.getAuthHeaders() }
+        );
+    }
+
+    getWebsiteTraffic(websiteId: string, range: TrafficRange):
+        Observable<{ success: boolean; data: { websiteId: string; range: TrafficRange; points: TrafficPoint[] } }> {
+        const params = new HttpParams().set('range', range);
+        return this.http.get<{ success: boolean; data: { websiteId: string; range: TrafficRange; points: TrafficPoint[] } }>(
+            `${this.apiUrl}/websites/${websiteId}/traffic`,
+            { headers: this.getHeaders(), params }
         );
     }
 }

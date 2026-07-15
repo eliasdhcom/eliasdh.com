@@ -8,6 +8,7 @@ const express         = require('express');
 const { body, param, validationResult } = require('express-validator');
 const customerService = require('../../services/customers/customersService');
 const vatLookupService = require('../../services/customers/vatLookupService');
+const trafficService  = require('../../services/metrics/trafficService');
 const { jwtAuth }     = require('../../../middleware/jwtAuth');
 const { requireAdmin } = require('../../../middleware/requireAdmin');
 const logsService     = require('../../services/logs/logsService');
@@ -44,6 +45,17 @@ router.get('/vat-lookup/:country/:vat',
         }
     }
 );
+
+router.get('/websites/:websiteId/traffic', async (req, res) => {
+    try {
+        const range = ['24h', '7d', '30d'].includes(req.query.range) ? req.query.range : '7d';
+        const points = await trafficService.getHistory(req.params.websiteId, range);
+        res.json({ success: true, data: { websiteId: req.params.websiteId, range, points } });
+    } catch (err) {
+        logger.error(`Error fetching traffic for ${req.params.websiteId}: ${err.message}`);
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
 
 router.get('/:id', async (req, res) => {
     try {
