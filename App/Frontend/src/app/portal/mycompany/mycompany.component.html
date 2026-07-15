@@ -46,17 +46,30 @@
             <div class="mycompany-block" *ngIf="g.websites.length">
                 <h4 class="mycompany-block-title">{{'PORTAL.MY_COMPANY.SUBSCRIPTIONS'|translate}}</h4>
                 <div class="mycompany-list">
-                    <div class="mycompany-row" *ngFor="let w of g.websites.slice(0, g.visible.websites)">
-                        <div class="mycompany-row-main">
-                            <span class="mycompany-row-name">{{w.name}}</span>
-                            <a class="mycompany-row-url cursor-pointer" *ngIf="w.url" [href]="toHref(w.url)" target="_blank" rel="noopener noreferrer">{{w.url}}</a>
+                    <div class="mycompany-website" *ngFor="let w of g.websites.slice(0, g.visible.websites)">
+                        <div class="mycompany-row">
+                            <div class="mycompany-row-main">
+                                <span class="mycompany-row-name">{{w.name}}</span>
+                                <a class="mycompany-row-url cursor-pointer" *ngIf="w.url" [href]="toHref(w.url)" target="_blank" rel="noopener noreferrer">{{w.url}}</a>
+                            </div>
+                            <div class="mycompany-row-meta">
+                                <span class="mycompany-status-chip" [class.mycompany-status-chip--live]="w.isLive" [class.mycompany-status-chip--offline]="!w.isLive">
+                                    {{w.isLive ? ('PORTAL.MY_COMPANY.LIVE'|translate) : ('PORTAL.MY_COMPANY.OFFLINE'|translate)}}
+                                </span>
+                                <span class="mycompany-row-type" [ngStyle]="getBadgeStyle(w.subscriptionType)">{{w.subscriptionType}}</span>
+                                <span class="mycompany-row-price">{{formatCurrency(getWebsiteTotal(w))}} <small>/ {{('PORTAL.MY_COMPANY.' + frequencyKey(w.frequency))|translate}}</small></span>
+                                <button class="mycompany-traffic-toggle cursor-pointer" type="button" (click)="toggleTraffic(w)">
+                                    {{(trafficState(w).open ? 'PORTAL.MY_COMPANY.TRAFFIC_HIDE' : 'PORTAL.MY_COMPANY.TRAFFIC_SHOW')|translate}}
+                                </button>
+                            </div>
                         </div>
-                        <div class="mycompany-row-meta">
-                            <span class="mycompany-status-chip" [class.mycompany-status-chip--live]="w.isLive" [class.mycompany-status-chip--offline]="!w.isLive">
-                                {{w.isLive ? ('PORTAL.MY_COMPANY.LIVE'|translate) : ('PORTAL.MY_COMPANY.OFFLINE'|translate)}}
-                            </span>
-                            <span class="mycompany-row-type" [ngStyle]="getBadgeStyle(w.subscriptionType)">{{w.subscriptionType}}</span>
-                            <span class="mycompany-row-price">{{formatCurrency(getWebsiteTotal(w))}} <small>/ {{('PORTAL.MY_COMPANY.' + frequencyKey(w.frequency))|translate}}</small></span>
+                        <div class="mycompany-traffic-panel" *ngIf="trafficState(w).open">
+                            <app-traffic-chart
+                                [loading]="trafficState(w).loading"
+                                [range]="trafficState(w).range"
+                                [points]="trafficState(w).points"
+                                (rangeChange)="onTrafficRangeChange(w, $event)">
+                            </app-traffic-chart>
                         </div>
                     </div>
                 </div>

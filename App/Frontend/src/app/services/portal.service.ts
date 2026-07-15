@@ -31,6 +31,13 @@ export interface PortalMe {
     invoices: PortalMeInvoice[];
 }
 
+export type TrafficRange = '24h' | '7d' | '30d';
+
+export interface TrafficPoint {
+    t:     string;
+    count: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class PortalService {
     private readonly apiUrl = `${environment.eliasdhApiUrl}/api/v1/portal`;
@@ -57,6 +64,16 @@ export class PortalService {
         return this.http.get<{ success: boolean; data: PortalCompany[] }>(
             `${this.apiUrl}/companies`,
             { headers: this.getHeaders() }
+        );
+    }
+
+    getWebsiteTraffic(websiteId: string, range: TrafficRange, customerId?: string | null):
+        Observable<{ success: boolean; data: { websiteId: string; range: TrafficRange; points: TrafficPoint[] } }> {
+        let params = new HttpParams().set('range', range);
+        if (customerId) params = params.set('customerId', customerId);
+        return this.http.get<{ success: boolean; data: { websiteId: string; range: TrafficRange; points: TrafficPoint[] } }>(
+            `${this.apiUrl}/websites/${websiteId}/traffic`,
+            { headers: this.getHeaders(), params }
         );
     }
 }

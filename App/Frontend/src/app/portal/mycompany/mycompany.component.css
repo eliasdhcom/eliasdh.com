@@ -179,6 +179,7 @@
 .mycompany-more-btn:hover { background: color-mix(in srgb, var(--primary) 8%, transparent); border-color: var(--primary); }
 
 .mycompany-list { display: flex; flex-direction: column; gap: 6px; }
+.mycompany-website { display: flex; flex-direction: column; gap: 8px; }
 
 .mycompany-row {
     display: flex;
@@ -231,6 +232,27 @@
 }
 .mycompany-status-chip--live    { background: rgba(16, 185, 129, 0.12); color: #10b981; }
 .mycompany-status-chip--offline { background: rgba(239, 68, 68, 0.1);  color: #ef4444; }
+
+.mycompany-traffic-toggle {
+    padding: 2px 9px;
+    border-radius: 20px;
+    border: 1px solid rgba(128, 128, 128, 0.22);
+    background: none;
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 600;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: background 0.15s, border-color 0.15s;
+}
+.mycompany-traffic-toggle:hover { background: color-mix(in srgb, var(--primary) 8%, transparent); border-color: var(--primary); }
+
+.mycompany-traffic-panel {
+    padding: 12px;
+    border-radius: 8px;
+    background: var(--background);
+    border: 1px solid rgba(128, 128, 128, 0.12);
+}
 
 @keyframes mycompany-pdf-spin { to { transform: rotate(360deg); } }
 

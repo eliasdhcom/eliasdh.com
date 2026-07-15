@@ -12,8 +12,6 @@ class MetricsService {
         this.kc = new k8s.KubeConfig();
         this.kubeEnabled = false;
         this.initKubeConfig();
-        this.cache = new Map();
-        this.cacheTTL = 1 * 60 * 1000; // 1 minutes
     }
 
     initKubeConfig() {
@@ -32,7 +30,7 @@ class MetricsService {
         }
     }
 
-    async getVisitorCountFromLogs(domain) {
+    async countIngressLogMatches(domain, sinceSeconds) {
         if (!this.kubeEnabled) throw new Error('Kubernetes API not available');
 
         try {
@@ -57,7 +55,7 @@ class MetricsService {
             const baseDomain = domain.replace(/^www\./, '');
             const isRootDomain = baseDomain.split('.').length === 2;
             const domainsToCheck = [baseDomain];
-            
+
             if (isRootDomain) {
                 domainsToCheck.push(`www.${baseDomain}`);
             }
@@ -73,7 +71,7 @@ class MetricsService {
                         undefined,
                         undefined,
                         undefined,
-                        undefined // No time limit - get all available logs
+                        sinceSeconds // undefined = no time limit, get all available logs
                     );
 
                     const lines = logs.body.split('\n');
@@ -83,7 +81,7 @@ class MetricsService {
                         if (line.includes('/api/v1/metrics/')) continue;
 
                         for (const domainToCheck of domainsToCheck) {
-                            if (line.includes(` ${domainToCheck} `) || 
+                            if (line.includes(` ${domainToCheck} `) ||
                                 line.includes(`"${domainToCheck}"`) ||
                                 line.includes(`/${domainToCheck}/`)) {
                                 totalCount++;
@@ -97,7 +95,7 @@ class MetricsService {
             }
 
             const wwwInfo = isRootDomain ? ' (including www)' : '';
-            logger.info(`Got ${totalCount} visitors for ${domain}${wwwInfo} from ingress logs`);
+            logger.info(`Got ${totalCount} requests for ${domain}${wwwInfo} from ingress logs`);
             return totalCount;
         } catch (error) {
             logger.error(`Error reading ingress logs: ${error.message}`);
@@ -105,77 +103,19 @@ class MetricsService {
         }
     }
 
-    async getVisitorCount(domain) {
+    /** Windowed request count for the traffic sampler - counts only log lines from the last `sinceSeconds`. */
+    async getRequestCountSince(domain, sinceSeconds) {
+        if (!this.kubeEnabled) return 0;
         try {
-            if (!domain || typeof domain !== 'string') {
-                throw new Error('Invalid domain');
-            }
-
-            const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/\/$/, '').toLowerCase();
-
-            const cached = this.cache.get(cleanDomain);
-            if (cached && Date.now() - cached.timestamp < this.cacheTTL) {
-                logger.info(`Cache hit for ${cleanDomain}: ${cached.count}`);
-                return cached.count;
-            }
-
-            let count = 0;
-
-            if (this.kubeEnabled) {
-                try {
-                    count = await this.getVisitorCountFromLogs(cleanDomain);
-                } catch (error) {
-                    logger.error(`Kubernetes error: ${error.message} - returning 0`);
-                }
-            } else {
-                logger.warn(`Kubernetes not available - returning 0 for ${cleanDomain}`);
-                count = 0;
-            }
-
-            this.cache.set(cleanDomain, {
-                count,
-                timestamp: Date.now()
-            });
-
-            return count;
+            return await this.countIngressLogMatches(this.cleanDomain(domain), sinceSeconds);
         } catch (error) {
-            logger.error(`getVisitorCount error: ${error.message}`);
-            throw error;
+            logger.error(`getRequestCountSince error for ${domain}: ${error.message}`);
+            return 0;
         }
     }
 
-    async getVisitorCountsForDomains(domains) {
-        try {
-            const results = {};
-
-            for (const domain of domains) {
-                try {
-                    results[domain] = await this.getVisitorCount(domain);
-                } catch (error) {
-                    logger.error(`Failed for ${domain}: ${error.message}`);
-                    results[domain] = 0;
-                }
-            }
-
-            return results;
-        } catch (error) {
-            logger.error(`getVisitorCountsForDomains error: ${error.message}`);
-            throw error;
-        }
-    }
-
-    clearCache(domain = null) {
-        if (domain) {
-            const cleanDomain = domain
-                .replace(/^https?:\/\//, '')
-                .replace(/\/$/, '')
-                .toLowerCase();
-            this.cache.delete(cleanDomain);
-            logger.info(`Cache cleared for ${cleanDomain}`);
-        } else {
-            this.cache.clear();
-            logger.info('All cache cleared');
-        }
+    cleanDomain(domain) {
+        return domain.replace(/^https?:\/\//, '').replace(/\/$/, '').toLowerCase();
     }
 }
 

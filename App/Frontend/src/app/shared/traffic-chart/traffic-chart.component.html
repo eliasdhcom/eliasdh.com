@@ -1,0 +1,41 @@
+<!--Author EliasDH Team-->
+<div class="traffic-chart">
+    <div class="traffic-chart-toolbar">
+        <span class="traffic-chart-total" *ngIf="!loading && hasData">{{ total | number }} {{ 'PORTAL.MY_COMPANY.TRAFFIC_REQUESTS' | translate }}</span>
+        <div class="traffic-chart-ranges">
+            <button type="button" class="traffic-chart-range-btn cursor-pointer" *ngFor="let r of ranges"
+                    [class.traffic-chart-range-btn--active]="r === range" (click)="selectRange(r)">
+                {{ ('PORTAL.MY_COMPANY.TRAFFIC_RANGE_' + r) | translate }}
+            </button>
+        </div>
+    </div>
+
+    <div class="traffic-chart-skeleton" *ngIf="loading"></div>
+
+    <p class="traffic-chart-empty" *ngIf="!loading && !hasData">{{ 'PORTAL.MY_COMPANY.TRAFFIC_NO_DATA' | translate }}</p>
+
+    <div class="traffic-chart-body" *ngIf="!loading && hasData">
+        <svg #svgEl class="traffic-chart-svg" [attr.viewBox]="'0 0 ' + width + ' ' + height"
+             preserveAspectRatio="none" (pointermove)="onPointerMove($event)" (pointerleave)="onPointerLeave()">
+            <line *ngFor="let tick of yTicks" class="traffic-chart-gridline"
+                  [attr.x1]="plotLeft" [attr.x2]="plotRight" [attr.y1]="tick.y" [attr.y2]="tick.y"></line>
+            <text *ngFor="let tick of yTicks" class="traffic-chart-tick-label" x="2" [attr.y]="tick.y + 3">{{ formatTick(tick.value) }}</text>
+
+            <path class="traffic-chart-area" [attr.d]="areaPath"></path>
+            <path class="traffic-chart-line" [attr.d]="linePath"></path>
+
+            <circle *ngIf="endPoint" class="traffic-chart-end-dot" [attr.cx]="endPoint.x" [attr.cy]="endPoint.y" r="4"></circle>
+            <text *ngIf="endPoint" class="traffic-chart-end-label" [attr.x]="width - 4" [attr.y]="endPoint.y + 3" text-anchor="end">{{ endPoint.value | number }}</text>
+
+            <line *ngIf="hoverPoint" class="traffic-chart-crosshair" [attr.x1]="hoverPoint.x" [attr.x2]="hoverPoint.x"
+                  [attr.y1]="plotTop" [attr.y2]="plotBottom"></line>
+            <circle *ngIf="hoverPoint" class="traffic-chart-hover-dot" [attr.cx]="hoverPoint.x" [attr.cy]="hoverPoint.y" r="4"></circle>
+        </svg>
+
+        <div class="traffic-chart-tooltip" *ngIf="hoverPoint" [style.left.%]="hoverLeftPercent">
+            <strong>{{ hoverPoint.value | number }}</strong>
+            <span>{{ 'PORTAL.MY_COMPANY.TRAFFIC_REQUESTS' | translate }}</span>
+            <small>{{ formatHoverDate(hoverPoint.date) }}</small>
+        </div>
+    </div>
+</div>

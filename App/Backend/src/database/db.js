@@ -165,6 +165,13 @@ async function initSchema() {
             created_at TEXT DEFAULT (datetime('now'))
         )`,
         `CREATE INDEX IF NOT EXISTS idx_push_subscriptions_user_id ON push_subscriptions(user_id)`,
+        `CREATE TABLE IF NOT EXISTS website_traffic_samples (
+            id            INTEGER PRIMARY KEY AUTOINCREMENT,
+            website_id    TEXT NOT NULL REFERENCES websites(id) ON DELETE CASCADE,
+            sample_time   TEXT NOT NULL,
+            request_count INTEGER NOT NULL DEFAULT 0
+        )`,
+        `CREATE INDEX IF NOT EXISTS idx_traffic_samples_website_time ON website_traffic_samples(website_id, sample_time)`,
         `CREATE TABLE IF NOT EXISTS password_entries (
             id           INTEGER PRIMARY KEY AUTOINCREMENT,
             service_name TEXT NOT NULL,

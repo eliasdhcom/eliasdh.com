@@ -245,20 +245,6 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isSidebarOpen = true;
         this.router.navigate([], { queryParams: { customerId: customer.id }, replaceUrl: true });
 
-        if (customer.websites && customer.websites.length > 0) {
-            customer.websites.forEach(website => {
-                this.customersService.getVisitorCount(website.url).subscribe({
-                    next: (response) => {
-                        if (response.success) website.visitors = response.visitors;
-                    },
-                    error: (err) => {
-                        console.error(`Failed to load visitors for ${website.url}:`, err);
-                        website.visitors = 0;
-                    }
-                });
-            });
-        }
-
         if (this.selectedLat && this.selectedLng) {
             this.map.setView([this.selectedLat, this.selectedLng], 14, { animate: true });
         }

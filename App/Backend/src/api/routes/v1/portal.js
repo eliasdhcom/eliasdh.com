@@ -8,6 +8,7 @@ const express              = require('express');
 const customersService     = require('../../services/customers/customersService');
 const invoicesService      = require('../../services/invoices/invoicesService');
 const invoiceBuilderService = require('../../services/invoices/invoiceBuilderService');
+const trafficSamplerService = require('../../services/metrics/trafficSamplerService');
 const { jwtAuth }          = require('../../../middleware/jwtAuth');
 const { requireCustomer }  = require('../../../middleware/requireCustomer');
 const { resolveSelectedCustomer } = require('../../../middleware/resolveSelectedCustomer');
@@ -29,6 +30,28 @@ router.get('/me', async (req, res, next) => {
         const invoices = invoiceBuilderService.buildInvoices(allCustomers, allStatuses)
             .filter(inv => inv.customerId === customerId);
         res.json({ success: true, data: { customer, invoices } });
+    } catch (err) {
+        if (err.message?.includes('not found')) {
+            return res.status(404).json({ success: false, error: 'Customer not found.' });
+        }
+        next(err);
+    }
+});
+
+router.get('/websites/:websiteId/traffic', async (req, res, next) => {
+    try {
+        const customerId = resolveSelectedCustomer(req);
+        if (!customerId) return res.status(403).json({ success: false, error: 'Access denied.' });
+
+        const { websiteId } = req.params;
+        const range = ['24h', '7d', '30d'].includes(req.query.range) ? req.query.range : '7d';
+
+        const customer = await customersService.getCustomerById(customerId);
+        const owns = (customer.websites ?? []).some(w => w.id === websiteId);
+        if (!owns) return res.status(403).json({ success: false, error: 'Access denied.' });
+
+        const points = await trafficSamplerService.getHistory(websiteId, range);
+        res.json({ success: true, data: { websiteId, range, points } });
     } catch (err) {
         if (err.message?.includes('not found')) {
             return res.status(404).json({ success: false, error: 'Customer not found.' });

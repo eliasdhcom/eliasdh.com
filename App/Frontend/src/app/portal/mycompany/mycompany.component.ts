@@ -7,13 +7,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-import { PortalService, PortalMeInvoice, PortalCompany } from '../../services/portal.service';
+import { PortalService, PortalMeInvoice, PortalCompany, TrafficPoint, TrafficRange } from '../../services/portal.service';
 import { Customer, CustomerLocation, CustomerWebsite, CustomerDomain } from '../../services/customers.service';
 import { Invoice } from '../../services/invoice-builder.service';
 import { InvoicePdfService } from '../../services/invoice-pdf.service';
 import { LogsService } from '../../services/logs.service';
 import { PricingPlansService } from '../../services/pricing-plans.service';
 import { CompanyContextService } from '../../services/company-context.service';
+import { TrafficChartComponent } from '../../shared/traffic-chart/traffic-chart.component';
 import { Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, catchError, skip } from 'rxjs/operators';
 
@@ -29,10 +30,17 @@ interface LocationGroup {
 
 const PAGE_SIZE = 3;
 
+interface TrafficState {
+    open:    boolean;
+    loading: boolean;
+    range:   TrafficRange;
+    points:  TrafficPoint[];
+}
+
 @Component({
     selector: 'app-portal-mycompany',
     standalone: true,
-    imports: [CommonModule, TranslatePipe],
+    imports: [CommonModule, TranslatePipe, TrafficChartComponent],
     templateUrl: './mycompany.component.html',
     styleUrls: ['./mycompany.component.css']
 })
@@ -46,6 +54,8 @@ export class PortalMyCompanyComponent implements OnInit, OnDestroy {
 
     companies: PortalCompany[] = [];
     companyDropdownOpen = false;
+
+    traffic = new Map<string, TrafficState>();
 
     private destroy$ = new Subject<void>();
 
@@ -87,7 +97,9 @@ export class PortalMyCompanyComponent implements OnInit, OnDestroy {
                     if (!r.data?.customer) { this.error = 'Geen gegevens gevonden.'; this.loading = false; return; }
                     this.pricingPlansService.setPlanColors(plans.data ?? []);
                     this.customer = r.data.customer;
-                    const invoices = (r.data.invoices ?? []).map(inv => this.toInvoice(inv));
+                    const invoices = (r.data.invoices ?? [])
+                        .map(inv => this.toInvoice(inv))
+                        .sort((a, b) => b.issueDate.getTime() - a.issueDate.getTime());
                     this.groups = (this.customer.locations ?? []).map((location, index) => ({
                         location,
                         websites: (this.customer!.websites ?? []).filter(w => (w.invoiceLocationIndex ?? 0) === index),
@@ -157,6 +169,45 @@ export class PortalMyCompanyComponent implements OnInit, OnDestroy {
 
     showMore(group: LocationGroup, section: ListSection): void {
         group.visible[section] += PAGE_SIZE;
+    }
+
+    trafficState(website: CustomerWebsite): TrafficState {
+        let state = this.traffic.get(website.id);
+        if (!state) {
+            state = { open: false, loading: false, range: '7d', points: [] };
+            this.traffic.set(website.id, state);
+        }
+        return state;
+    }
+
+    toggleTraffic(website: CustomerWebsite): void {
+        const state = this.trafficState(website);
+        state.open = !state.open;
+        if (state.open && !state.points.length) this.loadTraffic(website, state.range);
+    }
+
+    onTrafficRangeChange(website: CustomerWebsite, range: TrafficRange): void {
+        const state = this.trafficState(website);
+        state.range = range;
+        this.loadTraffic(website, range);
+    }
+
+    private loadTraffic(website: CustomerWebsite, range: TrafficRange): void {
+        const state = this.trafficState(website);
+        state.loading = true;
+        const customerId = this.companyContextService.selectedCustomerId$.value;
+        this.portalService.getWebsiteTraffic(website.id, range, customerId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: res => {
+                    state.points = res.data?.points ?? [];
+                    state.loading = false;
+                },
+                error: () => {
+                    state.points = [];
+                    state.loading = false;
+                }
+            });
     }
 
     private formatPeriod(start: Date, end: Date, freq: string): string {

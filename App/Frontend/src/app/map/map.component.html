@@ -169,9 +169,6 @@
                             <span class="map-sidebar-website-type" [style.background]="getBadgeStyle(website.subscriptionType).background" [style.color]="getBadgeStyle(website.subscriptionType).color">
                                 {{ website.subscriptionType }}
                             </span>
-                            <span class="map-sidebar-website-visitors" *ngIf="website.visitors !== undefined" [title]="'MAP.TRANSLATE14' | translate">
-                                {{ website.visitors | number }} visits
-                            </span>
                         </div>
                     </div>
                     <button class="map-sidebar-website-button cursor-pointer" (click)="openWebsite(website.url)">

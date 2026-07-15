@@ -79,13 +79,6 @@ export interface Customer {
     agreementSignature?: string | null;
 }
 
-export interface MetricsResponse {
-    success:   boolean;
-    domain:    string;
-    visitors:  number;
-    timestamp: string;
-}
-
 export interface CustomersResponse {
     success: boolean;
     data:    Customer[];
@@ -94,8 +87,7 @@ export interface CustomersResponse {
 
 @Injectable({ providedIn: 'root' })
 export class CustomersService {
-    private readonly apiUrl     = `${environment.eliasdhApiUrl}/api/v1/customers`;
-    private readonly metricsUrl = `${environment.eliasdhApiUrl}/api/v1/metrics`;
+    private readonly apiUrl = `${environment.eliasdhApiUrl}/api/v1/customers`;
 
     constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -143,10 +135,5 @@ export class CustomersService {
             { signature },
             { headers: this.getAuthHeaders() }
         );
-    }
-
-    getVisitorCount(domain: string): Observable<MetricsResponse> {
-        const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/\/$/, '');
-        return this.http.get<MetricsResponse>(`${this.metricsUrl}/visitors/${cleanDomain}`, { headers: this.getHeaders() });
     }
 }
