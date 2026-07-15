@@ -4,9 +4,9 @@
     * @since 01/01/2025
 **/
 
-import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef, PLATFORM_ID, inject } from '@angular/core';
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { LanguageService } from '../../services/language.service';
 
@@ -32,11 +32,14 @@ export class ContactBarComponent implements OnInit {
         ]
     };
 
+    private readonly platformId = inject(PLATFORM_ID);
+
     constructor(private languageService: LanguageService, private translate: TranslateService, private router: Router, private elementRef: ElementRef) { }
 
     ngOnInit(): void {
         this.languageService.checkAndSetLanguage();
-        this.currentLanguage = this.translate.currentLang || localStorage.getItem('language') || 'nl';
+        const storedLanguage = isPlatformBrowser(this.platformId) ? localStorage.getItem('language') : null;
+        this.currentLanguage = this.translate.currentLang || storedLanguage || 'nl';
     }
 
     get isLoginPage(): boolean {
@@ -45,7 +48,7 @@ export class ContactBarComponent implements OnInit {
 
     changeLanguage(languageCode: string) {
         this.translate.use(languageCode);
-        localStorage.setItem('language', languageCode);
+        if (isPlatformBrowser(this.platformId)) localStorage.setItem('language', languageCode);
         this.currentLanguage = languageCode;
         this.dropdownOpen = false;
     }

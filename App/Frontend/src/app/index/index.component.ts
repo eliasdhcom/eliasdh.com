@@ -8,7 +8,7 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LanguageService } from '../services/language.service';
 import { SharedModule } from '../shared/shared.module';
 import { CustomersService, Customer } from '../services/customers.service';
@@ -139,6 +139,14 @@ export class IndexComponent implements OnInit, OnDestroy {
         return [...this.trustedClients, ...this.trustedClients, ...this.trustedClients, ...this.trustedClients];
     }
 
+    // Kept off the anchor's href (which stays "/map") so search engines never
+    // discover/index a distinct URL per customer; the query param is only ever
+    // added via this client-side navigation.
+    goToClientOnMap(event: Event, clientId: string): void {
+        event.preventDefault();
+        this.router.navigate(['/map'], { queryParams: { customerId: clientId } });
+    }
+
 
     teamMembers: TeamMember[] = [
         {
@@ -188,7 +196,8 @@ export class IndexComponent implements OnInit, OnDestroy {
         private languageService: LanguageService,
         private translate: TranslateService,
         private customersService: CustomersService,
-        private pricingPlansService: PricingPlansService
+        private pricingPlansService: PricingPlansService,
+        private router: Router
     ) { }
 
     ngOnInit(): void {

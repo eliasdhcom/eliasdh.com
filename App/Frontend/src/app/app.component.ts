@@ -4,11 +4,11 @@
     * @since 01/01/2025
 **/
 
-import { Component, inject, Inject } from '@angular/core';
+import { Component, inject, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { filter, map } from 'rxjs/operators';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieConsentComponent } from './shared/cookie-consent/cookie-consent.component';
 import { ThemeService } from './services/theme.service';
@@ -27,15 +27,17 @@ export class AppComponent {
     private metaService = inject(Meta);
     private translate = inject(TranslateService);
     private themeService = inject(ThemeService);
+    private platformId = inject(PLATFORM_ID);
 
     private defaultDescription = 'Welcome to EliasDH, a company that offers hosting services, web development, and tailored IT solutions for businesses and individuals.';
 
     constructor(@Inject(DOCUMENT) private document: Document) {
         this.themeService.initTheme();
-        const lang = localStorage.getItem('language') || 'nl';
+        const isBrowser = isPlatformBrowser(this.platformId);
+        const lang = (isBrowser ? localStorage.getItem('language') : null) || 'nl';
         this.translate.setDefaultLang(lang);
         this.translate.use(lang);
-        this.translate.onLangChange.subscribe(e => localStorage.setItem('language', e.lang));
+        if (isBrowser) this.translate.onLangChange.subscribe(e => localStorage.setItem('language', e.lang));
         this.router.events.pipe(
             filter(event => event instanceof NavigationEnd),
             map(() => {
@@ -43,11 +45,13 @@ export class AppComponent {
                 while (route.firstChild) {
                     route = route.firstChild;
                 }
+                const hasUiStateQueryParams = Object.keys(route.snapshot.queryParams).length > 0;
+                const defaultRobots = route.snapshot.data['robots'] || 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
                 return {
                     title: route.snapshot.data['title'] || 'EliasDH',
                     description: route.snapshot.data['description'] || this.defaultDescription,
                     canonical: route.snapshot.data['canonical'] || 'https://eliasdh.com',
-                    robots: route.snapshot.data['robots'] || 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+                    robots: hasUiStateQueryParams ? 'noindex, follow' : defaultRobots
                 };
             })
         ).subscribe(({ title, description, canonical, robots }) => {

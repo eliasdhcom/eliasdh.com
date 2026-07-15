@@ -193,7 +193,7 @@
                 <section class="index-trusted-clients-logos">
                     <ng-container *ngFor="let client of trustedClientsDisplay">
                         <span class="client-logo-wrapper">
-                            <a [routerLink]="['/map']" [queryParams]="{customerId: client.id}" class="cursor-pointer">
+                            <a routerLink="/map" (click)="goToClientOnMap($event, client.id)" class="cursor-pointer">
                                 <img [src]="client.logo" [alt]="client.name" draggable="false">
                             </a>
                         </span>

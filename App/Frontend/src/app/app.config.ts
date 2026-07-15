@@ -10,6 +10,7 @@ import { Title, Meta, provideClientHydration, withEventReplay } from '@angular/p
 import { ApplicationConfig } from "@angular/core";
 import { HttpClient, provideHttpClient, withFetch } from "@angular/common/http";
 import { TranslateLoader, provideTranslateService } from "@ngx-translate/core";
+import { TransferState } from "@angular/core";
 import { HttpLoaderFactory } from "../translate-loader";
 
 export const appConfig: ApplicationConfig = {
@@ -22,7 +23,7 @@ export const appConfig: ApplicationConfig = {
             loader: {
                 provide: TranslateLoader,
                 useFactory: HttpLoaderFactory,
-                deps: [HttpClient]
+                deps: [HttpClient, TransferState]
             }
         }),
         Title,
