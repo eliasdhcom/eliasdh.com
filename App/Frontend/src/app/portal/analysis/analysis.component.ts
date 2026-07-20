@@ -14,7 +14,6 @@ import { UsersService, PortalUser } from '../../services/users.service';
 import { Subject, forkJoin } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-const DOMAIN_EXCL = 8.26;
 const TAX_RATE    = 0.20;
 const WORK_HOURS  = 2080;
 const DAYS_YEAR   = 365;
@@ -90,7 +89,6 @@ export class PortalAnalysisComponent implements OnInit, OnDestroy {
                 if (website.payment > 0 && !isFree && website.frequency !== 'one-time') {
                     annualExcl += Math.max(0, website.payment - website.discount) * 12;
                 }
-                if (!isFree) annualExcl += DOMAIN_EXCL;
             }
         }
 
