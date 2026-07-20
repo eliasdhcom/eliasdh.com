@@ -4,72 +4,40 @@
         <div class="analysis-skeleton" *ngFor="let i of [1,2,3,4,5]"></div>
     </div>
     <ng-container *ngIf="!loading">
-        <div class="analysis-section">
-            <div class="analysis-section-header">
+        <div class="analysis-highlight">
+            <div class="analysis-section-header analysis-section-header--collapsible cursor-pointer" (click)="toggleSection('overview')">
                 <h2 class="analysis-section-title">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <line x1="12" y1="1" x2="12" y2="23"/>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
                     </svg>
-                    {{'PORTAL.ANALYSIS.REVENUE_TITLE'|translate}}
+                    {{'PORTAL.ANALYSIS.HIGHLIGHT_TITLE'|translate}}
                 </h2>
-                <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.REVENUE_SUB'|translate}}</span>
+                <button class="analysis-collapse-btn cursor-pointer" type="button" [class.analysis-collapse-btn--collapsed]="collapsed.overview" [title]="(collapsed.overview ? 'PORTAL.ANALYSIS.EXPAND_SECTION' : 'PORTAL.ANALYSIS.COLLAPSE_SECTION')|translate">
+                    <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline class="cursor-pointer" points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
             </div>
-            <div class="analysis-period-grid">
-                <div class="analysis-period-card" [class.analysis-period-card--month]="p.divisor === 12" *ngFor="let p of periods">
-                    <span class="analysis-period-label">{{p.label}}</span>
-                    <span class="analysis-period-note">{{p.note}}</span>
-                    <div class="analysis-period-values">
-                        <div class="analysis-period-row">
-                            <span class="analysis-period-tag analysis-tag--revenue">{{'PORTAL.ANALYSIS.REVENUE_EXCL'|translate}}</span>
-                            <span class="analysis-period-amount">{{fmt(revenueFor(p.divisor))}}</span>
-                        </div>
-                        <div class="analysis-period-row">
-                            <span class="analysis-period-tag analysis-tag--incl">{{'PORTAL.ANALYSIS.REVENUE_INCL'|translate}}</span>
-                            <span class="analysis-period-amount analysis-amount--incl">{{fmt(revenueInclFor(p.divisor))}}</span>
-                        </div>
+            <div class="analysis-highlight-grid" *ngIf="!collapsed.overview">
+                <div class="analysis-highlight-col analysis-highlight-col--revenue">
+                    <span class="analysis-highlight-col-title">{{'PORTAL.ANALYSIS.HIGHLIGHT_REVENUE'|translate}}</span>
+                    <div class="analysis-highlight-row" *ngFor="let p of periods">
+                        <span class="analysis-highlight-row-label">{{p.label}}</span>
+                        <span class="analysis-highlight-row-value">{{fmt(revenueFor(p.divisor))}}</span>
+                    </div>
+                </div>
+                <div class="analysis-highlight-col analysis-highlight-col--profit">
+                    <span class="analysis-highlight-col-title">{{'PORTAL.ANALYSIS.HIGHLIGHT_PROFIT'|translate}}</span>
+                    <div class="analysis-highlight-row" *ngFor="let p of periods">
+                        <span class="analysis-highlight-row-label">{{p.label}}</span>
+                        <span class="analysis-highlight-row-value" [class.analysis-amount--negative]="netFor(p.divisor) < 0">{{fmt(netFor(p.divisor))}}</span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="analysis-section">
-            <div class="analysis-section-header">
-                <h2 class="analysis-section-title">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
-                        <polyline points="16 7 22 7 22 13"/>
-                    </svg>
-                    {{'PORTAL.ANALYSIS.PROFIT_TITLE'|translate}}
-                </h2>
-                <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.PROFIT_SUB'|translate}}</span>
-            </div>
-            <div class="analysis-period-grid">
-                <div class="analysis-period-card" [class.analysis-period-card--month]="p.divisor === 12" *ngFor="let p of periods">
-                    <span class="analysis-period-label">{{p.label}}</span>
-                    <span class="analysis-period-note">{{p.note}}</span>
-                    <div class="analysis-period-values">
-                        <div class="analysis-period-row">
-                            <span class="analysis-period-tag analysis-tag--gross">{{'PORTAL.ANALYSIS.GROSS'|translate}}</span>
-                            <span class="analysis-period-amount" [class.analysis-amount--positive]="grossFor(p.divisor) >= 0" [class.analysis-amount--negative]="grossFor(p.divisor) < 0">
-                                {{fmt(grossFor(p.divisor))}}
-                            </span>
-                        </div>
-                        <div class="analysis-period-row">
-                            <span class="analysis-period-tag analysis-tag--tax">{{'PORTAL.ANALYSIS.TAX'|translate}}</span>
-                            <span class="analysis-period-amount analysis-amount--tax">−{{fmt(taxFor(p.divisor))}}</span>
-                        </div>
-                        <div class="analysis-period-row analysis-period-row--net">
-                            <span class="analysis-period-tag analysis-tag--net">{{'PORTAL.ANALYSIS.NET'|translate}}</span>
-                            <span class="analysis-period-amount analysis-amount--net" [class.analysis-amount--positive]="netFor(p.divisor) >= 0" [class.analysis-amount--negative]="netFor(p.divisor) < 0">
-                                {{fmt(netFor(p.divisor))}}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="analysis-section">
-            <div class="analysis-section-header">
+            <div class="analysis-section-header analysis-section-header--collapsible cursor-pointer" (click)="toggleSection('costs')">
                 <h2 class="analysis-section-title">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <rect x="2" y="3" width="20" height="14" rx="2"/>
@@ -78,15 +46,20 @@
                     </svg>
                     {{'PORTAL.ANALYSIS.COSTS_TITLE'|translate}}
                 </h2>
-                <div class="analysis-section-sub-group">
+                <div class="analysis-section-sub-group" *ngIf="!collapsed.costs">
                     <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.FIXED'|translate}}: {{fmt(totalAnnualFixedCosts)}}{{'PORTAL.ANALYSIS.PER_YEAR'|translate}}</span>
                     <span class="analysis-section-sub-sep">·</span>
                     <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.VARIABLE'|translate}}: {{fmt(totalAnnualVariableCosts)}}{{'PORTAL.ANALYSIS.PER_YEAR'|translate}}</span>
                     <span class="analysis-section-sub-sep">·</span>
                     <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.TOTAL'|translate}}: {{fmt(totalAnnualCosts)}}{{'PORTAL.ANALYSIS.PER_YEAR'|translate}}</span>
                 </div>
+                <button class="analysis-collapse-btn cursor-pointer" type="button" [class.analysis-collapse-btn--collapsed]="collapsed.costs" [title]="(collapsed.costs ? 'PORTAL.ANALYSIS.EXPAND_SECTION' : 'PORTAL.ANALYSIS.COLLAPSE_SECTION')|translate">
+                    <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline class="cursor-pointer" points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
             </div>
-            <div class="analysis-costs-table">
+            <div class="analysis-costs-table" *ngIf="!collapsed.costs">
                 <div class="analysis-costs-row" [class.analysis-costs-row--saving]="isSaving(c.id)" *ngFor="let c of costs; trackBy: trackById">
                     <input class="analysis-input analysis-input--name cursor-text" [(ngModel)]="c.name" [placeholder]="'PORTAL.ANALYSIS.COST_NAME'|translate" (blur)="saveCost(c)"/>
                     <div class="analysis-costs-controls">
@@ -124,7 +97,7 @@
             </div>
         </div>
         <div class="analysis-section">
-            <div class="analysis-section-header">
+            <div class="analysis-section-header analysis-section-header--collapsible cursor-pointer" (click)="toggleSection('payroll')">
                 <h2 class="analysis-section-title">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -134,16 +107,21 @@
                     </svg>
                     {{'PORTAL.ANALYSIS.PAYROLL_TITLE'|translate}}
                 </h2>
-                <div class="analysis-section-sub-group">
+                <div class="analysis-section-sub-group" *ngIf="!collapsed.payroll">
                     <span class="analysis-section-sub">{{employees.length}} {{'PORTAL.ANALYSIS.PAYROLL_PERSONS'|translate}}</span>
                     <span class="analysis-section-sub-sep" *ngIf="employees.length > 0">·</span>
                     <span class="analysis-section-sub" *ngIf="employees.length > 0">{{'PORTAL.ANALYSIS.PAYROLL_TOTAL'|translate}}: {{fmt(totalAnnualPayrollCosts)}}{{'PORTAL.ANALYSIS.PER_YEAR'|translate}}</span>
                 </div>
+                <button class="analysis-collapse-btn cursor-pointer" type="button" [class.analysis-collapse-btn--collapsed]="collapsed.payroll" [title]="(collapsed.payroll ? 'PORTAL.ANALYSIS.EXPAND_SECTION' : 'PORTAL.ANALYSIS.COLLAPSE_SECTION')|translate">
+                    <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline class="cursor-pointer" points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
             </div>
-            <div class="analysis-payroll-note" *ngIf="employees.length === 0">
+            <div class="analysis-payroll-note" *ngIf="employees.length === 0 && !collapsed.payroll">
                 {{'PORTAL.ANALYSIS.PAYROLL_EMPTY'|translate}}
             </div>
-            <div class="analysis-payroll-table" *ngIf="employees.length > 0">
+            <div class="analysis-payroll-table" *ngIf="employees.length > 0 && !collapsed.payroll">
                 <div class="analysis-payroll-header">
                     <span>{{'PORTAL.ANALYSIS.PAYROLL_NAME'|translate}}</span>
                     <span>{{'PORTAL.ANALYSIS.PAYROLL_ROLE'|translate}}</span>
@@ -195,7 +173,7 @@
             </div>
         </div>
         <div class="analysis-section">
-            <div class="analysis-section-header">
+            <div class="analysis-section-header analysis-section-header--collapsible cursor-pointer" (click)="toggleSection('summary')">
                 <h2 class="analysis-section-title">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <circle cx="12" cy="12" r="10"/>
@@ -204,9 +182,16 @@
                     </svg>
                     {{'PORTAL.ANALYSIS.SUMMARY_TITLE'|translate}}
                 </h2>
-                <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.SUMMARY_SUB'|translate}}</span>
+                <div class="analysis-section-sub-group" *ngIf="!collapsed.summary">
+                    <span class="analysis-section-sub">{{'PORTAL.ANALYSIS.SUMMARY_SUB'|translate}}</span>
+                </div>
+                <button class="analysis-collapse-btn cursor-pointer" type="button" [class.analysis-collapse-btn--collapsed]="collapsed.summary" [title]="(collapsed.summary ? 'PORTAL.ANALYSIS.EXPAND_SECTION' : 'PORTAL.ANALYSIS.COLLAPSE_SECTION')|translate">
+                    <svg class="cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline class="cursor-pointer" points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
             </div>
-            <div class="analysis-summary-grid">
+            <div class="analysis-summary-grid" *ngIf="!collapsed.summary">
                 <div class="analysis-summary-card analysis-summary-card--revenue">
                     <span class="analysis-summary-label">{{'PORTAL.ANALYSIS.SUMMARY_REVENUE'|translate}}</span>
                     <span class="analysis-summary-value">{{fmt(revenueExcl)}}</span>

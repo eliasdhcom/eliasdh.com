@@ -62,6 +62,109 @@
     gap: 8px;
 }
 
+.analysis-section-header--collapsible {
+    position: relative;
+    padding-right: 42px;
+    user-select: none;
+}
+
+.analysis-collapse-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(128,128,128,.18);
+    border-radius: 8px;
+    background: rgba(128,128,128,.08);
+    color: var(--secondary);
+    flex-shrink: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transition: background .15s, color .15s, border-color .15s;
+}
+
+.analysis-collapse-btn:hover {
+    background: rgba(128,128,128,.15);
+    border-color: rgba(128,128,128,.3);
+    color: var(--text);
+}
+
+.analysis-collapse-btn svg {
+    width: 17px;
+    height: 17px;
+    transition: transform .2s;
+}
+
+.analysis-collapse-btn--collapsed svg {
+    transform: rotate(-90deg);
+}
+
+.analysis-highlight {
+    background: var(--background);
+    border: 1px solid rgba(128,128,128,.15);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.analysis-highlight-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.analysis-highlight-col {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(128,128,128,.12);
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(128,128,128,.03);
+}
+
+.analysis-highlight-col-title {
+    padding: 10px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    background: rgba(128,128,128,.06);
+    border-bottom: 1px solid rgba(128,128,128,.1);
+}
+
+.analysis-highlight-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 16px;
+    border-top: 1px solid rgba(128,128,128,.1);
+}
+
+.analysis-highlight-row:first-of-type {
+    border-top: none;
+}
+
+.analysis-highlight-row-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--secondary);
+    white-space: nowrap;
+}
+
+.analysis-highlight-row-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+.analysis-highlight-row-value.analysis-amount--negative {
+    color: #dc2626;
+}
+
 .analysis-section-title {
     display: flex;
     align-items: center;
@@ -100,89 +203,9 @@
     opacity: .45;
 }
 
-.analysis-period-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
-}
-
-.analysis-period-card {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 14px;
-    border: 1px solid rgba(128,128,128,.12);
-    border-radius: 10px;
-    background: rgba(128,128,128,.03);
-    transition: border-color .15s, background .15s;
-}
-
-.analysis-period-card:hover {
-    border-color: rgba(128,128,128,.22);
-    background: rgba(128,128,128,.06);
-}
-
-.analysis-period-label {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text);
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-}
-
-.analysis-period-note {
-    font-size: 10px;
-    color: var(--secondary);
-    margin-top: -6px;
-}
-
-.analysis-period-values {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.analysis-period-row {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.analysis-period-row--net {
-    padding-top: 6px;
-    border-top: 1px solid rgba(128,128,128,.12);
-    margin-top: 2px;
-}
-
-.analysis-period-tag {
-    font-size: 9px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    padding: 1px 5px;
-    border-radius: 4px;
-    display: inline-block;
-    width: fit-content;
-}
-
-.analysis-tag--revenue { background: color-mix(in srgb, var(--primary) 10%, transparent); color: var(--primary); }
-.analysis-tag--incl    { background: rgba(245,158,11,.10); color: #d97706; }
-.analysis-tag--gross   { background: rgba(16,185,129,.10); color: #059669; }
-.analysis-tag--tax     { background: rgba(239,68,68,.10); color: #dc2626; }
-.analysis-tag--net     { background: color-mix(in srgb, var(--primary) 15%, transparent); color: var(--primary); }
-
-.analysis-period-amount {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-    white-space: nowrap;
-}
-
-.analysis-amount--incl     { color: #d97706; }
 .analysis-amount--tax      { color: #dc2626; }
 .analysis-amount--positive { color: #059669; }
 .analysis-amount--negative { color: #dc2626; }
-.analysis-amount--net      { font-weight: 800; }
 
 .analysis-costs-table {
     display: flex;
@@ -550,9 +573,6 @@
 
 /* Media Queries */
 @media (max-width: 1100px) {
-    .analysis-period-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
     .analysis-summary-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -572,9 +592,6 @@
 }
 
 @media (max-width: 700px) {
-    .analysis-period-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
     .analysis-section-header {
         flex-direction: column;
         align-items: flex-start;
@@ -633,13 +650,13 @@
     }
 }
 
-@media (max-width: 460px) {
-    .analysis-period-grid {
+@media (max-width: 520px) {
+    .analysis-highlight-grid {
         grid-template-columns: 1fr;
     }
-    .analysis-period-card:not(.analysis-period-card--month) {
-        display: none;
-    }
+}
+
+@media (max-width: 460px) {
     .analysis-summary-grid {
         grid-template-columns: 1fr;
     }

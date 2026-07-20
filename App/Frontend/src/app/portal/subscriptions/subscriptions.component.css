@@ -476,6 +476,23 @@
     color: var(--secondary);
 }
 
+.subscriptions-mobile-url-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.subscriptions-mobile-url-row .subscriptions-meta-url {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.subscriptions-mobile-url-row .subscriptions-traffic-toggle {
+    flex-shrink: 0;
+}
+
 .subscriptions-toggle {
     display: flex;
     align-items: center;

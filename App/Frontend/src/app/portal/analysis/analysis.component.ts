@@ -14,7 +14,6 @@ import { UsersService, PortalUser } from '../../services/users.service';
 import { Subject, forkJoin } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-const VAT_RATE    = 0.21;
 const DOMAIN_EXCL = 8.26;
 const TAX_RATE    = 0.20;
 const WORK_HOURS  = 2080;
@@ -32,7 +31,6 @@ const RATES_DEFAULT = { rszEmployee: 13.07, bv: 25, rszEmployer: 25 };
 export class PortalAnalysisComponent implements OnInit, OnDestroy {
     loading      = true;
     revenueExcl  = 0;
-    revenueIncl  = 0;
 
     costs: CostItem[]  = [];
     employees: PortalUser[] = [];
@@ -41,6 +39,9 @@ export class PortalAnalysisComponent implements OnInit, OnDestroy {
     addingCost = false;
 
     rates = { ...RATES_DEFAULT };
+
+    collapsed: Record<'overview' | 'costs' | 'payroll' | 'summary', boolean> =
+        { overview: false, costs: false, payroll: false, summary: false };
 
     private destroy$ = new Subject<void>();
 
@@ -94,7 +95,6 @@ export class PortalAnalysisComponent implements OnInit, OnDestroy {
         }
 
         this.revenueExcl = annualExcl;
-        this.revenueIncl = annualExcl * (1 + VAT_RATE);
     }
 
     get totalAnnualCosts(): number {
@@ -150,6 +150,10 @@ export class PortalAnalysisComponent implements OnInit, OnDestroy {
 
     isSaving(id: number): boolean { return this.savingIds.has(id); }
 
+    toggleSection(key: 'overview' | 'costs' | 'payroll' | 'summary'): void {
+        this.collapsed[key] = !this.collapsed[key];
+    }
+
     private get rszEmployeeFrac(): number  { return this.rates.rszEmployee / 100; }
     private get bvFrac(): number           { return this.rates.bv           / 100; }
     private get rszEmployerFrac(): number  { return this.rates.rszEmployer  / 100; }
@@ -183,18 +187,15 @@ export class PortalAnalysisComponent implements OnInit, OnDestroy {
     get taxYear(): number          { return Math.max(0, this.grossProfitYear) * TAX_RATE; }
     get netProfitYear(): number    { return this.grossProfitYear - this.taxYear; }
 
-    revenueFor(divisor: number): number     { return this.revenueExcl / divisor; }
-    revenueInclFor(divisor: number): number { return this.revenueIncl / divisor; }
-    grossFor(divisor: number): number       { return this.grossProfitYear / divisor; }
-    taxFor(divisor: number): number         { return this.taxYear / divisor; }
-    netFor(divisor: number): number         { return this.netProfitYear / divisor; }
+    revenueFor(divisor: number): number { return this.revenueExcl / divisor; }
+    netFor(divisor: number): number     { return this.netProfitYear / divisor; }
 
     readonly periods = [
-        { label: 'Per uur',      note: `${WORK_HOURS} u/jaar`,  divisor: WORK_HOURS },
-        { label: 'Per dag',      note: `${DAYS_YEAR} dgn/jaar`, divisor: DAYS_YEAR  },
-        { label: 'Per maand',    note: '12 mnd/jaar',           divisor: 12         },
-        { label: 'Per kwartaal', note: '4 kw/jaar',             divisor: 4          },
-        { label: 'Per jaar',     note: 'volledig boekjaar',     divisor: 1          }
+        { label: 'Per uur',      divisor: WORK_HOURS },
+        { label: 'Per dag',      divisor: DAYS_YEAR  },
+        { label: 'Per maand',    divisor: 12         },
+        { label: 'Per kwartaal', divisor: 4          },
+        { label: 'Per jaar',     divisor: 1          }
     ];
 
     fmt(n: number): string {
