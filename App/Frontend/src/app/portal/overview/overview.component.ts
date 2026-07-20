@@ -11,9 +11,9 @@ import { CustomersService, Customer } from '../../services/customers.service';
 import { InvoicesService, InvoiceStatus } from '../../services/invoices.service';
 import { InvoiceBuilderService } from '../../services/invoice-builder.service';
 import { PricingPlansService } from '../../services/pricing-plans.service';
-import { StatusService } from '../../services/status.service';
-import { Subject, forkJoin, of, interval } from 'rxjs';
-import { takeUntil, catchError, switchMap, startWith } from 'rxjs/operators';
+import { ClusterComponent } from '../../shared/cluster/cluster.component';
+import { Subject, forkJoin, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
 
 interface MonthBar {
     label: string;
@@ -37,7 +37,7 @@ const MONTH_LABELS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct
 @Component({
     selector: 'app-portal-overview',
     standalone: true,
-    imports: [CommonModule, TranslatePipe],
+    imports: [CommonModule, TranslatePipe, ClusterComponent],
     templateUrl: './overview.component.html',
     styleUrls: ['./overview.component.css']
 })
@@ -63,10 +63,7 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
     chartMax              = 1;
     typeStats: TypeStat[] = [];
 
-    clusterLoading = true;
-    clusterMemoryStats: { percent: number; formatted: string } = { percent: 0, formatted: 'N/A' };
-    clusterCpuStats:    { percent: number; formatted: string } = { percent: 0, formatted: 'N/A' };
-    clusterStorageTotal = 'N/A';
+    relevantNamespaces: string[] = [];
 
     private destroy$ = new Subject<void>();
 
@@ -74,11 +71,10 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         private customersService: CustomersService,
         private invoicesService: InvoicesService,
         private invoiceBuilderService: InvoiceBuilderService,
-        readonly pricingPlansService: PricingPlansService,
-        private statusService: StatusService
+        readonly pricingPlansService: PricingPlansService
     ) {}
 
-    ngOnInit(): void  { this.loadData(); this.loadClusterData(); }
+    ngOnInit(): void  { this.loadData(); }
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
@@ -106,37 +102,6 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         });
     }
 
-    loadClusterData(): void {
-        this.clusterLoading = true;
-        interval(15000).pipe(
-            startWith(0),
-            switchMap(() => this.statusService.getStatus().pipe(catchError(() => of(null)))),
-            takeUntil(this.destroy$)
-        ).subscribe(response => {
-            if (response?.data?.nodes?.nodes) {
-                const nodes = response.data.nodes.nodes;
-                let memUsed = 0, memCap = 0, cpuUsed = 0, cpuCap = 0, storageCap = 0;
-                for (const node of nodes) {
-                    if (node.usage?.memoryUsed)          memUsed    += this.statusService.parseMemory(node.usage.memoryUsed);
-                    if (node.resources?.memoryCapacity)  memCap     += this.statusService.parseMemory(node.resources.memoryCapacity);
-                    if (node.usage?.cpuUsed)             cpuUsed    += this.statusService.parseCpu(node.usage.cpuUsed);
-                    if (node.resources?.cpuCapacity)     cpuCap     += this.statusService.parseCpu(node.resources.cpuCapacity);
-                    if (node.resources?.storageCapacity) storageCap += this.statusService.parseMemory(node.resources.storageCapacity);
-                }
-                this.clusterMemoryStats = {
-                    percent:   memCap > 0 ? Math.round((memUsed / memCap) * 100) : 0,
-                    formatted: `${this.statusService.formatBytes(memUsed)} / ${this.statusService.formatBytes(memCap)}`
-                };
-                this.clusterCpuStats = {
-                    percent:   cpuCap > 0 ? Math.round((cpuUsed / cpuCap) * 100) : 0,
-                    formatted: `${(cpuUsed * 1000).toFixed(0)}m / ${(cpuCap * 1000).toFixed(0)}m`
-                };
-                this.clusterStorageTotal = storageCap > 0 ? this.statusService.formatBytes(storageCap) : 'N/A';
-            }
-            this.clusterLoading = false;
-        });
-    }
-
     private computeStats(customers: Customer[], invoiceStatuses: InvoiceStatus[], allPlans: { name: string }[] = []): void {
         const now          = new Date();
         const currentYear  = now.getFullYear();
@@ -161,6 +126,9 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         this.liveCount     = allWebsites.filter(isActuallyLive).length;
         this.inactiveCount = allWebsites.length - this.liveCount;
         this.totalWebsites = allWebsites.length;
+        this.relevantNamespaces = Array.from(new Set(
+            allWebsites.filter(isActuallyLive).map(w => this.urlToNamespace(w.url))
+        ));
 
         let mrrTotal = 0;
         for (const customer of nonHQ) {
@@ -269,6 +237,14 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
         return type.toLowerCase().includes('free');
     }
 
+    private urlToNamespace(url: string): string {
+        return url
+            .replace(/^https?:\/\//i, '')
+            .replace(/\/.*$/, '')
+            .replace(/\./g, '')
+            .toLowerCase();
+    }
+
     formatCurrency(amount: number): string {
         return new Intl.NumberFormat('nl-BE', { style: 'currency', currency: 'EUR' }).format(amount);
     }
@@ -288,11 +264,5 @@ export class PortalOverviewComponent implements OnInit, OnDestroy {
     get chartYearLabel(): string {
         const y = new Date().getFullYear();
         return new Date().getMonth() + 6 > 11 ? `${y} – ${y + 1}` : String(y);
-    }
-
-    getUsageClass(pct: number): string {
-        if (pct < 70) return 'usage-low';
-        if (pct < 90) return 'usage-medium';
-        return 'usage-high';
     }
 }

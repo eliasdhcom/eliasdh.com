@@ -1,0 +1,99 @@
+<!--Author EliasDH Team-->
+<div class="cluster-row">
+    <div class="cluster-card">
+        <div class="cluster-card-header">
+            <h3 class="cluster-card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+                {{'PORTAL.OVERVIEW.CLUSTER_TITLE'|translate}}
+            </h3>
+            <span class="cluster-live-badge" *ngIf="!clusterLoading">
+                <span class="cluster-live-dot"></span>
+                {{'PORTAL.OVERVIEW.CLUSTER_LIVE'|translate}}
+            </span>
+        </div>
+        <div class="cluster-loading" *ngIf="clusterLoading">
+            <div class="cluster-skeleton" style="height:60px"></div>
+            <div class="cluster-skeleton" style="height:60px"></div>
+            <div class="cluster-skeleton" style="height:60px"></div>
+        </div>
+        <div class="cluster-grid" *ngIf="!clusterLoading">
+            <div class="cluster-stat">
+                <div class="cluster-stat-header">
+                    <span class="cluster-stat-name">{{'PORTAL.OVERVIEW.CLUSTER_RAM'|translate}}</span>
+                </div>
+                <span class="cluster-stat-pct" [ngClass]="getUsageClass(clusterMemoryStats.percent)">{{clusterMemoryStats.percent | number:'1.0-0'}}%</span>
+                <div class="cluster-bar-wrap">
+                    <div class="cluster-bar" [ngClass]="getUsageClass(clusterMemoryStats.percent)">
+                        <div class="cluster-fill" [style.width.%]="clusterMemoryStats.percent"></div>
+                    </div>
+                </div>
+                <span class="cluster-detail">{{clusterMemoryStats.formatted}}</span>
+            </div>
+            <div class="cluster-stat">
+                <div class="cluster-stat-header">
+                    <span class="cluster-stat-name">{{'PORTAL.OVERVIEW.CLUSTER_CPU'|translate}}</span>
+                </div>
+                <span class="cluster-stat-pct" [ngClass]="getUsageClass(clusterCpuStats.percent)">{{clusterCpuStats.percent | number:'1.0-0'}}%</span>
+                <div class="cluster-bar-wrap">
+                    <div class="cluster-bar" [ngClass]="getUsageClass(clusterCpuStats.percent)">
+                        <div class="cluster-fill" [style.width.%]="clusterCpuStats.percent"></div>
+                    </div>
+                </div>
+                <span class="cluster-detail">{{clusterCpuStats.formatted}}</span>
+            </div>
+            <div class="cluster-stat cluster-stat--storage">
+                <div class="cluster-stat-header">
+                    <span class="cluster-stat-name">{{'PORTAL.OVERVIEW.CLUSTER_STORAGE'|translate}}</span>
+                </div>
+                <div class="cluster-storage-total">{{clusterStorageTotal}}</div>
+                <span class="cluster-detail">{{'PORTAL.OVERVIEW.CLUSTER_CAPACITY'|translate}}</span>
+            </div>
+        </div>
+        <div class="cluster-nodes-container">
+            <button class="cluster-nodes-toggle cursor-pointer" type="button" (click)="toggleNodes()">
+                <span class="cluster-nodes-toggle-left">
+                    <span class="cluster-nodes-dot" [ngClass]="clusterNodesStatusClass" *ngIf="nodesLoaded"></span>
+                    <span class="cluster-nodes-toggle-title">{{'PORTAL.OVERVIEW.CLUSTER_NODES_TITLE'|translate}}</span>
+                    <span class="cluster-nodes-toggle-count" *ngIf="nodesLoaded">{{nodes.length}}</span>
+                </span>
+                <svg class="cluster-nodes-chevron" [class.cluster-nodes-chevron--open]="nodesExpanded" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9"/>
+                </svg>
+            </button>
+            <div class="cluster-nodes-body" *ngIf="nodesExpanded">
+                <div class="cluster-nodes-loading" *ngIf="nodesLoading">
+                    <div class="cluster-nodes-skeleton"></div>
+                </div>
+                <div class="cluster-nodes-error" *ngIf="!nodesLoading && nodesError">{{'PORTAL.OVERVIEW.CLUSTER_NODES_ERROR'|translate}}</div>
+                <div class="cluster-nodes-list" *ngIf="!nodesLoading && !nodesError">
+                    <div class="cluster-nodes-node" *ngFor="let node of nodes">
+                        <button class="cluster-nodes-node-header cursor-pointer" type="button" (click)="toggleNode(node.name)">
+                            <span class="cluster-nodes-dot" [ngClass]="nodeStatusClass(node.status)"></span>
+                            <span class="cluster-nodes-node-name">{{node.name}}</span>
+                            <span class="cluster-nodes-node-status" [ngClass]="nodeStatusClass(node.status)">{{node.status}}</span>
+                            <span class="cluster-nodes-node-pods">{{relevantPodCount(node.name)}} {{'PORTAL.OVERVIEW.CLUSTER_NODES_PODS'|translate}}</span>
+                            <svg class="cluster-nodes-chevron cluster-nodes-chevron--small" [class.cluster-nodes-chevron--open]="expandedNode === node.name" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </button>
+                        <div class="cluster-nodes-namespaces" *ngIf="expandedNode === node.name">
+                            <div class="cluster-nodes-namespace-row" *ngFor="let ns of namespaceStats(node.name)">
+                                <code class="cluster-nodes-namespace-name">{{ns.namespace}}</code>
+                                <span class="cluster-nodes-namespace-counts">
+                                    <span class="cluster-nodes-count cluster-nodes-count--ok" *ngIf="ns.running > 0">{{ns.running}}</span>
+                                    <span class="cluster-nodes-count cluster-nodes-count--pending" *ngIf="ns.pending > 0">{{ns.pending}}</span>
+                                    <span class="cluster-nodes-count cluster-nodes-count--error" *ngIf="ns.failed > 0">{{ns.failed}}</span>
+                                    <span class="cluster-nodes-count-total">/ {{ns.total}}</span>
+                                </span>
+                            </div>
+                            <p class="cluster-nodes-namespace-empty" *ngIf="namespaceStats(node.name).length === 0">{{'PORTAL.OVERVIEW.CLUSTER_NODES_NO_PODS'|translate}}</p>
+                        </div>
+                    </div>
+                    <p class="cluster-nodes-empty" *ngIf="nodes.length === 0">{{'PORTAL.OVERVIEW.CLUSTER_NODES_EMPTY'|translate}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

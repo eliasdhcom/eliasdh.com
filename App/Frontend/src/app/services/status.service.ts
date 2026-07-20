@@ -162,6 +162,16 @@ export interface PodLogsResponse {
     };
 }
 
+export interface AllPodsResponse {
+    success: boolean;
+    data: {
+        namespace: string;
+        total: number;
+        pods: K8sPod[];
+        timestamp: string;
+    };
+}
+
 export interface StatusResponse {
     success: boolean;
     data: {
@@ -296,6 +306,13 @@ export class StatusService {
         let url = `${this.apiUrl}/namespace/${namespace}/pods/${encodeURIComponent(pod)}/logs?lines=${lines}`;
         if (container) url += `&container=${encodeURIComponent(container)}`;
         return this.http.get<PodLogsResponse>(url, { headers: this.getHeaders() });
+    }
+
+    getAllPods(): Observable<AllPodsResponse> {
+        return this.http.get<AllPodsResponse>(
+            `${this.apiUrl}/pods`,
+            { headers: this.getHeaders() }
+        );
     }
 
 
