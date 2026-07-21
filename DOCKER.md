@@ -7,8 +7,6 @@
 2. [🚀Docker](#🚀docker)
     - [🚀Frontend](#🚀frontend)
     - [🚀Backend](#🚀backend)
-    - [🚀Services](#🚀services)
-      - [🚀AI](#🚀ai)
 
 ## 🚀Docker
 
@@ -47,24 +45,4 @@ sudo docker logs eliasdhcom-backend-container
 sudo docker stop eliasdhcom-backend-container
 sudo docker rm eliasdhcom-backend-container
 sudo docker rmi ghcr.io/eliasdhcom/eliasdhcom-backend:latest
-```
-
-### 🚀Services
-
-#### 🚀AI
-```bash
-sudo docker pull ghcr.io/eliasdhcom/eliasdhcom-ai-service:latest
-sudo docker run --name eliasdhcom-ai-service-container -p 3001:3001 -d ghcr.io/eliasdhcom/eliasdhcom-ai-service:latest
-```
-
-- Check the logs
-```bash
-sudo docker logs eliasdhcom-ai-service-container
-```
-
-- Stop and remove the existing container and image
-```bash
-sudo docker stop eliasdhcom-ai-service-container
-sudo docker rm eliasdhcom-ai-service-container
-sudo docker rmi ghcr.io/eliasdhcom/eliasdhcom-ai-service:latest
 ```
