@@ -5,11 +5,9 @@
 **/
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
-import { AuthService } from './auth.service';
-import type { TrafficPoint, TrafficRange } from './portal.service';
 
 export interface CustomerLocation {
     id?:         number;
@@ -90,17 +88,10 @@ export interface CustomersResponse {
 export class CustomersService {
     private readonly apiUrl = `${environment.eliasdhApiUrl}/api/v1/customers`;
 
-    constructor(private http: HttpClient, private authService: AuthService) {}
+    constructor(private http: HttpClient) {}
 
     private getHeaders(): HttpHeaders {
         return new HttpHeaders({ 'Content-Type': 'application/json', 'x-api-key': environment.eliasdhApiKey });
-    }
-
-    private getAuthHeaders(): HttpHeaders {
-        const token = this.authService.getToken();
-        let h = new HttpHeaders({ 'Content-Type': 'application/json', 'x-api-key': environment.eliasdhApiKey });
-        if (token) h = h.set('Authorization', `Bearer ${token}`);
-        return h;
     }
 
     getAllCustomers(): Observable<CustomersResponse> {
@@ -109,41 +100,5 @@ export class CustomersService {
 
     getCustomerById(id: string): Observable<{ success: boolean; data: Customer }> {
         return this.http.get<{ success: boolean; data: Customer }>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
-    }
-
-    createCustomer(data: Partial<Customer>): Observable<{ success: boolean; data: Customer }> {
-        return this.http.post<{ success: boolean; data: Customer }>(this.apiUrl, data, { headers: this.getAuthHeaders() });
-    }
-
-    updateCustomer(id: string, data: Partial<Customer>): Observable<{ success: boolean; data: Customer }> {
-        return this.http.put<{ success: boolean; data: Customer }>(`${this.apiUrl}/${id}`, data, { headers: this.getAuthHeaders() });
-    }
-
-    deleteCustomer(id: string): Observable<{ success: boolean }> {
-        return this.http.delete<{ success: boolean }>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
-    }
-
-    lookupVat(country: string, vat: string): Observable<{ success: boolean; data: { valid: boolean; name: string; address: string } | null }> {
-        return this.http.get<{ success: boolean; data: { valid: boolean; name: string; address: string } | null }>(
-            `${this.apiUrl}/vat-lookup/${encodeURIComponent(country)}/${encodeURIComponent(vat)}`,
-            { headers: this.getAuthHeaders() }
-        );
-    }
-
-    signAgreement(id: string, signature: string): Observable<{ success: boolean; signedAt: string }> {
-        return this.http.post<{ success: boolean; signedAt: string }>(
-            `${this.apiUrl}/${id}/agreement/sign`,
-            { signature },
-            { headers: this.getAuthHeaders() }
-        );
-    }
-
-    getWebsiteTraffic(websiteId: string, range: TrafficRange):
-        Observable<{ success: boolean; data: { websiteId: string; range: TrafficRange; points: TrafficPoint[] } }> {
-        const params = new HttpParams().set('range', range);
-        return this.http.get<{ success: boolean; data: { websiteId: string; range: TrafficRange; points: TrafficPoint[] } }>(
-            `${this.apiUrl}/websites/${websiteId}/traffic`,
-            { headers: this.getHeaders(), params }
-        );
     }
 }

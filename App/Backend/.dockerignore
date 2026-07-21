@@ -4,10 +4,3 @@
 # @since 01/01/2025        #
 ############################
 # Docker ignore file
-
-node_modules
-.env
-*.db
-*.db-shm
-*.db-wal
-src/database/seed.js

@@ -13,9 +13,6 @@ import { AccessDeniedComponent } from './accessdenied/accessdenied.component';
 import { NotFoundComponent } from './notfound/notfound.component';
 import { MapComponent } from './map/map.component';
 import { StatusComponent } from './status/status.component';
-import { LoginComponent } from './portal/login/login.component';
-import { DashboardComponent } from './portal/dashboard/dashboard.component';
-import { authGuard, loggedInGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     { 
@@ -64,28 +61,6 @@ export const routes: Routes = [
         } 
     },
     {
-        path: 'login',
-        component: LoginComponent,
-        canActivate: [loggedInGuard],
-        data: {
-            title: 'EliasDH - Login',
-            description: 'Sign in to your EliasDH account. Access your hosting services, web development projects, and IT solutions dashboard.',
-            canonical: 'https://eliasdh.com/login',
-            robots: 'noindex, nofollow'
-        }
-    },
-    {
-        path: 'dashboard',
-        component: DashboardComponent,
-        canActivate: [authGuard],
-        data: {
-            title: 'EliasDH - Dashboard',
-            description: 'Access your EliasDH dashboard to manage your hosting services, web development projects, and IT solutions. Monitor your account and services in one place.',
-            canonical: 'https://eliasdh.com/dashboard',
-            robots: 'noindex, nofollow'
-        }
-    },
-    { 
         path: 'domainrented', 
         component: DomainRentedComponent, 
         data: { 

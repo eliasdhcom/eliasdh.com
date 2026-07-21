@@ -7,14 +7,13 @@
 import { Component, OnInit, HostListener, ElementRef, PLATFORM_ID, inject } from '@angular/core';
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
 import { LanguageService } from '../../services/language.service';
 
 @Component({
     selector: 'app-contact-bar',
     templateUrl: './contact-bar.component.html',
     styleUrls: ['./contact-bar.component.css'],
-    imports: [TranslatePipe, CommonModule, RouterLink],
+    imports: [TranslatePipe, CommonModule],
     standalone: true
 })
 
@@ -34,16 +33,12 @@ export class ContactBarComponent implements OnInit {
 
     private readonly platformId = inject(PLATFORM_ID);
 
-    constructor(private languageService: LanguageService, private translate: TranslateService, private router: Router, private elementRef: ElementRef) { }
+    constructor(private languageService: LanguageService, private translate: TranslateService, private elementRef: ElementRef) { }
 
     ngOnInit(): void {
         this.languageService.checkAndSetLanguage();
         const storedLanguage = isPlatformBrowser(this.platformId) ? localStorage.getItem('language') : null;
         this.currentLanguage = this.translate.currentLang || storedLanguage || 'nl';
-    }
-
-    get isLoginPage(): boolean {
-        return this.router.url === '/login';
     }
 
     changeLanguage(languageCode: string) {

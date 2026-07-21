@@ -6,7 +6,6 @@
 1. [📘Table of Contents](#📘table-of-contents)
 2. [🚀Docker](#🚀docker)
     - [🚀Frontend](#🚀frontend)
-    - [🚀Backend](#🚀backend)
 
 ## 🚀Docker
 
@@ -27,22 +26,4 @@ sudo docker logs eliasdhcom-frontend-container
 sudo docker stop eliasdhcom-frontend-container
 sudo docker rm eliasdhcom-frontend-container
 sudo docker rmi ghcr.io/eliasdhcom/eliasdhcom-frontend:latest
-```
-
-### 🚀Backend
-```bash
-sudo docker pull ghcr.io/eliasdhcom/eliasdhcom-backend:latest
-sudo docker run --name eliasdhcom-backend-container -p 3000:3000 -d ghcr.io/eliasdhcom/eliasdhcom-backend:latest
-```
-
-- Check the logs
-```bash
-sudo docker logs eliasdhcom-backend-container
-```
-
-- Stop and remove the existing container and image
-```bash
-sudo docker stop eliasdhcom-backend-container
-sudo docker rm eliasdhcom-backend-container
-sudo docker rmi ghcr.io/eliasdhcom/eliasdhcom-backend:latest
 ```
