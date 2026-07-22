@@ -16,6 +16,15 @@ import { LanguageService } from '../services/language.service';
 
 declare const L: any;
 
+interface LocationSearchResult {
+    customer:       Customer;
+    location:       CustomerLocation | null;
+    lat:            number | null;
+    lng:            number | null;
+    displayName:    string;
+    displayAddress: string;
+}
+
 @Component({
     selector: 'app-map',
     templateUrl: './map.component.html',
@@ -40,7 +49,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     isSidebarOpen: boolean = false;
 
     searchQuery: string = '';
-    filteredCustomers: Customer[] = [];
+    searchResults: LocationSearchResult[] = [];
     isSearchFocused: boolean = false;
 
     userLocation: { lat: number; lng: number } | null = null;
@@ -263,16 +272,47 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
     onSearchInput(): void {
         if (!this.searchQuery.trim()) {
-            this.filteredCustomers = [];
+            this.searchResults = [];
             return;
         }
 
         const query = this.searchQuery.toLowerCase().trim();
-        this.filteredCustomers = this.customers.filter(customer => 
-            customer.name.toLowerCase().includes(query) ||
-            customer.address?.toLowerCase().includes(query) ||
-            customer.vat?.toLowerCase().includes(query)
-        ).slice(0, 5);
+        const results: LocationSearchResult[] = [];
+
+        this.customers.forEach(customer => {
+            const locs = customer.locations?.length
+                ? customer.locations
+                : (customer.latitude && customer.longitude ? [{ latitude: customer.latitude, longitude: customer.longitude } as CustomerLocation] : []);
+
+            locs.forEach(loc => {
+                const displayAddress = loc.street
+                    ? `${loc.street} ${loc.number}, ${loc.postalCode} ${loc.city}`
+                    : (customer.address ?? '');
+
+                const matches =
+                    customer.name.toLowerCase().includes(query) ||
+                    displayAddress.toLowerCase().includes(query) ||
+                    customer.vat?.toLowerCase().includes(query) ||
+                    loc.vat?.toLowerCase().includes(query) ||
+                    loc.name?.toLowerCase().includes(query) ||
+                    loc.city?.toLowerCase().includes(query) ||
+                    loc.street?.toLowerCase().includes(query) ||
+                    loc.postalCode?.toLowerCase().includes(query);
+
+                if (matches) {
+                    results.push({
+                        customer,
+                        location: loc,
+                        lat: loc.latitude ?? null,
+                        lng: loc.longitude ?? null,
+                        displayName: loc.name ? `${customer.name} - ${loc.name}` : customer.name,
+                        displayAddress
+                    });
+                }
+            });
+        });
+
+        this.searchResults = results;
     }
 
     onSearchFocus(): void {
@@ -288,16 +328,16 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         }, 200);
     }
 
-    selectSearchResult(customer: Customer): void {
+    selectSearchResult(result: LocationSearchResult): void {
         this.searchQuery = '';
-        this.filteredCustomers = [];
+        this.searchResults = [];
         this.isSearchFocused = false;
-        this.selectCustomer(customer);
+        this.selectCustomer(result.customer, result.lat ?? undefined, result.lng ?? undefined);
     }
 
     clearSearch(): void {
         this.searchQuery = '';
-        this.filteredCustomers = [];
+        this.searchResults = [];
         this.isSearchFocused = false;
     }
 
