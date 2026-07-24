@@ -37,3 +37,17 @@ jobs:
       - name: Build/Push Frontend Docker Image
         run: |
           docker build --push -t ghcr.io/eliasdhcom/eliasdhcom-frontend:latest ./App/Frontend
+      - name: Notify EliasDH App to restart deployments
+        if: github.event_name == 'push'
+        env:
+          NAMESPACE: eliasdhcom
+          DOMAIN: eliasdh.com
+          IMAGES: |
+            ghcr.io/eliasdhcom/eliasdhcom-frontend:latest
+        run: |
+          IMAGES_JSON=$(printf '%s' "$IMAGES" | jq -R . | jq -sc .)
+          curl -sf -X POST "https://app.eliasdh.com/api/v1/cluster/deploy/restart" \
+            -H "X-API-Key: ${{ secrets.ELIASDH_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -nc --arg ns "$NAMESPACE" --arg domain "$DOMAIN" --argjson images "$IMAGES_JSON" --arg runId "${{ github.run_id }}-${{ github.run_attempt }}" \
+              '{namespace: $ns, domain: $domain, images: $images, runId: $runId}')"
