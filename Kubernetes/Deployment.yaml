@@ -1,0 +1,53 @@
+############################
+# @author EliasDH Team     #
+# @see https://eliasdh.com #
+# @since 01/01/2025        #
+############################
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eliasdhcom-frontend-deployment
+  namespace: eliasdhcom
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: eliasdhcom-frontend
+  template:
+    metadata:
+      labels:
+        app: eliasdhcom-frontend
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: role
+                    operator: In
+                    values:
+                      - compute
+      imagePullSecrets:
+        - name: github-registry
+      containers:
+        - name: eliasdhcom-frontend-container
+          image: "ghcr.io/eliasdhcom/eliasdhcom-frontend:latest"
+          imagePullPolicy: Always
+          env:
+            - name: TZ
+              value: "Europe/Brussels"
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "4000"
+          ports:
+            - containerPort: 4000
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+---

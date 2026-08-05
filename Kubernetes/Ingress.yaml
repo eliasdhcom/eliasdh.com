@@ -1,0 +1,47 @@
+############################
+# @author EliasDH Team     #
+# @see https://eliasdh.com #
+# @since 01/01/2025        #
+############################
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: eliasdhcom-ingress
+  namespace: eliasdhcom
+  annotations:
+    cert-manager.io/issuer: "eliasdhcom-letsencrypt-issuer"
+    nginx.ingress.kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true" # Redirect HTTP to HTTPS
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+      - eliasdh.com
+      secretName: eliasdhcom-tls
+    - hosts:
+      - www.eliasdh.com
+      secretName: wwweliasdhcom-tls
+  rules:
+    - host: eliasdh.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: eliasdhcom-frontend-service
+                port:
+                  number: 80
+    - host: www.eliasdh.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: eliasdhcom-frontend-service
+                port:
+                  number: 80
+---
