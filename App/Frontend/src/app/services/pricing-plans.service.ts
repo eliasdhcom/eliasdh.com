@@ -5,14 +5,18 @@
 **/
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
+
+export type PricingCategory = 'website' | 'mail';
 
 export interface PricingPlan {
     id:           number;
     name:         string;
+    category:     PricingCategory;
     monthlyPrice: number;
+    quotaMb:      number;
     color:        string;
     isBestSeller: boolean;
     description:  string;
@@ -37,8 +41,9 @@ export class PricingPlansService {
         return new HttpHeaders({ 'Content-Type': 'application/json', 'x-api-key': environment.eliasdhApiKey });
     }
 
-    getAll(): Observable<{ success: boolean; data: PricingPlan[] }> {
-        return this.http.get<{ success: boolean; data: PricingPlan[] }>(this.apiUrl, { headers: this.getHeaders() });
+    getAll(category: PricingCategory | 'all' = 'all'): Observable<{ success: boolean; data: PricingPlan[] }> {
+        const params = new HttpParams().set('category', category);
+        return this.http.get<{ success: boolean; data: PricingPlan[] }>(this.apiUrl, { headers: this.getHeaders(), params });
     }
 
     setPlanColors(plans: PricingPlan[]): void {

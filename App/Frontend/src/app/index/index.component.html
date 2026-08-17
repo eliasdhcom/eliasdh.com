@@ -1,5 +1,5 @@
 <!--Author EliasDH Team-->
-<body class="global-body">
+<div class="global-body">
     <app-contact-bar></app-contact-bar>
     <header class="index-header-container">
         <article>
@@ -90,16 +90,35 @@
             <section class="index-title">
                 <h3 class="index-title-text">{{'INDEX.TRANSLATE13' | translate}}</h3>
             </section>
-            <h4 class="index-services-section-title">{{'INDEX.TRANSLATE15' | translate}}</h4>
-            <p class="index-services-section-desc">{{'INDEX.TRANSLATE15-DESC' | translate}}</p>
-            <section class="index-pricing-toggle">
-                <span [class.active]="!isYearlyPricing">{{'INDEX.PRICING-MONTHLY' | translate}}</span>
-                <label class="index-toggle-switch">
-                    <input type="checkbox" [(ngModel)]="isYearlyPricing">
-                    <span class="index-toggle-slider"></span>
-                </label>
-                <span [class.active]="isYearlyPricing">{{'INDEX.PRICING-YEARLY' | translate}}</span>
-            </section>
+            <h4 class="index-services-section-title">{{ (pricingCategory === 'website' ? 'INDEX.TRANSLATE15' : 'INDEX.PRICING-TITLE-MAIL') | translate }}</h4>
+            <p class="index-services-section-desc">{{ (pricingCategory === 'website' ? 'INDEX.TRANSLATE15-DESC' : 'INDEX.PRICING-DESC-MAIL') | translate }}</p>
+            <div class="index-pricing-filter" role="group" [attr.aria-label]="'INDEX.PRICING-FILTER-LABEL' | translate">
+                <button type="button"
+                    class="index-pricing-filter-btn cursor-pointer"
+                    [class.active]="pricingCategory === 'website'"
+                    [attr.aria-pressed]="pricingCategory === 'website'"
+                    (click)="setPricingCategory('website')">
+                    {{'INDEX.PRICING-FILTER-WEBSITE' | translate}}
+                </button>
+                <button type="button"
+                    class="index-pricing-filter-btn cursor-pointer"
+                    [class.active]="pricingCategory === 'mail'"
+                    [attr.aria-pressed]="pricingCategory === 'mail'"
+                    (click)="setPricingCategory('mail')">
+                    {{'INDEX.PRICING-FILTER-MAIL' | translate}}
+                </button>
+            </div>
+            <ng-container *ngIf="pricingCategory === 'website'">
+                <section class="index-pricing-toggle">
+                    <span [class.active]="!isYearlyPricing">{{'INDEX.PRICING-MONTHLY' | translate}}</span>
+                    <label class="index-toggle-switch">
+                        <input type="checkbox" [(ngModel)]="isYearlyPricing">
+                        <span class="index-toggle-slider"></span>
+                    </label>
+                    <span [class.active]="isYearlyPricing">{{'INDEX.PRICING-YEARLY' | translate}}</span>
+                </section>
+                <span class="index-pricing-badge" [class.visible]="isYearlyPricing">{{'INDEX.PRICING-SAVE' | translate}}</span>
+            </ng-container>
             <section class="index-pricing-meta-toggle">
                 <label class="index-pricing-meta-label cursor-pointer">
                     <input type="checkbox" [(ngModel)]="isVatIncludedPricing">
@@ -107,29 +126,78 @@
                 </label>
                 <p class="index-pricing-tax-hint">{{getPricingTaxHintKey() | translate}}</p>
             </section>
-            <span class="index-pricing-badge" [class.visible]="isYearlyPricing">{{'INDEX.PRICING-SAVE' | translate}}</span>
-            <section class="index-services-container-item">
-                <section class="index-services-box hosting-services" *ngFor="let plan of pricingPlans" [class.popular]="plan.isBestSeller">
-                    <span class="index-services-popular-badge" *ngIf="plan.isBestSeller">{{'INDEX.TRANSLATE-POPULAR' | translate}}</span>
-                    <section class="index-services-box-header">
-                        <h4 class="index-services-plan-name">{{plan.name}}</h4>
-                        <p class="index-services-plan-price">{{getPlanPrice(plan)}}</p>
-                        <p class="index-services-plan-tagline">{{getPlanDescription(plan)}}</p>
+
+            <span class="index-pricing-sr-only" aria-live="polite">{{ pricingLoading ? ('INDEX.PRICING-LOADING' | translate) : '' }}</span>
+
+            <section class="index-pricing-grid" *ngIf="pricingLoading" aria-hidden="true">
+                <div class="index-pricing-row">
+                    <div class="index-pricing-skeleton-card" *ngFor="let s of [0, 1, 2]" [style.flex]="'0 1 ' + pricingCardFlexBasis">
+                        <div class="index-pricing-skeleton-line index-pricing-skeleton-title"></div>
+                        <div class="index-pricing-skeleton-line index-pricing-skeleton-price"></div>
+                        <div class="index-pricing-skeleton-line"></div>
+                        <div class="index-pricing-skeleton-line"></div>
+                        <div class="index-pricing-skeleton-line"></div>
+                    </div>
+                </div>
+            </section>
+
+            <app-error-box
+                *ngIf="!pricingLoading && pricingError"
+                [errorMessage]="pricingError"
+                retryButtonKey="INDEX.PRICING-RETRY"
+                (retry)="retryLoadPricing()">
+            </app-error-box>
+
+            <p class="index-pricing-empty" *ngIf="!pricingLoading && !pricingError && filteredPricingPlans.length === 0">
+                {{'INDEX.PRICING-EMPTY' | translate}}
+            </p>
+
+            <section class="index-pricing-grid" *ngIf="!pricingLoading && !pricingError && pricingCategory === 'website' && filteredPricingPlans.length">
+                <div class="index-pricing-row" *ngFor="let row of pricingRows">
+                    <section class="index-pricing-card" *ngFor="let plan of row" [style.flex]="'0 1 ' + pricingCardFlexBasis" [class.popular]="plan.isBestSeller" [style.border-top-color]="plan.color">
+                        <span class="index-pricing-card-badge" *ngIf="plan.isBestSeller" [style.background]="plan.color" [style.color]="planTextColor(plan.color)">{{'INDEX.TRANSLATE-POPULAR' | translate}}</span>
+                        <section class="index-pricing-card-header">
+                            <h4 class="index-pricing-card-name">{{plan.name}}</h4>
+                            <p class="index-pricing-card-price">{{getPlanPrice(plan)}}</p>
+                            <p class="index-pricing-card-tagline">{{getPlanDescription(plan)}}</p>
+                        </section>
+                        <section class="index-pricing-card-body">
+                            <ul class="index-pricing-card-bullets">
+                                <li *ngFor="let bullet of getPlanBullets(plan)">
+                                    <svg class="index-pricing-card-check" viewBox="0 0 16 16">
+                                        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                                    </svg>
+                                    {{bullet}}
+                                </li>
+                            </ul>
+                            <button class="global-button cursor-pointer" (click)="openContactModal('Hosting (' + plan.name + ')')">
+                                <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
+                            </button>
+                        </section>
                     </section>
-                    <section class="index-services-box-content">
-                        <ul>
-                            <li *ngFor="let bullet of getPlanBullets(plan)">
-                                <svg class="index-services-check" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                </div>
+            </section>
+
+            <section class="index-pricing-grid" *ngIf="!pricingLoading && !pricingError && pricingCategory === 'mail' && filteredPricingPlans.length">
+                <div class="index-pricing-row" *ngFor="let row of pricingRows">
+                    <section class="index-pricing-card index-pricing-card-mail" *ngFor="let plan of row" [style.flex]="'0 1 ' + pricingCardFlexBasis" [style.border-top-color]="plan.color">
+                        <section class="index-pricing-card-header">
+                            <h4 class="index-pricing-card-name">{{plan.name}}</h4>
+                            <p class="index-pricing-card-price">{{getPlanPrice(plan)}}</p>
+                        </section>
+                        <section class="index-pricing-card-body">
+                            <p class="index-pricing-card-quota">
+                                <svg class="index-pricing-card-quota-icon" viewBox="0 0 16 16">
+                                    <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm0 1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2V4a1 1 0 0 1 1-1m-1 2.383 6.72 4.032a.5.5 0 0 0 .56 0L15 5.383V12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z"/>
                                 </svg>
-                                {{bullet}}
-                            </li>
-                        </ul>
-                        <button class="global-button cursor-pointer" (click)="openContactModal('Hosting (' + plan.name + ')')">
-                            <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
-                        </button>
+                                {{ 'INDEX.PRICING-QUOTA' | translate: { amount: getFormattedQuota(plan.quotaMb) } }}
+                            </p>
+                            <button class="global-button cursor-pointer" (click)="openContactModal('Mail (' + plan.name + ')')">
+                                <span class="cursor-pointer">{{'INDEX.TRANSLATE-CU' | translate}}</span>
+                            </button>
+                        </section>
                     </section>
-                </section>
+                </div>
             </section>
             <h4 class="index-services-section-title">{{'INDEX.TRANSLATE36' | translate}}</h4>
             <p class="index-services-section-desc">{{'INDEX.TRANSLATE36-DESC' | translate}}</p>
@@ -311,4 +379,4 @@
     <app-exit-intent></app-exit-intent>
     <app-footer></app-footer>
     <app-contextmenu></app-contextmenu>
-</body>
+</div>

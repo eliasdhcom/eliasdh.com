@@ -128,9 +128,12 @@
     background-color: var(--background);
     margin: 0;
     padding: 0;
-    height: 100%;
     overflow-x: hidden;
     max-width: 100vw;
+}
+
+.global-html {
+    height: 100%;
 }
 /* Global Body And HTML */
 

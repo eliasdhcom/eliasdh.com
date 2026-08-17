@@ -12,8 +12,8 @@ import { Router, RouterLink } from '@angular/router';
 import { LanguageService } from '../services/language.service';
 import { SharedModule } from '../shared/shared.module';
 import { CustomersService, Customer } from '../services/customers.service';
-import { PricingPlansService, PricingPlan } from '../services/pricing-plans.service';
-import { Subject, forkJoin } from 'rxjs';
+import { PricingPlansService, PricingPlan, PricingCategory } from '../services/pricing-plans.service';
+import { Subject } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -70,9 +70,50 @@ export class IndexComponent implements OnInit, OnDestroy {
     isYearlyPricing: boolean = false;
     isVatIncludedPricing: boolean = false;
     pricingPlans: PricingPlan[] = [];
+    pricingCategory: PricingCategory = 'website';
+    pricingLoading: boolean = true;
+    pricingError: string | null = null;
+    pricingColumnsPerRow: number = 3;
 
     private readonly vatRate: number = 0.21;
-    
+    private readonly pricingRowGap: number = 30;
+
+    get filteredPricingPlans(): PricingPlan[] {
+        return this.pricingPlans.filter(p => p.category === this.pricingCategory && p.monthlyPrice > 0);
+    }
+
+    get pricingRows(): PricingPlan[][] {
+        return this.balanceIntoRows(this.filteredPricingPlans, this.pricingColumnsPerRow);
+    }
+
+    get pricingCardFlexBasis(): string {
+        const gaps = (this.pricingColumnsPerRow - 1) * this.pricingRowGap;
+        return `calc((100% - ${gaps}px) / ${this.pricingColumnsPerRow})`;
+    }
+
+    private balanceIntoRows<T>(items: T[], maxColumns: number): T[][] {
+        const total = items.length;
+        if (total === 0 || maxColumns <= 0) return [];
+        const rowCount = Math.ceil(total / maxColumns);
+        const base = Math.floor(total / rowCount);
+        const remainder = total % rowCount;
+        const rows: T[][] = [];
+        let index = 0;
+        for (let r = 0; r < rowCount; r++) {
+            const count = base + (r < remainder ? 1 : 0);
+            rows.push(items.slice(index, index + count));
+            index += count;
+        }
+        return rows;
+    }
+
+    private updatePricingColumnsPerRow(): void {
+        const width = window.innerWidth;
+        if (width <= 480) this.pricingColumnsPerRow = 1;
+        else if (width <= 768) this.pricingColumnsPerRow = 2;
+        else this.pricingColumnsPerRow = 3;
+    }
+
     showContactModal: boolean = false;
     contactSubject: string = '';
 
@@ -208,7 +249,9 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.calculateReviewsVisible();
         this.calculateYearsInBusiness();
         this.setupStatsObserver();
-        this.loadData();
+        this.updatePricingColumnsPerRow();
+        this.loadTrustedClients();
+        this.loadPricingPlans();
     }
 
     ngOnDestroy(): void {
@@ -218,19 +261,51 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.destroy$.complete();
     }
 
-    private loadData(): void {
-        forkJoin({
-            customers: this.customersService.getAllCustomers().pipe(catchError(() => of({ data: [] as Customer[] }))),
-            plans:     this.pricingPlansService.getAll().pipe(catchError(() => of({ data: [] as PricingPlan[] })))
-        })
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-            next: ({ customers, plans }) => {
-                this.trustedClients = (customers.data ?? []).filter(c => !c.isHQ && c.showOnHomePage !== false).sort((a, b) => a.id.localeCompare(b.id));
-                this.pricingPlans   = (plans.data ?? []).filter(p => p.monthlyPrice > 0).sort((a, b) => a.monthlyPrice - b.monthlyPrice);
-            },
-            error: () => {}
-        });
+    private loadTrustedClients(): void {
+        this.customersService.getAllCustomers()
+            .pipe(catchError(() => of({ data: [] as Customer[] })), takeUntil(this.destroy$))
+            .subscribe(({ data }) => {
+                this.trustedClients = (data ?? []).filter(c => !c.isHQ && c.showOnHomePage !== false).sort((a, b) => a.id.localeCompare(b.id));
+            });
+    }
+
+    loadPricingPlans(): void {
+        this.pricingLoading = true;
+        this.pricingError = null;
+        this.pricingPlansService.getAll('all')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: ({ data }) => {
+                    this.pricingPlans = data ?? [];
+                    this.pricingLoading = false;
+                },
+                error: () => {
+                    this.pricingError = this.translate.instant('INDEX.PRICING-ERROR');
+                    this.pricingLoading = false;
+                }
+            });
+    }
+
+    retryLoadPricing(): void {
+        this.loadPricingPlans();
+    }
+
+    setPricingCategory(category: PricingCategory): void {
+        this.pricingCategory = category;
+        if (category === 'mail') this.isYearlyPricing = false;
+    }
+
+    planTextColor(hex: string): string {
+        return this.pricingPlansService.getPlanTextColor(hex);
+    }
+
+    getFormattedQuota(quotaMb: number): string {
+        if (!quotaMb || quotaMb <= 0) return '';
+        if (quotaMb >= 1024) {
+            const gb = Math.round((quotaMb / 1024) * 10) / 10;
+            return `${gb % 1 === 0 ? gb.toFixed(0) : gb.toFixed(1)} GB`;
+        }
+        return `${quotaMb} MB`;
     }
 
     @HostListener('window:resize')
@@ -238,6 +313,7 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.calculateCarouselDimensions();
         this.updateTeamTranslateX();
         this.calculateReviewsVisible();
+        this.updatePricingColumnsPerRow();
     }
 
     private initializeTeamCarousel(): void {

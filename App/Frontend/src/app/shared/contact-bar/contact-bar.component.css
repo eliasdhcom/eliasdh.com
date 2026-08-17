@@ -12,10 +12,8 @@
     align-items: center;
     gap: 6px;
     z-index: 1000;
-    background-color: color-mix(in srgb, var(--background) 72%, transparent);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+    background-color: var(--primary);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     padding: 6px;
     border-radius: 999px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -25,7 +23,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    color: var(--text);
+    color: #fff;
     text-decoration: none;
     font-size: 13px;
     font-weight: 500;
@@ -33,21 +31,35 @@
     padding: 8px 12px;
     border-radius: 999px;
     box-sizing: border-box;
-    transition: background-color 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
 }
 
-.contact-bar-item:hover {
-    background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+.contact-bar-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--secondary);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
 }
 
-.contact-bar-whatsapp:hover {
-    background-color: rgba(37, 211, 102, 0.15);
+.contact-bar-item:hover::before,
+.contact-bar-item:focus-visible::before {
+    opacity: 1;
+}
+
+.contact-bar-item:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
 }
 
 .contact-bar-svg {
     width: 18px;
     height: 18px;
-    fill: var(--primary);
+    fill: #fff;
 }
 
 .contact-bar-language {
@@ -55,21 +67,7 @@
     z-index: 1001;
 }
 
-.language-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 32px;
-    padding: 8px 12px;
-    border-radius: 999px;
-    box-sizing: border-box;
-    transition: background-color 0.25s ease;
-}
-
-.language-btn:hover {
-    background-color: color-mix(in srgb, var(--primary) 12%, transparent);
-}
-
+.language-btn,
 .contact-bar-login {
     display: flex;
     align-items: center;
@@ -78,24 +76,46 @@
     padding: 8px 12px;
     border-radius: 999px;
     box-sizing: border-box;
-    transition: background-color 0.25s ease;
     text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
 }
 
-.contact-bar-login:hover {
-    background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+.language-btn::before,
+.contact-bar-login::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--secondary);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+}
+
+.language-btn:hover::before,
+.language-btn:focus-visible::before,
+.contact-bar-login:hover::before,
+.contact-bar-login:focus-visible::before {
+    opacity: 1;
+}
+
+.language-btn:focus-visible,
+.contact-bar-login:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
 }
 
 .contact-bar-login .contact-bar-svg {
     width: 18px;
     height: 18px;
-    fill: var(--primary);
+    fill: #fff;
 }
 
 .language-btn .global-dropdown-svg {
     width: 18px;
     height: 18px;
-    fill: var(--primary);
+    fill: #fff;
 }
 
 .contact-bar-language .global-dropdown-menu {
