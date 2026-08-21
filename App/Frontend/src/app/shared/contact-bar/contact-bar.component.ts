@@ -4,7 +4,7 @@
     * @since 01/01/2025
 **/
 
-import { Component, OnInit, HostListener, ElementRef, PLATFORM_ID, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef, PLATFORM_ID, inject } from '@angular/core';
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { LanguageService } from '../../services/language.service';
@@ -17,9 +17,15 @@ import { LanguageService } from '../../services/language.service';
     standalone: true
 })
 
-export class ContactBarComponent implements OnInit {
+export class ContactBarComponent implements OnInit, OnDestroy {
     dropdownOpen: boolean = false;
     currentLanguage: string = 'en';
+    visible: boolean = true;
+
+    private idleTimer: ReturnType<typeof setTimeout> | null = null;
+    private readonly idleDelay = 2500;
+    private lastMouseMoveHandled = 0;
+    private readonly mouseMoveThrottle = 150;
 
     settingsConfig = {
         languages: [
@@ -39,6 +45,36 @@ export class ContactBarComponent implements OnInit {
         this.languageService.checkAndSetLanguage();
         const storedLanguage = isPlatformBrowser(this.platformId) ? localStorage.getItem('language') : null;
         this.currentLanguage = this.translate.currentLang || storedLanguage || 'nl';
+        this.resetIdleTimer();
+    }
+
+    ngOnDestroy(): void {
+        if (this.idleTimer) clearTimeout(this.idleTimer);
+    }
+
+    private resetIdleTimer(): void {
+        if (!isPlatformBrowser(this.platformId)) return;
+        this.visible = true;
+        if (this.idleTimer) clearTimeout(this.idleTimer);
+        this.idleTimer = setTimeout(() => {
+            if (!this.dropdownOpen) this.visible = false;
+        }, this.idleDelay);
+    }
+
+    @HostListener('window:scroll')
+    @HostListener('window:touchstart')
+    @HostListener('window:pointerdown')
+    @HostListener('focusin')
+    onUserActivity(): void {
+        this.resetIdleTimer();
+    }
+
+    @HostListener('window:mousemove')
+    onMouseMove(): void {
+        const now = Date.now();
+        if (now - this.lastMouseMoveHandled < this.mouseMoveThrottle) return;
+        this.lastMouseMoveHandled = now;
+        this.resetIdleTimer();
     }
 
     changeLanguage(languageCode: string) {
