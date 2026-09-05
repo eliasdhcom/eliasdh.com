@@ -4,8 +4,8 @@
     * @since 01/06/2026
 **/
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -26,7 +26,7 @@ export class CookieConsentComponent implements OnInit, OnDestroy {
     showBlocked: boolean = false;
     private routerSub!: Subscription;
 
-    constructor(private router: Router) {}
+    constructor(private router: Router, @Inject(DOCUMENT) private document: Document) {}
 
     ngOnInit(): void {
         this.updateVisibility(this.router.url);
@@ -47,6 +47,7 @@ export class CookieConsentComponent implements OnInit, OnDestroy {
         if (this.isExcluded(url)) {
             this.showConsent = false;
             this.showBlocked = false;
+            this.syncBodyScroll();
             return;
         }
         const consent = localStorage.getItem('cookieConsent');
@@ -57,22 +58,32 @@ export class CookieConsentComponent implements OnInit, OnDestroy {
             this.showConsent = true;
             this.showBlocked = false;
         }
+        this.syncBodyScroll();
+    }
+
+    private syncBodyScroll(): void {
+        const overflow = (this.showConsent || this.showBlocked) ? 'hidden' : '';
+        this.document.documentElement.style.overflow = overflow;
+        this.document.body.style.overflow = overflow;
     }
 
     accept(): void {
         localStorage.setItem('cookieConsent', 'accepted');
         this.showConsent = false;
+        this.syncBodyScroll();
     }
 
     decline(): void {
         localStorage.setItem('cookieConsent', 'declined');
         this.showConsent = false;
         this.showBlocked = true;
+        this.syncBodyScroll();
     }
 
     changeChoice(): void {
         localStorage.removeItem('cookieConsent');
         this.showBlocked = false;
         this.showConsent = true;
+        this.syncBodyScroll();
     }
 }
