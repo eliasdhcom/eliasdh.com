@@ -58,10 +58,8 @@ jobs:
           ELIASDH_API_KEY: ${{ secrets.ELIASDH_API_KEY }}
         run: |
           IMAGES_JSON=$(printf '%s' "$IMAGES" | jq -R . | jq -sc .)
-          SECRET_VARS='${GHCR_TOKEN} ${GH_PAT} ${ELIASDH_API_KEY}'
 
           MANIFESTS_TMP=$(mktemp)
-          envsubst "$SECRET_VARS" < Kubernetes/Secret.template.yaml | jq -R -s . >> "$MANIFESTS_TMP"
 
           jq -nc \
             --arg ns "$NAMESPACE" --arg server "$GHCR_REGISTRY" \
