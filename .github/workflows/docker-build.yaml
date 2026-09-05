@@ -84,8 +84,15 @@ jobs:
           MANIFESTS_JSON=$(jq -sc . "$MANIFESTS_TMP")
           rm -f "$MANIFESTS_TMP"
 
-          curl -sf -X POST "https://app.eliasdh.com/api/v1/cluster/deploy/restart" \
+          HTTP_STATUS=$(curl -s -o /tmp/deploy_response.json -w "%{http_code}" -X POST "https://app.eliasdh.com/api/v1/cluster/deploy/restart" \
             -H "X-API-Key: ${{ secrets.ELIASDH_API_KEY }}" \
             -H "Content-Type: application/json" \
             -d "$(jq -nc --arg ns "$NAMESPACE" --arg domain "$DOMAIN" --argjson images "$IMAGES_JSON" --argjson manifests "$MANIFESTS_JSON" --arg runId "${{ github.run_id }}-${{ github.run_attempt }}" \
-              '{namespace: $ns, domain: $domain, images: $images, manifests: $manifests, runId: $runId}')"
+              '{namespace: $ns, domain: $domain, images: $images, manifests: $manifests, runId: $runId}')")
+
+          echo "Deploy API responded with HTTP $HTTP_STATUS"
+          cat /tmp/deploy_response.json
+
+          if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
+            exit 1
+          fi
