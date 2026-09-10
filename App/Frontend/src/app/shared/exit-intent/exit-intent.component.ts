@@ -7,6 +7,7 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { safeGetItem } from '../../services/safe-storage';
 
 @Component({
     selector: 'app-exit-intent',
@@ -22,7 +23,7 @@ export class ExitIntentComponent {
 
     @HostListener('document:mouseleave', ['$event'])
     onMouseLeave(event: MouseEvent): void {
-        if (event.clientY <= 0 && !this.popupShown && localStorage.getItem('cookieConsent') === 'accepted') {
+        if (event.clientY <= 0 && !this.popupShown && safeGetItem('cookieConsent') === 'accepted') {
             this.showPopup = true;
             this.popupShown = true;
         }

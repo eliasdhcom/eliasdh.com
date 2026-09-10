@@ -10,6 +10,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { safeGetItem, safeSetItem, safeRemoveItem } from '../../services/safe-storage';
 
 const EXCLUDED_ROUTES = ['/privacypolicy', '/legalguidelines'];
 
@@ -55,7 +56,7 @@ export class CookieConsentComponent implements OnInit, OnDestroy {
         }
 
         if (!this.isBrowser) return;
-        const consent = localStorage.getItem('cookieConsent');
+        const consent = safeGetItem('cookieConsent');
         if (consent === 'declined') {
             this.showBlocked = true;
             this.showConsent = false;
@@ -73,20 +74,20 @@ export class CookieConsentComponent implements OnInit, OnDestroy {
     }
 
     accept(): void {
-        localStorage.setItem('cookieConsent', 'accepted');
+        safeSetItem('cookieConsent', 'accepted');
         this.showConsent = false;
         this.syncBodyScroll();
     }
 
     decline(): void {
-        localStorage.setItem('cookieConsent', 'declined');
+        safeSetItem('cookieConsent', 'declined');
         this.showConsent = false;
         this.showBlocked = true;
         this.syncBodyScroll();
     }
 
     changeChoice(): void {
-        localStorage.removeItem('cookieConsent');
+        safeRemoveItem('cookieConsent');
         this.showBlocked = false;
         this.showConsent = true;
         this.syncBodyScroll();

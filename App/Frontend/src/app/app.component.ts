@@ -12,6 +12,7 @@ import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieConsentComponent } from './shared/cookie-consent/cookie-consent.component';
 import { ThemeService } from './services/theme.service';
+import { safeGetItem, safeSetItem } from './services/safe-storage';
 
 @Component({
     selector: 'app-root',
@@ -34,10 +35,10 @@ export class AppComponent {
     constructor(@Inject(DOCUMENT) private document: Document) {
         this.themeService.initTheme();
         const isBrowser = isPlatformBrowser(this.platformId);
-        const lang = (isBrowser ? localStorage.getItem('language') : null) || 'nl';
+        const lang = (isBrowser ? safeGetItem('language') : null) || 'nl';
         this.translate.setDefaultLang(lang);
         this.translate.use(lang);
-        if (isBrowser) this.translate.onLangChange.subscribe(e => localStorage.setItem('language', e.lang));
+        if (isBrowser) this.translate.onLangChange.subscribe(e => safeSetItem('language', e.lang));
         this.router.events.pipe(
             filter(event => event instanceof NavigationEnd),
             map(() => {

@@ -8,6 +8,7 @@ import { Component, OnInit, OnDestroy, HostListener, ElementRef, PLATFORM_ID, in
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { LanguageService } from '../../services/language.service';
+import { safeGetItem, safeSetItem } from '../../services/safe-storage';
 
 @Component({
     selector: 'app-contact-bar',
@@ -43,7 +44,7 @@ export class ContactBarComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.languageService.checkAndSetLanguage();
-        const storedLanguage = isPlatformBrowser(this.platformId) ? localStorage.getItem('language') : null;
+        const storedLanguage = isPlatformBrowser(this.platformId) ? safeGetItem('language') : null;
         this.currentLanguage = this.translate.currentLang || storedLanguage || 'nl';
         this.resetIdleTimer();
     }
@@ -79,7 +80,7 @@ export class ContactBarComponent implements OnInit, OnDestroy {
 
     changeLanguage(languageCode: string) {
         this.translate.use(languageCode);
-        if (isPlatformBrowser(this.platformId)) localStorage.setItem('language', languageCode);
+        if (isPlatformBrowser(this.platformId)) safeSetItem('language', languageCode);
         this.currentLanguage = languageCode;
         this.dropdownOpen = false;
     }

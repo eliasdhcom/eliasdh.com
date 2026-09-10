@@ -6,6 +6,7 @@
 
 import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { safeGetItem, safeSetItem } from './safe-storage';
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +18,7 @@ export class ThemeService {
     constructor(@Inject(DOCUMENT) private document: Document) { }
 
     initTheme(): void {
-        const saved = typeof localStorage !== 'undefined' ? localStorage.getItem('theme') : null;
+        const saved = typeof localStorage !== 'undefined' ? safeGetItem('theme') : null;
         const prefersDark = typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches;
         this.isDark = saved ? saved === 'dark' : prefersDark;
         this.applyTheme();
@@ -25,7 +26,7 @@ export class ThemeService {
 
     toggleTheme(): void {
         this.isDark = !this.isDark;
-        localStorage.setItem('theme', this.isDark ? 'dark' : 'light');
+        safeSetItem('theme', this.isDark ? 'dark' : 'light');
         this.applyTheme();
     }
 

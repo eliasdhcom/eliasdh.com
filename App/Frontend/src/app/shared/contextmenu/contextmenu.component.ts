@@ -7,6 +7,7 @@
 import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
+import { safeSetItem } from '../../services/safe-storage';
 
 @Component({
     selector: 'app-contextmenu',
@@ -59,7 +60,7 @@ export class ContextMenuComponent implements OnInit {
         const currentTheme = htmlElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
         htmlElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+        safeSetItem('theme', newTheme);
         this.contextMenuVisible = false;
     }
 }
