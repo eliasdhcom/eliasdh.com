@@ -4,8 +4,8 @@
     * @since 29/11/2025
 **/
 
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -56,14 +56,19 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
     encodeURIComponent = encodeURIComponent;
 
+    private readonly isBrowser: boolean;
+
     constructor(
         private customersService: CustomersService,
         private pricingPlansService: PricingPlansService,
         private languageService: LanguageService,
         private translateService: TranslateService,
         private route: ActivatedRoute,
-        private router: Router
-    ) { }
+        private router: Router,
+        @Inject(PLATFORM_ID) platformId: object
+    ) {
+        this.isBrowser = isPlatformBrowser(platformId);
+    }
 
     private focusLat:        number | null = null;
     private focusLng:        number | null = null;
@@ -90,6 +95,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     getBadgeStyle(type: string) { return this.pricingPlansService.getBadgeStyle(type); }
 
     ngAfterViewInit(): void {
+        if (!this.isBrowser) return;
         this.initMap();
         this.locateUser();
     }
@@ -160,7 +166,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
                     console.log('Customers loaded:', this.customers);
                     this.addMarkersToMap();
 
-                    if (this.focusLat !== null && this.focusLng !== null) {
+                    if (this.isBrowser && this.focusLat !== null && this.focusLng !== null) {
                         this.map.flyTo([this.focusLat, this.focusLng], 16, { animate: true, duration: 1.2 });
 
                         const targetCustomer = this.focusCustomerId ? this.customers.find(c => c.id === this.focusCustomerId) : this.customers.find(c => c.locations?.some(l => l.latitude === this.focusLat && l.longitude === this.focusLng));
@@ -254,7 +260,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isSidebarOpen = true;
         this.router.navigate([], { queryParams: { customerId: customer.id }, replaceUrl: true });
 
-        if (this.selectedLat && this.selectedLng) {
+        if (this.isBrowser && this.selectedLat && this.selectedLng) {
             this.map.setView([this.selectedLat, this.selectedLng], 14, { animate: true });
         }
     }
