@@ -4,9 +4,9 @@
     * @since 01/01/2025
 **/
 
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, Inject, PLATFORM_ID } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { LanguageService } from '../services/language.service';
@@ -108,6 +108,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     }
 
     private updatePricingColumnsPerRow(): void {
+        if (!this.isBrowser) return;
         const width = window.innerWidth;
         if (width <= 480) this.pricingColumnsPerRow = 1;
         else if (width <= 768) this.pricingColumnsPerRow = 2;
@@ -233,13 +234,18 @@ export class IndexComponent implements OnInit, OnDestroy {
         return this.teamMembers.length;
     }
 
+    private readonly isBrowser: boolean;
+
     constructor(
         private languageService: LanguageService,
         private translate: TranslateService,
         private customersService: CustomersService,
         private pricingPlansService: PricingPlansService,
-        private router: Router
-    ) { }
+        private router: Router,
+        @Inject(PLATFORM_ID) platformId: object
+    ) {
+        this.isBrowser = isPlatformBrowser(platformId);
+    }
 
     ngOnInit(): void {
         this.languageService.checkAndSetLanguage();
@@ -322,6 +328,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     }
 
     private calculateCarouselDimensions(): void {
+        if (!this.isBrowser) return;
         const windowWidth = window.innerWidth;
 
         if (windowWidth >= 1100) this.itemsToShow = 3;
@@ -353,6 +360,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     }
 
     private updateTeamTranslateX(): void {
+        if (!this.isBrowser) return;
         const firstItem = document.querySelector('.index-team-container-carousel-item') as HTMLElement;
         let marginLeft = 15;
 
@@ -455,6 +463,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     }
 
     private setupEmailIconClick(): void {
+        if (!this.isBrowser) return;
         setTimeout(() => {
             const emailIcon = document.getElementById('index-team-emailIcon');
             if (emailIcon) {
@@ -523,6 +532,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     }
 
     private calculateReviewsVisible(): void {
+        if (!this.isBrowser) return;
         const windowWidth = window.innerWidth;
         if (windowWidth >= 1200) this.reviewsVisible = 3;
         else if (windowWidth >= 768) this.reviewsVisible = 2;
@@ -548,6 +558,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     }
 
     private setupStatsObserver(): void {
+        if (!this.isBrowser) return;
         const element = document.querySelector('.index-stats-container');
         if (!element) return;
 
