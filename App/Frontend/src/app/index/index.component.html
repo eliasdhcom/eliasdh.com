@@ -258,7 +258,7 @@
         </article>
         <article class="index-trusted-clients">
             <section class="index-trusted-clients-logo-slider">
-                <section class="index-trusted-clients-logos">
+                <section class="index-trusted-clients-logos" [class.is-scrolling]="trustedLogosReady">
                     <ng-container *ngFor="let client of trustedClientsDisplay">
                         <span class="client-logo-wrapper">
                             <a routerLink="/map" (click)="goToClientOnMap($event, client.id)" class="cursor-pointer">

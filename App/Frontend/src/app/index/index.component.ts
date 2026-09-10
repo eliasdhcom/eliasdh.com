@@ -174,6 +174,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     reviewsVisible: number = 3;
 
     trustedClients: Customer[] = [];
+    trustedLogosReady: boolean = false;
     private destroy$ = new Subject<void>();
 
     get trustedClientsDisplay(): Customer[] {
@@ -272,7 +273,31 @@ export class IndexComponent implements OnInit, OnDestroy {
             .pipe(catchError(() => of({ data: [] as Customer[] })), takeUntil(this.destroy$))
             .subscribe(({ data }) => {
                 this.trustedClients = (data ?? []).filter(c => !c.isHQ && c.showOnHomePage !== false).sort((a, b) => a.id.localeCompare(b.id));
+                this.preloadTrustedLogos();
             });
+    }
+
+    // The logo strip's scroll animation moves it by a percentage of its own width, so that
+    // width must be final before the animation starts - otherwise images resolving their
+    // natural size mid-scroll shift the track and the animation visibly stutters/jumps.
+    // Waiting for every logo to load (success or failure) up front avoids that entirely.
+    private preloadTrustedLogos(): void {
+        const urls = [...new Set(this.trustedClients.map(c => c.logo).filter((url): url is string => !!url))];
+        if (!this.isBrowser || urls.length === 0) {
+            this.trustedLogosReady = true;
+            return;
+        }
+        let settledCount = 0;
+        const markSettled = () => {
+            settledCount++;
+            if (settledCount >= urls.length) this.trustedLogosReady = true;
+        };
+        urls.forEach(url => {
+            const img = new Image();
+            img.onload = markSettled;
+            img.onerror = markSettled;
+            img.src = url;
+        });
     }
 
     loadPricingPlans(): void {
