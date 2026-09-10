@@ -348,6 +348,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private startAutoRefresh(): void {
+        if (!this.isBrowser) return;
         this.refreshInterval = setInterval(() => {
             this.refreshCustomers();
         }, 10 * 60 * 1000); // 10 minutes

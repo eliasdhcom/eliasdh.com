@@ -4,7 +4,8 @@
     * @since 01/01/2025
 **/
 
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { LanguageService } from '../services/language.service';
 import { SharedModule } from '../shared/shared.module';
 
@@ -21,13 +22,14 @@ export class AccessDeniedComponent implements OnInit, AfterViewInit {
     private hand: HTMLElement | null = null;
     private audio: HTMLAudioElement | null = null;
 
-    constructor(private languageService: LanguageService) {}
+    constructor(private languageService: LanguageService, @Inject(PLATFORM_ID) private platformId: object) {}
 
     ngOnInit(): void {
         this.languageService.checkAndSetLanguage();
     }
 
     ngAfterViewInit(): void {
+        if (!isPlatformBrowser(this.platformId)) return;
         this.hand = document.getElementById('accessdenied-policeman-hand');
         this.audio = document.getElementById('accessdenied-audio') as HTMLAudioElement;
 

@@ -519,6 +519,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     }
 
     private startReviewsAutoRotate(): void {
+        if (!this.isBrowser) return;
         this.reviewsAutoRotateInterval = setInterval(() => {
             this.currentReviewIndex = (this.currentReviewIndex + 1) % this.reviews.length;
         }, 4000);
