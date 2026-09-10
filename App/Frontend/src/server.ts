@@ -16,7 +16,9 @@ export function app(): express.Express {
     const serverDistFolder = dirname(fileURLToPath(import.meta.url));
     const browserDistFolder = resolve(serverDistFolder, '../browser');
     const indexHtml = join(serverDistFolder, 'index.server.html');
-    const commonEngine = new CommonEngine();
+    const commonEngine = new CommonEngine({
+        allowedHosts: ['eliasdh.com', 'www.eliasdh.com', 'localhost']
+    });
 
     server.set('view engine', 'html');
     server.set('views', browserDistFolder);
