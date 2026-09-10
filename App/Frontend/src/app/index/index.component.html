@@ -153,8 +153,8 @@
             </p>
 
             <section class="index-pricing-grid" *ngIf="!pricingLoading && !pricingError && pricingCategory === 'website' && filteredPricingPlans.length">
-                <div class="index-pricing-row" *ngFor="let row of pricingRows">
-                    <section class="index-pricing-card" *ngFor="let plan of row" [style.flex]="'0 1 ' + pricingCardFlexBasis" [class.popular]="plan.isBestSeller" [style.border-top-color]="plan.color">
+                <div class="index-pricing-row" *ngFor="let row of pricingRows; trackBy: trackByRowIndex">
+                    <section class="index-pricing-card" *ngFor="let plan of row; trackBy: trackByPlanId" [style.flex]="'0 1 ' + pricingCardFlexBasis" [class.popular]="plan.isBestSeller" [style.border-top-color]="plan.color">
                         <span class="index-pricing-card-badge" *ngIf="plan.isBestSeller" [style.background]="plan.color" [style.color]="planTextColor(plan.color)">{{'INDEX.TRANSLATE-POPULAR' | translate}}</span>
                         <section class="index-pricing-card-header">
                             <h4 class="index-pricing-card-name">{{plan.name}}</h4>
@@ -179,8 +179,8 @@
             </section>
 
             <section class="index-pricing-grid" *ngIf="!pricingLoading && !pricingError && pricingCategory === 'mail' && filteredPricingPlans.length">
-                <div class="index-pricing-row" *ngFor="let row of pricingRows">
-                    <section class="index-pricing-card index-pricing-card-mail" *ngFor="let plan of row" [style.flex]="'0 1 ' + pricingCardFlexBasis" [style.border-top-color]="plan.color">
+                <div class="index-pricing-row" *ngFor="let row of pricingRows; trackBy: trackByRowIndex">
+                    <section class="index-pricing-card index-pricing-card-mail" *ngFor="let plan of row; trackBy: trackByPlanId" [style.flex]="'0 1 ' + pricingCardFlexBasis" [style.border-top-color]="plan.color">
                         <section class="index-pricing-card-header">
                             <h4 class="index-pricing-card-name">{{plan.name}}</h4>
                             <p class="index-pricing-card-price">{{getPlanPrice(plan)}}</p>

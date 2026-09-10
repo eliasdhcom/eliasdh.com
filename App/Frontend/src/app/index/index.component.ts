@@ -115,6 +115,18 @@ export class IndexComponent implements OnInit, OnDestroy {
         else this.pricingColumnsPerRow = 3;
     }
 
+    // pricingRows rebuilds its row arrays (via slice) on every call, so without trackBy
+    // the *ngFor tracking those rows by default identity sees "new" arrays on every
+    // change-detection cycle and destroys/recreates the whole grid continuously - which
+    // made the pricing card buttons unclickable (they kept getting detached mid-click).
+    trackByRowIndex(index: number): number {
+        return index;
+    }
+
+    trackByPlanId(_index: number, plan: PricingPlan): number {
+        return plan.id;
+    }
+
     showContactModal: boolean = false;
     contactSubject: string = '';
 

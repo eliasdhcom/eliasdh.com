@@ -37,6 +37,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     private map: any;
     private markers: any[] = [];
     private markerClusterGroup: any;
+    private mapReady: boolean = false;
     private userLocationMarker: any = null;
     private refreshInterval: any;
     customers: Customer[] = [];
@@ -152,6 +153,16 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         this.map.addLayer(this.markerClusterGroup);
         console.log('Map initialized successfully');
+
+        this.mapReady = true;
+        // Customers can already have loaded (e.g. served from the SSR HTTP transfer
+        // cache on hydration, which resolves before this view-init hook runs) - in
+        // that case addMarkersToMap()/applyInitialFocus() bailed out earlier because
+        // the map wasn't ready yet, so run them now that it is.
+        if (this.customers.length > 0) {
+            this.addMarkersToMap();
+            this.applyInitialFocus();
+        }
     }
 
     loadCustomers(): void {
@@ -165,22 +176,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.customers = response.data;
                     console.log('Customers loaded:', this.customers);
                     this.addMarkersToMap();
-
-                    if (this.isBrowser && this.focusLat !== null && this.focusLng !== null) {
-                        this.map.flyTo([this.focusLat, this.focusLng], 16, { animate: true, duration: 1.2 });
-
-                        const targetCustomer = this.focusCustomerId ? this.customers.find(c => c.id === this.focusCustomerId) : this.customers.find(c => c.locations?.some(l => l.latitude === this.focusLat && l.longitude === this.focusLng));
-
-                        if (targetCustomer) {
-                            this.selectCustomer(targetCustomer, this.focusLat, this.focusLng);
-                        }
-                    } else {
-                        const customerId = this.route.snapshot.queryParamMap.get('customerId');
-                        if (customerId) {
-                            const customer = this.customers.find(c => c.id === customerId);
-                            if (customer) this.selectCustomer(customer);
-                        }
-                    }
+                    this.applyInitialFocus();
                 } else this.error = 'Failed to load customers';
                 this.isLoading = false;
             },
@@ -192,10 +188,37 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
+    // Focuses/selects the customer requested via query params (?lat=&lng=&customerId=).
+    // Needs both the map (for flyTo/setView) and the customers list, which can become
+    // ready in either order depending on whether the HTTP response came from the SSR
+    // transfer cache - so this is called from both loadCustomers() and initMap(), and
+    // only actually runs once both are satisfied.
+    private applyInitialFocus(): void {
+        if (!this.mapReady || this.customers.length === 0) return;
+
+        if (this.focusLat !== null && this.focusLng !== null) {
+            this.map.flyTo([this.focusLat, this.focusLng], 16, { animate: true, duration: 1.2 });
+
+            const targetCustomer = this.focusCustomerId ? this.customers.find(c => c.id === this.focusCustomerId) : this.customers.find(c => c.locations?.some(l => l.latitude === this.focusLat && l.longitude === this.focusLng));
+
+            if (targetCustomer) {
+                this.selectCustomer(targetCustomer, this.focusLat, this.focusLng);
+            }
+        } else {
+            const customerId = this.route.snapshot.queryParamMap.get('customerId');
+            if (customerId) {
+                const customer = this.customers.find(c => c.id === customerId);
+                if (customer) this.selectCustomer(customer);
+            }
+        }
+    }
+
     private addMarkersToMap(): void {
         console.log('addMarkersToMap called with', this.customers.length, 'customers');
-        if (!this.markerClusterGroup) {
-            console.error('markerClusterGroup not initialized!');
+        if (!this.mapReady || !this.markerClusterGroup) {
+            // Map isn't initialized yet (e.g. customers arrived before ngAfterViewInit
+            // ran) - initMap() re-calls addMarkersToMap() once it's ready, so this is
+            // not an error, just means this call is too early.
             return;
         }
         
@@ -260,7 +283,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isSidebarOpen = true;
         this.router.navigate([], { queryParams: { customerId: customer.id }, replaceUrl: true });
 
-        if (this.isBrowser && this.selectedLat && this.selectedLng) {
+        if (this.mapReady && this.selectedLat && this.selectedLng) {
             this.map.setView([this.selectedLat, this.selectedLng], 14, { animate: true });
         }
     }
